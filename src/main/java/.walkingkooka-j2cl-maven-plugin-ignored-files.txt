@@ -3,4 +3,7 @@
 #
 **/*Testing.*
 **/*Testing2.*
-
+#
+# ClassLoaderPluginProvider uses ClassLoader will never be transpilable
+#
+**/ClassLoaderPluginProvider.*

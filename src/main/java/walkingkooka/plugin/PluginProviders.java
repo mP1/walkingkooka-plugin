@@ -17,9 +17,35 @@
 
 package walkingkooka.plugin;
 
+import javaemul.internal.annotations.GwtIncompatible;
 import walkingkooka.reflect.PublicStaticHelper;
+import walkingkooka.text.CharSequences;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 public final class PluginProviders implements PublicStaticHelper {
+
+    /**
+     * The path within a JAR file to the MANIFEST.MF file.
+     */
+    public final static String MANIFEST_MF_PATH = "META-INF/MANIFEST.MF";
+
+    public final static String PLUGIN_PROVIDER_FACTORY = "plugin-provider-factory-className";
+
+    /**
+     * A {@link PluginProvider} that eagerly loads the manifest looking for the plugin-provider-factory and uses that class
+     * name to create the instance which will be the wrapped {@link PluginProvider}.
+     */
+    @GwtIncompatible
+    public static PluginProvider classLoader(final ClassLoader classLoader) throws IOException,
+            ClassNotFoundException {
+        return ClassLoaderPluginProvider.createFromManifest(classLoader);
+    }
 
     /**
      * {@see FakePluginProvider}
