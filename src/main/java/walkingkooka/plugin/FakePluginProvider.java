@@ -17,21 +17,22 @@
 
 package walkingkooka.plugin;
 
-import walkingkooka.reflect.PublicStaticHelper;
+import java.util.Set;
 
-public final class PluginProviders implements PublicStaticHelper {
-
-    /**
-     * {@see FakePluginProvider}
-     */
-    public static PluginProvider fake() {
-        return new FakePluginProvider();
+public class FakePluginProvider implements PluginProvider {
+    @Override
+    public <T> T plugin(final PluginName name,
+                        final Class<T> type) {
+        throw new UnsupportedOperationException();
     }
 
-    /**
-     * Stop creation
-     */
-    private PluginProviders() {
+    @Override
+    public <T> Set<T> plugins(final Class<T> type) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Set<PluginInfo> pluginInfos() {
         throw new UnsupportedOperationException();
     }
 }
