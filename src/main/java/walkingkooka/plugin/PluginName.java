@@ -17,7 +17,6 @@
 
 package walkingkooka.plugin;
 
-import com.sun.source.util.Plugin;
 import walkingkooka.Cast;
 import walkingkooka.naming.Name;
 import walkingkooka.predicate.character.CharPredicate;
@@ -29,7 +28,7 @@ import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 /**
- * The {@link Name} of a {@link Plugin}. Note plugin names are case-sensitive.
+ * The {@link Name} of a Plugin. Note plugin names are case-sensitive.
  */
 final public class PluginName implements Name, Comparable<PluginName> {
 

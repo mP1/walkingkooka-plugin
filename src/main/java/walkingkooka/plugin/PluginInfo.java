@@ -17,7 +17,6 @@
 
 package walkingkooka.plugin;
 
-import com.sun.source.util.Plugin;
 import walkingkooka.Cast;
 import walkingkooka.naming.HasName;
 import walkingkooka.net.AbsoluteUrl;
@@ -30,7 +29,7 @@ import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 import java.util.Objects;
 
 /**
- * Provides a few bits of info describing a {@link Plugin}. The {@link AbsoluteUrl} must be a unique identifier,
+ * Provides a few bits of info describing a Plugin. The {@link AbsoluteUrl} must be a unique identifier,
  * with the {@link PluginInfo} being a shorter human friendly reference.
  */
 public final class PluginInfo implements HasName<PluginName>,
