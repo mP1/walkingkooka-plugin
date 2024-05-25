@@ -18,6 +18,7 @@
 package walkingkooka.plugin;
 
 import walkingkooka.naming.HasName;
+import walkingkooka.net.AbsoluteUrl;
 
 import java.util.Set;
 
@@ -48,4 +49,13 @@ public interface PluginProvider extends HasName<PluginProviderName> {
      */
     @Override
     PluginProviderName name();
+
+    /**
+     * This url is not an address to an actual web page or other web resource, but rather is intended as a means of
+     * uniquely identify this provider. An example of this utility is it will be used to identify and remove an old {@link PluginProviderName}
+     * when a new form is uploaded with the same url.
+     * <br>
+     * Version info should be included in the {@link #name}.
+     */
+    AbsoluteUrl url();
 }

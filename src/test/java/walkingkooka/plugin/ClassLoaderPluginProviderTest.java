@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.classloader.ClassLoaderResourceProviders;
 import walkingkooka.collect.map.Maps;
 import walkingkooka.collect.set.Sets;
+import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.Url;
 import walkingkooka.text.CharSequences;
 
@@ -226,9 +227,16 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
         public PluginProviderName name() {
             return PLUGIN_PROVIDER_NAME;
         }
+
+        @Override
+        public AbsoluteUrl url() {
+            return PLUGIN_PROVIDER_URL;
+        }
     }
 
     public final static PluginProviderName PLUGIN_PROVIDER_NAME = PluginProviderName.with("TestPluginProvider123");
+
+    public final static AbsoluteUrl PLUGIN_PROVIDER_URL = Url.parseAbsolute("https://example.com/TestPluginProvider123");
 
     public final static PluginName PLUGIN_NAME = PluginName.with("PluginName123");
 

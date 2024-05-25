@@ -17,6 +17,8 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.net.AbsoluteUrl;
+
 import java.util.Set;
 
 public class FakePluginProvider implements PluginProvider {
@@ -38,6 +40,11 @@ public class FakePluginProvider implements PluginProvider {
 
     @Override
     public PluginProviderName name() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public AbsoluteUrl url() {
         throw new UnsupportedOperationException();
     }
 }
