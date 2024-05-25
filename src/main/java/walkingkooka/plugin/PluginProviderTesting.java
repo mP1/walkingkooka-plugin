@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.collect.set.Sets;
+import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 import java.util.Set;
@@ -183,6 +184,34 @@ public interface PluginProviderTesting<P extends PluginProvider> extends TreePri
                 provider.name()
         );
     }
+
+    // url..............................................................................................................
+
+    @Test
+    default void testUrlNotNull() {
+        this.checkNotEquals(
+                null,
+                this.createPluginProvider()
+                        .url()
+        );
+    }
+
+    default void urlAndCheck(final AbsoluteUrl expected) {
+        this.urlAndCheck(
+                this.createPluginProvider(),
+                expected
+        );
+    }
+
+    default void urlAndCheck(final P provider,
+                             final AbsoluteUrl expected) {
+        this.checkEquals(
+                expected,
+                provider.url()
+        );
+    }
+
+    // factory..........................................................................................................
 
     P createPluginProvider();
 }

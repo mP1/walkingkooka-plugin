@@ -20,6 +20,7 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.collect.set.Sets;
+import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.Url;
 
 import java.util.Objects;
@@ -28,6 +29,8 @@ import java.util.Set;
 public final class PluginProviderTestingTest implements PluginProviderTesting {
 
     private final static PluginProviderName PLUGIN_PROVIDER_NAME = PluginProviderName.with("TestPluginProvider567");
+
+    private final static AbsoluteUrl PLUGIN_PROVIDER_URL = Url.parseAbsolute("https://example.com/PluginProviderTestingTest");
 
     private final static PluginName PLUGIN_NAME1 = PluginName.with("Plugin-1");
 
@@ -96,6 +99,13 @@ public final class PluginProviderTestingTest implements PluginProviderTesting {
         );
     }
 
+    @Test
+    public void testUrl() {
+        this.urlAndCheck(
+                PLUGIN_PROVIDER_URL
+        );
+    }
+
     @Override
     public PluginProvider createPluginProvider() {
         return new PluginProvider() {
@@ -144,6 +154,11 @@ public final class PluginProviderTestingTest implements PluginProviderTesting {
                         PLUGIN_INFO1,
                         PLUGIN_INFO2
                 );
+            }
+
+            @Override
+            public AbsoluteUrl url() {
+                return PLUGIN_PROVIDER_URL;
             }
         };
     }
