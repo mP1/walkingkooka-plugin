@@ -17,7 +17,6 @@
 
 package walkingkooka.plugin;
 
-import walkingkooka.naming.HasName;
 import walkingkooka.net.AbsoluteUrl;
 
 import java.util.Set;

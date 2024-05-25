@@ -19,14 +19,8 @@ package walkingkooka.plugin;
 
 import javaemul.internal.annotations.GwtIncompatible;
 import walkingkooka.reflect.PublicStaticHelper;
-import walkingkooka.text.CharSequences;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Objects;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
 
 public final class PluginProviders implements PublicStaticHelper {
 
