@@ -20,6 +20,8 @@ package walkingkooka.plugin;
 import walkingkooka.Cast;
 import walkingkooka.naming.HasName;
 import walkingkooka.net.AbsoluteUrl;
+import walkingkooka.net.HasAbsoluteUrl;
+import walkingkooka.net.HasAbsoluteUrlTesting;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.JsonPropertyName;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
@@ -33,6 +35,7 @@ import java.util.Objects;
  * with the {@link PluginInfo} being a shorter human friendly reference.
  */
 public final class PluginInfo implements HasName<PluginName>,
+        HasAbsoluteUrl,
         Comparable<PluginInfo> {
 
     public static PluginInfo with(final AbsoluteUrl url,
@@ -49,6 +52,7 @@ public final class PluginInfo implements HasName<PluginName>,
         this.name = name;
     }
 
+    @Override
     public AbsoluteUrl url() {
         return this.url;
     }

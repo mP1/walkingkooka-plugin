@@ -20,7 +20,10 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.compare.ComparableTesting2;
+import walkingkooka.naming.HasNameTesting;
 import walkingkooka.net.AbsoluteUrl;
+import walkingkooka.net.HasAbsoluteUrl;
+import walkingkooka.net.HasAbsoluteUrlTesting;
 import walkingkooka.net.Url;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
@@ -31,6 +34,8 @@ import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginInfoTest implements ClassTesting2<PluginInfo>,
+        HasNameTesting<PluginName>,
+        HasAbsoluteUrlTesting<PluginInfo>,
         HashCodeEqualsDefinedTesting2<PluginInfo>,
         JsonNodeMarshallingTesting<PluginInfo>,
         ComparableTesting2<PluginInfo> {
