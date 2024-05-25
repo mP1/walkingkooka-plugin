@@ -158,5 +158,31 @@ public interface PluginProviderTesting<P extends PluginProvider> extends TreePri
         );
     }
 
+    // name.............................................................................................................
+
+    @Test
+    default void testNameNotNull() {
+        this.checkNotEquals(
+                null,
+                this.createPluginProvider()
+                        .name()
+        );
+    }
+
+    default void nameAndCheck(final PluginProviderName expected) {
+        this.nameAndCheck(
+                this.createPluginProvider(),
+                expected
+        );
+    }
+
+    default void nameAndCheck(final P provider,
+                              final PluginProviderName expected) {
+        this.checkEquals(
+                expected,
+                provider.name()
+        );
+    }
+
     P createPluginProvider();
 }

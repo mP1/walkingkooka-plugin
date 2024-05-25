@@ -27,6 +27,8 @@ import java.util.Set;
 
 public final class PluginProviderTestingTest implements PluginProviderTesting {
 
+    private final static PluginProviderName PLUGIN_PROVIDER_NAME = PluginProviderName.with("TestPluginProvider567");
+
     private final static PluginName PLUGIN_NAME1 = PluginName.with("Plugin-1");
 
     private final static PluginName PLUGIN_NAME2 = PluginName.with("Plugin-2");
@@ -44,6 +46,13 @@ public final class PluginProviderTestingTest implements PluginProviderTesting {
     private final static TestPlugin1 PLUGIN_1 = new TestPlugin1();
 
     private final static TestPlugin2 PLUGIN_2 = new TestPlugin2();
+
+    @Test
+    public void testName() {
+        this.nameAndCheck(
+                PLUGIN_PROVIDER_NAME
+        );
+    }
 
     @Test
     public void testPlugin() {
@@ -90,6 +99,12 @@ public final class PluginProviderTestingTest implements PluginProviderTesting {
     @Override
     public PluginProvider createPluginProvider() {
         return new PluginProvider() {
+
+            @Override
+            public PluginProviderName name() {
+                return PLUGIN_PROVIDER_NAME;
+            }
+
             @Override
             public <T> T plugin(final PluginName name,
                                 final Class<T> type) {

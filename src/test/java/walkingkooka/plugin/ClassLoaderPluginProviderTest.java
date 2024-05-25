@@ -221,7 +221,14 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
                     PLUGIN_INFO
             );
         }
+
+        @Override
+        public PluginProviderName name() {
+            return PLUGIN_PROVIDER_NAME;
+        }
     }
+
+    public final static PluginProviderName PLUGIN_PROVIDER_NAME = PluginProviderName.with("TestPluginProvider123");
 
     public final static PluginName PLUGIN_NAME = PluginName.with("PluginName123");
 

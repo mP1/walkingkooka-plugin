@@ -35,4 +35,9 @@ public class FakePluginProvider implements PluginProvider {
     public Set<PluginInfo> pluginInfos() {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public PluginProviderName name() {
+        throw new UnsupportedOperationException();
+    }
 }
