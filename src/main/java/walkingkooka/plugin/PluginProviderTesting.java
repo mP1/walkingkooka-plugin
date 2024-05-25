@@ -19,7 +19,6 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.collect.set.Sets;
-import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 import java.util.Set;
