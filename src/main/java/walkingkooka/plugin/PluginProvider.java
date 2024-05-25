@@ -40,4 +40,9 @@ public interface PluginProvider {
      * Returns the {@link PluginInfo} for all plugins.
      */
     Set<PluginInfo> pluginInfos();
+
+    /**
+     * Returns the name of this provider. This might include some version numbering info.
+     */
+    PluginProviderName name();
 }
