@@ -25,7 +25,7 @@ import java.util.Set;
 /**
  * A provider that gives plugins with methods to fetch by {@link PluginName} or share {@link PluginInfo}.
  */
-public interface PluginProvider extends HasName<PluginProviderName> {
+public interface PluginProvider extends PluginProviderLike<PluginProviderName> {
 
     /**
      * Fetches the plugin with the given {@link PluginName} and {@link Class type}.
@@ -57,5 +57,6 @@ public interface PluginProvider extends HasName<PluginProviderName> {
      * <br>
      * Version info should be included in the {@link #name}.
      */
+    @Override
     AbsoluteUrl url();
 }

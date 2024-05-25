@@ -26,7 +26,8 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public interface PluginProviderTesting<P extends PluginProvider> extends TreePrintableTesting {
+public interface PluginProviderTesting<P extends PluginProvider> extends PluginProviderLikeTesting<P, PluginProviderName>,
+        TreePrintableTesting {
 
     @Test
     default void testPluginWithNullNameFails() {
@@ -156,58 +157,6 @@ public interface PluginProviderTesting<P extends PluginProvider> extends TreePri
                 expected,
                 provider.pluginInfos(),
                 () -> "pluginInfos" + provider
-        );
-    }
-
-    // name.............................................................................................................
-
-    @Test
-    default void testNameNotNull() {
-        this.checkNotEquals(
-                null,
-                this.createPluginProvider()
-                        .name()
-        );
-    }
-
-    default void nameAndCheck(final PluginProviderName expected) {
-        this.nameAndCheck(
-                this.createPluginProvider(),
-                expected
-        );
-    }
-
-    default void nameAndCheck(final P provider,
-                              final PluginProviderName expected) {
-        this.checkEquals(
-                expected,
-                provider.name()
-        );
-    }
-
-    // url..............................................................................................................
-
-    @Test
-    default void testUrlNotNull() {
-        this.checkNotEquals(
-                null,
-                this.createPluginProvider()
-                        .url()
-        );
-    }
-
-    default void urlAndCheck(final AbsoluteUrl expected) {
-        this.urlAndCheck(
-                this.createPluginProvider(),
-                expected
-        );
-    }
-
-    default void urlAndCheck(final P provider,
-                             final AbsoluteUrl expected) {
-        this.checkEquals(
-                expected,
-                provider.url()
         );
     }
 

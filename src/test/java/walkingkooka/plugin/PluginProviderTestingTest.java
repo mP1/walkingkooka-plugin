@@ -22,11 +22,12 @@ import walkingkooka.Cast;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.Url;
+import walkingkooka.plugin.PluginProviderTestingTest.TestPluginProvider;
 
 import java.util.Objects;
 import java.util.Set;
 
-public final class PluginProviderTestingTest implements PluginProviderTesting {
+public final class PluginProviderTestingTest implements PluginProviderTesting<TestPluginProvider> {
 
     private final static PluginProviderName PLUGIN_PROVIDER_NAME = PluginProviderName.with("TestPluginProvider567");
 
@@ -53,6 +54,7 @@ public final class PluginProviderTestingTest implements PluginProviderTesting {
     @Test
     public void testName() {
         this.nameAndCheck(
+                this.createPluginProvider(),
                 PLUGIN_PROVIDER_NAME
         );
     }
@@ -102,65 +104,68 @@ public final class PluginProviderTestingTest implements PluginProviderTesting {
     @Test
     public void testUrl() {
         this.urlAndCheck(
+                this.createPluginProvider(),
                 PLUGIN_PROVIDER_URL
         );
     }
 
     @Override
-    public PluginProvider createPluginProvider() {
-        return new PluginProvider() {
+    public TestPluginProvider createPluginProvider() {
+        return new TestPluginProvider();
+    }
 
-            @Override
-            public PluginProviderName name() {
-                return PLUGIN_PROVIDER_NAME;
+    static class TestPluginProvider implements PluginProvider {
+
+        @Override
+        public PluginProviderName name() {
+            return PLUGIN_PROVIDER_NAME;
+        }
+
+        @Override
+        public <T> T plugin(final PluginName name,
+                            final Class<T> type) {
+            Objects.requireNonNull(name, "name");
+            Objects.requireNonNull(type, "type");
+
+            if (PLUGIN_NAME1.equals(name)) {
+                return type.cast(PLUGIN_1);
             }
-
-            @Override
-            public <T> T plugin(final PluginName name,
-                                final Class<T> type) {
-                Objects.requireNonNull(name, "name");
-                Objects.requireNonNull(type, "type");
-
-                if (PLUGIN_NAME1.equals(name)) {
-                    return type.cast(PLUGIN_1);
-                }
-                if (PLUGIN_NAME2.equals(name)) {
-                    return type.cast(PLUGIN_2);
-                }
-                throw new IllegalArgumentException("Unknown plugin " + name + " " + type.getName());
+            if (PLUGIN_NAME2.equals(name)) {
+                return type.cast(PLUGIN_2);
             }
+            throw new IllegalArgumentException("Unknown plugin " + name + " " + type.getName());
+        }
 
-            @Override
-            public <T> Set<T> plugins(final Class<T> type) {
-                Objects.requireNonNull(type, "type");
+        @Override
+        public <T> Set<T> plugins(final Class<T> type) {
+            Objects.requireNonNull(type, "type");
 
-                switch (type.getSimpleName()) {
-                    case "TestPlugin1":
-                        return Cast.to(
-                                Sets.of(PLUGIN_1)
-                        );
-                    case "TestPlugin2":
-                        return Cast.to(
-                                Sets.of(PLUGIN_2)
-                        );
-                    default:
-                        throw new UnsupportedOperationException("Unknown type " + type.getName());
-                }
+            switch (type.getSimpleName()) {
+                case "TestPlugin1":
+                    return Cast.to(
+                            Sets.of(PLUGIN_1)
+                    );
+                case "TestPlugin2":
+                    return Cast.to(
+                            Sets.of(PLUGIN_2)
+                    );
+                default:
+                    throw new UnsupportedOperationException("Unknown type " + type.getName());
             }
+        }
 
-            @Override
-            public Set<PluginInfo> pluginInfos() {
-                return Sets.of(
-                        PLUGIN_INFO1,
-                        PLUGIN_INFO2
-                );
-            }
+        @Override
+        public Set<PluginInfo> pluginInfos() {
+            return Sets.of(
+                    PLUGIN_INFO1,
+                    PLUGIN_INFO2
+            );
+        }
 
-            @Override
-            public AbsoluteUrl url() {
-                return PLUGIN_PROVIDER_URL;
-            }
-        };
+        @Override
+        public AbsoluteUrl url() {
+            return PLUGIN_PROVIDER_URL;
+        }
     }
 
     static class TestPlugin1 {
