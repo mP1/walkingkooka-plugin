@@ -24,6 +24,7 @@ import walkingkooka.collect.set.Sets;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.Url;
 import walkingkooka.text.CharSequences;
+import walkingkooka.text.LineEnding;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -145,7 +146,8 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
                     ClassLoaderResourceProviders.jarFileWithLibs(
                             new JarInputStream(
                                     new ByteArrayInputStream(jar)
-                            )
+                            ),
+                            LineEnding.NL
                     )
             );
         } catch (final IOException cause) {
