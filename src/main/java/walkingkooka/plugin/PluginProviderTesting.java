@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.text.printer.TreePrintableTesting;
 
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -50,10 +51,9 @@ public interface PluginProviderTesting<P extends PluginProvider> extends PluginP
         );
     }
 
-
-    default <T> T pluginAndCheck(final PluginName name,
-                                 final Class<T> type,
-                                 final T expected) {
+    default <T> Optional<T> pluginAndCheck(final PluginName name,
+                                           final Class<T> type,
+                                           final T expected) {
         return this.pluginAndCheck(
                 this.createPluginProvider(),
                 name,
@@ -62,11 +62,23 @@ public interface PluginProviderTesting<P extends PluginProvider> extends PluginP
         );
     }
 
-    default <T> T pluginAndCheck(final P provider,
-                                 final PluginName name,
-                                 final Class<T> type,
-                                 final T expected) {
-        final T plugin = provider.plugin(
+    default <T> Optional<T> pluginAndCheck(final P provider,
+                                           final PluginName name,
+                                           final Class<T> type,
+                                           final T expected) {
+        return this.pluginAndCheck(
+                provider,
+                name,
+                type,
+                Optional.of(expected)
+        );
+    }
+
+    default <T> Optional<T> pluginAndCheck(final P provider,
+                                           final PluginName name,
+                                           final Class<T> type,
+                                           final Optional<T> expected) {
+        final Optional<T> plugin = provider.plugin(
                 name,
                 type
         );

@@ -19,12 +19,13 @@ package walkingkooka.plugin;
 
 import walkingkooka.net.AbsoluteUrl;
 
+import java.util.Optional;
 import java.util.Set;
 
 public class FakePluginProvider implements PluginProvider {
     @Override
-    public <T> T plugin(final PluginName name,
-                        final Class<T> type) {
+    public <T> Optional<T> plugin(final PluginName name,
+                                  final Class<T> type) {
         throw new UnsupportedOperationException();
     }
 

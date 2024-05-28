@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import walkingkooka.net.AbsoluteUrl;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -29,8 +30,8 @@ public interface PluginProvider extends PluginProviderLike<PluginProviderName> {
     /**
      * Fetches the plugin with the given {@link PluginName} and {@link Class type}.
      */
-    <T> T plugin(final PluginName name,
-                 final Class<T> type);
+    <T> Optional<T> plugin(final PluginName name,
+                           final Class<T> type);
 
     /**
      * Returns all the plugins of the given {@link Class type}.

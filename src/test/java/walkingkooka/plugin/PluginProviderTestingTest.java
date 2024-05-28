@@ -25,6 +25,7 @@ import walkingkooka.net.Url;
 import walkingkooka.plugin.PluginProviderTestingTest.TestPluginProvider;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 public final class PluginProviderTestingTest implements PluginProviderTesting<TestPluginProvider> {
@@ -122,16 +123,20 @@ public final class PluginProviderTestingTest implements PluginProviderTesting<Te
         }
 
         @Override
-        public <T> T plugin(final PluginName name,
-                            final Class<T> type) {
+        public <T> Optional<T> plugin(final PluginName name,
+                                      final Class<T> type) {
             Objects.requireNonNull(name, "name");
             Objects.requireNonNull(type, "type");
 
             if (PLUGIN_NAME1.equals(name)) {
-                return type.cast(PLUGIN_1);
+                return Optional.of(
+                        type.cast(PLUGIN_1)
+                );
             }
             if (PLUGIN_NAME2.equals(name)) {
-                return type.cast(PLUGIN_2);
+                return Optional.of(
+                        type.cast(PLUGIN_2)
+                );
             }
             throw new IllegalArgumentException("Unknown plugin " + name + " " + type.getName());
         }
