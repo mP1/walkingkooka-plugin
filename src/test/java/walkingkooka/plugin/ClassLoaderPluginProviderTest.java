@@ -35,6 +35,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
@@ -56,7 +57,7 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
         final TestPlugin plugin = pluginProvider.plugin(
                 PLUGIN_NAME,
                 TestPlugin.class
-        );
+        ).get();
         this.checkEquals(
                 classLoader,
                 pluginProvider.getClass().getClassLoader(),
@@ -195,13 +196,17 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
     // ALL classes/constants below must be public to prevent IllegalAccessErrors from created ClassLoader
     public static class TestPluginProvider implements PluginProvider {
         @Override
-        public <T> T plugin(final PluginName name,
-                            final Class<T> type) {
+        public <T> Optional<T> plugin(final PluginName name,
+                                      final Class<T> type) {
             Objects.requireNonNull(name, "name");
             Objects.requireNonNull(type, "type");
 
             if (name.equals(PLUGIN_NAME)) {
-                return type.cast(new TestPluginImpl());
+                return Optional.of(
+                        type.cast(
+                                new TestPluginImpl()
+                        )
+                );
             }
 
             throw new IllegalArgumentException("Unknown plugin with name " + CharSequences.quoteAndEscape(name.value()));
