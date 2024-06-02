@@ -23,16 +23,6 @@ import java.util.Optional;
 import java.util.Set;
 
 public class FakePluginProvider implements PluginProvider {
-    @Override
-    public <T> Optional<T> plugin(final PluginName name,
-                                  final Class<T> type) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public <T> Set<T> plugins(final Class<T> type) {
-        throw new UnsupportedOperationException();
-    }
 
     @Override
     public Set<PluginInfo> pluginInfos() {

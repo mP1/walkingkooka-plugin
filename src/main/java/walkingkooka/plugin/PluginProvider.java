@@ -23,21 +23,9 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * A provider that gives plugins with methods to fetch by {@link PluginName} or share {@link PluginInfo}.
+ * A provider that gives plugins with methods to query available plugins by {@link PluginName}.
  */
 public interface PluginProvider extends PluginProviderLike<PluginProviderName> {
-
-    /**
-     * Fetches the plugin with the given {@link PluginName} and {@link Class type}.
-     */
-    <T> Optional<T> plugin(final PluginName name,
-                           final Class<T> type);
-
-    /**
-     * Returns all the plugins of the given {@link Class type}.
-     */
-    <T> Set<T> plugins(final Class<T> type);
-
 
     /**
      * Returns the {@link PluginInfo} for all plugins.

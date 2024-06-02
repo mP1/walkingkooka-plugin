@@ -23,6 +23,7 @@ import walkingkooka.collect.map.Maps;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.Url;
+import walkingkooka.plugin.PluginProviderTestingTest.TestPluginProvider;
 import walkingkooka.text.CharSequences;
 import walkingkooka.text.LineEnding;
 
@@ -46,7 +47,7 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
     @Test
     public void testLoadManifestAndGetPlugin() throws Exception {
         final ClassLoader classLoader = this.createClassLoader();
-        final PluginProvider pluginProvider = createPluginProvider(
+        final TestPluginProvider pluginProvider = createPluginProvider(
                 classLoader
         );
 
@@ -78,10 +79,10 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
                     'Y',
                     'Z'
             };
-            final String testPluginProviderClassName = "/walkingkooka/plugin/ClassLoaderPluginProviderTest$TestPluginProvider.class";
+            final String testPluginProviderImplClassName = "/walkingkooka/plugin/ClassLoaderPluginProviderTest$TestPluginProviderImpl.class";
 
             final byte[] testPluginProviderClass = this.getClass()
-                    .getResourceAsStream(testPluginProviderClassName)
+                    .getResourceAsStream(testPluginProviderImplClassName)
                     .readAllBytes();
 
             final String testPluginImplClassName = "/walkingkooka/plugin/ClassLoaderPluginProviderTest$TestPluginImpl.class";
@@ -99,12 +100,12 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
                     Maps.of(
                             "resource123.txt", // ignored!
                             txtResource,
-                            testPluginProviderClassName,
+                            testPluginProviderImplClassName,
                             testPluginProviderClass,
                             testPluginImplClassName,
                             testPluginImplClass,
                             PluginProviders.MANIFEST_MF_PATH,
-                            ("plugin-provider-factory-className: walkingkooka.plugin.ClassLoaderPluginProviderTest$TestPluginProvider\n")
+                            ("plugin-provider-factory-className: walkingkooka.plugin.ClassLoaderPluginProviderTest$TestPluginProviderImpl\n")
                                     .getBytes(StandardCharsets.UTF_8)
                     )
             );
@@ -118,7 +119,7 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
                             log("TestClassLoader.loading " + name);
 
                             // dont want the following 2 classes to be loaded by system
-                            if (name.equals("walkingkooka.plugin.ClassLoaderPluginProviderTest$TestPluginProvider")) {
+                            if (name.equals("walkingkooka.plugin.ClassLoaderPluginProviderTest$TestPluginProviderImpl")) {
                                 throw new ClassNotFoundException(name);
                             }
                             if (name.equals("walkingkooka.plugin.ClassLoaderPluginProviderTest$TestPluginImpl")) {
@@ -189,13 +190,23 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
         }
     }
 
-    private PluginProvider createPluginProvider(final ClassLoader classLoader) throws IOException, ClassNotFoundException {
-        return PluginProviders.classLoader(classLoader);
+    private TestPluginProvider createPluginProvider(final ClassLoader classLoader) throws IOException, ClassNotFoundException {
+        return (TestPluginProvider)
+                PluginProviders.classLoader(classLoader);
+    }
+
+    // this class must be loaded by the system class loader and not the custom plugin classloader.
+    public interface TestPluginProvider extends PluginProvider {
+
+        <T> Optional<T> plugin(final PluginName name,
+                               final Class<T> type);
+
+        <T> Set<T> plugins(final Class<T> type);
     }
 
     // ALL classes/constants below must be public to prevent IllegalAccessErrors from created ClassLoader
-    public static class TestPluginProvider implements PluginProvider {
-        @Override
+    public static class TestPluginProviderImpl implements TestPluginProvider {
+
         public <T> Optional<T> plugin(final PluginName name,
                                       final Class<T> type) {
             Objects.requireNonNull(name, "name");
@@ -212,7 +223,6 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
             throw new IllegalArgumentException("Unknown plugin with name " + CharSequences.quoteAndEscape(name.value()));
         }
 
-        @Override
         public <T> Set<T> plugins(final Class<T> type) {
             Objects.requireNonNull(type, "type");
 
