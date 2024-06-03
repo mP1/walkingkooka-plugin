@@ -20,9 +20,11 @@ package walkingkooka.plugin;
 import walkingkooka.collect.map.Maps;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Name;
+import walkingkooka.net.HasAbsoluteUrl;
 import walkingkooka.text.CharSequences;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -64,21 +66,21 @@ public final class ProviderCollection<N extends Name & Comparable<N>, I extends 
         }
         final Set<I> infos = Sets.sorted();
         final Map<N, P> nameToProvider = Maps.sorted();
-        final Map<N, Set<P>> nameToProviders = Maps.sorted(); // used to detect duplicates.
+        final Map<N, Set<I>> nameToInfos = Maps.sorted(); // used to detect duplicates.
 
         for (final P provider : providers) {
             for (final I info : infoGetter.apply(provider)) {
                 final N name = info.name();
 
-                Set<P> providersForName = nameToProviders.get(name);
-                if (null == providersForName) {
-                    providersForName = Sets.hash();
-                    nameToProviders.put(
+                Set<I> infosForName = nameToInfos.get(name);
+                if (null == infosForName) {
+                    infosForName = Sets.hash();
+                    nameToInfos.put(
                             name,
-                            providersForName
+                            infosForName
                     );
                 }
-                providersForName.add(provider);
+                infosForName.add(info);
 
                 nameToProvider.put(
                         name,
@@ -90,10 +92,10 @@ public final class ProviderCollection<N extends Name & Comparable<N>, I extends 
         }
 
         // complain if any duplicates in nameToProvider
-        final String duplicates = nameToProviders.entrySet()
+        final String duplicates = nameToInfos.entrySet()
                 .stream()
                 .filter(ntp -> ntp.getValue().size() > 1)
-                .map(ntp -> ntp.getKey().value())
+                .map(this::nameAndInfosToString)
                 .collect(Collectors.joining(", "));
         if (false == duplicates.isEmpty()) {
             throw new IllegalArgumentException("Found multiple " + providedLabel + " for " + duplicates);
@@ -105,6 +107,15 @@ public final class ProviderCollection<N extends Name & Comparable<N>, I extends 
         this.infos = infos;
 
         this.providers = providers;
+    }
+
+    private String nameAndInfosToString(final Entry<N, Set<I>> nameAndInfos) {
+        return nameAndInfos.getKey() +
+                nameAndInfos.getValue()
+                        .stream()
+                        .map(HasAbsoluteUrl::url)
+                        .map(Object::toString)
+                        .collect(Collectors.joining(",", "(", ")"));
     }
 
     /**
