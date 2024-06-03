@@ -115,7 +115,7 @@ public final class ProviderCollection<N extends Name & Comparable<N>, I extends 
                         .stream()
                         .map(HasAbsoluteUrl::url)
                         .map(Object::toString)
-                        .collect(Collectors.joining(",", "(", ")"));
+                        .collect(Collectors.joining(", ", "(", ")"));
     }
 
     /**

@@ -184,7 +184,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
                 )
         );
         this.checkEquals(
-                "Found multiple TestService for service-1(http://example.com/duplicate-service1,https://example.com/service-1)",
+                "Found multiple TestService for service-1(http://example.com/duplicate-service1, https://example.com/service-1)",
                 thrown.getMessage()
         );
     }
@@ -208,7 +208,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
                 )
         );
         this.checkEquals(
-                "Found multiple TestService for service-1(http://example.com/duplicate-service1,https://example.com/service-1), service-2(http://example.com/duplicate-service2,https://example.com/service-2)",
+                "Found multiple TestService for service-1(http://example.com/duplicate-service1, https://example.com/service-1), service-2(http://example.com/duplicate-service2, https://example.com/service-2)",
                 thrown.getMessage()
         );
     }
