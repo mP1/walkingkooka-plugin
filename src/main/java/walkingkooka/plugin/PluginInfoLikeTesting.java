@@ -20,6 +20,7 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.compare.ComparableTesting2;
+import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.HasAbsoluteUrlTesting;
 import walkingkooka.net.Url;
@@ -32,7 +33,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends PluginNameLike<N>> extends ClassTesting2<I>,
+public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends ClassTesting2<I>,
         HashCodeEqualsDefinedTesting2<I>,
         HateosResourceTesting<I, N>,
         JsonNodeMarshallingTesting<I>,
