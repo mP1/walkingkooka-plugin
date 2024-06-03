@@ -319,6 +319,21 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     }
 
     @Test
+    public void testInfosReadOnly() {
+        assertThrows(
+                UnsupportedOperationException.class,
+                () -> ProviderCollection.with(
+                        INPUT_TO_NAME,
+                        PROVIDER_GETTER,
+                        INFO_GETTER,
+                        PROVIDED_LABEL,
+                        PROVIDERS
+                ).infos()
+                        .clear()
+        );
+    }
+
+    @Test
     public void testToString() {
         this.toStringAndCheck(
                 ProviderCollection.with(
