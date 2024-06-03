@@ -33,6 +33,8 @@ import java.util.function.BiFunction;
 
 /**
  * Captures the common members for a plugin INFO.
+ * <br>
+ * The type parameter N does not extend {@link PluginNameLike} because of {@link walkingkooka.tree.expression.FunctionExpressionName}..
  */
 public interface PluginInfoLike<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends
         HasName<N>,
