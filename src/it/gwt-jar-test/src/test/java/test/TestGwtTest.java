@@ -5,8 +5,10 @@ import com.google.gwt.junit.client.GWTTestCase;
 import java.util.Comparator;
 import java.util.List;
 import walkingkooka.collect.list.Lists;
+import walkingkooka.j2cl.locale.LocaleAware;
 import walkingkooka.plugin.PluginName;
 
+@LocaleAware
 public class TestGwtTest extends GWTTestCase {
 
     @Override

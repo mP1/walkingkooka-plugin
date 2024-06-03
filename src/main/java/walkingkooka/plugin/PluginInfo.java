@@ -18,13 +18,9 @@
 package walkingkooka.plugin;
 
 import walkingkooka.Cast;
-import walkingkooka.naming.HasName;
 import walkingkooka.net.AbsoluteUrl;
-import walkingkooka.net.HasAbsoluteUrl;
 import walkingkooka.tree.json.JsonNode;
-import walkingkooka.tree.json.JsonPropertyName;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.Objects;
@@ -33,9 +29,7 @@ import java.util.Objects;
  * Provides a few bits of info describing a Plugin. The {@link AbsoluteUrl} must be a unique identifier,
  * with the {@link PluginInfo} being a shorter human friendly reference.
  */
-public final class PluginInfo implements HasName<PluginName>,
-        HasAbsoluteUrl,
-        Comparable<PluginInfo> {
+public final class PluginInfo implements PluginInfoLike<PluginInfo, PluginName> {
 
     public static PluginInfo with(final AbsoluteUrl url,
                                   final PluginName name) {
@@ -103,52 +97,14 @@ public final class PluginInfo implements HasName<PluginName>,
 
     // Json.............................................................................................................
 
-    private final static String URL_PROPERTY_STRING = "url";
-
-    private final static String NAME_PROPERTY_STRING = "name";
-
-    // @VisibleForTesting
-    final static JsonPropertyName URL_PROPERTY = JsonPropertyName.with(URL_PROPERTY_STRING);
-
-    final static JsonPropertyName NAME_PROPERTY = JsonPropertyName.with(NAME_PROPERTY_STRING);
-
     static PluginInfo unmarshall(final JsonNode node,
                                  final JsonNodeUnmarshallContext context) {
-        AbsoluteUrl url = null;
-        PluginName pluginName = null;
-
-        for (final JsonNode child : node.objectOrFail().children()) {
-            final JsonPropertyName name = child.name();
-
-            switch (name.value()) {
-                case URL_PROPERTY_STRING:
-                    url = context.unmarshall(
-                            child,
-                            AbsoluteUrl.class
-                    );
-                    break;
-                case NAME_PROPERTY_STRING:
-                    pluginName = context.unmarshall(
-                            child,
-                            PluginName.class
-                    );
-                    break;
-                default:
-                    JsonNodeUnmarshallContext.unknownPropertyPresent(name, node);
-                    break;
-            }
-        }
-
-        return with(
-                url,
-                pluginName
+        return PluginInfoLike.unmarshall(
+                node,
+                context,
+                PluginName.class,
+                PluginInfo::with
         );
-    }
-
-    private JsonNode marshall(final JsonNodeMarshallContext context) {
-        return JsonNode.object()
-                .set(URL_PROPERTY, context.marshall(this.url))
-                .set(NAME_PROPERTY, context.marshall(this.name));
     }
 
     static {
