@@ -104,7 +104,7 @@ public final class ProviderCollection<N extends Name & Comparable<N>, I extends 
         this.inputToName = inputToName;
         this.providerGetter = providerGetter;
         this.nameToProvider = nameToProvider;
-        this.infos = infos;
+        this.infos = Sets.immutable(infos);
 
         this.providers = providers;
     }
