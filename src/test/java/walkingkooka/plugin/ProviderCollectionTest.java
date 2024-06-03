@@ -179,12 +179,12 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
                                 PROVIDER1,
                                 PROVIDER2,
                                 PROVIDER3,
-                                new TestProvider("service-1", SERVICE1)
+                                new TestProvider("service-1", "http://example.com/duplicate-service1", SERVICE1)
                         )
                 )
         );
         this.checkEquals(
-                "Found multiple TestService for service-1",
+                "Found multiple TestService for service-1(http://example.com/duplicate-service1,https://example.com/service-1)",
                 thrown.getMessage()
         );
     }
@@ -202,13 +202,13 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
                                 PROVIDER1,
                                 PROVIDER2,
                                 PROVIDER3,
-                                new TestProvider("service-1", SERVICE1),
-                                new TestProvider("service-2", SERVICE2)
+                                new TestProvider("service-1", "http://example.com/duplicate-service1", SERVICE1),
+                                new TestProvider("service-2", "http://example.com/duplicate-service2", SERVICE2)
                         )
                 )
         );
         this.checkEquals(
-                "Found multiple TestService for service-1, service-2",
+                "Found multiple TestService for service-1(http://example.com/duplicate-service1,https://example.com/service-1), service-2(http://example.com/duplicate-service2,https://example.com/service-2)",
                 thrown.getMessage()
         );
     }
@@ -339,7 +339,20 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
         TestProvider(final String name,
                      final TestService service) {
+            this(
+                    name,
+                    null,
+                    service
+            );
+        }
+
+        TestProvider(final String name,
+                     final String url,
+                     final TestService service) {
             this.name = Names.string(name);
+            this.info = null == url ?
+                    new TestInfo(name) :
+                    new TestInfo(name, url);
             this.service = service;
         }
 
@@ -355,9 +368,11 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
         Set<TestInfo> info() {
             return Sets.of(
-                    new TestInfo(this.name.value())
+                    this.info
             );
         }
+
+        private TestInfo info;
 
         final StringName name;
     }
@@ -384,8 +399,16 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     static class TestInfo implements PluginInfoLike<TestInfo, StringName> {
 
         TestInfo(final String name) {
+            this(
+                    name,
+                    "https://example.com/" + name
+            );
+        }
+
+        TestInfo(final String name,
+                 final String url) {
             this.name = Names.string(name);
-            this.url = Url.parseAbsolute("https://example.com/" + name);
+            this.url = Url.parseAbsolute(url);
         }
 
         @Override
@@ -397,7 +420,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
         @Override
         public AbsoluteUrl url() {
-            return null;
+            return this.url;
         }
 
         private final AbsoluteUrl url;
