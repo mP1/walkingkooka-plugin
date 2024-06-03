@@ -328,7 +328,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
                         PROVIDED_LABEL,
                         PROVIDERS
                 ),
-                PROVIDER1 + "," + PROVIDER2 + "," + PROVIDER3
+                PROVIDER1 + ", " + PROVIDER2 + ", " + PROVIDER3
         );
     }
 
