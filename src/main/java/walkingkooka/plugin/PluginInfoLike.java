@@ -79,10 +79,10 @@ public interface PluginInfoLike<I extends PluginInfoLike<I, N>, N extends Name &
                 );
     }
 
-    static <I extends PluginInfoLike<I, N>, N extends PluginNameLike<N>> I unmarshall(final JsonNode node,
-                                                                                      final JsonNodeUnmarshallContext context,
-                                                                                      final Class<N> nameType,
-                                                                                      final BiFunction<AbsoluteUrl, N, I> factory) {
+    static <I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> I unmarshall(final JsonNode node,
+                                                                                         final JsonNodeUnmarshallContext context,
+                                                                                         final Class<N> nameType,
+                                                                                         final BiFunction<AbsoluteUrl, N, I> factory) {
         Objects.requireNonNull(node, "node");
         Objects.requireNonNull(context, "context");
         Objects.requireNonNull(nameType, "nameType");
