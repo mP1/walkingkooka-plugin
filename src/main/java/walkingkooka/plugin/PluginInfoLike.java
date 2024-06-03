@@ -18,6 +18,7 @@
 package walkingkooka.plugin;
 
 import walkingkooka.naming.HasName;
+import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.HasAbsoluteUrl;
 import walkingkooka.net.http.server.hateos.HateosResource;
@@ -33,7 +34,7 @@ import java.util.function.BiFunction;
 /**
  * Captures the common members for a plugin INFO.
  */
-public interface PluginInfoLike<I extends PluginInfoLike<I, N>, N extends PluginNameLike<N>> extends
+public interface PluginInfoLike<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends
         HasName<N>,
         HasAbsoluteUrl,
         Comparable<I>,
