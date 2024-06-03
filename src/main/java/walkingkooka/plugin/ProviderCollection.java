@@ -168,7 +168,7 @@ public final class ProviderCollection<N extends Name & Comparable<N>, I extends 
     public String toString() {
         return this.providers.stream()
                 .map(Object::toString)
-                .collect(Collectors.joining(","));
+                .collect(Collectors.joining(", "));
     }
 
     private final Set<P> providers;
