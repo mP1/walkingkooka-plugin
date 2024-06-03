@@ -21,16 +21,20 @@ import walkingkooka.Cast;
 import walkingkooka.naming.Name;
 import walkingkooka.predicate.character.CharPredicate;
 import walkingkooka.predicate.character.CharPredicates;
-import walkingkooka.text.CaseSensitivity;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 /**
- * The {@link Name} of a Plugin. Note plugin names are case-sensitive.
+ * The {@link Name} of a component. Note component names are case-sensitive.
  */
-final public class PluginName implements Name, Comparable<PluginName> {
+final public class PluginName implements PluginNameLike<PluginName> {
+
+    public static boolean isChar(final int pos,
+                                 final char c) {
+        return PluginNameLike.isChar(pos, c);
+    }
 
     final static CharPredicate INITIAL = CharPredicates.range('A', 'Z')
             .or(CharPredicates.range('a', 'z'));
@@ -99,26 +103,6 @@ final public class PluginName implements Name, Comparable<PluginName> {
     public String toString() {
         return this.name;
     }
-
-    // Comparable ...................................................................................................
-
-    @Override
-    public int compareTo(final PluginName other) {
-        return CASE_SENSITIVITY.comparator()
-                .compare(
-                        this.name,
-                        other.name
-                );
-    }
-
-    // HasCaseSensitivity................................................................................................
-
-    @Override
-    public CaseSensitivity caseSensitivity() {
-        return CASE_SENSITIVITY;
-    }
-
-    private final static CaseSensitivity CASE_SENSITIVITY = CaseSensitivity.SENSITIVE;
 
     // Json.............................................................................................................
 
