@@ -143,6 +143,7 @@ public final class ProviderCollection<N extends Name & Comparable<N>, I extends 
         return this.providers.hashCode();
     }
 
+    @Override
     public boolean equals(final Object other) {
         return this == other ||
                 other instanceof ProviderCollection && this.equals0((ProviderCollection<?, ?, ?, ?, ?>) other);
