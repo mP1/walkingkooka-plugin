@@ -71,15 +71,7 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
         return TestPlugInfoLike.parse(text);
     }
 
-    @Override
-    public Class<? extends RuntimeException> parseStringFailedExpected(final Class<? extends RuntimeException> caught) {
-        return caught;
-    }
-
-    @Override
-    public RuntimeException parseStringFailedExpected(final RuntimeException cause) {
-        return cause;
-    }
+    // json.............................................................................................................
 
     @Override
     public TestPlugInfoLike unmarshall(final JsonNode node,
