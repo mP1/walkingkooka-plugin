@@ -52,7 +52,7 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     default void testWithNullUrlFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> this.createSpreadsheetComponentInfo(
+                () -> this.createPluginInfoLike(
                         null,
                         this.createName("abc-123")
                 )
@@ -63,7 +63,7 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     default void testWithNullNameFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> this.createSpreadsheetComponentInfo(
+                () -> this.createPluginInfoLike(
                         Url.parseAbsolute("https://example.com/123"),
                         null
                 )
@@ -72,11 +72,11 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
 
     N createName(final String value);
 
-    I createSpreadsheetComponentInfo(final AbsoluteUrl url,
-                                     final N name);
+    I createPluginInfoLike(final AbsoluteUrl url,
+                           final N name);
 
-    default I createSpreadsheetComponentInfo() {
-        return this.createSpreadsheetComponentInfo(
+    default I createPluginInfoLike() {
+        return this.createPluginInfoLike(
                 Url.parseAbsolute("https://example.com/123"),
                 this.createName("Test123")
         );
@@ -95,11 +95,11 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     default void testCompareLess() {
         final AbsoluteUrl url = Url.parseAbsolute("https://example.com/123");
         this.compareToAndCheckLess(
-                this.createSpreadsheetComponentInfo(
+                this.createPluginInfoLike(
                         url,
                         this.createName("abc-123")
                 ),
-                this.createSpreadsheetComponentInfo(
+                this.createPluginInfoLike(
                         url,
                         this.createName("xyz-456")
                 )
@@ -108,7 +108,7 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
 
     @Override
     default I createComparable() {
-        return this.createSpreadsheetComponentInfo();
+        return this.createPluginInfoLike();
     }
 
     // equals...........................................................................................................
@@ -118,11 +118,11 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
         final N name = this.createName("abc-123");
 
         this.checkNotEquals(
-                this.createSpreadsheetComponentInfo(
+                this.createPluginInfoLike(
                         Url.parseAbsolute("https://example.com"),
                         name
                 ),
-                this.createSpreadsheetComponentInfo(
+                this.createPluginInfoLike(
                         Url.parseAbsolute("https://example.com/different"),
                         name
                 )
@@ -134,11 +134,11 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
         final AbsoluteUrl url = Url.parseAbsolute("https://example.com");
 
         this.checkNotEquals(
-                this.createSpreadsheetComponentInfo(
+                this.createPluginInfoLike(
                         url,
                         this.createName("abc-123")
                 ),
-                this.createSpreadsheetComponentInfo(
+                this.createPluginInfoLike(
                         url,
                         this.createName("different-456")
                 )
@@ -149,7 +149,7 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
 
     @Override
     default I createJsonNodeMarshallingValue() {
-        return this.createSpreadsheetComponentInfo();
+        return this.createPluginInfoLike();
     }
 
     // HateosResource...................................................................................................
@@ -157,7 +157,7 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     @Test
     default void testHateosId() {
         final N name = this.createName("abc-123");
-        final I info = this.createSpreadsheetComponentInfo(
+        final I info = this.createPluginInfoLike(
                 Url.parseAbsolute("https://example.com/123"),
                 name
         );
@@ -170,7 +170,7 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     @Test
     default void testId() {
         final N name = this.createName("abc-123");
-        final I info = this.createSpreadsheetComponentInfo(
+        final I info = this.createPluginInfoLike(
                 Url.parseAbsolute("https://example.com/123"),
                 name
         );
@@ -183,14 +183,14 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
 
     @Override
     default I createHateosResource() {
-        return this.createSpreadsheetComponentInfo();
+        return this.createPluginInfoLike();
     }
 
     // parse/toString...................................................................................................
 
     @Test
     default void testToString() {
-        final I info = this.createSpreadsheetComponentInfo();
+        final I info = this.createPluginInfoLike();
         this.toStringAndCheck(
                 info,
                 info.url() + " " + info.name()
@@ -199,7 +199,7 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
 
     @Test
     default void testParseToStringRoundtrip() {
-        final I info = this.createSpreadsheetComponentInfo();
+        final I info = this.createPluginInfoLike();
         this.parseStringAndCheck(
                 info.toString(),
                 info

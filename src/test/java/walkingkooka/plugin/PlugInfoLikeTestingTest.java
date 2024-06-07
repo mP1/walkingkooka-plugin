@@ -36,8 +36,8 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
     }
 
     @Override
-    public TestPlugInfoLike createSpreadsheetComponentInfo(final AbsoluteUrl url,
-                                                           final StringName name) {
+    public TestPlugInfoLike createPluginInfoLike(final AbsoluteUrl url,
+                                                 final StringName name) {
         return new TestPlugInfoLike(url, name);
     }
 
