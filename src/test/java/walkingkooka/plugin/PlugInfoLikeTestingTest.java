@@ -17,7 +17,9 @@
 
 package walkingkooka.plugin;
 
+import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
+import walkingkooka.InvalidCharacterException;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.net.AbsoluteUrl;
@@ -39,6 +41,29 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
     public TestPlugInfoLike createPluginInfoLike(final AbsoluteUrl url,
                                                  final StringName name) {
         return new TestPlugInfoLike(url, name);
+    }
+
+    // parse............................................................................................................
+
+    @Test
+    public void testParseInvalidUrlFails() {
+        final String text = "/host/path test-name-123";
+
+        this.parseStringFails(
+                text,
+                new IllegalArgumentException("no protocol: /host/path")
+        );
+    }
+
+    @Test
+    public void testParseInvalidNameFails() {
+        final String text = "https://example.com/path #test-name/123";
+
+        // slash within StringName will throw a InvalidCharacterException.
+        this.parseStringFails(
+                text,
+                new InvalidCharacterException(text, text.lastIndexOf('/'))
+        );
     }
 
     @Override

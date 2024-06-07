@@ -220,27 +220,6 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     // parse............................................................................................................
 
     @Test
-    default void testParseInvalidUrlFails() {
-        final String text = "/host/path test-name-123";
-
-        this.parseStringFails(
-                text,
-                new IllegalArgumentException("no protocol: /host/path")
-        );
-    }
-
-    @Test
-    default void testParseInvalidNameFails() {
-        final String text = "https://example.com/path #test-name/123";
-
-        // slash within StringName will throw a InvalidCharacterException.
-        this.parseStringFails(
-                text,
-                new InvalidCharacterException(text, text.lastIndexOf('/'))
-        );
-    }
-
-    @Test
     default void testParse() {
         final String url = "https://example.com/123";
         final String name = "TestName123";
