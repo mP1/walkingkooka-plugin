@@ -69,6 +69,13 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     I createSpreadsheetComponentInfo(final AbsoluteUrl url,
                                      final N name);
 
+    default I createSpreadsheetComponentInfo() {
+        return this.createSpreadsheetComponentInfo(
+                Url.parseAbsolute("https://example.com/123"),
+                this.createName("Test123")
+        );
+    }
+
     // Class............................................................................................................
 
     @Override
@@ -95,10 +102,7 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
 
     @Override
     default I createComparable() {
-        return this.createSpreadsheetComponentInfo(
-                Url.parseAbsolute("https://example.com/123"),
-                this.createName("abc-123")
-        );
+        return this.createSpreadsheetComponentInfo();
     }
 
     // equals...........................................................................................................
@@ -139,7 +143,7 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
 
     @Override
     default I createJsonNodeMarshallingValue() {
-        return this.createObject();
+        return this.createSpreadsheetComponentInfo();
     }
 
     // HateosResource...................................................................................................
@@ -173,6 +177,6 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
 
     @Override
     default I createHateosResource() {
-        return this.createComparable();
+        return this.createSpreadsheetComponentInfo();
     }
 }
