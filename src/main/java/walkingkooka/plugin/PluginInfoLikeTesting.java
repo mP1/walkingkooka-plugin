@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
+import walkingkooka.ToStringTesting;
 import walkingkooka.compare.ComparableTesting2;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
@@ -27,8 +28,11 @@ import walkingkooka.net.Url;
 import walkingkooka.net.http.server.hateos.HateosResourceTesting;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.test.ParseStringTesting;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
 
+import java.beans.Visibility;
+import java.lang.reflect.Method;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -38,7 +42,9 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
         HateosResourceTesting<I, N>,
         JsonNodeMarshallingTesting<I>,
         ComparableTesting2<I>,
-        HasAbsoluteUrlTesting<I> {
+        HasAbsoluteUrlTesting<I>,
+        ParseStringTesting<I>,
+        ToStringTesting<I> {
 
     // factory..........................................................................................................
 
@@ -178,5 +184,35 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     @Override
     default I createHateosResource() {
         return this.createSpreadsheetComponentInfo();
+    }
+
+    // parse/toString...................................................................................................
+
+    @Test
+    default void testToString() {
+        final I info = this.createSpreadsheetComponentInfo();
+        this.toStringAndCheck(
+                info,
+                info.url() + " " + info.name()
+        );
+    }
+
+    @Test
+    default void testParseToStringRoundtrip() {
+        final I info = this.createSpreadsheetComponentInfo();
+        this.parseStringAndCheck(
+                info.toString(),
+                info
+        );
+    }
+
+    @Test
+    default void testParseStaticMethod() throws Exception {
+        final Method parse = this.type().getMethod("parse", String.class);
+        this.checkEquals(
+                JavaVisibility.PUBLIC,
+                JavaVisibility.of(parse),
+                parse::toGenericString
+        );
     }
 }
