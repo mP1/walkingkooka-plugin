@@ -21,9 +21,7 @@ import walkingkooka.Cast;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.net.AbsoluteUrl;
-import walkingkooka.net.Url;
 import walkingkooka.plugin.PlugInfoLikeTestingTest.TestPlugInfoLike;
-import walkingkooka.text.CharSequences;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
@@ -72,13 +70,10 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
     public static class TestPlugInfoLike implements PluginInfoLike<TestPlugInfoLike, StringName> {
 
         public static TestPlugInfoLike parse(final String text) {
-            CharSequences.failIfNullOrEmpty(text, "text");
-
-            final int space = text.indexOf(' ');
-
-            return new TestPlugInfoLike(
-                    Url.parseAbsolute(text.substring(0, space)),
-                    Names.string(text.substring(space + 1))
+            return PluginInfoLike.parsePluginInfoLike(
+                    text,
+                    Names::string,
+                    TestPlugInfoLike::new
             );
         }
 
