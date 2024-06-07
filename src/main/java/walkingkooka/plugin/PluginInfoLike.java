@@ -87,7 +87,7 @@ public interface PluginInfoLike<I extends PluginInfoLike<I, N>, N extends Name &
         } catch (final InvalidCharacterException cause) {
             throw cause.setTextAndPosition(
                     text,
-                    cause.position()
+                    space + cause.position() +1
             );
         }
 
