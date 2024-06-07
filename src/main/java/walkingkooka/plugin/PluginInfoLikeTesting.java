@@ -232,4 +232,14 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
                 )
         );
     }
+
+    @Override
+    default Class<? extends RuntimeException> parseStringFailedExpected(final Class<? extends RuntimeException> type) {
+        return type;
+    }
+
+    @Override
+    default RuntimeException parseStringFailedExpected(final RuntimeException cause) {
+        return cause;
+    }
 }
