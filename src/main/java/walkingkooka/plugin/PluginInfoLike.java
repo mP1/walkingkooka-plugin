@@ -51,9 +51,9 @@ public interface PluginInfoLike<I extends PluginInfoLike<I, N>, N extends Name &
     /**
      * Useful helper that should be used by {@link PluginInfoLike} implementation parse methods.
      */
-    static <I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> I parsePluginInfoLike(final String text,
-                                                                                                  final Function<String, N> nameFactory,
-                                                                                                  final BiFunction<AbsoluteUrl, N, I> infoFactory) {
+    static <I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> I parse(final String text,
+                                                                                    final Function<String, N> nameFactory,
+                                                                                    final BiFunction<AbsoluteUrl, N, I> infoFactory) {
         CharSequences.failIfNullOrEmpty(text, "text");
         Objects.requireNonNull(nameFactory, "nameFactory");
         Objects.requireNonNull(infoFactory, "infoFactory");
