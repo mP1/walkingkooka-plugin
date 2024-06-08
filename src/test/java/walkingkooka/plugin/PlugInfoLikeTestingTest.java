@@ -87,7 +87,7 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
     public static class TestPlugInfoLike implements PluginInfoLike<TestPlugInfoLike, StringName> {
 
         public static TestPlugInfoLike parse(final String text) {
-            return PluginInfoLike.parsePluginInfoLike(
+            return PluginInfoLike.parse(
                     text,
                     Names::string,
                     TestPlugInfoLike::new
