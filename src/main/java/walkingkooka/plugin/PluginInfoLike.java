@@ -97,6 +97,12 @@ public interface PluginInfoLike<I extends PluginInfoLike<I, N>, N extends Name &
         );
     }
 
+    static String toString(final PluginInfoLike<?, ?> pluginInfoLike) {
+        Objects.requireNonNull(pluginInfoLike, "pluginInfoLike");
+
+        return pluginInfoLike.url() + " " + pluginInfoLike.name();
+    }
+
     // Comparable.......................................................................................................
 
     @Override
