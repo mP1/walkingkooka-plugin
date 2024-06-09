@@ -56,6 +56,16 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
     }
 
     @Test
+    public void testParseMissingNameFails() {
+        final String text = "https://example.com/path";
+
+        this.parseStringFails(
+                text,
+                new IllegalArgumentException("Missing name")
+        );
+    }
+
+    @Test
     public void testParseInvalidNameFails() {
         final String text = "https://example.com/path #test-name/123";
 

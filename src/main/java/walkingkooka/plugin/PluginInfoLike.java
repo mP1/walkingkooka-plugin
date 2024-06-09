@@ -75,8 +75,7 @@ public interface PluginInfoLike<I extends PluginInfoLike<I, N>, N extends Name &
         }
 
         if (-1 == space) {
-            throw new InvalidCharacterException(text, space)
-                    .appendToMessage(" missing name");
+            throw new IllegalArgumentException("Missing name");
         }
 
         final String nameText = text.substring(space + 1);
