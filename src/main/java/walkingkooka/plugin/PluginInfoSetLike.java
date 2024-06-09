@@ -28,7 +28,7 @@ import java.util.function.Function;
 /**
  * A {@link Set} that holds {@link PluginInfoLike} and a few related helpers.
  */
-public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> {
+public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends Set<I> {
 
     /**
      * Parses some text (actually a csv) holding multiple {@link PluginInfoLike} instances.
