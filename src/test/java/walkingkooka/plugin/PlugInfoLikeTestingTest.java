@@ -23,14 +23,14 @@ import walkingkooka.InvalidCharacterException;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.net.AbsoluteUrl;
-import walkingkooka.plugin.PlugInfoLikeTestingTest.TestPlugInfoLike;
+import walkingkooka.plugin.PlugInfoLikeTestingTest.TestPluginInfoLike;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.Objects;
 
-public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<TestPlugInfoLike, StringName> {
+public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<TestPluginInfoLike, StringName> {
 
     @Override
     public StringName createName(final String value) {
@@ -38,9 +38,9 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
     }
 
     @Override
-    public TestPlugInfoLike createPluginInfoLike(final AbsoluteUrl url,
-                                                 final StringName name) {
-        return new TestPlugInfoLike(url, name);
+    public TestPluginInfoLike createPluginInfoLike(final AbsoluteUrl url,
+                                                   final StringName name) {
+        return new TestPluginInfoLike(url, name);
     }
 
     // parse............................................................................................................
@@ -67,35 +67,35 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
     }
 
     @Override
-    public TestPlugInfoLike parseString(final String text) {
-        return TestPlugInfoLike.parse(text);
+    public TestPluginInfoLike parseString(final String text) {
+        return TestPluginInfoLike.parse(text);
     }
 
     // json.............................................................................................................
 
     @Override
-    public TestPlugInfoLike unmarshall(final JsonNode node,
-                                       final JsonNodeUnmarshallContext context) {
+    public TestPluginInfoLike unmarshall(final JsonNode node,
+                                         final JsonNodeUnmarshallContext context) {
         return unmarshall2(node, context);
     }
 
     @Override
-    public Class<TestPlugInfoLike> type() {
-        return TestPlugInfoLike.class;
+    public Class<TestPluginInfoLike> type() {
+        return TestPluginInfoLike.class;
     }
 
-    public static class TestPlugInfoLike implements PluginInfoLike<TestPlugInfoLike, StringName> {
+    public static class TestPluginInfoLike implements PluginInfoLike<TestPluginInfoLike, StringName> {
 
-        public static TestPlugInfoLike parse(final String text) {
+        public static TestPluginInfoLike parse(final String text) {
             return PluginInfoLike.parse(
                     text,
                     Names::string,
-                    TestPlugInfoLike::new
+                    TestPluginInfoLike::new
             );
         }
 
-        TestPlugInfoLike(final AbsoluteUrl url,
-                         final StringName name) {
+        TestPluginInfoLike(final AbsoluteUrl url,
+                           final StringName name) {
             Objects.requireNonNull(url, "url");
             Objects.requireNonNull(name, "name");
             this.url = url;
@@ -124,11 +124,11 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
         @Override
         public boolean equals(final Object other) {
             return this == other ||
-                    other instanceof TestPlugInfoLike &&
+                    other instanceof TestPluginInfoLike &&
                             this.equals0(Cast.to(other));
         }
 
-        private boolean equals0(final TestPlugInfoLike other) {
+        private boolean equals0(final TestPluginInfoLike other) {
             return this.url.equals(other.url) &&
                     this.name.equals(other.name);
         }
@@ -141,22 +141,22 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
 
     // Json.............................................................................................................
 
-    static TestPlugInfoLike unmarshall2(final JsonNode node,
-                                       final JsonNodeUnmarshallContext context) {
+    static TestPluginInfoLike unmarshall2(final JsonNode node,
+                                          final JsonNodeUnmarshallContext context) {
         return PluginInfoLike.unmarshall(
                 node,
                 context,
                 StringName.class,
-                TestPlugInfoLike::new
+                TestPluginInfoLike::new
         );
     }
 
     static {
         JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(TestPlugInfoLike.class),
+                JsonNodeContext.computeTypeName(TestPluginInfoLike.class),
                 PlugInfoLikeTestingTest::unmarshall2,
-                TestPlugInfoLike::marshall,
-                TestPlugInfoLike.class
+                TestPluginInfoLike::marshall,
+                TestPluginInfoLike.class
         );
     }
 
