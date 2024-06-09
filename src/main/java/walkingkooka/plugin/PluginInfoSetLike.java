@@ -20,6 +20,8 @@ package walkingkooka.plugin;
 import walkingkooka.InvalidCharacterException;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Name;
+import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.TreePrintable;
 
 import java.util.Objects;
 import java.util.Set;
@@ -28,7 +30,8 @@ import java.util.function.Function;
 /**
  * A {@link Set} that holds {@link PluginInfoLike} and a few related helpers.
  */
-public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends Set<I> {
+public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends Set<I>,
+        TreePrintable {
 
     /**
      * Parses some text (actually a csv) holding multiple {@link PluginInfoLike} instances.
@@ -85,5 +88,23 @@ public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Nam
         }
 
         return setFactory.apply(parsed);
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Override
+    default void printTree(final IndentingPrinter printer) {
+        printer.println(this.getClass().getSimpleName());
+        printer.indent();
+        {
+            for (final I info : this) {
+                TreePrintable.printTreeOrToString(
+                        info,
+                        printer
+                );
+                printer.lineStart();
+            }
+        }
+        printer.outdent();
     }
 }

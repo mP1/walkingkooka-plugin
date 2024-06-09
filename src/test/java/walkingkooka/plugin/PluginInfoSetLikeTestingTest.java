@@ -272,6 +272,11 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
                     this.name.equals(other.name);
         }
 
+        @Override
+        public String toString() {
+            return PluginInfoLike.toString(this);
+        }
+
         // json.........................................................................................................
 
         static {
@@ -293,5 +298,17 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
                     TestPluginInfo::new
             );
         }
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Test
+    public void testTreePrint() {
+        this.treePrintAndCheck(
+             this.createSet(),
+             "TestPluginInfoSet\n" +
+                     "  https://example.com/test-plugin-1 test-plugin-1\n" +
+                     "  https://example.com/test-plugin-2 test-plugin-2\n"
+        );
     }
 }
