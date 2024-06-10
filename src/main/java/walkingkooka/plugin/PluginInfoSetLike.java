@@ -26,6 +26,7 @@ import walkingkooka.text.printer.TreePrintable;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * A {@link Set} that holds {@link PluginInfoLike} and a few related helpers.
@@ -106,5 +107,19 @@ public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Nam
             }
         }
         printer.outdent();
+    }
+
+    // toString.........................................................................................................
+
+    /**
+     * Helper that produces a CSV toString for any given {@link PluginInfoSetLike} by concatenating all elemenets.
+     * This differs from the {@link Set#toString()} as it has no surrounding brackets.
+     */
+    static String toString(final PluginInfoSetLike<?, ?> set) {
+        Objects.requireNonNull(set, "set");
+
+        return set.stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(","));
     }
 }
