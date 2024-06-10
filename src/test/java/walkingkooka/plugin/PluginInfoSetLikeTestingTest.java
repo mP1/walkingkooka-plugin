@@ -38,6 +38,8 @@ import java.util.Set;
 
 public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTesting<TestPluginInfoSet, TestPluginInfo, StringName> {
 
+    // parse............................................................................................................
+
     @Override
     public void testParseStringEmptyFails() {
         throw new UnsupportedOperationException();
@@ -128,6 +130,13 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
     }
 
     @Override
+    public TestPluginInfoSet parseString(final String text) {
+        return TestPluginInfoSet.parse(text);
+    }
+
+    // Set..............................................................................................................
+
+    @Override
     public TestPluginInfoSet createSet() {
         return new TestPluginInfoSet(
                 Sets.of(
@@ -141,11 +150,6 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
                         )
                 )
         );
-    }
-
-    @Override
-    public TestPluginInfoSet parseString(final String text) {
-        return TestPluginInfoSet.parse(text);
     }
 
     @Override
