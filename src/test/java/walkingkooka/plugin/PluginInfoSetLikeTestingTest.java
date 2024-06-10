@@ -217,6 +217,13 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
                     )
             );
         }
+
+        // toString.....................................................................................................
+
+        @Override
+        public String toString() {
+            return PluginInfoSetLike.toString(this);
+        }
     }
 
     static class TestPluginInfo implements PluginInfoLike<TestPluginInfo, StringName> {

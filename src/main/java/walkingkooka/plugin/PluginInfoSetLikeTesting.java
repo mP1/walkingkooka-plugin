@@ -17,14 +17,17 @@
 
 package walkingkooka.plugin;
 
+import org.junit.jupiter.api.Test;
+import walkingkooka.ToStringTesting;
 import walkingkooka.naming.Name;
 import walkingkooka.net.http.server.hateos.HateosResourceSetTesting;
 import walkingkooka.test.ParseStringTesting;
 
 import java.util.Set;
 
-public interface PluginInfoSetLikeTesting<S extends Set<I>, I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends HateosResourceSetTesting<S, I, N>,
-        ParseStringTesting<S> {
+public interface PluginInfoSetLikeTesting<S extends PluginInfoSetLike<I, N>, I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends HateosResourceSetTesting<S, I, N>,
+        ParseStringTesting<S>,
+        ToStringTesting<S> {
 
     // parseString......................................................................................................
 
@@ -43,5 +46,17 @@ public interface PluginInfoSetLikeTesting<S extends Set<I>, I extends PluginInfo
     @Override
     default S createJsonNodeMarshallingValue() {
         return this.createSet();
+    }
+
+    // ToString.........................................................................................................
+
+    @Test
+    default void testToString() {
+        final S set = this.createSet();
+
+        this.toStringAndCheck(
+                set,
+                PluginInfoSetLike.toString(set)
+        );
     }
 }
