@@ -34,7 +34,6 @@ import walkingkooka.tree.json.marshall.JsonNodeContext;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
-import javax.net.ssl.TrustManagerFactorySpi;
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.List;
@@ -77,13 +76,13 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
 
     private final static List<Runnable> unregister = Lists.array();
 
-    // merged............................................................................................................
+    // merge............................................................................................................
 
     @Test
     public void testMergedWithNullViewFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> PluginInfoSetLike.<TestPluginInfo, StringName>merged(
+                () -> PluginInfoSetLike.<TestPluginInfo, StringName>merge(
                         null, // view
                         Sets.empty() // target
                 )
@@ -94,7 +93,7 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
     public void testMergedWithNullTargetFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> PluginInfoSetLike.<TestPluginInfo, StringName>merged(
+                () -> PluginInfoSetLike.<TestPluginInfo, StringName>merge(
                         Sets.empty(), // view
                         null // target
                 )
@@ -107,7 +106,7 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
 
         this.checkEquals(
                 set,
-                PluginInfoSetLike.merged(
+                PluginInfoSetLike.merge(
                         set,
                         this.createSet()
                 )
@@ -226,7 +225,7 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
                                final Set<TestPluginInfo> expected) {
         this.checkEquals(
                 expected,
-                PluginInfoSetLike.merged(
+                PluginInfoSetLike.merge(
                         view,
                         target
                 )

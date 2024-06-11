@@ -40,15 +40,15 @@ import java.util.stream.Collectors;
 public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends Set<I>,
         TreePrintable {
 
-    // merged...........................................................................................................
+    // merge...........................................................................................................
 
     /**
-     * Returns a merged {@link Set INFOs} where the view entries will replace any from target if they have the same URL.
+     * Returns a merge {@link Set INFOs} where the view entries will replace any from target if they have the same URL.
      * This supports environments such as the browser where not all SpreadsheetComparator instances are available,
      * but those that are available could be renamed by SpreadsheetComparatorInfo(s) in the active SpreadsheetMetadata.
      */
-    static <I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> Set<I> merged(final Set<I> view,
-                                                                                          final Set<I> target) {
+    static <I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> Set<I> merge(final Set<I> view,
+                                                                                         final Set<I> target) {
         Objects.requireNonNull(view, "view");
         Objects.requireNonNull(target, "target");
 
