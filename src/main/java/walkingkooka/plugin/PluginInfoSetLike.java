@@ -20,6 +20,8 @@ package walkingkooka.plugin;
 import walkingkooka.InvalidCharacterException;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Name;
+import walkingkooka.net.AbsoluteUrl;
+import walkingkooka.net.HasAbsoluteUrl;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 
@@ -33,6 +35,30 @@ import java.util.stream.Collectors;
  */
 public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends Set<I>,
         TreePrintable {
+
+    // keepSameUrl......................................................................................................
+
+    /**
+     * Returns a filtered {@link Set INFOS} verifying all infos exist in the provided {@link Set INFOS}.
+     * This will be used by SpreadsheetMetadata supporting the user ability to map functions with a new name
+     * replacing the name in the original INFO.
+     */
+    default Set<I> keepSameUrl(final Set<I> infos) {
+        Objects.requireNonNull(infos, "infos");
+
+        final Set<AbsoluteUrl> infoUrls = infos.stream()
+                .map(HasAbsoluteUrl::url)
+                .collect(Collectors.toSet());
+
+        final Set<I> filtered = this.stream()
+                .filter(i -> infoUrls.contains(i.url()))
+                .collect(Collectors.toCollection(Sets::sorted));
+        return this.equals(filtered) ?
+                this :
+                Sets.immutable(filtered);
+    }
+
+    // parse............................................................................................................
 
     /**
      * Parses some text (actually a csv) holding multiple {@link PluginInfoLike} instances.

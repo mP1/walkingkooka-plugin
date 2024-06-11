@@ -23,11 +23,33 @@ import walkingkooka.naming.Name;
 import walkingkooka.net.http.server.hateos.HateosResourceSetTesting;
 import walkingkooka.test.ParseStringTesting;
 
-import java.util.Set;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface PluginInfoSetLikeTesting<S extends PluginInfoSetLike<I, N>, I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends HateosResourceSetTesting<S, I, N>,
         ParseStringTesting<S>,
         ToStringTesting<S> {
+
+    // keepSameUrl......................................................................................................
+
+    @Test
+    default void testkeepSameUrlWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createSet()
+                        .keepSameUrl(null)
+        );
+    }
+
+    @Test
+    default void testKeepSameUrlWithSame() {
+        final S set = this.createSet();
+
+        assertSame(
+                set,
+                set.keepSameUrl(set)
+        );
+    }
 
     // parseString......................................................................................................
 
