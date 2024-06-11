@@ -30,28 +30,7 @@ public interface PluginInfoSetLikeTesting<S extends PluginInfoSetLike<I, N>, I e
         ParseStringTesting<S>,
         ToStringTesting<S> {
 
-    // keepSameUrl......................................................................................................
-
-    @Test
-    default void testkeepSameUrlWithNullFails() {
-        assertThrows(
-                NullPointerException.class,
-                () -> this.createSet()
-                        .keepSameUrl(null)
-        );
-    }
-
-    @Test
-    default void testKeepSameUrlWithSame() {
-        final S set = this.createSet();
-
-        assertSame(
-                set,
-                set.keepSameUrl(set)
-        );
-    }
-
-    // keepSameUrl......................................................................................................
+    // nameMapper.......................................................................................................
 
     @Test
     default void testNameMapperWithNullFails() {

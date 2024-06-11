@@ -42,10 +42,15 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<TestPluginInfoSet, TestPluginInfo, StringName> {
 
     @BeforeAll
     public static void beforeAll() {
+        Sets.registerImmutableType(TestPluginInfoSet.class);
+
         unregister.add(
                 JsonNodeContext.register(
                         JsonNodeContext.computeTypeName(TestPluginInfoSet.class),
@@ -71,6 +76,164 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
     }
 
     private final static List<Runnable> unregister = Lists.array();
+
+    // viewFilter.......................................................................................................
+
+    @Test
+    public void testViewFilterWithNullViewFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> PluginInfoSetLike.<TestPluginInfo, StringName>viewFilter(
+                        null, // view
+                        Sets.empty() // target
+                )
+        );
+    }
+
+    @Test
+    public void testViewFilterWithNullTargetFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> PluginInfoSetLike.<TestPluginInfo, StringName>viewFilter(
+                        Sets.empty(), // view
+                        null // target
+                )
+        );
+    }
+
+    @Test
+    public void testViewFilterWithSame() {
+        final TestPluginInfoSet set = this.createSet();
+
+        this.checkEquals(
+                set,
+                PluginInfoSetLike.viewFilter(
+                        set,
+                        this.createSet()
+                )
+        );
+    }
+
+    @Test
+    public void testViewFilter() {
+        final TestPluginInfo info1 = new TestPluginInfo(
+                "https://example.com/test-111",
+                "test-111"
+        );
+        final TestPluginInfo info2 = new TestPluginInfo(
+                "https://example.com/test-222",
+                "test-222"
+        );
+        final TestPluginInfo info3 = new TestPluginInfo(
+                "https://example.com/test-333",
+                "test-333"
+        );
+
+        this.viewFilterAndCheck(
+                Sets.of(
+                        info1,
+                        info2,
+                        info3
+                ),
+                Sets.of(
+                        info1,
+                        info2
+                ),
+                info1,
+                info2
+        );
+    }
+
+    @Test
+    public void testViewFilterDifferentNames() {
+        final TestPluginInfo info1 = new TestPluginInfo(
+                "https://example.com/test-111",
+                "test-111"
+        );
+        final TestPluginInfo info2 = new TestPluginInfo(
+                "https://example.com/test-222",
+                "test-222"
+        );
+        final TestPluginInfo info3 = new TestPluginInfo(
+                "https://example.com/test-222",
+                "test-222"
+        );
+
+        this.viewFilterAndCheck(
+                Sets.of(
+                        info1,
+                        info2,
+                        info3
+                ),
+                Sets.of(
+                        new TestPluginInfo(
+                                "https://example.com/test-111",
+                                "test-original-111"
+                        ),
+                        new TestPluginInfo(
+                                "https://example.com/test-222",
+                                "test-original-222"
+                        )
+                ),
+                info1,
+                info2
+        );
+    }
+
+    @Test
+    public void testViewFilterFiltered() {
+        final TestPluginInfo info1 = new TestPluginInfo(
+                "https://example.com/test-111",
+                "test-111"
+        );
+        final TestPluginInfo info2 = new TestPluginInfo(
+                "https://example.com/test-222",
+                "test-222"
+        );
+        final TestPluginInfo info3 = new TestPluginInfo(
+                "https://example.com/test-222",
+                "test-222"
+        );
+
+        this.viewFilterAndCheck(
+                Sets.of(
+                        info1,
+                        info2,
+                        info3
+                ),
+                Sets.of(
+                        new TestPluginInfo(
+                                "https://example.com/test-111",
+                                "test-original-111"
+                        )
+                ),
+                info1
+        );
+    }
+
+    private void viewFilterAndCheck(final Set<TestPluginInfo> view,
+                                    final Set<TestPluginInfo> target,
+                                    final TestPluginInfo... expected) {
+        this.viewFilterAndCheck(
+                view,
+                target,
+                Sets.of(
+                        expected
+                )
+        );
+    }
+
+    private void viewFilterAndCheck(final Set<TestPluginInfo> view,
+                                    final Set<TestPluginInfo> target,
+                                    final Set<TestPluginInfo> expected) {
+        this.checkEquals(
+                expected,
+                PluginInfoSetLike.viewFilter(
+                        view,
+                        target
+                )
+        );
+    }
 
     // nameMapper.......................................................................................................
 
