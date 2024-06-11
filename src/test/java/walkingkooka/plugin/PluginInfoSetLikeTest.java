@@ -77,13 +77,13 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
 
     private final static List<Runnable> unregister = Lists.array();
 
-    // viewFilter.......................................................................................................
+    // merged............................................................................................................
 
     @Test
-    public void testViewFilterWithNullViewFails() {
+    public void testMergedWithNullViewFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> PluginInfoSetLike.<TestPluginInfo, StringName>viewFilter(
+                () -> PluginInfoSetLike.<TestPluginInfo, StringName>merged(
                         null, // view
                         Sets.empty() // target
                 )
@@ -91,10 +91,10 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
     }
 
     @Test
-    public void testViewFilterWithNullTargetFails() {
+    public void testMergedWithNullTargetFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> PluginInfoSetLike.<TestPluginInfo, StringName>viewFilter(
+                () -> PluginInfoSetLike.<TestPluginInfo, StringName>merged(
                         Sets.empty(), // view
                         null // target
                 )
@@ -102,12 +102,12 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
     }
 
     @Test
-    public void testViewFilterWithSame() {
+    public void testMergedWithSame() {
         final TestPluginInfoSet set = this.createSet();
 
         this.checkEquals(
                 set,
-                PluginInfoSetLike.viewFilter(
+                PluginInfoSetLike.merged(
                         set,
                         this.createSet()
                 )
@@ -115,7 +115,7 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
     }
 
     @Test
-    public void testViewFilter() {
+    public void testMerged() {
         final TestPluginInfo info1 = new TestPluginInfo(
                 "https://example.com/test-111",
                 "test-111"
@@ -129,7 +129,7 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
                 "test-333"
         );
 
-        this.viewFilterAndCheck(
+        this.mergeAndCheck(
                 Sets.of(
                         info1,
                         info2,
@@ -140,12 +140,13 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
                         info2
                 ),
                 info1,
-                info2
+                info2,
+                info3
         );
     }
 
     @Test
-    public void testViewFilterDifferentNames() {
+    public void testMergedDifferentNames() {
         final TestPluginInfo info1 = new TestPluginInfo(
                 "https://example.com/test-111",
                 "test-111"
@@ -154,16 +155,11 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
                 "https://example.com/test-222",
                 "test-222"
         );
-        final TestPluginInfo info3 = new TestPluginInfo(
-                "https://example.com/test-222",
-                "test-222"
-        );
 
-        this.viewFilterAndCheck(
+        this.mergeAndCheck(
                 Sets.of(
                         info1,
-                        info2,
-                        info3
+                        info2
                 ),
                 Sets.of(
                         new TestPluginInfo(
@@ -181,7 +177,7 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
     }
 
     @Test
-    public void testViewFilterFiltered() {
+    public void testMergedSomeReplacedSomeAdded() {
         final TestPluginInfo info1 = new TestPluginInfo(
                 "https://example.com/test-111",
                 "test-111"
@@ -195,26 +191,28 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
                 "test-222"
         );
 
-        this.viewFilterAndCheck(
+        this.mergeAndCheck(
                 Sets.of(
                         info1,
-                        info2,
-                        info3
+                        info2
                 ),
                 Sets.of(
                         new TestPluginInfo(
                                 "https://example.com/test-111",
                                 "test-original-111"
-                        )
+                        ),
+                        info3
                 ),
-                info1
+                info1,
+                info2,
+                info3
         );
     }
 
-    private void viewFilterAndCheck(final Set<TestPluginInfo> view,
-                                    final Set<TestPluginInfo> target,
-                                    final TestPluginInfo... expected) {
-        this.viewFilterAndCheck(
+    private void mergeAndCheck(final Set<TestPluginInfo> view,
+                               final Set<TestPluginInfo> target,
+                               final TestPluginInfo... expected) {
+        this.mergeAndCheck(
                 view,
                 target,
                 Sets.of(
@@ -223,12 +221,12 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
         );
     }
 
-    private void viewFilterAndCheck(final Set<TestPluginInfo> view,
-                                    final Set<TestPluginInfo> target,
-                                    final Set<TestPluginInfo> expected) {
+    private void mergeAndCheck(final Set<TestPluginInfo> view,
+                               final Set<TestPluginInfo> target,
+                               final Set<TestPluginInfo> expected) {
         this.checkEquals(
                 expected,
-                PluginInfoSetLike.viewFilter(
+                PluginInfoSetLike.merged(
                         view,
                         target
                 )

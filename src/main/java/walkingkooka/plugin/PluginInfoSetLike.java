@@ -40,30 +40,37 @@ import java.util.stream.Collectors;
 public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends Set<I>,
         TreePrintable {
 
-    // viewFilter.......................................................................................................
+    // merged...........................................................................................................
 
     /**
-     * Returns a filtered {@link Set INFOS} verifying all infos exist in the provided {@link Set INFOS}.
-     * This will be used by SpreadsheetMetadata supporting the user ability to map functions with a new name
-     * replacing the name in the original INFO.
+     * Returns a merged {@link Set INFOs} where the view entries will replace any from target if they have the same URL.
+     * This supports environments such as the browser where not all SpreadsheetComparator instances are available,
+     * but those that are available could be renamed by SpreadsheetComparatorInfo(s) in the active SpreadsheetMetadata.
      */
-    static <I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> Set<I> viewFilter(final Set<I> view,
-                                                                                              final Set<I> target) {
+    static <I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> Set<I> merged(final Set<I> view,
+                                                                                          final Set<I> target) {
         Objects.requireNonNull(view, "view");
         Objects.requireNonNull(target, "target");
 
-        final Set<AbsoluteUrl> targetInfoUrls = target.stream()
+        final Set<I> viewCopy = Sets.immutable(view);
+
+        final Set<AbsoluteUrl> viewUrls = viewCopy.stream()
                 .map(HasAbsoluteUrl::url)
                 .collect(Collectors.toSet());
 
-        final Set<I> viewCopy = Sets.immutable(view);
+        final Set<I> all = Sets.sorted();
 
-        final Set<I> filtered = view.stream()
-                .filter(i -> targetInfoUrls.contains(i.url()))
-                .collect(Collectors.toCollection(Sets::sorted));
-        return filtered.equals(viewCopy) ?
+        for(final I info : target) {
+            if(false == viewUrls.contains(info.url())) {
+                all.add(info);
+            }
+        }
+
+        all.addAll(viewCopy);
+
+        return all.equals(viewCopy) ?
                 viewCopy :
-                Sets.immutable(filtered);
+                Sets.immutable(all);
     }
 
     /**
