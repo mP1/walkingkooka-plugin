@@ -17,8 +17,11 @@
 
 package walkingkooka.plugin;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import walkingkooka.collect.iterator.Iterators;
+import walkingkooka.collect.list.Lists;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
@@ -34,11 +37,40 @@ import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 import javax.net.ssl.TrustManagerFactorySpi;
 import java.util.AbstractSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
 public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<TestPluginInfoSet, TestPluginInfo, StringName> {
+
+    @BeforeAll
+    public static void beforeAll() {
+        unregister.add(
+                JsonNodeContext.register(
+                        JsonNodeContext.computeTypeName(TestPluginInfoSet.class),
+                        TestPluginInfoSet::unmarshall,
+                        TestPluginInfoSet::marshall,
+                        TestPluginInfoSet.class
+                )
+        );
+
+        unregister.add(
+                JsonNodeContext.register(
+                        JsonNodeContext.computeTypeName(TestPluginInfo.class),
+                        TestPluginInfo::unmarshall,
+                        TestPluginInfo::marshall,
+                        TestPluginInfo.class
+                )
+        );
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        unregister.forEach(Runnable::run);
+    }
+
+    private final static List<Runnable> unregister = Lists.array();
 
     // nameMapper.......................................................................................................
 
@@ -168,15 +200,6 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
 
         // json.............................................................................................................
 
-        static {
-            JsonNodeContext.register(
-                    JsonNodeContext.computeTypeName(TestPluginInfoSet.class),
-                    TestPluginInfoSet::unmarshall,
-                    TestPluginInfoSet::marshall,
-                    TestPluginInfoSet.class
-            );
-        }
-
         private JsonNode marshall(final JsonNodeMarshallContext context) {
             return context.marshallCollection(this);
         }
@@ -264,15 +287,6 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
         }
 
         // json.........................................................................................................
-
-        static {
-            JsonNodeContext.register(
-                    JsonNodeContext.computeTypeName(TestPluginInfo.class),
-                    TestPluginInfo::unmarshall,
-                    TestPluginInfo::marshall,
-                    TestPluginInfo.class
-            );
-        }
 
         // @VisibleForTesting
         static TestPluginInfo unmarshall(final JsonNode node,
