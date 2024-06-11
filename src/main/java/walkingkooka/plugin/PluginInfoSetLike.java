@@ -70,10 +70,12 @@ public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Nam
      * Computes a mapper {@link Function} that may be used to map {@link Name} to the names in the given {@link Set INFOS}
      * using the {@link PluginInfoLike#url()} to join.
      */
-    default Function<N, Optional<N>> nameMapper(final Set<I> infos) {
-        Objects.requireNonNull(infos, "infos");
+    static <I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> Function<N, Optional<N>> nameMapper(final Set<I> view,
+                                                                                                                final Set<I> target) {
+        Objects.requireNonNull(view, "view");
+        Objects.requireNonNull(target, "target");
 
-        final Map<AbsoluteUrl, N> urlToInfosName = infos.stream()
+        final Map<AbsoluteUrl, N> targetUrlToName = target.stream()
                 .collect(
                         Collectors.toMap(
                                 HasAbsoluteUrl::url,
@@ -81,13 +83,13 @@ public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Nam
                         )
                 );
 
-        final Map<N, N> nameToName = Maps.sorted();
+        final Map<N, N> viewNameToTargetName = Maps.sorted();
 
-        for (final I info : this) {
+        for (final I info : view) {
             final AbsoluteUrl url = info.url();
-            final N infoName = urlToInfosName.get(url);
+            final N infoName = targetUrlToName.get(url);
             if (null != infoName) {
-                nameToName.put(
+                viewNameToTargetName.put(
                         info.name(),
                         infoName
                 );
@@ -95,7 +97,7 @@ public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Nam
         }
 
         return n -> Optional.ofNullable(
-                nameToName.get(n)
+                viewNameToTargetName.get(n)
         );
     }
 
