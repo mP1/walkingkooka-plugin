@@ -30,17 +30,6 @@ public interface PluginInfoSetLikeTesting<S extends PluginInfoSetLike<I, N>, I e
         ParseStringTesting<S>,
         ToStringTesting<S> {
 
-    // nameMapper.......................................................................................................
-
-    @Test
-    default void testNameMapperWithNullFails() {
-        assertThrows(
-                NullPointerException.class,
-                () -> this.createSet()
-                        .nameMapper(null)
-        );
-    }
-
     // parseString......................................................................................................
 
     @Override

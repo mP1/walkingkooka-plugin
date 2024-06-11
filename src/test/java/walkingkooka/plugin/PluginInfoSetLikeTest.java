@@ -238,6 +238,28 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
     // nameMapper.......................................................................................................
 
     @Test
+    public void testNameMapperWithNullViewFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> PluginInfoSetLike.<TestPluginInfo, StringName>nameMapper(
+                        null, // view
+                        Sets.empty() // target
+                )
+        );
+    }
+
+    @Test
+    public void testNameMapperWithNullTargetFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> PluginInfoSetLike.<TestPluginInfo, StringName>nameMapper(
+                        Sets.empty(), // view
+                        null // target
+                )
+        );
+    }
+
+    @Test
     public void testNameMapper() {
         this.nameMapperApplyAndCheck(
                 new TestPluginInfoSet(
@@ -289,7 +311,10 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
                                          final Optional<StringName> expected) {
         this.checkEquals(
                 expected,
-                set.nameMapper(other).apply(name)
+                PluginInfoSetLike.nameMapper(
+                        set,
+                        other
+                ).apply(name)
         );
     }
 
