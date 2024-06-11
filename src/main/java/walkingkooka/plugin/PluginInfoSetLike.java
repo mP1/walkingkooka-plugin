@@ -36,6 +36,9 @@ public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Nam
 
     /**
      * Parses some text (actually a csv) holding multiple {@link PluginInfoLike} instances.
+     * <pre>
+     * https://example.com/service-111 service-111,https://example.com/service-222 service-222
+     * </pre>
      */
     static <S extends PluginInfoSetLike<I, N>, I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> S parse(final String text,
                                                                                                                        final Function<String, I> infoParser,
