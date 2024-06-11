@@ -248,6 +248,7 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
             );
         }
 
+        @Override
         public boolean equals(final Object other) {
             return this == other || other instanceof TestPluginInfo && this.equals0((TestPluginInfo) other);
         }
