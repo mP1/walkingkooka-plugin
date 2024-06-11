@@ -26,7 +26,7 @@ import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.Url;
-import walkingkooka.plugin.ProviderCollectionTest.TestInfo;
+import walkingkooka.plugin.ProviderCollectionTest.TestPluginInfo;
 import walkingkooka.plugin.ProviderCollectionTest.TestProvider;
 import walkingkooka.plugin.ProviderCollectionTest.TestSelector;
 import walkingkooka.plugin.ProviderCollectionTest.TestService;
@@ -40,8 +40,9 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class ProviderCollectionTest implements ClassTesting<ProviderCollection<StringName, TestInfo, TestProvider, TestSelector, TestService>>,
-        ToStringTesting<ProviderCollection<StringName, TestInfo, TestProvider, TestSelector, TestService>> {
+public final class ProviderCollectionTest implements ProviderTesting<ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService>, StringName, TestPluginInfo, TestSelector, TestService>,
+        ClassTesting<ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService>>,
+        ToStringTesting<ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService>> {
 
     private final static TestService SERVICE1 = new TestService();
     private final static TestService SERVICE2 = new TestService();
@@ -52,7 +53,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
     private final static BiFunction<TestProvider, TestSelector, Optional<TestService>> PROVIDER_GETTER = (p, s) -> p.get(s);
 
-    private final static Function<TestProvider, Set<TestInfo>> INFO_GETTER = (p) -> p.info();
+    private final static Function<TestProvider, Set<TestPluginInfo>> INFO_GETTER = (p) -> p.infos();
 
     private final static String PROVIDED_LABEL = TestService.class.getSimpleName();
 
@@ -69,7 +70,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     );
 
     @Test
-    public void testWithNullINputToNameFails() {
+    public void testWithNullInputToNameFails() {
         assertThrows(
                 NullPointerException.class,
                 () -> ProviderCollection.with(
@@ -216,13 +217,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     @Test
     public void testGet() {
         this.getAndCheck(
-                ProviderCollection.with(
-                        INPUT_TO_NAME,
-                        PROVIDER_GETTER,
-                        INFO_GETTER,
-                        PROVIDED_LABEL,
-                        PROVIDERS
-                ),
                 new TestSelector("service-1"),
                 SERVICE1
         );
@@ -231,13 +225,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     @Test
     public void testGet2() {
         this.getAndCheck(
-                ProviderCollection.with(
-                        INPUT_TO_NAME,
-                        PROVIDER_GETTER,
-                        INFO_GETTER,
-                        PROVIDED_LABEL,
-                        PROVIDERS
-                ),
                 new TestSelector("service-2"),
                 SERVICE2
         );
@@ -246,13 +233,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     @Test
     public void testGet3() {
         this.getAndCheck(
-                ProviderCollection.with(
-                        INPUT_TO_NAME,
-                        PROVIDER_GETTER,
-                        INFO_GETTER,
-                        PROVIDED_LABEL,
-                        PROVIDERS
-                ),
                 new TestSelector("service-3"),
                 SERVICE3
         );
@@ -261,75 +241,16 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     @Test
     public void testGetUnknown() {
         this.getAndCheck(
-                ProviderCollection.with(
-                        INPUT_TO_NAME,
-                        PROVIDER_GETTER,
-                        INFO_GETTER,
-                        PROVIDED_LABEL,
-                        PROVIDERS
-                ),
                 new TestSelector("unknown")
         );
     }
 
-    private void getAndCheck(final ProviderCollection<StringName, TestInfo, TestProvider, TestSelector, TestService> collection,
-                             final TestSelector selector) {
-        this.getAndCheck(
-                collection,
-                selector,
-                Optional.empty()
-        );
-    }
-
-    private void getAndCheck(final ProviderCollection<StringName, TestInfo, TestProvider, TestSelector, TestService> collection,
-                             final TestSelector selector,
-                             final TestService expected) {
-        this.getAndCheck(
-                collection,
-                selector,
-                Optional.of(expected)
-        );
-    }
-
-    private void getAndCheck(final ProviderCollection<StringName, TestInfo, TestProvider, TestSelector, TestService> collection,
-                             final TestSelector selector,
-                             final Optional<TestService> expected) {
-        this.checkEquals(
-                expected,
-                collection.get(selector)
-        );
-    }
-
     @Test
-    public void testInfo() {
-        this.checkEquals(
-                Sets.of(
-                        new TestInfo("service-1"),
-                        new TestInfo("service-2"),
-                        new TestInfo("service-3")
-                ),
-                ProviderCollection.with(
-                        INPUT_TO_NAME,
-                        PROVIDER_GETTER,
-                        INFO_GETTER,
-                        PROVIDED_LABEL,
-                        PROVIDERS
-                ).infos()
-        );
-    }
-
-    @Test
-    public void testInfosReadOnly() {
-        assertThrows(
-                UnsupportedOperationException.class,
-                () -> ProviderCollection.with(
-                        INPUT_TO_NAME,
-                        PROVIDER_GETTER,
-                        INFO_GETTER,
-                        PROVIDED_LABEL,
-                        PROVIDERS
-                ).infos()
-                        .clear()
+    public void TestInfos() {
+        this.infosAndCheck(
+                new TestPluginInfo("service-1"),
+                new TestPluginInfo("service-2"),
+                new TestPluginInfo("service-3")
         );
     }
 
@@ -347,10 +268,21 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         );
     }
 
+    @Override
+    public ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> createProvider() {
+        return ProviderCollection.with(
+                INPUT_TO_NAME,
+                PROVIDER_GETTER,
+                INFO_GETTER,
+                PROVIDED_LABEL,
+                PROVIDERS
+        );
+    }
+
     static class TestService {
     }
 
-    static class TestProvider {
+    static class TestProvider implements Provider<StringName, TestPluginInfo, TestSelector, TestService> {
 
         TestProvider(final String name,
                      final TestService service) {
@@ -366,12 +298,13 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
                      final TestService service) {
             this.name = Names.string(name);
             this.info = null == url ?
-                    new TestInfo(name) :
-                    new TestInfo(name, url);
+                    new TestPluginInfo(name) :
+                    new TestPluginInfo(name, url);
             this.service = service;
         }
 
-        Optional<TestService> get(final TestSelector nameAnd) {
+        @Override
+        public Optional<TestService> get(final TestSelector nameAnd) {
             return Optional.ofNullable(
                     this.name.equals(nameAnd.name) ?
                             this.service :
@@ -381,13 +314,14 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
         final TestService service;
 
-        Set<TestInfo> info() {
+        @Override
+        public Set<TestPluginInfo> infos() {
             return Sets.of(
                     this.info
             );
         }
 
-        private TestInfo info;
+        private TestPluginInfo info;
 
         final StringName name;
     }
@@ -411,17 +345,17 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         }
     }
 
-    static class TestInfo implements PluginInfoLike<TestInfo, StringName> {
+    static class TestPluginInfo implements PluginInfoLike<TestPluginInfo, StringName> {
 
-        TestInfo(final String name) {
+        TestPluginInfo(final String name) {
             this(
                     name,
                     "https://example.com/" + name
             );
         }
 
-        TestInfo(final String name,
-                 final String url) {
+        TestPluginInfo(final String name,
+                       final String url) {
             this.name = Names.string(name);
             this.url = Url.parseAbsolute(url);
         }
@@ -448,10 +382,10 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         @Override
         public boolean equals(final Object other) {
             return this == other ||
-                    other instanceof TestInfo && this.equals0((TestInfo) other);
+                    other instanceof TestPluginInfo && this.equals0((TestPluginInfo) other);
         }
 
-        private boolean equals0(final TestInfo other) {
+        private boolean equals0(final TestPluginInfo other) {
             return this.toString().equals(other.toString());
         }
 
@@ -464,7 +398,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     // ClassTesting.....................................................................................................
 
     @Override
-    public Class<ProviderCollection<StringName, TestInfo, TestProvider, TestSelector, TestService>> type() {
+    public Class<ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService>> type() {
         return Cast.to(ProviderCollection.class);
     }
 
