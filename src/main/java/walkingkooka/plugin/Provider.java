@@ -26,7 +26,7 @@ import java.util.Set;
  * A provider is a container that supports fetching components by some INPUT which may include a name and also provides
  * a {@link Set} of INFO which provide names and {@link walkingkooka.net.AbsoluteUrl} for each component.
  */
-public interface Provider<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, P, IN, OUT> {
+public interface Provider<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IN, OUT> {
 
     /**
      * Getter that fetches a component by the INPUT.
