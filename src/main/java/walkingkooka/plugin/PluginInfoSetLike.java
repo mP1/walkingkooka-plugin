@@ -40,25 +40,29 @@ import java.util.stream.Collectors;
 public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends Set<I>,
         TreePrintable {
 
-    // keepSameUrl......................................................................................................
+    // viewFilter.......................................................................................................
 
     /**
      * Returns a filtered {@link Set INFOS} verifying all infos exist in the provided {@link Set INFOS}.
      * This will be used by SpreadsheetMetadata supporting the user ability to map functions with a new name
      * replacing the name in the original INFO.
      */
-    default Set<I> keepSameUrl(final Set<I> infos) {
-        Objects.requireNonNull(infos, "infos");
+    static <I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> Set<I> viewFilter(final Set<I> view,
+                                                                                              final Set<I> target) {
+        Objects.requireNonNull(view, "view");
+        Objects.requireNonNull(target, "target");
 
-        final Set<AbsoluteUrl> infoUrls = infos.stream()
+        final Set<AbsoluteUrl> targetInfoUrls = target.stream()
                 .map(HasAbsoluteUrl::url)
                 .collect(Collectors.toSet());
 
-        final Set<I> filtered = this.stream()
-                .filter(i -> infoUrls.contains(i.url()))
+        final Set<I> viewCopy = Sets.immutable(view);
+
+        final Set<I> filtered = view.stream()
+                .filter(i -> targetInfoUrls.contains(i.url()))
                 .collect(Collectors.toCollection(Sets::sorted));
-        return this.equals(filtered) ?
-                this :
+        return filtered.equals(viewCopy) ?
+                viewCopy :
                 Sets.immutable(filtered);
     }
 
