@@ -51,6 +51,17 @@ public interface PluginInfoSetLikeTesting<S extends PluginInfoSetLike<I, N>, I e
         );
     }
 
+    // keepSameUrl......................................................................................................
+
+    @Test
+    default void testNameMapperWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createSet()
+                        .nameMapper(null)
+        );
+    }
+
     // parseString......................................................................................................
 
     @Override
