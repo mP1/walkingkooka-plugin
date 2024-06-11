@@ -74,33 +74,51 @@ public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Nam
     }
 
     /**
-     * Computes a mapper {@link Function} that may be used to map {@link Name} to the names in the given {@link Set INFOS}
-     * using the {@link PluginInfoLike#url()} to join.
+     * Computes a mapper {@link Function} merges names from the view and target. Note that targets with the same URL
+     * will be replaced and only the view name will work.
      */
     static <I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> Function<N, Optional<N>> nameMapper(final Set<I> view,
                                                                                                                 final Set<I> target) {
         Objects.requireNonNull(view, "view");
         Objects.requireNonNull(target, "target");
 
-        final Map<AbsoluteUrl, N> targetUrlToName = target.stream()
-                .collect(
-                        Collectors.toMap(
-                                HasAbsoluteUrl::url,
-                                HasName::name
-                        )
-                );
+        final Map<AbsoluteUrl, Name[]> urlToNames = Maps.hash();
 
-        final Map<N, N> viewNameToTargetName = Maps.sorted();
+        for (final I info : target) {
+            final N name = info.name();
+
+            urlToNames.put(
+                    info.url(),
+                    new Name[]{name, name}
+            );
+        }
 
         for (final I info : view) {
             final AbsoluteUrl url = info.url();
-            final N infoName = targetUrlToName.get(url);
-            if (null != infoName) {
-                viewNameToTargetName.put(
-                        info.name(),
-                        infoName
+            final N name = info.name();
+
+            Name[] names = urlToNames.get(url);
+            if (null == names) {
+                names = new Name[]{
+                        name,
+                        name
+                };
+                urlToNames.put(
+                        url,
+                        names
                 );
+            } else {
+                names[0] = name;
             }
+        }
+
+        final Map<N, N> viewNameToTargetName = Maps.sorted();
+
+        for (final Name[] names : urlToNames.values()) {
+            viewNameToTargetName.put(
+                    (N) names[0],
+                    (N) names[1]
+            );
         }
 
         return n -> Optional.ofNullable(
