@@ -18,14 +18,18 @@
 package walkingkooka.plugin;
 
 import walkingkooka.InvalidCharacterException;
+import walkingkooka.collect.map.Maps;
 import walkingkooka.collect.set.Sets;
+import walkingkooka.naming.HasName;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.HasAbsoluteUrl;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -56,6 +60,39 @@ public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Nam
         return this.equals(filtered) ?
                 this :
                 Sets.immutable(filtered);
+    }
+
+    /**
+     * Computes a mapper {@link Function} that may be used to map {@link Name} to the names in the given {@link Set INFOS}
+     * using the {@link PluginInfoLike#url()} to join.
+     */
+    default Function<N, Optional<N>> nameMapper(final Set<I> infos) {
+        Objects.requireNonNull(infos, "infos");
+
+        final Map<AbsoluteUrl, N> urlToInfosName = infos.stream()
+                .collect(
+                        Collectors.toMap(
+                                HasAbsoluteUrl::url,
+                                HasName::name
+                        )
+                );
+
+        final Map<N, N> nameToName = Maps.sorted();
+
+        for (final I info : this) {
+            final AbsoluteUrl url = info.url();
+            final N infoName = urlToInfosName.get(url);
+            if (null != infoName) {
+                nameToName.put(
+                        info.name(),
+                        infoName
+                );
+            }
+        }
+
+        return n -> Optional.ofNullable(
+                nameToName.get(n)
+        );
     }
 
     // parse............................................................................................................
