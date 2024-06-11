@@ -257,26 +257,52 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
     }
 
     @Test
-    public void testNameMapper() {
+    public void testNameMapperFromView() {
+        final String url = "https://example.com/test-111";
+        final String targetName = "test-999";
+        final String viewName = "test-111";
+
         this.nameMapperApplyAndCheck(
                 new TestPluginInfoSet(
                         Sets.of(
                                 new TestPluginInfo(
-                                        "https://example.com/test-111",
+                                        url,
+                                        viewName
+                                )
+                        )
+                ),
+                Sets.of(
+                        new TestPluginInfo(
+                                url,
+                                targetName
+                        )
+                ),
+                Names.string(viewName),
+                Names.string(targetName) // the name from target
+        );
+    }
+
+    @Test
+    public void testNameMapperWithReplaced() {
+        final String url = "https://example.com/test-111";
+        final String name = "test-999";
+
+        this.nameMapperApplyAndCheck(
+                new TestPluginInfoSet(
+                        Sets.of(
+                                new TestPluginInfo(
+                                        url,
                                         "test-111"
                                 )
                         )
                 ),
                 Sets.of(
                         new TestPluginInfo(
-                                "https://example.com/test-111",
-                                "test-999"
+                                url,
+                                name
                         )
                 ),
-                Names.string("test-111"),
-                Optional.of(
-                        Names.string("test-999")
-                )
+                Names.string(name) // target name should have been replaced by view name
         );
     }
 
@@ -297,8 +323,30 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
                                 "test-999"
                         )
                 ),
-                Names.string("test-111"),
+                Names.string("test-404")
+        );
+    }
+
+    private void nameMapperApplyAndCheck(final TestPluginInfoSet set,
+                                         final Set<TestPluginInfo> other,
+                                         final StringName name) {
+        this.nameMapperApplyAndCheck(
+                set,
+                other,
+                name,
                 Optional.empty()
+        );
+    }
+
+    private void nameMapperApplyAndCheck(final TestPluginInfoSet set,
+                                         final Set<TestPluginInfo> other,
+                                         final StringName name,
+                                         final StringName expected) {
+        this.nameMapperApplyAndCheck(
+                set,
+                other,
+                name,
+                Optional.of(expected)
         );
     }
 
