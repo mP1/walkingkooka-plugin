@@ -22,13 +22,16 @@ import walkingkooka.ToStringTesting;
 import walkingkooka.naming.Name;
 import walkingkooka.net.http.server.hateos.HateosResourceSetTesting;
 import walkingkooka.test.ParseStringTesting;
+import walkingkooka.text.HasTextTesting;
+
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface PluginInfoSetLikeTesting<S extends PluginInfoSetLike<I, N>, I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends HateosResourceSetTesting<S, I, N>,
         ParseStringTesting<S>,
-        ToStringTesting<S> {
+        HasTextTesting {
 
     // parseString......................................................................................................
 
@@ -49,15 +52,17 @@ public interface PluginInfoSetLikeTesting<S extends PluginInfoSetLike<I, N>, I e
         return this.createSet();
     }
 
-    // ToString.........................................................................................................
+    // hasText..........................................................................................................
 
     @Test
-    default void testToString() {
+    default void testText() {
         final S set = this.createSet();
 
-        this.toStringAndCheck(
+        this.textAndCheck(
                 set,
-                PluginInfoSetLike.toString(set)
+                set.stream()
+                        .map(Object::toString)
+                        .collect(Collectors.joining(","))
         );
     }
 }
