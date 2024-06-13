@@ -452,7 +452,7 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
 
         @Override
         public String toString() {
-            return PluginInfoSetLike.toString(this);
+            return this.text();
         }
     }
 
