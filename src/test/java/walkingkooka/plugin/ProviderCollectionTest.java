@@ -57,11 +57,17 @@ public final class ProviderCollectionTest implements ProviderTesting<ProviderCol
 
     private final static String PROVIDED_LABEL = TestService.class.getSimpleName();
 
-    private final static TestProvider PROVIDER1 = new TestProvider("service-1", SERVICE1);
+    private static final String SERVICE_1_NAME = "service-1";
 
-    private final static TestProvider PROVIDER2 = new TestProvider("service-2", SERVICE2);
+    private final static TestProvider PROVIDER1 = new TestProvider(SERVICE_1_NAME, SERVICE1);
 
-    private final static TestProvider PROVIDER3 = new TestProvider("service-3", SERVICE3);
+    private static final String SERVICE_2_NAME = "service-2";
+
+    private final static TestProvider PROVIDER2 = new TestProvider(SERVICE_2_NAME, SERVICE2);
+
+    private static final String SERVICE_3_NAME = "service-3";
+
+    private final static TestProvider PROVIDER3 = new TestProvider(SERVICE_3_NAME, SERVICE3);
 
     private final static Set<TestProvider> PROVIDERS = Sets.of(
             PROVIDER1,
@@ -180,7 +186,7 @@ public final class ProviderCollectionTest implements ProviderTesting<ProviderCol
                                 PROVIDER1,
                                 PROVIDER2,
                                 PROVIDER3,
-                                new TestProvider("service-1", "http://example.com/duplicate-service1", SERVICE1)
+                                new TestProvider(SERVICE_1_NAME, "http://example.com/duplicate-service1", SERVICE1)
                         )
                 )
         );
@@ -203,8 +209,8 @@ public final class ProviderCollectionTest implements ProviderTesting<ProviderCol
                                 PROVIDER1,
                                 PROVIDER2,
                                 PROVIDER3,
-                                new TestProvider("service-1", "http://example.com/duplicate-service1", SERVICE1),
-                                new TestProvider("service-2", "http://example.com/duplicate-service2", SERVICE2)
+                                new TestProvider(SERVICE_1_NAME, "http://example.com/duplicate-service1", SERVICE1),
+                                new TestProvider(SERVICE_2_NAME, "http://example.com/duplicate-service2", SERVICE2)
                         )
                 )
         );
@@ -217,7 +223,7 @@ public final class ProviderCollectionTest implements ProviderTesting<ProviderCol
     @Test
     public void testGet() {
         this.getAndCheck(
-                new TestSelector("service-1"),
+                new TestSelector(SERVICE_1_NAME),
                 SERVICE1
         );
     }
@@ -225,7 +231,7 @@ public final class ProviderCollectionTest implements ProviderTesting<ProviderCol
     @Test
     public void testGet2() {
         this.getAndCheck(
-                new TestSelector("service-2"),
+                new TestSelector(SERVICE_2_NAME),
                 SERVICE2
         );
     }
@@ -233,7 +239,7 @@ public final class ProviderCollectionTest implements ProviderTesting<ProviderCol
     @Test
     public void testGet3() {
         this.getAndCheck(
-                new TestSelector("service-3"),
+                new TestSelector(SERVICE_3_NAME),
                 SERVICE3
         );
     }
@@ -248,9 +254,9 @@ public final class ProviderCollectionTest implements ProviderTesting<ProviderCol
     @Test
     public void TestInfos() {
         this.infosAndCheck(
-                new TestPluginInfo("service-1"),
-                new TestPluginInfo("service-2"),
-                new TestPluginInfo("service-3")
+                new TestPluginInfo(SERVICE_1_NAME),
+                new TestPluginInfo(SERVICE_2_NAME),
+                new TestPluginInfo(SERVICE_3_NAME)
         );
     }
 
@@ -262,33 +268,33 @@ public final class ProviderCollectionTest implements ProviderTesting<ProviderCol
                 INFO_GETTER,
                 PROVIDED_LABEL,
                 Sets.of(
-                        new TestProvider("service-1", null),
-                        new TestProvider("service-2", null),
-                        new TestProvider("service-3", null)
+                        new TestProvider(SERVICE_1_NAME, null),
+                        new TestProvider(SERVICE_2_NAME, null),
+                        new TestProvider(SERVICE_3_NAME, null)
                 )
         );
 
         this.infosAndCheck(
                 collection,
-                new TestPluginInfo("service-1"),
-                new TestPluginInfo("service-2"),
-                new TestPluginInfo("service-3")
+                new TestPluginInfo(SERVICE_1_NAME),
+                new TestPluginInfo(SERVICE_2_NAME),
+                new TestPluginInfo(SERVICE_3_NAME)
         );
 
         // verify the info is present but the service itself is missing(absent)
         this.getAndCheck(
                 collection,
-                new TestSelector("service-1")
+                new TestSelector(SERVICE_1_NAME)
         );
 
         this.getAndCheck(
                 collection,
-                new TestSelector("service-2")
+                new TestSelector(SERVICE_2_NAME)
         );
 
         this.getAndCheck(
                 collection,
-                new TestSelector("service-3")
+                new TestSelector(SERVICE_3_NAME)
         );
     }
 
