@@ -24,6 +24,7 @@ import walkingkooka.naming.HasName;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.HasAbsoluteUrl;
+import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.HasText;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
@@ -194,9 +195,10 @@ public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Nam
 
     @Override
     default String text() {
-        return this.stream()
-                .map(Object::toString)
-                .collect(Collectors.joining(","));
+        return CharacterConstant.COMMA.toSeparatedString(
+                this,
+                Object::toString
+        );
     }
 
     // TreePrintable....................................................................................................
