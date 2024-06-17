@@ -22,6 +22,7 @@ import walkingkooka.ToStringTesting;
 import walkingkooka.naming.Name;
 import walkingkooka.net.http.server.hateos.HateosResourceSetTesting;
 import walkingkooka.test.ParseStringTesting;
+import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.HasTextTesting;
 
 import java.util.stream.Collectors;
@@ -60,9 +61,10 @@ public interface PluginInfoSetLikeTesting<S extends PluginInfoSetLike<I, N>, I e
 
         this.textAndCheck(
                 set,
-                set.stream()
-                        .map(Object::toString)
-                        .collect(Collectors.joining(","))
+                CharacterConstant.COMMA.toSeparatedString(
+                        set,
+                        Object::toString
+                )
         );
     }
 }
