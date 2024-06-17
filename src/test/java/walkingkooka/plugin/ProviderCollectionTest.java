@@ -255,6 +255,44 @@ public final class ProviderCollectionTest implements ProviderTesting<ProviderCol
     }
 
     @Test
+    public void TestInfosMissingFromGet() {
+        final ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> collection = ProviderCollection.with(
+                INPUT_TO_NAME,
+                PROVIDER_GETTER,
+                INFO_GETTER,
+                PROVIDED_LABEL,
+                Sets.of(
+                        new TestProvider("service-1", null),
+                        new TestProvider("service-2", null),
+                        new TestProvider("service-3", null)
+                )
+        );
+
+        this.infosAndCheck(
+                collection,
+                new TestPluginInfo("service-1"),
+                new TestPluginInfo("service-2"),
+                new TestPluginInfo("service-3")
+        );
+
+        // verify the info is present but the service itself is missing(absent)
+        this.getAndCheck(
+                collection,
+                new TestSelector("service-1")
+        );
+
+        this.getAndCheck(
+                collection,
+                new TestSelector("service-2")
+        );
+
+        this.getAndCheck(
+                collection,
+                new TestSelector("service-3")
+        );
+    }
+
+    @Test
     public void testToString() {
         this.toStringAndCheck(
                 ProviderCollection.with(
