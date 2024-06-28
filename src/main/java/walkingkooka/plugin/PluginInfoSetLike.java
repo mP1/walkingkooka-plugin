@@ -43,6 +43,11 @@ public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Nam
         HasText,
         TreePrintable {
 
+    /**
+     * The character that separates multiple {@link PluginInfoLike}.
+     */
+    CharacterConstant SEPARATOR = CharacterConstant.COMMA;
+
     // merge...........................................................................................................
 
     /**
@@ -164,11 +169,14 @@ public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Nam
                 }
             }
 
-            final int comma = text.indexOf(',', space);
+            final int separator = text.indexOf(
+                    SEPARATOR.character(),
+                    space
+            );
 
-            final int end = -1 == comma ?
+            final int end = -1 == separator ?
                     length :
-                    comma;
+                    separator;
             try {
                 parsed.add(
                         infoParser.apply(
@@ -195,7 +203,7 @@ public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Nam
 
     @Override
     default String text() {
-        return CharacterConstant.COMMA.toSeparatedString(
+        return SEPARATOR.toSeparatedString(
                 this,
                 Object::toString
         );
