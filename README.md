@@ -6,4 +6,6 @@
 [![J2CL compatible](https://img.shields.io/badge/J2CL-compatible-brightgreen.svg)](https://github.com/mP1/j2cl-central)
 
 # walkingkooka-plugin
-Plugins are components that satisfy an interface
+Plugins are components that satisfy an interface and may be retrieved by a `PluginName` from a `PluginProvider`.
+The primary goal of a PluginProvider is to JAR FILE supporting hot redeployment mostly controlled by the user via some admin type console or UI.
+There are many `Provider(s)` in other repos they defer mostly in that they are always present on the classpath and not dynamically discoverable or provided.
