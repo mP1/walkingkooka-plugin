@@ -40,11 +40,11 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class ProviderCollectionTest implements ProviderTesting<ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService>, StringName, TestPluginInfo, TestSelector, TestService>,
-        ClassTesting<ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService>>,
+public final class ProviderCollectionTest implements ClassTesting<ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService>>,
         ToStringTesting<ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService>> {
 
     private final static TestService SERVICE1 = new TestService();
+
     private final static TestService SERVICE2 = new TestService();
 
     private final static TestService SERVICE3 = new TestService();
@@ -220,6 +220,8 @@ public final class ProviderCollectionTest implements ProviderTesting<ProviderCol
         );
     }
 
+    // get..............................................................................................................
+
     @Test
     public void testGet() {
         this.getAndCheck(
@@ -250,6 +252,62 @@ public final class ProviderCollectionTest implements ProviderTesting<ProviderCol
                 new TestSelector("unknown")
         );
     }
+
+    private void getAndCheck(final TestSelector input) {
+        this.getAndCheck(
+                this.createProvider(),
+                input
+        );
+    }
+
+    private void getAndCheck(final ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> provider,
+                             final TestSelector input) {
+        this.getAndCheck(
+                provider,
+                input,
+                Optional.empty()
+        );
+    }
+
+    private void getAndCheck(final TestSelector input,
+                             final TestService expected) {
+        this.getAndCheck(
+                this.createProvider(),
+                input,
+                expected
+        );
+    }
+
+    private void getAndCheck(final ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> provider,
+                             final TestSelector input,
+                             final TestService expected) {
+        this.getAndCheck(
+                provider,
+                input,
+                Optional.of(expected)
+        );
+    }
+
+    private void getAndCheck(final TestSelector input,
+                             final Optional<TestService> expected) {
+        this.getAndCheck(
+                this.createProvider(),
+                input,
+                expected
+        );
+    }
+
+    private void getAndCheck(final ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> provider,
+                             final TestSelector input,
+                             final Optional<TestService> expected) {
+        this.checkEquals(
+                expected,
+                provider.get(input),
+                () -> provider + " input " + input
+        );
+    }
+
+    // infos............................................................................................................
 
     @Test
     public void TestInfos() {
@@ -299,21 +357,46 @@ public final class ProviderCollectionTest implements ProviderTesting<ProviderCol
     }
 
     @Test
-    public void testToString() {
-        this.toStringAndCheck(
-                ProviderCollection.with(
-                        INPUT_TO_NAME,
-                        PROVIDER_GETTER,
-                        INFO_GETTER,
-                        PROVIDED_LABEL,
-                        PROVIDERS
-                ),
-                PROVIDER1 + ", " + PROVIDER2 + ", " + PROVIDER3
+    public void testInfoReadOnly() {
+        assertThrows(
+                UnsupportedOperationException.class,
+                () -> this.createProvider().infos()
+                        .clear()
         );
     }
 
-    @Override
-    public ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> createProvider() {
+    private void infosAndCheck(final TestPluginInfo... infos) {
+        this.infosAndCheck(
+                this.createProvider(),
+                infos
+        );
+    }
+
+    private void infosAndCheck(final ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> provider,
+                               final TestPluginInfo... infos) {
+        this.infosAndCheck(
+                provider,
+                Sets.of(infos)
+        );
+    }
+
+    private void infosAndCheck(final Set<TestPluginInfo> infos) {
+        this.infosAndCheck(
+                this.createProvider(),
+                infos
+        );
+    }
+
+    private void infosAndCheck(final ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> provider,
+                               final Set<TestPluginInfo> infos) {
+        this.checkEquals(
+                infos,
+                provider.infos(),
+                provider::toString
+        );
+    }
+
+    private ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> createProvider() {
         return ProviderCollection.with(
                 INPUT_TO_NAME,
                 PROVIDER_GETTER,
@@ -326,7 +409,7 @@ public final class ProviderCollectionTest implements ProviderTesting<ProviderCol
     static class TestService {
     }
 
-    static class TestProvider implements Provider<StringName, TestPluginInfo, TestSelector, TestService> {
+    static class TestProvider {
 
         TestProvider(final String name,
                      final TestService service) {
@@ -347,7 +430,6 @@ public final class ProviderCollectionTest implements ProviderTesting<ProviderCol
             this.service = service;
         }
 
-        @Override
         public Optional<TestService> get(final TestSelector nameAnd) {
             return Optional.ofNullable(
                     this.name.equals(nameAnd.name) ?
@@ -358,7 +440,6 @@ public final class ProviderCollectionTest implements ProviderTesting<ProviderCol
 
         final TestService service;
 
-        @Override
         public Set<TestPluginInfo> infos() {
             return Sets.of(
                     this.info
@@ -437,6 +518,22 @@ public final class ProviderCollectionTest implements ProviderTesting<ProviderCol
         public String toString() {
             return this.name + " " + this.url;
         }
+    }
+
+    // toString.........................................................................................................
+
+    @Test
+    public void testToString() {
+        this.toStringAndCheck(
+                ProviderCollection.with(
+                        INPUT_TO_NAME,
+                        PROVIDER_GETTER,
+                        INFO_GETTER,
+                        PROVIDED_LABEL,
+                        PROVIDERS
+                ),
+                PROVIDER1 + ", " + PROVIDER2 + ", " + PROVIDER3
+        );
     }
 
     // ClassTesting.....................................................................................................

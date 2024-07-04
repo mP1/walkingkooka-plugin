@@ -33,9 +33,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Provides a single provider view given a collection of providers. Instances of this class should be wrapped by implementations of the provider interface and simply delegate to the two provider methods.
+ * A helper that may be used to provide a view of a collection of providers. Instances of this class should be wrapped by implementations of the provider interface and simply delegate to the two provider methods.
  */
-public final class ProviderCollection<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, P, IN, OUT> implements Provider<N, I, IN, OUT> {
+public final class ProviderCollection<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, P, IN, OUT> {
     public static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, P, IN, OUT> ProviderCollection<N, I, P, IN, OUT> with(final Function<IN, N> inputToName,
                                                                                                                                          final BiFunction<P, IN, Optional<OUT>> providerGetter,
                                                                                                                                          final Function<P, Set<I>> infoGetter,
@@ -121,7 +121,6 @@ public final class ProviderCollection<N extends Name & Comparable<N>, I extends 
     /**
      * Gets the component identified by IN.
      */
-    @Override
     public Optional<OUT> get(final IN in) {
         Objects.requireNonNull(in, "in");
 
@@ -142,7 +141,6 @@ public final class ProviderCollection<N extends Name & Comparable<N>, I extends 
     /**
      * Returns a {@link Set} with an aggregation of all INFOS from all the provided Providers.
      */
-    @Override
     public Set<I> infos() {
         return this.infos;
     }
