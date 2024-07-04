@@ -17,7 +17,8 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.reflect.ClassTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 
-public interface ProviderTesting<P extends Provider> extends TreePrintableTesting {
+public interface ProviderTesting<P extends Provider> extends TreePrintableTesting, ClassTesting<P> {
 }
