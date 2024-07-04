@@ -23,12 +23,12 @@ import walkingkooka.naming.Name;
 import walkingkooka.net.HasAbsoluteUrl;
 import walkingkooka.text.CharSequences;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -41,7 +41,7 @@ public final class ProviderCollection<N extends Name & Comparable<N>, I extends 
             P extends Provider,
             IN,
             OUT> ProviderCollection<N, I, P, IN, OUT> with(final Function<IN, N> inputToName,
-                                                           final BiFunction<P, IN, Optional<OUT>> providerGetter,
+                                                           final ProviderCollectionProviderGetter<P, IN, OUT> providerGetter,
                                                            final Function<P, Set<I>> infoGetter,
                                                            final String providedLabel,
                                                            final Set<P> providers) {
@@ -61,7 +61,7 @@ public final class ProviderCollection<N extends Name & Comparable<N>, I extends 
     }
 
     private ProviderCollection(final Function<IN, N> inputToName,
-                               final BiFunction<P, IN, Optional<OUT>> providerGetter,
+                               final ProviderCollectionProviderGetter<P, IN, OUT> providerGetter,
                                final Function<P, Set<I>> infoGetter,
                                final String providedLabel,
                                final Set<P> providers) {
@@ -125,7 +125,8 @@ public final class ProviderCollection<N extends Name & Comparable<N>, I extends 
     /**
      * Gets the component identified by IN.
      */
-    public Optional<OUT> get(final IN in) {
+    public Optional<OUT> get(final IN in,
+                             final List<?> values) {
         Objects.requireNonNull(in, "in");
 
         // get the provided for the name and then call the provider getter with $IN.
@@ -133,14 +134,20 @@ public final class ProviderCollection<N extends Name & Comparable<N>, I extends 
                 this.nameToProvider.get(
                         this.inputToName.apply(in)
                 )
-        ).flatMap(p -> this.providerGetter.apply(p, in));
+        ).flatMap(
+                p -> this.providerGetter.get(
+                        p,
+                        in,
+                        values
+                )
+        );
     }
 
     private final Function<IN, N> inputToName;
 
     private final Map<N, P> nameToProvider;
 
-    private final BiFunction<P, IN, Optional<OUT>> providerGetter;
+    private final ProviderCollectionProviderGetter<P, IN, OUT> providerGetter;
 
     /**
      * Returns a {@link Set} with an aggregation of all INFOS from all the provided Providers.

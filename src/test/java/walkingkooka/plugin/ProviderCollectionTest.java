@@ -20,6 +20,7 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.ToStringTesting;
+import walkingkooka.collect.list.Lists;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.HasName;
 import walkingkooka.naming.Names;
@@ -33,9 +34,9 @@ import walkingkooka.plugin.ProviderCollectionTest.TestService;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -51,7 +52,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
     private final static Function<TestSelector, StringName> INPUT_TO_NAME = TestSelector::name;
 
-    private final static BiFunction<TestProvider, TestSelector, Optional<TestService>> PROVIDER_GETTER = (p, s) -> p.get(s);
+    private final static ProviderCollectionProviderGetter<TestProvider, TestSelector, TestService> PROVIDER_GETTER = (p, s, v) -> p.get(s);
 
     private final static Function<TestProvider, Set<TestPluginInfo>> INFO_GETTER = (p) -> p.infos();
 
@@ -74,6 +75,8 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
             PROVIDER2,
             PROVIDER3
     );
+
+    private final static List<?> VALUES = Lists.of("value");
 
     @Test
     public void testWithNullInputToNameFails() {
@@ -226,6 +229,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     public void testGet() {
         this.getAndCheck(
                 new TestSelector(SERVICE_1_NAME),
+                VALUES,
                 SERVICE1
         );
     }
@@ -234,6 +238,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     public void testGet2() {
         this.getAndCheck(
                 new TestSelector(SERVICE_2_NAME),
+                VALUES,
                 SERVICE2
         );
     }
@@ -242,6 +247,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     public void testGet3() {
         this.getAndCheck(
                 new TestSelector(SERVICE_3_NAME),
+                VALUES,
                 SERVICE3
         );
     }
@@ -249,60 +255,75 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     @Test
     public void testGetUnknown() {
         this.getAndCheck(
-                new TestSelector("unknown")
+                new TestSelector("unknown"),
+                VALUES
         );
     }
 
-    private void getAndCheck(final TestSelector input) {
+    private void getAndCheck(final TestSelector input,
+                             final List<?> values) {
         this.getAndCheck(
                 this.createProvider(),
-                input
+                input,
+                values
         );
     }
 
     private void getAndCheck(final ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> provider,
-                             final TestSelector input) {
+                             final TestSelector input,
+                             final List<?> values) {
         this.getAndCheck(
                 provider,
                 input,
+                values,
                 Optional.empty()
         );
     }
 
     private void getAndCheck(final TestSelector input,
+                             final List<?> values,
                              final TestService expected) {
         this.getAndCheck(
                 this.createProvider(),
                 input,
+                values,
                 expected
         );
     }
 
     private void getAndCheck(final ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> provider,
                              final TestSelector input,
+                             final List<?> values,
                              final TestService expected) {
         this.getAndCheck(
                 provider,
                 input,
+                values,
                 Optional.of(expected)
         );
     }
 
     private void getAndCheck(final TestSelector input,
+                             final List<?> values,
                              final Optional<TestService> expected) {
         this.getAndCheck(
                 this.createProvider(),
                 input,
+                values,
                 expected
         );
     }
 
     private void getAndCheck(final ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> provider,
                              final TestSelector input,
+                             final List<?> values,
                              final Optional<TestService> expected) {
         this.checkEquals(
                 expected,
-                provider.get(input),
+                provider.get(
+                        input,
+                        values
+                ),
                 () -> provider + " input " + input
         );
     }
@@ -342,17 +363,20 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         // verify the info is present but the service itself is missing(absent)
         this.getAndCheck(
                 collection,
-                new TestSelector(SERVICE_1_NAME)
+                new TestSelector(SERVICE_1_NAME),
+                VALUES
         );
 
         this.getAndCheck(
                 collection,
-                new TestSelector(SERVICE_2_NAME)
+                new TestSelector(SERVICE_2_NAME),
+                VALUES
         );
 
         this.getAndCheck(
                 collection,
-                new TestSelector(SERVICE_3_NAME)
+                new TestSelector(SERVICE_3_NAME),
+                VALUES
         );
     }
 
