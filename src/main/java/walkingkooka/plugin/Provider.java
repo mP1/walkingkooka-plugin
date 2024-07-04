@@ -19,22 +19,8 @@ package walkingkooka.plugin;
 
 import walkingkooka.naming.Name;
 
-import java.util.Optional;
-import java.util.Set;
-
 /**
- * A provider is a container that supports fetching components by some INPUT which may include a name and also provides
- * a {@link Set} of INFO which provide names and {@link walkingkooka.net.AbsoluteUrl} for each component.
+ * A provider is a container that supports fetching components by some INPUT such as a {@link Name}, a selector or a {@link Name} with parameters.
  */
-public interface Provider<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IN, OUT> {
-
-    /**
-     * Getter that fetches a component by the INPUT.
-     */
-    Optional<OUT> get(final IN in);
-
-    /**
-     * Returns the infos for the components belonging to this {@link Provider}.
-     */
-    Set<I> infos();
+public interface Provider {
 }
