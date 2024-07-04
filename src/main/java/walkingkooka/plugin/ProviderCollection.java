@@ -35,12 +35,16 @@ import java.util.stream.Collectors;
 /**
  * A helper that may be used to provide a view of a collection of providers. Instances of this class should be wrapped by implementations of the provider interface and simply delegate to the two provider methods.
  */
-public final class ProviderCollection<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, P, IN, OUT> {
-    public static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, P, IN, OUT> ProviderCollection<N, I, P, IN, OUT> with(final Function<IN, N> inputToName,
-                                                                                                                                         final BiFunction<P, IN, Optional<OUT>> providerGetter,
-                                                                                                                                         final Function<P, Set<I>> infoGetter,
-                                                                                                                                         final String providedLabel,
-                                                                                                                                         final Set<P> providers) {
+public final class ProviderCollection<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, P extends Provider, IN, OUT> {
+    public static <N extends Name & Comparable<N>,
+            I extends PluginInfoLike<I, N>,
+            P extends Provider,
+            IN,
+            OUT> ProviderCollection<N, I, P, IN, OUT> with(final Function<IN, N> inputToName,
+                                                           final BiFunction<P, IN, Optional<OUT>> providerGetter,
+                                                           final Function<P, Set<I>> infoGetter,
+                                                           final String providedLabel,
+                                                           final Set<P> providers) {
         Objects.requireNonNull(inputToName, "inputToName");
         Objects.requireNonNull(providerGetter, "providerGetter");
         Objects.requireNonNull(infoGetter, "infoGetter");
@@ -61,7 +65,7 @@ public final class ProviderCollection<N extends Name & Comparable<N>, I extends 
                                final Function<P, Set<I>> infoGetter,
                                final String providedLabel,
                                final Set<P> providers) {
-        if(providers.isEmpty()) {
+        if (providers.isEmpty()) {
             throw new IllegalArgumentException("Empty " + providedLabel + " providers");
         }
         final Set<I> infos = Sets.sorted();

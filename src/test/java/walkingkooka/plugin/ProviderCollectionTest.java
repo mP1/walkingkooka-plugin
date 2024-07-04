@@ -409,7 +409,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     static class TestService {
     }
 
-    static class TestProvider {
+    static class TestProvider implements Provider {
 
         TestProvider(final String name,
                      final TestService service) {
