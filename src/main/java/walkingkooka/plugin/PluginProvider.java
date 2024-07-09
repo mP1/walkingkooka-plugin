@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Miroslav Pokorny (github.com/mP1)
+ * Copyright 2024 Miroslav Pokorny (github.com/mP1)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package walkingkooka.plugin;
 
 import walkingkooka.net.AbsoluteUrl;
 
-import java.util.Optional;
 import java.util.Set;
 
 /**
