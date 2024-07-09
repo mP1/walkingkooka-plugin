@@ -33,7 +33,7 @@ import java.util.Objects;
 /**
  * This interface defines properties and some marshalling helpers for a selector text component.
  */
-public interface PluginSelectorTextComponentLike<C extends PluginSelectorTextComponentLike, A extends PluginSelectorTextComponentAlternativeLike> extends HasText,
+public interface PluginSelectorTextComponentLike<A extends PluginSelectorTextComponentAlternativeLike> extends HasText,
         TreePrintable {
 
     String label();
