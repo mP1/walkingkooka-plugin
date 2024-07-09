@@ -48,7 +48,7 @@ public final class PluginSelectorTextComponent implements HasText,
 
     public static PluginSelectorTextComponent with(final String label,
                                                    final String text,
-                                                   final List<LabelledText> alternatives) {
+                                                   final List<PluginSelectorTextComponentAlternative> alternatives) {
         return new PluginSelectorTextComponent(
                 Objects.requireNonNull(label, "label"),
                 Objects.requireNonNull(text, "text"),
@@ -60,7 +60,7 @@ public final class PluginSelectorTextComponent implements HasText,
 
     private PluginSelectorTextComponent(final String label,
                                         final String text,
-                                        final List<LabelledText> alternatives) {
+                                        final List<PluginSelectorTextComponentAlternative> alternatives) {
         this.label = label;
         this.text = text;
         this.alternatives = alternatives;
@@ -79,11 +79,11 @@ public final class PluginSelectorTextComponent implements HasText,
 
     private final String text;
 
-    public List<LabelledText> alternatives() {
+    public List<PluginSelectorTextComponentAlternative> alternatives() {
         return this.alternatives;
     }
 
-    private final List<LabelledText> alternatives;
+    private final List<PluginSelectorTextComponentAlternative> alternatives;
 
     // HashCodeEqualsDefined..........................................................................................
 
@@ -127,8 +127,8 @@ public final class PluginSelectorTextComponent implements HasText,
 
         printer.indent();
         {
-            for (final LabelledText labelledText : this.alternatives) {
-                labelledText.printTree(printer);
+            for (final PluginSelectorTextComponentAlternative pluginSelectorTextComponentAlternative : this.alternatives) {
+                pluginSelectorTextComponentAlternative.printTree(printer);
             }
         }
         printer.outdent();
@@ -169,7 +169,7 @@ public final class PluginSelectorTextComponent implements HasText,
 
         String label = null;
         String text = null;
-        List<LabelledText> alternatives = Lists.empty();
+        List<PluginSelectorTextComponentAlternative> alternatives = Lists.empty();
 
         for (final JsonNode child : node.objectOrFail().children()) {
             final JsonPropertyName name = child.name();
@@ -184,7 +184,7 @@ public final class PluginSelectorTextComponent implements HasText,
                 case ALTERNATIVES_PROPERTY_STRING:
                     alternatives = context.unmarshallList(
                             child,
-                            LabelledText.class
+                            PluginSelectorTextComponentAlternative.class
                     );
                     break;
                 default:
