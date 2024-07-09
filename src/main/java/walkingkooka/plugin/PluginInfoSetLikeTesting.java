@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Miroslav Pokorny (github.com/mP1)
+ * Copyright 2024 Miroslav Pokorny (github.com/mP1)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,17 +18,11 @@
 package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
-import walkingkooka.ToStringTesting;
 import walkingkooka.naming.Name;
 import walkingkooka.net.http.server.hateos.HateosResourceSetTesting;
 import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.HasTextTesting;
-
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface PluginInfoSetLikeTesting<S extends PluginInfoSetLike<I, N>, I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends HateosResourceSetTesting<S, I, N>,
         ParseStringTesting<S>,
