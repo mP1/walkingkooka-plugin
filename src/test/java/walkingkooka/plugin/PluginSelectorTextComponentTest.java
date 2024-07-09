@@ -1,6 +1,7 @@
 package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.Cast;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.reflect.ClassTesting2;
@@ -8,6 +9,7 @@ import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.JsonNode;
+import walkingkooka.tree.json.marshall.JsonNodeContext;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
@@ -15,10 +17,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class PluginSelectorTextComponentTest implements HashCodeEqualsDefinedTesting2<PluginSelectorTextComponent>,
+public final class PluginSelectorTextComponentTest implements HashCodeEqualsDefinedTesting2<PluginSelectorTextComponent<PluginSelectorTextComponentAlternative>>,
         HasTextTesting,
-        ClassTesting2<PluginSelectorTextComponent>,
-        JsonNodeMarshallingTesting<PluginSelectorTextComponent>,
+        ClassTesting2<PluginSelectorTextComponent<PluginSelectorTextComponentAlternative>>,
+        JsonNodeMarshallingTesting<PluginSelectorTextComponent<PluginSelectorTextComponentAlternative>>,
         TreePrintableTesting {
 
     private final static String LABEL = "Label123";
@@ -221,16 +223,18 @@ public final class PluginSelectorTextComponentTest implements HashCodeEqualsDefi
     }
 
     @Override
-    public PluginSelectorTextComponent unmarshall(final JsonNode json,
-                                                  final JsonNodeUnmarshallContext context) {
-        return PluginSelectorTextComponent.unmarshall(
+    public PluginSelectorTextComponent<PluginSelectorTextComponentAlternative> unmarshall(final JsonNode json,
+                                                                                          final JsonNodeUnmarshallContext context) {
+        return PluginSelectorTextComponentLike.unmarshall(
                 json,
-                context
+                context,
+                PluginSelectorTextComponent::with,
+                PluginSelectorTextComponentAlternative.class
         );
     }
 
     @Override
-    public PluginSelectorTextComponent createJsonNodeMarshallingValue() {
+    public PluginSelectorTextComponent<PluginSelectorTextComponentAlternative> createJsonNodeMarshallingValue() {
         return PluginSelectorTextComponent.with(
                 LABEL,
                 TEXT,
@@ -238,11 +242,25 @@ public final class PluginSelectorTextComponentTest implements HashCodeEqualsDefi
         );
     }
 
+    static {
+        JsonNodeContext.register(
+                JsonNodeContext.computeTypeName(PluginSelectorTextComponent.class),
+                (json, context) -> PluginSelectorTextComponentLike.unmarshall(
+                        json,
+                        context,
+                        PluginSelectorTextComponent::with,
+                        PluginSelectorTextComponentAlternative.class
+                ),
+                PluginSelectorTextComponent::marshall,
+                PluginSelectorTextComponent.class
+        );
+    }
+
     // Class............................................................................................................
 
     @Override
-    public Class<PluginSelectorTextComponent> type() {
-        return PluginSelectorTextComponent.class;
+    public Class<PluginSelectorTextComponent<PluginSelectorTextComponentAlternative>> type() {
+        return Cast.to(PluginSelectorTextComponent.class);
     }
 
     @Override
