@@ -192,7 +192,7 @@ public interface PluginSelectorTextComponentLikeTesting<T extends PluginSelector
     @Test
     default void testJsonMarshall() {
         this.marshallAndCheck(
-                PluginSelectorTextComponent.with(
+                this.createPluginSelectorTextComponentLike(
                         LABEL,
                         TEXT,
                         this.createPluginSelectorTextComponentAlternativesLike(2)
@@ -231,7 +231,7 @@ public interface PluginSelectorTextComponentLikeTesting<T extends PluginSelector
                         "    }\n" +
                         "  ]\n" +
                         "}",
-                PluginSelectorTextComponent.with(
+                this.createPluginSelectorTextComponentLike(
                         LABEL,
                         TEXT,
                         this.createPluginSelectorTextComponentAlternativesLike(2)
