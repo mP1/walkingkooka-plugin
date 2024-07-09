@@ -32,10 +32,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class LabelledTextAndAlternativesTest implements HashCodeEqualsDefinedTesting2<LabelledTextAndAlternatives>,
+public final class PluginSelectorTextComponentTest implements HashCodeEqualsDefinedTesting2<PluginSelectorTextComponent>,
         HasTextTesting,
-        ClassTesting2<LabelledTextAndAlternatives>,
-        JsonNodeMarshallingTesting<LabelledTextAndAlternatives>,
+        ClassTesting2<PluginSelectorTextComponent>,
+        JsonNodeMarshallingTesting<PluginSelectorTextComponent>,
         TreePrintableTesting {
 
     private final static String LABEL = "Label123";
@@ -57,7 +57,7 @@ public final class LabelledTextAndAlternativesTest implements HashCodeEqualsDefi
     public void testWithNullLabelFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> LabelledTextAndAlternatives.with(
+                () -> PluginSelectorTextComponent.with(
                         null,
                         TEXT,
                         ALTERNATIVES
@@ -69,7 +69,7 @@ public final class LabelledTextAndAlternativesTest implements HashCodeEqualsDefi
     public void testWithNullLTextFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> LabelledTextAndAlternatives.with(
+                () -> PluginSelectorTextComponent.with(
                         LABEL,
                         null,
                         ALTERNATIVES
@@ -79,23 +79,23 @@ public final class LabelledTextAndAlternativesTest implements HashCodeEqualsDefi
 
     @Test
     public void testWith() {
-        final LabelledTextAndAlternatives labelledTextAndAlternatives = LabelledTextAndAlternatives.with(
+        final PluginSelectorTextComponent pluginSelectorTextComponent = PluginSelectorTextComponent.with(
                 LABEL,
                 TEXT,
                 ALTERNATIVES
         );
         this.checkEquals(
                 LABEL,
-                labelledTextAndAlternatives.label(),
+                pluginSelectorTextComponent.label(),
                 "label"
         );
         this.textAndCheck(
-                labelledTextAndAlternatives,
+                pluginSelectorTextComponent,
                 TEXT
         );
         this.checkEquals(
                 ALTERNATIVES,
-                labelledTextAndAlternatives.alternatives(),
+                pluginSelectorTextComponent.alternatives(),
                 "label"
         );
     }
@@ -106,18 +106,18 @@ public final class LabelledTextAndAlternativesTest implements HashCodeEqualsDefi
         final String text = "";
         final List<LabelledText> alternatives = Lists.empty();
 
-        final LabelledTextAndAlternatives labelledTextAndAlternatives = LabelledTextAndAlternatives.with(
+        final PluginSelectorTextComponent pluginSelectorTextComponent = PluginSelectorTextComponent.with(
                 label,
                 text,
                 alternatives
         );
         this.checkEquals(
                 label,
-                labelledTextAndAlternatives.label(),
+                pluginSelectorTextComponent.label(),
                 "label"
         );
         this.textAndCheck(
-                labelledTextAndAlternatives,
+                pluginSelectorTextComponent,
                 text
         );
     }
@@ -127,7 +127,7 @@ public final class LabelledTextAndAlternativesTest implements HashCodeEqualsDefi
     @Test
     public void testEqualsDifferentLabel() {
         this.checkNotEquals(
-                LabelledTextAndAlternatives.with(
+                PluginSelectorTextComponent.with(
                         "different " + LABEL,
                         TEXT,
                         ALTERNATIVES
@@ -138,7 +138,7 @@ public final class LabelledTextAndAlternativesTest implements HashCodeEqualsDefi
     @Test
     public void testEqualsDifferentText() {
         this.checkNotEquals(
-                LabelledTextAndAlternatives.with(
+                PluginSelectorTextComponent.with(
                         LABEL,
                         "different " + TEXT,
                         ALTERNATIVES
@@ -149,7 +149,7 @@ public final class LabelledTextAndAlternativesTest implements HashCodeEqualsDefi
     @Test
     public void testEqualsDifferentAlternatives() {
         this.checkNotEquals(
-                LabelledTextAndAlternatives.with(
+                PluginSelectorTextComponent.with(
                         LABEL,
                         TEXT,
                         Lists.empty()
@@ -158,8 +158,8 @@ public final class LabelledTextAndAlternativesTest implements HashCodeEqualsDefi
     }
 
     @Override
-    public LabelledTextAndAlternatives createObject() {
-        return LabelledTextAndAlternatives.with(
+    public PluginSelectorTextComponent createObject() {
+        return PluginSelectorTextComponent.with(
                 LABEL,
                 TEXT,
                 ALTERNATIVES
@@ -171,7 +171,7 @@ public final class LabelledTextAndAlternativesTest implements HashCodeEqualsDefi
     @Test
     public void testTreePrint() {
         this.treePrintAndCheck(
-                LabelledTextAndAlternatives.with(
+                PluginSelectorTextComponent.with(
                         LABEL,
                         TEXT,
                         ALTERNATIVES
@@ -190,7 +190,7 @@ public final class LabelledTextAndAlternativesTest implements HashCodeEqualsDefi
     @Test
     public void testJsonMarshall() {
         this.marshallAndCheck(
-                LabelledTextAndAlternatives.with(
+                PluginSelectorTextComponent.with(
                         LABEL,
                         TEXT,
                         ALTERNATIVES
@@ -229,7 +229,7 @@ public final class LabelledTextAndAlternativesTest implements HashCodeEqualsDefi
                         "    }\n" +
                         "  ]\n" +
                         "}",
-                LabelledTextAndAlternatives.with(
+                PluginSelectorTextComponent.with(
                         LABEL,
                         TEXT,
                         ALTERNATIVES
@@ -238,17 +238,17 @@ public final class LabelledTextAndAlternativesTest implements HashCodeEqualsDefi
     }
 
     @Override
-    public LabelledTextAndAlternatives unmarshall(final JsonNode json,
+    public PluginSelectorTextComponent unmarshall(final JsonNode json,
                                                   final JsonNodeUnmarshallContext context) {
-        return LabelledTextAndAlternatives.unmarshall(
+        return PluginSelectorTextComponent.unmarshall(
                 json,
                 context
         );
     }
 
     @Override
-    public LabelledTextAndAlternatives createJsonNodeMarshallingValue() {
-        return LabelledTextAndAlternatives.with(
+    public PluginSelectorTextComponent createJsonNodeMarshallingValue() {
+        return PluginSelectorTextComponent.with(
                 LABEL,
                 TEXT,
                 ALTERNATIVES
@@ -258,8 +258,8 @@ public final class LabelledTextAndAlternativesTest implements HashCodeEqualsDefi
     // Class............................................................................................................
 
     @Override
-    public Class<LabelledTextAndAlternatives> type() {
-        return LabelledTextAndAlternatives.class;
+    public Class<PluginSelectorTextComponent> type() {
+        return PluginSelectorTextComponent.class;
     }
 
     @Override

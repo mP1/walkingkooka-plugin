@@ -34,22 +34,22 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Should be used to present a text component within a pattern along with possible alternatives.
+ * Should be used to present a text component within a {@link PluginSelector} along with possible alternatives.
  * <pre>
  * dd / mm / yyyy
  *
  * DAY SLASH MONTH SLASH YEAR
  * </pre>
- * The above spreadsheet format pattern has 5 {@link LabelledTextAndAlternatives}, the dd component would have several
+ * The above spreadsheet format pattern has 5 {@link PluginSelectorTextComponent}, the dd component would have several
  * alternatives such as D, DDD, DDDD, DDDDD
  */
-public final class LabelledTextAndAlternatives implements HasText,
+public final class PluginSelectorTextComponent implements HasText,
         TreePrintable {
 
-    public static LabelledTextAndAlternatives with(final String label,
+    public static PluginSelectorTextComponent with(final String label,
                                                    final String text,
                                                    final List<LabelledText> alternatives) {
-        return new LabelledTextAndAlternatives(
+        return new PluginSelectorTextComponent(
                 Objects.requireNonNull(label, "label"),
                 Objects.requireNonNull(text, "text"),
                 Lists.immutable(
@@ -58,7 +58,7 @@ public final class LabelledTextAndAlternatives implements HasText,
         );
     }
 
-    private LabelledTextAndAlternatives(final String label,
+    private PluginSelectorTextComponent(final String label,
                                         final String text,
                                         final List<LabelledText> alternatives) {
         this.label = label;
@@ -99,11 +99,11 @@ public final class LabelledTextAndAlternatives implements HasText,
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-                other instanceof LabelledTextAndAlternatives &&
+                other instanceof PluginSelectorTextComponent &&
                         this.equals0(Cast.to(other));
     }
 
-    private boolean equals0(final LabelledTextAndAlternatives other) {
+    private boolean equals0(final PluginSelectorTextComponent other) {
         return this.label.equals(other.label) &&
                 this.text.equals(other.text) &&
                 this.alternatives.equals(other.alternatives);
@@ -161,9 +161,9 @@ public final class LabelledTextAndAlternatives implements HasText,
     }
 
     /**
-     * Factory that creates a {@link LabelledTextAndAlternatives} parse a {@link JsonNode}.
+     * Factory that creates a {@link PluginSelectorTextComponent} parse a {@link JsonNode}.
      */
-    static LabelledTextAndAlternatives unmarshall(final JsonNode node,
+    static PluginSelectorTextComponent unmarshall(final JsonNode node,
                                                   final JsonNodeUnmarshallContext context) {
         Objects.requireNonNull(node, "node");
 
@@ -208,10 +208,10 @@ public final class LabelledTextAndAlternatives implements HasText,
 
     static {
         JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(LabelledTextAndAlternatives.class),
-                LabelledTextAndAlternatives::unmarshall,
-                LabelledTextAndAlternatives::marshall,
-                LabelledTextAndAlternatives.class
+                JsonNodeContext.computeTypeName(PluginSelectorTextComponent.class),
+                PluginSelectorTextComponent::unmarshall,
+                PluginSelectorTextComponent::marshall,
+                PluginSelectorTextComponent.class
         );
     }
 }
