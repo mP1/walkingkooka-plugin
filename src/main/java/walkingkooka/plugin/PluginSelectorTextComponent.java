@@ -38,7 +38,7 @@ import java.util.Objects;
  * The above spreadsheet format pattern has 5 {@link PluginSelectorTextComponent}, the dd component would have several
  * alternatives such as D, DDD, DDDD, DDDDD
  */
-public final class PluginSelectorTextComponent implements PluginSelectorTextComponentLike<PluginSelectorTextComponent, PluginSelectorTextComponentAlternative> {
+public final class PluginSelectorTextComponent implements PluginSelectorTextComponentLike<PluginSelectorTextComponentAlternative> {
 
     public static PluginSelectorTextComponent with(final String label,
                                                    final String text,
