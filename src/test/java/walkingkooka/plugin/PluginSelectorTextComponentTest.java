@@ -57,23 +57,23 @@ public final class PluginSelectorTextComponentTest implements PluginSelectorText
 
     @Test
     public void testWith() {
-        final PluginSelectorTextComponent pluginSelectorTextComponent = PluginSelectorTextComponent.with(
+        final PluginSelectorTextComponent<PluginSelectorTextComponentAlternative> component = PluginSelectorTextComponent.with(
                 LABEL,
                 TEXT,
                 ALTERNATIVES
         );
         this.checkEquals(
                 LABEL,
-                pluginSelectorTextComponent.label(),
+                component.label(),
                 "label"
         );
         this.textAndCheck(
-                pluginSelectorTextComponent,
+                component,
                 TEXT
         );
         this.checkEquals(
                 ALTERNATIVES,
-                pluginSelectorTextComponent.alternatives(),
+                component.alternatives(),
                 "label"
         );
     }
@@ -84,18 +84,18 @@ public final class PluginSelectorTextComponentTest implements PluginSelectorText
         final String text = "";
         final List<PluginSelectorTextComponentAlternative> alternatives = Lists.empty();
 
-        final PluginSelectorTextComponent pluginSelectorTextComponent = PluginSelectorTextComponent.with(
+        final PluginSelectorTextComponent<PluginSelectorTextComponentAlternative> component = PluginSelectorTextComponent.with(
                 label,
                 text,
                 alternatives
         );
         this.checkEquals(
                 label,
-                pluginSelectorTextComponent.label(),
+                component.label(),
                 "label"
         );
         this.textAndCheck(
-                pluginSelectorTextComponent,
+                component,
                 text
         );
     }
