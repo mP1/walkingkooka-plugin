@@ -17,108 +17,18 @@
 
 package walkingkooka.plugin;
 
-import org.junit.jupiter.api.Test;
-import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
-import walkingkooka.text.HasTextTesting;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-public final class PluginSelectorTextComponentAlternativeTest implements HashCodeEqualsDefinedTesting2<PluginSelectorTextComponentAlternative>,
-        HasTextTesting,
+public final class PluginSelectorTextComponentAlternativeTest implements PluginSelectorTextComponentAlternativeLikeTesting<PluginSelectorTextComponentAlternative>,
         ClassTesting2<PluginSelectorTextComponentAlternative> {
 
-    private final static String LABEL = "Label123";
-
-    private final static String TEXT = "Text123";
-
-    @Test
-    public void testWithNullLabelFails() {
-        assertThrows(
-                NullPointerException.class,
-                () -> PluginSelectorTextComponentAlternative.with(
-                        null,
-                        TEXT
-                )
-        );
-    }
-
-    @Test
-    public void testWithNullLTextFails() {
-        assertThrows(
-                NullPointerException.class,
-                () -> PluginSelectorTextComponentAlternative.with(
-                        LABEL,
-                        null
-                )
-        );
-    }
-
-    @Test
-    public void testWith() {
-        final PluginSelectorTextComponentAlternative alternative = PluginSelectorTextComponentAlternative.with(
-                LABEL,
-                TEXT
-        );
-        this.checkEquals(
-                LABEL,
-                alternative.label(),
-                "label"
-        );
-        this.textAndCheck(
-                alternative,
-                TEXT
-        );
-    }
-
-    @Test
-    public void testWithEmptyLabelAndEmptyText() {
-        final String label = "";
-        final String text = "";
-
-        final PluginSelectorTextComponentAlternative alternative = PluginSelectorTextComponentAlternative.with(
-                label,
-                text
-        );
-        this.checkEquals(
-                label,
-                alternative.label(),
-                "label"
-        );
-        this.textAndCheck(
-                alternative,
-                text
-        );
-    }
-
-    // hashCode/equals..................................................................................................
-
-    @Test
-    public void testEqualsDifferentLabel() {
-        this.checkNotEquals(
-                PluginSelectorTextComponentAlternative.with(
-                        "different " + LABEL,
-                        TEXT
-                )
-        );
-    }
-
-    @Test
-    public void testEqualsDifferentText() {
-        this.checkNotEquals(
-                PluginSelectorTextComponentAlternative.with(
-                        LABEL,
-                        "different " + TEXT
-                )
-        );
-    }
-
     @Override
-    public PluginSelectorTextComponentAlternative createObject() {
+    public PluginSelectorTextComponentAlternative createPluginSelectorTextComponentAlternativeLike(final String label,
+                                                                                                   final String text) {
         return PluginSelectorTextComponentAlternative.with(
-                LABEL,
-                TEXT
+                label,
+                text
         );
     }
 
