@@ -21,9 +21,6 @@ import walkingkooka.Cast;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.text.CharSequences;
 import walkingkooka.text.printer.IndentingPrinter;
-import walkingkooka.tree.json.JsonNode;
-import walkingkooka.tree.json.marshall.JsonNodeContext;
-import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.List;
 import java.util.Objects;
@@ -38,12 +35,12 @@ import java.util.Objects;
  * The above spreadsheet format pattern has 5 {@link PluginSelectorTextComponent}, the dd component would have several
  * alternatives such as D, DDD, DDDD, DDDDD
  */
-public final class PluginSelectorTextComponent implements PluginSelectorTextComponentLike<PluginSelectorTextComponentAlternative> {
+public final class PluginSelectorTextComponent<T extends PluginSelectorTextComponentAlternativeLike> implements PluginSelectorTextComponentLike<T> {
 
-    public static PluginSelectorTextComponent with(final String label,
-                                                   final String text,
-                                                   final List<PluginSelectorTextComponentAlternative> alternatives) {
-        return new PluginSelectorTextComponent(
+    public static <T extends PluginSelectorTextComponentAlternativeLike> PluginSelectorTextComponent<T> with(final String label,
+                                                                                                             final String text,
+                                                                                                             final List<T> alternatives) {
+        return new PluginSelectorTextComponent<>(
                 Objects.requireNonNull(label, "label"),
                 Objects.requireNonNull(text, "text"),
                 Lists.immutable(
@@ -54,7 +51,7 @@ public final class PluginSelectorTextComponent implements PluginSelectorTextComp
 
     private PluginSelectorTextComponent(final String label,
                                         final String text,
-                                        final List<PluginSelectorTextComponentAlternative> alternatives) {
+                                        final List<T> alternatives) {
         this.label = label;
         this.text = text;
         this.alternatives = alternatives;
@@ -73,11 +70,11 @@ public final class PluginSelectorTextComponent implements PluginSelectorTextComp
 
     private final String text;
 
-    public List<PluginSelectorTextComponentAlternative> alternatives() {
+    public List<T> alternatives() {
         return this.alternatives;
     }
 
-    private final List<PluginSelectorTextComponentAlternative> alternatives;
+    private final List<T> alternatives;
 
     // HashCodeEqualsDefined..........................................................................................
 
@@ -97,7 +94,7 @@ public final class PluginSelectorTextComponent implements PluginSelectorTextComp
                         this.equals0(Cast.to(other));
     }
 
-    private boolean equals0(final PluginSelectorTextComponent other) {
+    private boolean equals0(final PluginSelectorTextComponent<?> other) {
         return this.label.equals(other.label) &&
                 this.text.equals(other.text) &&
                 this.alternatives.equals(other.alternatives);
@@ -121,34 +118,10 @@ public final class PluginSelectorTextComponent implements PluginSelectorTextComp
 
         printer.indent();
         {
-            for (final PluginSelectorTextComponentAlternative pluginSelectorTextComponentAlternative : this.alternatives) {
-                pluginSelectorTextComponentAlternative.printTree(printer);
+            for (final T alternative : this.alternatives) {
+                alternative.printTree(printer);
             }
         }
         printer.outdent();
-    }
-
-    // Json.............................................................................................................
-
-    /**
-     * Factory that creates a {@link PluginSelectorTextComponent} from a {@link JsonNode}.
-     */
-    static PluginSelectorTextComponent unmarshall(final JsonNode node,
-                                                  final JsonNodeUnmarshallContext context) {
-        return PluginSelectorTextComponentLike.unmarshall(
-                node,
-                context,
-                PluginSelectorTextComponent::with,
-                PluginSelectorTextComponentAlternative.class
-        );
-    }
-
-    static {
-        JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(PluginSelectorTextComponent.class),
-                PluginSelectorTextComponent::unmarshall,
-                PluginSelectorTextComponent::marshall,
-                PluginSelectorTextComponent.class
-        );
     }
 }
