@@ -25,9 +25,9 @@ import walkingkooka.text.HasTextTesting;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class LabelledTextTest implements HashCodeEqualsDefinedTesting2<LabelledText>,
+public final class PluginSelectorTextComponentAlternativeTest implements HashCodeEqualsDefinedTesting2<PluginSelectorTextComponentAlternative>,
         HasTextTesting,
-        ClassTesting2<LabelledText> {
+        ClassTesting2<PluginSelectorTextComponentAlternative> {
 
     private final static String LABEL = "Label123";
 
@@ -37,7 +37,7 @@ public final class LabelledTextTest implements HashCodeEqualsDefinedTesting2<Lab
     public void testWithNullLabelFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> LabelledText.with(
+                () -> PluginSelectorTextComponentAlternative.with(
                         null,
                         TEXT
                 )
@@ -48,7 +48,7 @@ public final class LabelledTextTest implements HashCodeEqualsDefinedTesting2<Lab
     public void testWithNullLTextFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> LabelledText.with(
+                () -> PluginSelectorTextComponentAlternative.with(
                         LABEL,
                         null
                 )
@@ -57,17 +57,17 @@ public final class LabelledTextTest implements HashCodeEqualsDefinedTesting2<Lab
 
     @Test
     public void testWith() {
-        final LabelledText labelledText = LabelledText.with(
+        final PluginSelectorTextComponentAlternative alternative = PluginSelectorTextComponentAlternative.with(
                 LABEL,
                 TEXT
         );
         this.checkEquals(
                 LABEL,
-                labelledText.label(),
+                alternative.label(),
                 "label"
         );
         this.textAndCheck(
-                labelledText,
+                alternative,
                 TEXT
         );
     }
@@ -77,17 +77,17 @@ public final class LabelledTextTest implements HashCodeEqualsDefinedTesting2<Lab
         final String label = "";
         final String text = "";
 
-        final LabelledText labelledText = LabelledText.with(
+        final PluginSelectorTextComponentAlternative alternative = PluginSelectorTextComponentAlternative.with(
                 label,
                 text
         );
         this.checkEquals(
                 label,
-                labelledText.label(),
+                alternative.label(),
                 "label"
         );
         this.textAndCheck(
-                labelledText,
+                alternative,
                 text
         );
     }
@@ -97,7 +97,7 @@ public final class LabelledTextTest implements HashCodeEqualsDefinedTesting2<Lab
     @Test
     public void testEqualsDifferentLabel() {
         this.checkNotEquals(
-                LabelledText.with(
+                PluginSelectorTextComponentAlternative.with(
                         "different " + LABEL,
                         TEXT
                 )
@@ -107,7 +107,7 @@ public final class LabelledTextTest implements HashCodeEqualsDefinedTesting2<Lab
     @Test
     public void testEqualsDifferentText() {
         this.checkNotEquals(
-                LabelledText.with(
+                PluginSelectorTextComponentAlternative.with(
                         LABEL,
                         "different " + TEXT
                 )
@@ -115,8 +115,8 @@ public final class LabelledTextTest implements HashCodeEqualsDefinedTesting2<Lab
     }
 
     @Override
-    public LabelledText createObject() {
-        return LabelledText.with(
+    public PluginSelectorTextComponentAlternative createObject() {
+        return PluginSelectorTextComponentAlternative.with(
                 LABEL,
                 TEXT
         );
@@ -125,8 +125,8 @@ public final class LabelledTextTest implements HashCodeEqualsDefinedTesting2<Lab
     // Class............................................................................................................
 
     @Override
-    public Class<LabelledText> type() {
-        return LabelledText.class;
+    public Class<PluginSelectorTextComponentAlternative> type() {
+        return PluginSelectorTextComponentAlternative.class;
     }
 
     @Override
