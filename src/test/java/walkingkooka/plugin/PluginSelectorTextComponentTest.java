@@ -2,26 +2,19 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
-import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
-import walkingkooka.text.HasTextTesting;
-import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class PluginSelectorTextComponentTest implements HashCodeEqualsDefinedTesting2<PluginSelectorTextComponent<PluginSelectorTextComponentAlternative>>,
-        HasTextTesting,
-        ClassTesting2<PluginSelectorTextComponent<PluginSelectorTextComponentAlternative>>,
-        JsonNodeMarshallingTesting<PluginSelectorTextComponent<PluginSelectorTextComponentAlternative>>,
-        TreePrintableTesting {
+public final class PluginSelectorTextComponentTest implements PluginSelectorTextComponentLikeTesting<PluginSelectorTextComponent<PluginSelectorTextComponentAlternative>, PluginSelectorTextComponentAlternative>,
+        ClassTesting2<PluginSelectorTextComponent<PluginSelectorTextComponentAlternative>> {
 
     private final static String LABEL = "Label123";
 
@@ -107,6 +100,26 @@ public final class PluginSelectorTextComponentTest implements HashCodeEqualsDefi
         );
     }
 
+    @Override
+    public PluginSelectorTextComponent<PluginSelectorTextComponentAlternative> createPluginSelectorTextComponentLike(final String label,
+                                                                                                                     final String text,
+                                                                                                                     final List<PluginSelectorTextComponentAlternative> alternatives) {
+        return PluginSelectorTextComponent.with(
+                label,
+                text,
+                alternatives
+        );
+    }
+
+    @Override
+    public PluginSelectorTextComponentAlternative createPluginSelectorTextComponentAlternativesLike(final String label,
+                                                                                                    final String text) {
+        return PluginSelectorTextComponentAlternative.with(
+                label,
+                text
+        );
+    }
+
     // hashCode/equals..................................................................................................
 
     @Test
@@ -170,57 +183,7 @@ public final class PluginSelectorTextComponentTest implements HashCodeEqualsDefi
         );
     }
 
-    // json.............................................................................................................
-
-    @Test
-    public void testJsonMarshall() {
-        this.marshallAndCheck(
-                PluginSelectorTextComponent.with(
-                        LABEL,
-                        TEXT,
-                        ALTERNATIVES
-                ),
-                "{\n" +
-                        "  \"label\": \"Label123\",\n" +
-                        "  \"text\": \"Text123\",\n" +
-                        "  \"alternatives\": [\n" +
-                        "    {\n" +
-                        "      \"label\": \"alternative-label-1\",\n" +
-                        "      \"text\": \"alternative-text-1\"\n" +
-                        "    },\n" +
-                        "    {\n" +
-                        "      \"label\": \"alternative-label-2\",\n" +
-                        "      \"text\": \"alternative-text-2\"\n" +
-                        "    }\n" +
-                        "  ]\n" +
-                        "}"
-        );
-    }
-
-    @Test
-    public void testJsonUnmarshall() {
-        this.unmarshallAndCheck(
-                "{\n" +
-                        "  \"label\": \"Label123\",\n" +
-                        "  \"text\": \"Text123\",\n" +
-                        "  \"alternatives\": [\n" +
-                        "    {\n" +
-                        "      \"label\": \"alternative-label-1\",\n" +
-                        "      \"text\": \"alternative-text-1\"\n" +
-                        "    },\n" +
-                        "    {\n" +
-                        "      \"label\": \"alternative-label-2\",\n" +
-                        "      \"text\": \"alternative-text-2\"\n" +
-                        "    }\n" +
-                        "  ]\n" +
-                        "}",
-                PluginSelectorTextComponent.with(
-                        LABEL,
-                        TEXT,
-                        ALTERNATIVES
-                )
-        );
-    }
+    // json..............................................................................................................
 
     @Override
     public PluginSelectorTextComponent<PluginSelectorTextComponentAlternative> unmarshall(final JsonNode json,
@@ -230,15 +193,6 @@ public final class PluginSelectorTextComponentTest implements HashCodeEqualsDefi
                 context,
                 PluginSelectorTextComponent::with,
                 PluginSelectorTextComponentAlternative.class
-        );
-    }
-
-    @Override
-    public PluginSelectorTextComponent<PluginSelectorTextComponentAlternative> createJsonNodeMarshallingValue() {
-        return PluginSelectorTextComponent.with(
-                LABEL,
-                TEXT,
-                ALTERNATIVES
         );
     }
 
