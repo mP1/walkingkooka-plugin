@@ -472,16 +472,16 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     }
 
     private void evaluateTextFails(final String selector,
-                                         final BiFunction<TextCursor, ParserContext, Optional<StringName>> nameParserAndFactory,
-                                         final BiFunction<StringName, List<?>, TestProvided> provider,
-                                         final String expected) {
+                                   final BiFunction<TextCursor, ParserContext, Optional<StringName>> nameParserAndFactory,
+                                   final BiFunction<StringName, List<?>, TestProvided> provider,
+                                   final String expected) {
         final IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
                 () -> PluginSelector.parse(
                         selector,
-                                Names::string
-                        ).evaluateText(
-                                nameParserAndFactory,
+                        Names::string
+                ).evaluateText(
+                        nameParserAndFactory,
                         provider
                 )
         );
@@ -492,7 +492,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     }
 
     private void evaluateTextAndCheck(final String selector,
-                                            final TestProvided expected) {
+                                      final TestProvided expected) {
         this.evaluateTextAndCheck(
                 selector,
                 NAME_PARSER_AND_FACTORY,
@@ -501,11 +501,11 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         );
     }
     private void evaluateTextAndCheck(final String selector,
-                                            final BiFunction<TextCursor, ParserContext, Optional<StringName>> nameParserAndCreator,
-                                            final BiFunction<StringName, List<?>, TestProvided> provider,
-                                            final TestProvided expected) {
+                                      final BiFunction<TextCursor, ParserContext, Optional<StringName>> nameParserAndCreator,
+                                      final BiFunction<StringName, List<?>, TestProvided> provider,
+                                      final TestProvided expected) {
         this.checkEquals(
-                Optional.of(expected),
+                expected,
                 PluginSelector.parse(
                         selector,
                         Names::string
