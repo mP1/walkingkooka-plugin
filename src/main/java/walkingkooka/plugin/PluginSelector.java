@@ -18,14 +18,33 @@
 package walkingkooka.plugin;
 
 import walkingkooka.InvalidCharacterException;
+import walkingkooka.collect.list.Lists;
+import walkingkooka.datetime.DateTimeContexts;
+import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.naming.HasName;
 import walkingkooka.naming.Name;
+import walkingkooka.predicate.character.CharPredicates;
+import walkingkooka.text.CaseSensitivity;
 import walkingkooka.text.CharSequences;
 import walkingkooka.text.HasText;
+import walkingkooka.text.cursor.TextCursor;
+import walkingkooka.text.cursor.TextCursorLineInfo;
+import walkingkooka.text.cursor.TextCursors;
+import walkingkooka.text.cursor.parser.DoubleParserToken;
+import walkingkooka.text.cursor.parser.DoubleQuotedParserToken;
+import walkingkooka.text.cursor.parser.Parser;
+import walkingkooka.text.cursor.parser.ParserContext;
+import walkingkooka.text.cursor.parser.ParserContexts;
+import walkingkooka.text.cursor.parser.ParserException;
+import walkingkooka.text.cursor.parser.Parsers;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 
+import java.math.MathContext;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -107,6 +126,234 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
     }
     
     private final String text;
+
+    // evaluateText...............................................................................................
+
+    /**
+     * Parses the {@link #text()} as an expression that contains an optional parameter list which may include
+     * <ul>
+     * <li>{@link PluginNameLike}</li>
+     * <li>double literals including negative or leading minus signs.</li>
+     * <li>a double quoted string literal</li>
+     * </ul>
+     * Sample text.
+     * <pre>
+     * number-to-number
+     * collection ( number-to-boolen, number-number, string-to-local-date "yyyy-mm-dd")
+     * </pre>
+     * The <code>provider</code> will be used to fetch <code>provided</code>> with any parameters.
+     */
+    public <N extends Name, T> Optional<T> evaluateText(final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
+                                                        final BiFunction<N, List<?>, T> provider) {
+        Objects.requireNonNull(nameParserAndFactory, "nameParserAndFactory");
+        Objects.requireNonNull(provider, "provider");
+
+        final TextCursor nameCursor = TextCursors.charSequence(this.name().value());
+        final Optional<N> maybeName = nameParserAndFactory.apply(
+                nameCursor,
+                PARSER_CONTEXT
+        );
+
+        T provided = null;
+
+        if (maybeName.isPresent() && nameCursor.isEmpty()) {
+
+            final TextCursor cursor = TextCursors.charSequence(this.text());
+
+            final List<?> parameters = parseParameters(
+                    cursor,
+                    nameParserAndFactory,
+                    provider
+            );
+
+            skipSpaces(cursor);
+
+            if (false == cursor.isEmpty()) {
+                invalidCharacter(cursor);
+            }
+
+            provided = provider.apply(
+                    maybeName.get(),
+                    parameters
+            );
+        }
+
+        return Optional.ofNullable(provided);
+    }
+
+    /**
+     * Attempts to parse an optional plugin including its parameters which must be within parens.
+     */
+    private <N extends Name, T> Optional<T> parseNameParametersAndCreate(final TextCursor cursor,
+                                                                         final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
+                                                                         final BiFunction<N, List<?>, T> provider) {
+        final Optional<N> maybeName = nameParserAndFactory.apply(
+                cursor,
+                PARSER_CONTEXT
+        );
+
+        final T provided;
+        if (maybeName.isPresent()) {
+            provided = provider.apply(
+                    maybeName.get(),
+                    parseParameters(
+                            cursor,
+                            nameParserAndFactory,
+                            provider
+                    )
+            );
+        } else {
+            provided = null;
+        }
+
+        return Optional.ofNullable(provided);
+    }
+
+    /**
+     * Tries to parse a parameter list if an OPEN-PARENS is present.
+     */
+    private <N extends Name, T> List<Object> parseParameters(final TextCursor cursor,
+                                                             final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
+                                                             final BiFunction<N, List<?>, T> provider) {
+        skipSpaces(cursor);
+
+        final List<Object> parameters = Lists.array();
+
+        if (tryMatch(PARAMETER_BEGIN, cursor)) {
+            for (; ; ) {
+                skipSpaces(cursor);
+
+                // try parsing for a provided with or without parameters
+                final Optional<T> provided = parseNameParametersAndCreate(
+                        cursor,
+                        nameParserAndFactory,
+                        provider
+                );
+                if (provided.isPresent()) {
+                    parameters.add(provided.get());
+                    continue;
+                }
+
+                // try for a double literal
+                final Optional<Double> maybeNumber = NUMBER_LITERAL.parse(
+                        cursor,
+                        PARSER_CONTEXT
+                ).map(
+                        t -> t.cast(DoubleParserToken.class).value()
+                );
+                if (maybeNumber.isPresent()) {
+                    parameters.add(maybeNumber.get());
+                    continue;
+                }
+
+                // try for a string literal
+                try {
+                    final Optional<String> maybeString = STRING_LITERAL.parse(
+                            cursor,
+                            PARSER_CONTEXT
+                    ).map(
+                            t -> t.cast(DoubleQuotedParserToken.class).value()
+                    );
+                    if (maybeString.isPresent()) {
+                        parameters.add(maybeString.get());
+                        continue;
+                    }
+                } catch (final ParserException cause) {
+                    throw new IllegalArgumentException(cause.getMessage(), cause);
+                }
+
+                if (tryMatch(PARAMETER_SEPARATOR, cursor)) {
+                    continue;
+                }
+
+                if (tryMatch(PARAMETER_END, cursor)) {
+                    break;
+                }
+
+                // must be an invalid character complain!
+                invalidCharacter(cursor);
+            }
+        }
+
+        return Lists.immutable(parameters);
+    }
+
+    /**
+     * Consumes any whitespace, don't really care how many or if any were skipped.
+     */
+    private static void skipSpaces(final TextCursor cursor) {
+        SPACE.parse(cursor, PARSER_CONTEXT);
+    }
+
+    /**
+     * Matches any whitespace.
+     */
+    private final static Parser<ParserContext> SPACE = Parsers.character(CharPredicates.whitespace())
+            .repeating();
+
+    /**
+     * Returns true if the token represented by the given {@link Parser} was found.
+     */
+    private static boolean tryMatch(final Parser<ParserContext> parser,
+                                    final TextCursor cursor) {
+        return parser.parse(
+                cursor,
+                PARSER_CONTEXT
+        ).isPresent();
+    }
+
+    /**
+     * Matches a LEFT PARENS which marks the start of a plugin parameters.
+     */
+    private final static Parser<ParserContext> PARAMETER_BEGIN = Parsers.string("(", CaseSensitivity.SENSITIVE);
+
+    /**
+     * Matches a COMMA which separates individual parameters.
+     */
+    private final static Parser<ParserContext> PARAMETER_SEPARATOR = Parsers.string(",", CaseSensitivity.SENSITIVE);
+
+    /**
+     * Matches a RIGHT PARENS which marks the end of a plugin parameters.
+     */
+    private final static Parser<ParserContext> PARAMETER_END = Parsers.string(")", CaseSensitivity.SENSITIVE);
+
+    /**
+     * Number literal parameters are double literals using DOT as the decimal separator.
+     */
+    private final static Parser<ParserContext> NUMBER_LITERAL = Parsers.doubleParser();
+
+    /**
+     * String literal parameters must be double-quoted and support backslash escaping.
+     */
+    private final static Parser<ParserContext> STRING_LITERAL = Parsers.doubleQuoted();
+
+    /**
+     * Singleton which can be reused.
+     */
+    private final static ParserContext PARSER_CONTEXT = ParserContexts.basic(
+            DateTimeContexts.fake(), // dates are not supported
+            DecimalNumberContexts.american(MathContext.UNLIMITED) // only the decimal char is actually required.
+    );
+
+    /**
+     * Helper that reports an invalid character.
+     */
+    private void invalidCharacter(final TextCursor cursor) {
+        final TextCursorLineInfo lineInfo = cursor.lineInfo();
+        final int pos = Math.max(
+                lineInfo.textOffset() - 1,
+                0
+        );
+
+        throw new InvalidCharacterException(
+                lineInfo.text()
+                        .toString(),
+                pos
+        ).setTextAndPosition(
+                this.toString(),
+                this.name().textLength() + pos + 1 // +1 or the SPACE following the name
+        );
+    }
 
     // Object...........................................................................................................
 

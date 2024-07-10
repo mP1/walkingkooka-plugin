@@ -20,14 +20,27 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
+import walkingkooka.InvalidCharacterException;
 import walkingkooka.ToStringTesting;
+import walkingkooka.collect.list.Lists;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.HasTextTesting;
+import walkingkooka.text.cursor.TextCursor;
+import walkingkooka.text.cursor.parser.ParserContext;
+import walkingkooka.text.cursor.parser.ParserToken;
+import walkingkooka.text.cursor.parser.Parsers;
+import walkingkooka.text.cursor.parser.StringParserToken;
 import walkingkooka.text.printer.TreePrintableTesting;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -164,6 +177,343 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     @Override
     public RuntimeException parseStringFailedExpected(final RuntimeException thrown) {
         return thrown;
+    }
+
+    // EvaluateText...............................................................................................
+
+    private final static StringName NAME2 = Names.string("converter2");
+
+    private final static StringName NAME3 = Names.string("converter3");
+
+    private final static BiFunction<TextCursor, ParserContext, Optional<StringName>> NAME_PARSER_AND_FACTORY = (final TextCursor text,
+                                                                                                                final ParserContext context) ->
+            Parsers.stringInitialAndPartCharPredicate(
+                    (i) -> i >= 'a' && i <= 'z',
+                    (i) -> i >= 'a' && i <= 'z' || i >= '0' && i <= '9' || i == '-',
+                    1, // minLength
+                    32 // maxLength
+            ).parse(
+                    text,
+                    context
+            ).map(
+                    (final ParserToken token) -> Names.string(
+                            token.cast(StringParserToken.class).value()
+                    )
+            );
+
+    private final BiFunction<StringName, List<?>, TestProvided> PROVIDER = (final StringName name, final List<?> values) -> new TestProvided(name, values);
+
+    private static class TestProvided {
+        TestProvided(final StringName name,
+                     final Object... values) {
+            this(
+                    name,
+                    Lists.of(values)
+            );
+        }
+
+        TestProvided(final StringName name,
+                     final List<?> values) {
+            this.name = Objects.requireNonNull(name, "name");
+            this.values = values;
+        }
+
+        final StringName name;
+        final List<?> values;
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(
+                    this.name,
+                    this.values
+            );
+        }
+
+        @Override
+        public boolean equals(final Object other) {
+            return this == other || other instanceof TestProvided && this.equals0((TestProvided) other);
+        }
+
+        private boolean equals0(final TestProvided other) {
+            return this.name.equals(other.name) &&
+                    this.values.equals(other.values);
+        }
+
+        @Override
+        public String toString() {
+            return (
+                    this.name +
+                            " " +
+                            this.values.stream()
+                                    .map(Object::toString)
+                                    .collect(Collectors.joining(",", "(", ")"))
+            ).toString();
+        }
+    }
+
+    @Test
+    public void testEvaluateTextWIthNullNameParserAndFactoryFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> PluginSelector.parse(
+                        "name",
+                        Names::string
+                ).evaluateText(
+                        null,
+                        PROVIDER
+                )
+        );
+    }
+
+    @Test
+    public void testEvaluateTextWIthNullProviderFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> PluginSelector.parse(
+                        "name",
+                        Names::string
+                ).evaluateText(
+                        NAME_PARSER_AND_FACTORY,
+                        null
+                )
+        );
+    }
+
+    @Test
+    public void testEvaluateTextFails() {
+        final String text = NAME + " text/plain";
+
+        final InvalidCharacterException thrown = assertThrows(
+                InvalidCharacterException.class,
+                () -> PluginSelector.parse(
+                        text,
+                                Names::string
+                        ).evaluateText(
+                        NAME_PARSER_AND_FACTORY,
+                        PROVIDER
+                )
+        );
+
+        this.checkEquals(
+                new InvalidCharacterException(
+                        text, text.indexOf(' ') + 1)
+                        .getMessage(),
+                thrown.getMessage()
+        );
+    }
+
+    @Test
+    public void testEvaluateTextNoText() {
+        this.evaluateTextAndCheck(
+                NAME + "",
+                new TestProvided(NAME)
+        );
+    }
+
+    @Test
+    public void testEvaluateTextSpacesText() {
+        this.evaluateTextAndCheck(
+                NAME + " ",
+                new TestProvided(NAME)
+        );
+    }
+
+    @Test
+    public void testEvaluateTextSpacesText2() {
+        this.evaluateTextAndCheck(
+                NAME + "   ",
+                new TestProvided(NAME)
+        );
+    }
+
+    @Test
+    public void testEvaluateTextOpenParensFail() {
+        this.evaluateTextFails(
+                NAME + " (",
+                "Invalid character '(' at 17 in \"magic-plugin-123 (\""
+        );
+    }
+
+    @Test
+    public void testEvaluateTextDoubleLiteral() {
+        this.evaluateTextAndCheck(
+                NAME + " (1)",
+                new TestProvided(NAME, 1.0)
+        );
+    }
+
+    @Test
+    public void testEvaluateTextNegativeDoubleLiteral() {
+        this.evaluateTextAndCheck(
+                NAME + " (-1)",
+                new TestProvided(NAME, -1.0)
+        );
+    }
+
+    @Test
+    public void testEvaluateTextDoubleLiteralWithDecimals() {
+        this.evaluateTextAndCheck(
+                NAME + " (1.25)",
+                NAME_PARSER_AND_FACTORY,
+                PROVIDER,
+                new TestProvided(NAME, 1.25)
+        );
+    }
+
+    @Test
+    public void testEvaluateTextDoubleMissingClosingParensFail() {
+        this.evaluateTextFails(
+                "super-magic-converter123 (1",
+                "Invalid character '1' at 26 in \"super-magic-converter123 (1\""
+        );
+    }
+
+    @Test
+    public void testEvaluateTextStringUnclosedFail() {
+        this.evaluateTextFails(
+                NAME + " (\"unclosed",
+                "Missing terminating '\"'"
+        );
+    }
+
+    @Test
+    public void testEvaluateTextEmptyParameterList() {
+        this.evaluateTextAndCheck(
+                NAME + " ()",
+                new TestProvided(NAME)
+        );
+    }
+
+    @Test
+    public void testEvaluateTextEmptyParameterListWithExtraSpaces() {
+        this.evaluateTextAndCheck(
+                NAME + "  ( )",
+                new TestProvided(NAME)
+        );
+    }
+
+    @Test
+    public void testEvaluateTextEmptyParameterListWithExtraSpaces2() {
+        this.evaluateTextAndCheck(
+                NAME + "  (   )",
+                new TestProvided(NAME)
+        );
+    }
+
+    @Test
+    public void testEvaluateTextStringLiteral() {
+        this.evaluateTextAndCheck(
+                NAME + " (\"string-literal-parameter\")",
+                new TestProvided(NAME, "string-literal-parameter")
+        );
+    }
+
+    @Test
+    public void testEvaluateTextStringLiteralStringLiteral() {
+        this.evaluateTextAndCheck(
+                NAME + " (\"string-literal-parameter-1\",\"string-literal-parameter-2\")",
+                new TestProvided(NAME, "string-literal-parameter-1", "string-literal-parameter-2")
+        );
+    }
+
+    @Test
+    public void testEvaluateTextStringLiteralStringLiteralWithExtraSpaceIgnored() {
+        this.evaluateTextAndCheck(
+                NAME + "  ( \"string-literal-parameter-1\" , \"string-literal-parameter-2\" )",
+                new TestProvided(NAME, "string-literal-parameter-1", "string-literal-parameter-2")
+        );
+    }
+
+    @Test
+    public void testEvaluateTextProvided() {
+        this.evaluateTextAndCheck(
+                NAME + " (" + NAME2 + ")",
+                new TestProvided(
+                        NAME,
+                        new TestProvided(NAME2)
+                )
+        );
+    }
+
+    @Test
+    public void testEvaluateTextProvidedProvided() {
+        this.evaluateTextAndCheck(
+                NAME + " (" + NAME2 + "," + NAME3 + ")",
+                new TestProvided(
+                        NAME,
+                        new TestProvided(NAME2),
+                        new TestProvided(NAME3)
+                )
+        );
+    }
+
+    @Test
+    public void testEvaluateTextNestedProvided() {
+        this.evaluateTextAndCheck(
+                NAME + " (" + NAME2 + "(" + NAME3 + "))",
+                new TestProvided(
+                        NAME,
+                        new TestProvided(
+                                NAME2,
+                                new TestProvided(NAME3)
+                        )
+                )
+        );
+    }
+
+    private void evaluateTextFails(final String selector,
+                                         final String expected) {
+        this.evaluateTextFails(
+                selector,
+                NAME_PARSER_AND_FACTORY,
+                PROVIDER,
+                expected
+        );
+    }
+
+    private void evaluateTextFails(final String selector,
+                                         final BiFunction<TextCursor, ParserContext, Optional<StringName>> nameParserAndFactory,
+                                         final BiFunction<StringName, List<?>, TestProvided> provider,
+                                         final String expected) {
+        final IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> PluginSelector.parse(
+                        selector,
+                                Names::string
+                        ).evaluateText(
+                                nameParserAndFactory,
+                        provider
+                )
+        );
+        this.checkEquals(
+                expected,
+                thrown.getMessage()
+        );
+    }
+
+    private void evaluateTextAndCheck(final String selector,
+                                            final TestProvided expected) {
+        this.evaluateTextAndCheck(
+                selector,
+                NAME_PARSER_AND_FACTORY,
+                PROVIDER,
+                expected
+        );
+    }
+    private void evaluateTextAndCheck(final String selector,
+                                            final BiFunction<TextCursor, ParserContext, Optional<StringName>> nameParserAndCreator,
+                                            final BiFunction<StringName, List<?>, TestProvided> provider,
+                                            final TestProvided expected) {
+        this.checkEquals(
+                Optional.of(expected),
+                PluginSelector.parse(
+                        selector,
+                        Names::string
+                ).evaluateText(
+                        nameParserAndCreator,
+                        provider
+                )
+        );
     }
 
     // equals...........................................................................................................
