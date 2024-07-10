@@ -143,42 +143,42 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      * </pre>
      * The <code>provider</code> will be used to fetch <code>provided</code>> with any parameters.
      */
-    public <N extends Name, T> Optional<T> evaluateText(final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                                        final BiFunction<N, List<?>, T> provider) {
+    public <N extends Name, T> T evaluateText(final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
+                                              final BiFunction<N, List<?>, T> provider) {
         Objects.requireNonNull(nameParserAndFactory, "nameParserAndFactory");
         Objects.requireNonNull(provider, "provider");
 
-        final TextCursor nameCursor = TextCursors.charSequence(this.name().value());
+        final String nameText = this.name().value();
+        final TextCursor nameCursor = TextCursors.charSequence(nameText);
         final Optional<N> maybeName = nameParserAndFactory.apply(
                 nameCursor,
                 PARSER_CONTEXT
         );
-
-        T provided = null;
-
-        if (maybeName.isPresent() && nameCursor.isEmpty()) {
-
-            final TextCursor cursor = TextCursors.charSequence(this.text());
-
-            final List<?> parameters = parseParameters(
-                    cursor,
-                    nameParserAndFactory,
-                    provider
-            );
-
-            skipSpaces(cursor);
-
-            if (false == cursor.isEmpty()) {
-                invalidCharacter(cursor);
-            }
-
-            provided = provider.apply(
-                    maybeName.get(),
-                    parameters
+        if (false == maybeName.isPresent() || false == nameCursor.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Unable to parse name in " +
+                            CharSequences.quoteAndEscape(nameText)
             );
         }
 
-        return Optional.ofNullable(provided);
+        final TextCursor cursor = TextCursors.charSequence(this.text());
+
+        final List<?> parameters = parseParameters(
+                cursor,
+                nameParserAndFactory,
+                provider
+        );
+
+        skipSpaces(cursor);
+
+        if (false == cursor.isEmpty()) {
+            invalidCharacter(cursor);
+        }
+
+        return provider.apply(
+                maybeName.get(),
+                parameters
+        );
     }
 
     /**
