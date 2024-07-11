@@ -19,10 +19,13 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
+import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.reflect.MethodAttributes;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -33,6 +36,25 @@ public interface PluginSelectorTextComponentLikeTesting<T extends PluginSelector
         TreePrintableTesting,
         HashCodeEqualsDefinedTesting2<T>,
         JsonNodeMarshallingTesting<T> {
+
+    /**
+     * Verify that the public with(String, String, List) is public and static.
+     */
+    @Test
+    default void testPublicStaticWithMethodStringStringList() throws Exception {
+        final Class<T> type = this.type();
+        final Method method = type.getMethod("with", String.class, String.class, List.class);
+        this.checkEquals(
+                JavaVisibility.PUBLIC,
+                JavaVisibility.of(method),
+                method::toGenericString
+        );
+        this.checkEquals(
+                true,
+                MethodAttributes.STATIC.is(method),
+                method::toGenericString
+        );
+    }
 
     String LABEL = "Label123";
 
