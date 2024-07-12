@@ -22,7 +22,6 @@ import walkingkooka.Cast;
 import walkingkooka.ToStringTesting;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.collect.set.Sets;
-import walkingkooka.naming.HasName;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.net.AbsoluteUrl;
@@ -33,6 +32,7 @@ import walkingkooka.plugin.ProviderCollectionTest.TestSelector;
 import walkingkooka.plugin.ProviderCollectionTest.TestService;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.text.printer.IndentingPrinter;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,8 +41,8 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class ProviderCollectionTest implements ClassTesting<ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService>>,
-        ToStringTesting<ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService>> {
+public final class ProviderCollectionTest implements ClassTesting<ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService>>,
+        ToStringTesting<ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService>> {
 
     private final static TestService SERVICE1 = new TestService();
 
@@ -52,7 +52,25 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
     private final static Function<TestSelector, StringName> INPUT_TO_NAME = TestSelector::name;
 
-    private final static ProviderCollectionProviderGetter<TestProvider, TestSelector, TestService> PROVIDER_GETTER = (p, s, v) -> p.get(s);
+    private final static ProviderCollectionProviderGetter<TestProvider, StringName, TestSelector, TestService> PROVIDER_GETTER = new ProviderCollectionProviderGetter<>() {
+        @Override
+        public Optional<TestService> get(final TestProvider provider,
+                                         final StringName name,
+                                         final List<?> values) {
+            return provider.get(
+                    name,
+                    values
+            );
+        }
+
+        @Override
+        public Optional<TestService> get(final TestProvider provider,
+                                         final TestSelector selector) {
+            return provider.get(
+                    selector
+            );
+        }
+    };
 
     private final static Function<TestProvider, Set<TestPluginInfo>> INFO_GETTER = (p) -> p.infos();
 
@@ -223,108 +241,205 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         );
     }
 
-    // get..............................................................................................................
+    // get(PluginSelectorLike)..........................................................................................
 
     @Test
-    public void testGet() {
-        this.getAndCheck(
+    public void testGetSelector() {
+        this.getSelectorAndCheck(
                 new TestSelector(SERVICE_1_NAME),
+                SERVICE1
+        );
+    }
+
+    @Test
+    public void testGetSelector2() {
+        this.getSelectorAndCheck(
+                new TestSelector(SERVICE_2_NAME),
+                SERVICE2
+        );
+    }
+
+    @Test
+    public void testGetSelector3() {
+        this.getSelectorAndCheck(
+                new TestSelector(SERVICE_3_NAME),
+                SERVICE3
+        );
+    }
+
+    @Test
+    public void testGetSelectorUnknown() {
+        this.getSelectorAndCheck(
+                new TestSelector("unknown")
+        );
+    }
+
+    private void getSelectorAndCheck(final TestSelector selector) {
+        this.getSelectorAndCheck(
+                this.createProvider(),
+                selector
+        );
+    }
+
+    private void getSelectorAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
+                                     final TestSelector selector) {
+        this.getSelectorAndCheck(
+                provider,
+                selector,
+                Optional.empty()
+        );
+    }
+
+    private void getSelectorAndCheck(final TestSelector selector,
+                                     final TestService expected) {
+        this.getSelectorAndCheck(
+                this.createProvider(),
+                selector,
+                expected
+        );
+    }
+
+    private void getSelectorAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
+                                     final TestSelector selector,
+                                     final TestService expected) {
+        this.getSelectorAndCheck(
+                provider,
+                selector,
+                Optional.of(expected)
+        );
+    }
+
+    private void getSelectorAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
+                                     final TestSelector selector,
+                                     final Optional<TestService> expected) {
+        this.checkEquals(
+                expected,
+                provider.get(
+                        selector
+                ),
+                () -> provider + " selector " + selector
+        );
+    }
+
+    // get(PluginNameLike)..........................................................................................
+
+    @Test
+    public void testGetName() {
+        this.getNameAndCheck(
+                SERVICE_1_NAME,
                 VALUES,
                 SERVICE1
         );
     }
 
     @Test
-    public void testGet2() {
-        this.getAndCheck(
-                new TestSelector(SERVICE_2_NAME),
+    public void testGetName2() {
+        this.getNameAndCheck(
+                SERVICE_2_NAME,
                 VALUES,
                 SERVICE2
         );
     }
 
     @Test
-    public void testGet3() {
-        this.getAndCheck(
-                new TestSelector(SERVICE_3_NAME),
+    public void testGetName3() {
+        this.getNameAndCheck(
+                SERVICE_3_NAME,
                 VALUES,
                 SERVICE3
         );
     }
 
     @Test
-    public void testGetUnknown() {
-        this.getAndCheck(
-                new TestSelector("unknown"),
+    public void testGetNameUnknown() {
+        this.getNameAndCheck(
+                "unknown",
                 VALUES
         );
     }
 
-    private void getAndCheck(final TestSelector input,
-                             final List<?> values) {
-        this.getAndCheck(
-                this.createProvider(),
-                input,
+    private void getNameAndCheck(final String name,
+                                 final List<?> values) {
+        this.getNameAndCheck(
+                Names.string(name),
                 values
         );
     }
 
-    private void getAndCheck(final ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> provider,
-                             final TestSelector input,
-                             final List<?> values) {
-        this.getAndCheck(
+    private void getNameAndCheck(final StringName name,
+                                 final List<?> values) {
+        this.getNameAndCheck(
+                this.createProvider(),
+                name,
+                values
+        );
+    }
+
+    private void getNameAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
+                                 final String name,
+                                 final List<?> values) {
+        this.getNameAndCheck(
                 provider,
-                input,
+                Names.string(name),
+                values
+        );
+    }
+
+    private void getNameAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
+                                 final StringName name,
+                                 final List<?> values) {
+        this.getNameAndCheck(
+                provider,
+                name,
                 values,
                 Optional.empty()
         );
     }
 
-    private void getAndCheck(final TestSelector input,
-                             final List<?> values,
-                             final TestService expected) {
-        this.getAndCheck(
-                this.createProvider(),
-                input,
+    private void getNameAndCheck(final String name,
+                                 final List<?> values,
+                                 final TestService expected) {
+        this.getNameAndCheck(
+                Names.string(name),
                 values,
                 expected
         );
     }
 
-    private void getAndCheck(final ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> provider,
-                             final TestSelector input,
-                             final List<?> values,
-                             final TestService expected) {
-        this.getAndCheck(
+    private void getNameAndCheck(final StringName name,
+                                 final List<?> values,
+                                 final TestService expected) {
+        this.getNameAndCheck(
+                this.createProvider(),
+                name,
+                values,
+                expected
+        );
+    }
+
+    private void getNameAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
+                                 final StringName name,
+                                 final List<?> values,
+                                 final TestService expected) {
+        this.getNameAndCheck(
                 provider,
-                input,
+                name,
                 values,
                 Optional.of(expected)
         );
     }
 
-    private void getAndCheck(final TestSelector input,
-                             final List<?> values,
-                             final Optional<TestService> expected) {
-        this.getAndCheck(
-                this.createProvider(),
-                input,
-                values,
-                expected
-        );
-    }
-
-    private void getAndCheck(final ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> provider,
-                             final TestSelector input,
-                             final List<?> values,
-                             final Optional<TestService> expected) {
+    private void getNameAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
+                                 final StringName name,
+                                 final List<?> values,
+                                 final Optional<TestService> expected) {
         this.checkEquals(
                 expected,
                 provider.get(
-                        input,
+                        name,
                         values
                 ),
-                () -> provider + " input " + input
+                () -> provider + " name " + name
         );
     }
 
@@ -341,7 +456,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
     @Test
     public void TestInfosMissingFromGet() {
-        final ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> collection = ProviderCollection.with(
+        final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> collection = ProviderCollection.with(
                 INPUT_TO_NAME,
                 PROVIDER_GETTER,
                 INFO_GETTER,
@@ -361,21 +476,36 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         );
 
         // verify the info is present but the service itself is missing(absent)
-        this.getAndCheck(
+        this.getSelectorAndCheck(
                 collection,
-                new TestSelector(SERVICE_1_NAME),
+                new TestSelector(SERVICE_1_NAME)
+        );
+
+        this.getNameAndCheck(
+                collection,
+                SERVICE_1_NAME,
                 VALUES
         );
 
-        this.getAndCheck(
+        this.getSelectorAndCheck(
                 collection,
-                new TestSelector(SERVICE_2_NAME),
+                new TestSelector(SERVICE_2_NAME)
+        );
+
+        this.getNameAndCheck(
+                collection,
+                SERVICE_2_NAME,
                 VALUES
         );
 
-        this.getAndCheck(
+        this.getSelectorAndCheck(
                 collection,
-                new TestSelector(SERVICE_3_NAME),
+                new TestSelector(SERVICE_3_NAME)
+        );
+
+        this.getNameAndCheck(
+                collection,
+                SERVICE_3_NAME,
                 VALUES
         );
     }
@@ -396,7 +526,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         );
     }
 
-    private void infosAndCheck(final ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> provider,
+    private void infosAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
                                final TestPluginInfo... infos) {
         this.infosAndCheck(
                 provider,
@@ -411,7 +541,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         );
     }
 
-    private void infosAndCheck(final ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> provider,
+    private void infosAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
                                final Set<TestPluginInfo> infos) {
         this.checkEquals(
                 infos,
@@ -420,7 +550,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         );
     }
 
-    private ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService> createProvider() {
+    private ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> createProvider() {
         return ProviderCollection.with(
                 INPUT_TO_NAME,
                 PROVIDER_GETTER,
@@ -454,9 +584,17 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
             this.service = service;
         }
 
-        public Optional<TestService> get(final TestSelector nameAnd) {
+        public Optional<TestService> get(final TestSelector selector) {
+            return this.get(
+                    selector.name,
+                    VALUES
+            );
+        }
+
+        public Optional<TestService> get(final StringName name,
+                                         final List<?> values) {
             return Optional.ofNullable(
-                    this.name.equals(nameAnd.name) ?
+                    this.name.equals(name) && VALUES.equals(values) ?
                             this.service :
                             null
             );
@@ -475,7 +613,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         final StringName name;
     }
 
-    static class TestSelector implements HasName<StringName> {
+    static class TestSelector implements PluginSelectorLike<StringName> {
 
         TestSelector(final String name) {
             this.name = Names.string(name);
@@ -487,6 +625,16 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         }
 
         private StringName name;
+
+        @Override
+        public String text() {
+            return "";
+        }
+
+        @Override
+        public void printTree(final IndentingPrinter printer) {
+            printer.println(this.name.value());
+        }
 
         @Override
         public String toString() {
@@ -563,7 +711,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     // ClassTesting.....................................................................................................
 
     @Override
-    public Class<ProviderCollection<StringName, TestPluginInfo, TestProvider, TestSelector, TestService>> type() {
+    public Class<ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService>> type() {
         return Cast.to(ProviderCollection.class);
     }
 
