@@ -50,8 +50,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
     private final static TestService SERVICE3 = new TestService();
 
-    private final static Function<TestSelector, StringName> INPUT_TO_NAME = TestSelector::name;
-
     private final static ProviderCollectionProviderGetter<TestProvider, StringName, TestSelector, TestService> PROVIDER_GETTER = new ProviderCollectionProviderGetter<>() {
         @Override
         public Optional<TestService> get(final TestProvider provider,
@@ -97,25 +95,10 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     private final static List<?> VALUES = Lists.of("value");
 
     @Test
-    public void testWithNullInputToNameFails() {
-        assertThrows(
-                NullPointerException.class,
-                () -> ProviderCollection.with(
-                        null,
-                        PROVIDER_GETTER,
-                        INFO_GETTER,
-                        PROVIDED_LABEL,
-                        PROVIDERS
-                )
-        );
-    }
-
-    @Test
     public void testWithNullProviderGetterFails() {
         assertThrows(
                 NullPointerException.class,
                 () -> ProviderCollection.with(
-                        INPUT_TO_NAME,
                         null,
                         INFO_GETTER,
                         PROVIDED_LABEL,
@@ -129,7 +112,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         assertThrows(
                 NullPointerException.class,
                 () -> ProviderCollection.with(
-                        INPUT_TO_NAME,
                         PROVIDER_GETTER,
                         null,
                         PROVIDED_LABEL,
@@ -143,7 +125,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         assertThrows(
                 NullPointerException.class,
                 () -> ProviderCollection.with(
-                        INPUT_TO_NAME,
                         PROVIDER_GETTER,
                         INFO_GETTER,
                         null,
@@ -157,7 +138,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         assertThrows(
                 IllegalArgumentException.class,
                 () -> ProviderCollection.with(
-                        INPUT_TO_NAME,
                         PROVIDER_GETTER,
                         INFO_GETTER,
                         "",
@@ -171,7 +151,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         assertThrows(
                 NullPointerException.class,
                 () -> ProviderCollection.with(
-                        INPUT_TO_NAME,
                         PROVIDER_GETTER,
                         INFO_GETTER,
                         PROVIDED_LABEL,
@@ -185,7 +164,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         assertThrows(
                 IllegalArgumentException.class,
                 () -> ProviderCollection.with(
-                        INPUT_TO_NAME,
                         PROVIDER_GETTER,
                         INFO_GETTER,
                         PROVIDED_LABEL,
@@ -199,7 +177,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         final IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
                 () -> ProviderCollection.with(
-                        INPUT_TO_NAME,
                         PROVIDER_GETTER,
                         INFO_GETTER,
                         PROVIDED_LABEL,
@@ -222,7 +199,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         final IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
                 () -> ProviderCollection.with(
-                        INPUT_TO_NAME,
                         PROVIDER_GETTER,
                         INFO_GETTER,
                         PROVIDED_LABEL,
@@ -457,7 +433,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     @Test
     public void TestInfosMissingFromGet() {
         final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> collection = ProviderCollection.with(
-                INPUT_TO_NAME,
                 PROVIDER_GETTER,
                 INFO_GETTER,
                 PROVIDED_LABEL,
@@ -552,7 +527,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
     private ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> createProvider() {
         return ProviderCollection.with(
-                INPUT_TO_NAME,
                 PROVIDER_GETTER,
                 INFO_GETTER,
                 PROVIDED_LABEL,
@@ -698,7 +672,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     public void testToString() {
         this.toStringAndCheck(
                 ProviderCollection.with(
-                        INPUT_TO_NAME,
                         PROVIDER_GETTER,
                         INFO_GETTER,
                         PROVIDED_LABEL,

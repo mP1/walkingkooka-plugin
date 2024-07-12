@@ -40,19 +40,16 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
             N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
             SELECTOR extends PluginSelectorLike<N>,
-            OUT> ProviderCollection<P, N, I, SELECTOR, OUT> with(final Function<SELECTOR, N> inputToName,
-                                                           final ProviderCollectionProviderGetter<P, N, SELECTOR, OUT> providerGetter,
-                                                           final Function<P, Set<I>> infoGetter,
-                                                           final String providedLabel,
-                                                           final Set<P> providers) {
-        Objects.requireNonNull(inputToName, "inputToName");
+            OUT> ProviderCollection<P, N, I, SELECTOR, OUT> with(final ProviderCollectionProviderGetter<P, N, SELECTOR, OUT> providerGetter,
+                                                                 final Function<P, Set<I>> infoGetter,
+                                                                 final String providedLabel,
+                                                                 final Set<P> providers) {
         Objects.requireNonNull(providerGetter, "providerGetter");
         Objects.requireNonNull(infoGetter, "infoGetter");
         CharSequences.failIfNullOrEmpty(providedLabel, "providedLabel");
         Objects.requireNonNull(providers, "providers");
 
         return new ProviderCollection<>(
-                inputToName,
                 providerGetter,
                 infoGetter,
                 providedLabel,
@@ -60,8 +57,7 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
         );
     }
 
-    private ProviderCollection(final Function<SELECTOR, N> inputToName,
-                               final ProviderCollectionProviderGetter<P, N, SELECTOR, OUT> providerGetter,
+    private ProviderCollection(final ProviderCollectionProviderGetter<P, N, SELECTOR, OUT> providerGetter,
                                final Function<P, Set<I>> infoGetter,
                                final String providedLabel,
                                final Set<P> providers) {
@@ -105,7 +101,6 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
             throw new IllegalArgumentException("Found multiple " + providedLabel + " for " + duplicates);
         }
 
-        this.inputToName = inputToName;
         this.providerGetter = providerGetter;
         this.nameToProvider = nameToProvider;
         this.infos = Sets.immutable(infos);
@@ -131,7 +126,7 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
         // get the provided for the name and then call the provider getter with $SELECTOR.
         return Optional.ofNullable(
                 this.nameToProvider.get(
-                        this.inputToName.apply(selector)
+                        selector.name()
                 )
         ).flatMap(
                 p -> this.providerGetter.get(
@@ -159,8 +154,6 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
                 )
         );
     }
-
-    private final Function<SELECTOR, N> inputToName;
 
     private final Map<N, P> nameToProvider;
 
