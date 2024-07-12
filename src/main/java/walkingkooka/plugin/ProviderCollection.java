@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KSELECTORD, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
@@ -35,13 +35,13 @@ import java.util.stream.Collectors;
 /**
  * A helper that may be used to provide a view of a collection of providers. Instances of this class should be wrapped by implementations of the provider interface and simply delegate to the two provider methods.
  */
-public final class ProviderCollection<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, P extends Provider, IN, OUT> {
-    public static <N extends Name & Comparable<N>,
+public final class ProviderCollection<P extends Provider, N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, SELECTOR extends PluginSelectorLike<N>, OUT> {
+    public static <P extends Provider,
+            N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
-            P extends Provider,
-            IN,
-            OUT> ProviderCollection<N, I, P, IN, OUT> with(final Function<IN, N> inputToName,
-                                                           final ProviderCollectionProviderGetter<P, IN, OUT> providerGetter,
+            SELECTOR extends PluginSelectorLike<N>,
+            OUT> ProviderCollection<P, N, I, SELECTOR, OUT> with(final Function<SELECTOR, N> inputToName,
+                                                           final ProviderCollectionProviderGetter<P, N, SELECTOR, OUT> providerGetter,
                                                            final Function<P, Set<I>> infoGetter,
                                                            final String providedLabel,
                                                            final Set<P> providers) {
@@ -60,8 +60,8 @@ public final class ProviderCollection<N extends Name & Comparable<N>, I extends 
         );
     }
 
-    private ProviderCollection(final Function<IN, N> inputToName,
-                               final ProviderCollectionProviderGetter<P, IN, OUT> providerGetter,
+    private ProviderCollection(final Function<SELECTOR, N> inputToName,
+                               final ProviderCollectionProviderGetter<P, N, SELECTOR, OUT> providerGetter,
                                final Function<P, Set<I>> infoGetter,
                                final String providedLabel,
                                final Set<P> providers) {
@@ -123,34 +123,51 @@ public final class ProviderCollection<N extends Name & Comparable<N>, I extends 
     }
 
     /**
-     * Gets the component identified by IN.
+     * Gets the component identified by {@link SELECTOR} with the given parameter values.
      */
-    public Optional<OUT> get(final IN in,
-                             final List<?> values) {
-        Objects.requireNonNull(in, "in");
+    public Optional<OUT> get(final SELECTOR selector) {
+        Objects.requireNonNull(selector, "selector");
 
-        // get the provided for the name and then call the provider getter with $IN.
+        // get the provided for the name and then call the provider getter with $SELECTOR.
         return Optional.ofNullable(
                 this.nameToProvider.get(
-                        this.inputToName.apply(in)
+                        this.inputToName.apply(selector)
                 )
         ).flatMap(
                 p -> this.providerGetter.get(
                         p,
-                        in,
+                        selector
+                )
+        );
+    }
+
+    /**
+     * Gets the component identified by SELECTOR.
+     */
+    public Optional<OUT> get(final N name,
+                             final List<?> values) {
+        Objects.requireNonNull(name, "name");
+
+        // get the provided for the name and then call the provider getter with $SELECTOR.
+        return Optional.ofNullable(
+                this.nameToProvider.get(name)
+        ).flatMap(
+                p -> this.providerGetter.get(
+                        p,
+                        name,
                         values
                 )
         );
     }
 
-    private final Function<IN, N> inputToName;
+    private final Function<SELECTOR, N> inputToName;
 
     private final Map<N, P> nameToProvider;
 
-    private final ProviderCollectionProviderGetter<P, IN, OUT> providerGetter;
+    private final ProviderCollectionProviderGetter<P, N, SELECTOR, OUT> providerGetter;
 
     /**
-     * Returns a {@link Set} with an aggregation of all INFOS from all the provided Providers.
+     * Returns a {@link Set} with an aggregation of all SELECTORFOS from all the provided Providers.
      */
     public Set<I> infos() {
         return this.infos;
