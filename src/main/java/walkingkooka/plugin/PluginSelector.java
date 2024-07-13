@@ -124,6 +124,19 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
     public String text() {
         return this.text;
     }
+
+    /**
+     * Would be setter that returns a {@link PluginSelector} with the given text creating a new instance if necessary.
+     */
+    public PluginSelector<N> setText(final String text) {
+        Objects.requireNonNull(text, "text");
+        return this.text.equals(text) ?
+                this :
+                new PluginSelector<>(
+                        this.name,
+                        text
+                );
+    }
     
     private final String text;
 
