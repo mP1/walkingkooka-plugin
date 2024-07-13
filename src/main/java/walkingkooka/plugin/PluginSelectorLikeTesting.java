@@ -133,6 +133,73 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
         );
     }
 
+    // setText..........................................................................................................
+
+    @Test
+    default void testSetTextWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createPluginSelectorLike(
+                        this.createName("name"),
+                        TEXT
+                ).setText(null)
+        );
+    }
+
+    @Test
+    default void testSetTextWithSame() {
+        final T selector = this.createPluginSelectorLike(
+                this.createName("name"),
+                TEXT
+        );
+        assertSame(
+                selector,
+                selector.setText(TEXT)
+        );
+    }
+
+    @Test
+    default void testSetTextWithSame2() {
+        final String text = "(\"Hello\")";
+
+        final T selector = this.createPluginSelectorLike(
+                this.createName("name"),
+                text
+        );
+        assertSame(
+                selector,
+                selector.setText(text)
+        );
+    }
+
+    @Test
+    default void testSetTextWithDifferentText() {
+        final N name = this.createName("name");
+        final T selector = this.createPluginSelectorLike(
+                name,
+                TEXT
+        );
+        final String differentText = "(\"Different\")";
+        final T different = (T) selector.setText(differentText);
+
+        assertNotSame(
+                different,
+                selector
+        );
+        this.nameAndCheck(
+                different,
+                name
+        );
+        this.textAndCheck(
+                different,
+                differentText
+        );
+        this.textAndCheck(
+                selector,
+                TEXT
+        );
+    }
+
     // equals...........................................................................................................
 
     @Test
