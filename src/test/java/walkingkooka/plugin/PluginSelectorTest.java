@@ -23,6 +23,7 @@ import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.InvalidCharacterException;
 import walkingkooka.ToStringTesting;
 import walkingkooka.collect.list.Lists;
+import walkingkooka.naming.HasNameTesting;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.reflect.ClassTesting2;
@@ -46,6 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginSelectorTest implements ClassTesting2<PluginSelector<StringName>>,
         HashCodeEqualsDefinedTesting2<PluginSelector<StringName>>,
+        HasNameTesting<StringName>,
         HasTextTesting,
         ToStringTesting<PluginSelector<StringName>>,
         ParseStringTesting<PluginSelector<StringName>>,
@@ -84,7 +86,10 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                 TEXT
         );
 
-        this.checkEquals(NAME, selector.name(), "name");
+        this.nameAndCheck(
+                selector,
+                NAME
+        );
         this.textAndCheck(
                 selector,
                 TEXT
