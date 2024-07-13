@@ -132,6 +132,74 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
         );
     }
 
+    // equals...........................................................................................................
+
+    @Test
+    default void testEqualsDifferentName() {
+        this.checkNotEquals(
+                this.createPluginSelectorLike(
+                        this.createName("different"),
+                        TEXT
+                )
+        );
+    }
+
+    @Test
+    default void testEqualsDifferentText() {
+        this.checkNotEquals(
+                this.createPluginSelectorLike(
+                        this.createName("name123"),
+                        "different"
+                )
+        );
+    }
+
+    @Override
+    default T createObject() {
+        return this.createPluginSelectorLike(
+                this.createName("name123"),
+                TEXT
+        );
+    }
+
+    // ToString.........................................................................................................
+
+    @Test
+    default void testToString() {
+        this.toStringAndCheck(
+                this.createPluginSelectorLike(
+                        this.createName("super123"),
+                        TEXT
+                ),
+                "super123 $0.00"
+        );
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Test
+    default void testTreePrintWithoutText() {
+        this.treePrintAndCheck(
+                this.createPluginSelectorLike(
+                        this.createName("abc123"),
+                        ""
+                ),
+                "abc123\n"
+        );
+    }
+
+    @Test
+    default void testTreePrintWithText() {
+        this.treePrintAndCheck(
+                this.createPluginSelectorLike(
+                        this.createName("abc123"),
+                        "\"$.00\""
+                ),
+                "abc123\n" +
+                        "  \"$0.00\"\n"
+        );
+    }
+
     T createPluginSelectorLike(final N name,
                                final String text);
 
