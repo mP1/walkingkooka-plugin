@@ -18,14 +18,20 @@
 package walkingkooka.plugin;
 
 import walkingkooka.HashCodeEqualsDefinedTesting2;
+import walkingkooka.ToStringTesting;
 import walkingkooka.naming.Name;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.TypeNameTesting;
+import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
 
 public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N extends Name> extends TreePrintableTesting,
         ClassTesting<T>,
         HashCodeEqualsDefinedTesting2<T>,
+        ToStringTesting<T>,
+        ParseStringTesting<T>,
+        JsonNodeMarshallingTesting<T>,
         TypeNameTesting<T> {
 
     @Override
