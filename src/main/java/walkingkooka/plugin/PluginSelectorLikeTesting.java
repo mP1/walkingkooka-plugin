@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
+import walkingkooka.InvalidCharacterException;
 import walkingkooka.ToStringTesting;
 import walkingkooka.naming.HasNameTesting;
 import walkingkooka.naming.Name;
@@ -173,6 +174,51 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
                 ),
                 "super123 " + TEXT
         );
+    }
+
+    // parse............................................................................................................
+
+    @Test
+    default void testParseInvalidNameFails() {
+        this.parseStringFails(
+                "A!34",
+                new InvalidCharacterException("A!34", 1)
+                        .appendToMessage(" in \"A!34\"")
+        );
+    }
+
+    @Test
+    default void testParseName() {
+        final String text = "super123";
+        this.parseStringAndCheck(
+                text,
+                this.createPluginSelectorLike(
+                        this.createName(text),
+                        ""
+                )
+        );
+    }
+
+    // PluginSelectorLike.parse must be able to parse all PluginSelectorLike.toString.
+
+    @Test
+    default void testParseToString() {
+        final T selector = this.parseString("supermagic123 \"hello\"");
+
+        this.parseStringAndCheck(
+                selector.toString(),
+                selector
+        );
+    }
+
+    @Override
+    default Class<? extends RuntimeException> parseStringFailedExpected(final Class<? extends RuntimeException> type) {
+        return type;
+    }
+
+    @Override
+    default RuntimeException parseStringFailedExpected(final RuntimeException thrown) {
+        return thrown;
     }
 
     // TreePrintable....................................................................................................
