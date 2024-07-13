@@ -243,6 +243,11 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                                     }
 
                                     @Override
+                                    public PluginSelectorLike<Name> setValues(final List<?> values) {
+                                        throw new UnsupportedOperationException();
+                                    }
+
+                                    @Override
                                     public void printTree(final IndentingPrinter printer) {
                                         throw new UnsupportedOperationException();
                                     }
