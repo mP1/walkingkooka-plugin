@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.naming.Name;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.TypeNameTesting;
@@ -24,6 +25,7 @@ import walkingkooka.text.printer.TreePrintableTesting;
 
 public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N extends Name> extends TreePrintableTesting,
         ClassTesting<T>,
+        HashCodeEqualsDefinedTesting2<T>,
         TypeNameTesting<T> {
 
     @Override
