@@ -26,4 +26,9 @@ import walkingkooka.text.printer.TreePrintable;
  * Interface that should be implemented by all selectors.
  */
 public interface PluginSelectorLike<N extends Name> extends HasName<N>, HasText, TreePrintable {
+
+    /**
+     * Would be setter that returns a selector with the given {@link Name}.
+     */
+    PluginSelectorLike<N> setName(final N name);
 }
