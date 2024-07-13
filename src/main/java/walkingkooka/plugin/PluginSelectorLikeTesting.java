@@ -170,9 +170,9 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
         this.toStringAndCheck(
                 this.createPluginSelectorLike(
                         this.createName("super123"),
-                        TEXT
+                        "\"Hello\""
                 ),
-                "super123 " + TEXT
+                "super123 " + "\"Hello\""
         );
     }
 
