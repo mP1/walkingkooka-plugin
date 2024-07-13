@@ -43,6 +43,8 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginSelectorTest implements ClassTesting2<PluginSelector<StringName>>,
@@ -89,6 +91,72 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         this.nameAndCheck(
                 selector,
                 NAME
+        );
+        this.textAndCheck(
+                selector,
+                TEXT
+        );
+    }
+
+    // setText..........................................................................................................
+
+    @Test
+    public void testSetTextWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> PluginSelector.with(
+                        NAME,
+                        TEXT
+                ).setText(null)
+        );
+    }
+
+    @Test
+    public void testSetTextWithSame() {
+        final PluginSelector<StringName> selector = PluginSelector.with(
+                NAME,
+                TEXT
+        );;
+        assertSame(
+                selector,
+                selector.setText(TEXT)
+        );
+    }
+
+    @Test
+    public void testSetTextWithSame2() {
+        final String text = "(\"Hello\")";
+
+        final PluginSelector<StringName> selector = PluginSelector.with(
+                NAME,
+                text
+        );
+        assertSame(
+                selector,
+                selector.setText(text)
+        );
+    }
+
+    @Test
+    public void testSetTextWithDifferentText() {
+        final PluginSelector<StringName> selector = PluginSelector.with(
+                NAME,
+                TEXT
+        );
+        final String differentText = "(\"Different\")";
+        final PluginSelector<StringName> different = selector.setText(differentText);
+
+        assertNotSame(
+                different,
+                selector
+        );
+        this.nameAndCheck(
+                different,
+                NAME
+        );
+        this.textAndCheck(
+                different,
+                differentText
         );
         this.textAndCheck(
                 selector,
