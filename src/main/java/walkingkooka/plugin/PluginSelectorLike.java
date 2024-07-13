@@ -31,4 +31,9 @@ public interface PluginSelectorLike<N extends Name> extends HasName<N>, HasText,
      * Would be setter that returns a selector with the given {@link Name}.
      */
     PluginSelectorLike<N> setName(final N name);
+
+    /**
+     * Would be setter that returns a selector with the given text.
+     */
+    PluginSelectorLike<N> setText(final String text);
 }

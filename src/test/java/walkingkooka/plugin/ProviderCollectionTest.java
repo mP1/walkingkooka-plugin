@@ -611,6 +611,11 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         }
 
         @Override
+        public TestSelector setText(final String text) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
         public void printTree(final IndentingPrinter printer) {
             printer.println(this.name.value());
         }
