@@ -22,6 +22,8 @@ import walkingkooka.naming.Name;
 import walkingkooka.text.HasText;
 import walkingkooka.text.printer.TreePrintable;
 
+import java.util.List;
+
 /**
  * Interface that should be implemented by all selectors.
  */
@@ -36,4 +38,10 @@ public interface PluginSelectorLike<N extends Name> extends HasName<N>, HasText,
      * Would be setter that returns a selector with the given text.
      */
     PluginSelectorLike<N> setText(final String text);
+
+
+    /**
+     * Would be setter that accepts values and eventually performs a setText
+     */
+    PluginSelectorLike<N> setValues(final List<?> values);
 }
