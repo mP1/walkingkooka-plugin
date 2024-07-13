@@ -140,6 +140,56 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
     
     private final String text;
 
+    /**
+     * Serializes the given values producing text. Only String, Double and PluginSelector values are supported.
+     */
+    public PluginSelector<N> setValues(final List<?> values) {
+        Objects.requireNonNull(values, "values");
+
+        final StringBuilder b = new StringBuilder();
+
+        String separator = PARAMETER_BEGIN_STRING;
+
+        for (final Object value : values) {
+            b.append(separator);
+            separator = PARAMETER_SEPARATOR_STRING + " ";
+
+            if (null == value) {
+                throw new IllegalArgumentException("Null values are not supported");
+            }
+
+            if (value instanceof Double) {
+                // TODO should probably verify double in string form doesnt result in exponent.
+                final Double doubleValue = (Double) value;
+                b.append(doubleValue);
+                continue;
+            }
+
+            if (value instanceof String) {
+                final String string = (String) value;
+                b.append(
+                        CharSequences.quoteAndEscape(
+                                string
+                        )
+                );
+                continue;
+            }
+
+            if (value instanceof PluginSelectorLike) {
+                b.append(value);
+                continue;
+            }
+
+            throw new IllegalArgumentException("Unsupported value " + CharSequences.quoteIfChars(value) + " " + value.getClass().getName() + " expected only double | String | PLuginSelector");
+        }
+
+        if(b.length() > 0) {
+            b.append(PARAMETER_END_STRING);
+        }
+
+        return this.setText(b.toString());
+    }
+
     // evaluateText...............................................................................................
 
     /**
@@ -315,20 +365,26 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
         ).isPresent();
     }
 
+    private final static String PARAMETER_BEGIN_STRING = "(";
+
     /**
      * Matches a LEFT PARENS which marks the start of a plugin parameters.
      */
-    private final static Parser<ParserContext> PARAMETER_BEGIN = Parsers.string("(", CaseSensitivity.SENSITIVE);
+    private final static Parser<ParserContext> PARAMETER_BEGIN = Parsers.string(PARAMETER_BEGIN_STRING, CaseSensitivity.SENSITIVE);
+
+    private final static String PARAMETER_SEPARATOR_STRING = ",";
 
     /**
      * Matches a COMMA which separates individual parameters.
      */
-    private final static Parser<ParserContext> PARAMETER_SEPARATOR = Parsers.string(",", CaseSensitivity.SENSITIVE);
+    private final static Parser<ParserContext> PARAMETER_SEPARATOR = Parsers.string(PARAMETER_SEPARATOR_STRING, CaseSensitivity.SENSITIVE);
+
+    private final static String PARAMETER_END_STRING = ")";
 
     /**
      * Matches a RIGHT PARENS which marks the end of a plugin parameters.
      */
-    private final static Parser<ParserContext> PARAMETER_END = Parsers.string(")", CaseSensitivity.SENSITIVE);
+    private final static Parser<ParserContext> PARAMETER_END = Parsers.string(PARAMETER_END_STRING, CaseSensitivity.SENSITIVE);
 
     /**
      * Number literal parameters are double literals using DOT as the decimal separator.

@@ -24,6 +24,7 @@ import walkingkooka.InvalidCharacterException;
 import walkingkooka.ToStringTesting;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.naming.HasNameTesting;
+import walkingkooka.naming.Name;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.reflect.ClassTesting2;
@@ -35,8 +36,10 @@ import walkingkooka.text.cursor.parser.ParserContext;
 import walkingkooka.text.cursor.parser.ParserToken;
 import walkingkooka.text.cursor.parser.Parsers;
 import walkingkooka.text.cursor.parser.StringParserToken;
+import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintableTesting;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -163,7 +166,97 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                 TEXT
         );
     }
-    
+
+    // setValue.........................................................................................................
+
+    @Test
+    public void testSetValueWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> PluginSelector.with(
+                        NAME,
+                        TEXT
+                ).setValues(null)
+        );
+    }
+
+    @Test
+    public void testSetValuesIncludesNull() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> PluginSelector.with(
+                        NAME,
+                        TEXT
+                ).setValues(
+                        Arrays.asList(new Object[]{null})
+                )
+        );
+    }
+
+    @Test
+    public void testSetValuesIncludesInvalidValue() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> PluginSelector.with(
+                        NAME,
+                        TEXT
+                ).setValues(
+                        Lists.of(true)
+                )
+        );
+    }
+
+    @Test
+    public void testSetValues() {
+        this.checkEquals(
+                PluginSelector.with(
+                        NAME,
+                        "(\"Hello\", 2.5, plugin3)"
+                ),
+                PluginSelector.with(
+                        NAME,
+                        TEXT
+                ).setValues(
+                        Lists.of(
+                                "Hello",
+                                2.5,
+                                new PluginSelectorLike<>() {
+
+                                    @Override
+                                    public Name name() {
+                                        throw new UnsupportedOperationException();
+                                    }
+
+                                    @Override
+                                    public PluginSelectorLike<Name> setName(final Name name) {
+                                        throw new UnsupportedOperationException();
+                                    }
+
+                                    @Override
+                                    public String text() {
+                                        throw new UnsupportedOperationException();
+                                    }
+
+                                    @Override
+                                    public PluginSelectorLike<Name> setText(final String text) {
+                                        throw new UnsupportedOperationException();
+                                    }
+
+                                    @Override
+                                    public void printTree(final IndentingPrinter printer) {
+                                        throw new UnsupportedOperationException();
+                                    }
+
+                                    @Override
+                                    public String toString() {
+                                        return "plugin3";
+                                    }
+                                }
+                        )
+                )
+        );
+    }
+
     // parse............................................................................................................
 
     @Test
