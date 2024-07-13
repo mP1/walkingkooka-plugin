@@ -598,6 +598,11 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
             return this.name;
         }
 
+        @Override
+        public TestSelector setName(final StringName name) {
+            throw new UnsupportedOperationException();
+        }
+
         private StringName name;
 
         @Override

@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin;
 
+import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.ToStringTesting;
 import walkingkooka.naming.HasNameTesting;
@@ -28,6 +29,10 @@ import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
 
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N extends Name> extends TreePrintableTesting,
         HasNameTesting<N>,
         HasTextTesting,
@@ -37,6 +42,102 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
         JsonNodeMarshallingTesting<T>,
         ClassTesting<T>,
         TypeNameTesting<T> {
+
+    String TEXT = "";
+
+    @Test
+    default void testWithNullNameFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createPluginSelectorLike(
+                        null,
+                        TEXT
+                )
+        );
+    }
+
+    @Test
+    default void testWithNullTextFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createPluginSelectorLike(
+                        this.createName("name"),
+                        null
+                )
+        );
+    }
+
+    @Test
+    default void testWith() {
+        final N name = this.createName("name");
+        final T selector = this.createPluginSelectorLike(
+                name,
+                TEXT
+        );
+
+        this.nameAndCheck(selector, name);
+        this.textAndCheck(
+                selector,
+                TEXT
+        );
+    }
+
+    // setName..........................................................................................................
+
+    @Test
+    default void testSetNameWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createPluginSelectorLike(
+                        this.createName("name"),
+                        TEXT
+                ).setName(null)
+        );
+    }
+
+    @Test
+    default void testSetNameWithSame() {
+        final N name = this.createName("name");
+        final T selector = this.createPluginSelectorLike(
+                name,
+                TEXT
+        );
+        assertSame(
+                selector,
+                selector.setName(name)
+        );
+    }
+
+    @Test
+    default void testSetNameWithDifferent() {
+        final T selector = this.createPluginSelectorLike(
+                this.createName("name"),
+                TEXT
+        );
+        final N differentName = this.createName("different");
+        final T different = (T) selector.setName(differentName);
+
+        assertNotSame(
+                different,
+                selector
+        );
+        this.checkEquals(
+                differentName,
+                different.name(),
+                "name"
+        );
+        this.textAndCheck(
+                selector,
+                TEXT
+        );
+    }
+
+    T createPluginSelectorLike(final N name,
+                               final String text);
+
+    N createName(final String name);
+
+    // TypeNameTesting..................................................................................................
 
     @Override
     default String typeNameSuffix() {
