@@ -171,7 +171,7 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
                         this.createName("super123"),
                         TEXT
                 ),
-                "super123 $0.00"
+                "super123 " + TEXT
         );
     }
 
@@ -193,7 +193,7 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
         this.treePrintAndCheck(
                 this.createPluginSelectorLike(
                         this.createName("abc123"),
-                        "\"$.00\""
+                        "\"$0.00\""
                 ),
                 "abc123\n" +
                         "  \"$0.00\"\n"
