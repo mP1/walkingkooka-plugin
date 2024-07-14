@@ -24,7 +24,6 @@ import walkingkooka.InvalidCharacterException;
 import walkingkooka.ToStringTesting;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.naming.HasNameTesting;
-import walkingkooka.naming.Name;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.reflect.ClassTesting2;
@@ -220,30 +219,30 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                         Lists.of(
                                 "Hello",
                                 2.5,
-                                new PluginSelectorLike<>() {
+                                new PluginSelectorLike<StringName>() {
 
                                     @Override
-                                    public Name name() {
-                                        throw new UnsupportedOperationException();
+                                    public StringName name() {
+                                        return Names.string("plugin3");
                                     }
 
                                     @Override
-                                    public PluginSelectorLike<Name> setName(final Name name) {
+                                    public PluginSelectorLike<StringName> setName(final StringName name) {
                                         throw new UnsupportedOperationException();
                                     }
 
                                     @Override
                                     public String text() {
+                                        return "";
+                                    }
+
+                                    @Override
+                                    public PluginSelectorLike<StringName> setText(final String text) {
                                         throw new UnsupportedOperationException();
                                     }
 
                                     @Override
-                                    public PluginSelectorLike<Name> setText(final String text) {
-                                        throw new UnsupportedOperationException();
-                                    }
-
-                                    @Override
-                                    public PluginSelectorLike<Name> setValues(final List<?> values) {
+                                    public PluginSelectorLike<StringName> setValues(final List<?> values) {
                                         throw new UnsupportedOperationException();
                                     }
 
