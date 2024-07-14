@@ -176,7 +176,9 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
             }
 
             if (value instanceof PluginSelectorLike) {
-                b.append(value);
+                final PluginSelectorLike<?> pluginSelectorLike = (PluginSelectorLike<?>) value;
+                b.append(pluginSelectorLike.name())
+                        .append(pluginSelectorLike.text());
                 continue;
             }
 
