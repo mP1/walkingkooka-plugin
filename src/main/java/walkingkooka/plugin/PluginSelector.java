@@ -214,8 +214,8 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      * </pre>
      * The <code>provider</code> will be used to fetch <code>provided</code>> with any parameters.
      */
-    public <N extends Name, T> Optional<T> evaluateText(final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                                        final BiFunction<N, List<?>, Optional<T>> provider) {
+    public <N extends Name, T> T evaluateText(final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
+                                              final BiFunction<N, List<?>, T> provider) {
         Objects.requireNonNull(nameParserAndFactory, "nameParserAndFactory");
         Objects.requireNonNull(provider, "provider");
 
@@ -234,30 +234,22 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
 
         final TextCursor cursor = TextCursors.charSequence(this.text());
 
-        Optional<T> provided;
-
         final List<?> parameters = parseParameters(
                 cursor,
                 nameParserAndFactory,
                 provider
         );
 
-        if (null != parameters) {
-            skipSpaces(cursor);
+        skipSpaces(cursor);
 
-            if (false == cursor.isEmpty()) {
-                invalidCharacter(cursor);
-            }
-
-            provided = provider.apply(
-                    maybeName.get(),
-                    parameters
-            );
-        } else {
-            provided = Optional.empty();
+        if (false == cursor.isEmpty()) {
+            invalidCharacter(cursor);
         }
 
-        return provided;
+        return provider.apply(
+                maybeName.get(),
+                parameters
+        );
     }
 
     /**
@@ -265,14 +257,13 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      */
     private <N extends Name, T> Optional<T> parseNameParametersAndCreate(final TextCursor cursor,
                                                                          final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                                                         final BiFunction<N, List<?>, Optional<T>> provider) {
+                                                                         final BiFunction<N, List<?>, T> provider) {
         final Optional<N> maybeName = nameParserAndFactory.apply(
                 cursor,
                 PARSER_CONTEXT
         );
 
-        Optional<T> provided = Optional.empty();
-
+        final T provided;
         if (maybeName.isPresent()) {
             provided = provider.apply(
                     maybeName.get(),
@@ -282,13 +273,11 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                             provider
                     )
             );
-
-            if (false == provided.isPresent()) {
-                provided = null;
-            }
+        } else {
+            provided = null;
         }
 
-        return provided;
+        return Optional.ofNullable(provided);
     }
 
     /**
@@ -296,11 +285,10 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      */
     private <N extends Name, T> List<Object> parseParameters(final TextCursor cursor,
                                                              final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                                             final BiFunction<N, List<?>, Optional<T>> provider) {
+                                                             final BiFunction<N, List<?>, T> provider) {
         skipSpaces(cursor);
 
         final List<Object> parameters = Lists.array();
-        boolean missing = false;
 
         if (tryMatch(PARAMETER_BEGIN, cursor)) {
             for (; ; ) {
@@ -312,11 +300,6 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                         nameParserAndFactory,
                         provider
                 );
-                if(null == provided) {
-                    missing = true;
-                    break;
-                }
-
                 if (provided.isPresent()) {
                     parameters.add(provided.get());
                     continue;
@@ -363,9 +346,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
             }
         }
 
-        return missing ?
-                null :
-                Lists.immutable(parameters);
+        return Lists.immutable(parameters);
     }
 
     /**
