@@ -210,7 +210,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      * Sample text.
      * <pre>
      * number-to-number
-     * collection ( number-to-boolen, number-number, string-to-local-date "yyyy-mm-dd")
+     * collection ( number-to-boolean, number-number, string-to-local-date "yyyy-mm-dd")
      * </pre>
      * The <code>provider</code> will be used to fetch <code>provided</code>> with any parameters.
      */
