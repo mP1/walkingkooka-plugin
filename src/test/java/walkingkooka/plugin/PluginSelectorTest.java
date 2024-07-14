@@ -219,7 +219,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                         Lists.of(
                                 "Hello",
                                 2.5,
-                                new PluginSelectorLike<StringName>() {
+                                new TestPluginSelectorLike() {
 
                                     @Override
                                     public StringName name() {
@@ -227,28 +227,8 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                                     }
 
                                     @Override
-                                    public PluginSelectorLike<StringName> setName(final StringName name) {
-                                        throw new UnsupportedOperationException();
-                                    }
-
-                                    @Override
                                     public String text() {
                                         return "";
-                                    }
-
-                                    @Override
-                                    public PluginSelectorLike<StringName> setText(final String text) {
-                                        throw new UnsupportedOperationException();
-                                    }
-
-                                    @Override
-                                    public PluginSelectorLike<StringName> setValues(final List<?> values) {
-                                        throw new UnsupportedOperationException();
-                                    }
-
-                                    @Override
-                                    public void printTree(final IndentingPrinter printer) {
-                                        throw new UnsupportedOperationException();
                                     }
 
                                     @Override
@@ -259,6 +239,66 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                         )
                 )
         );
+    }
+
+    @Test
+    public void testSetValuesWithWholeNumber() {
+        this.checkEquals(
+                PluginSelector.with(
+                        NAME,
+                        "(\"Hello\", 22, plugin3)"
+                ),
+                PluginSelector.with(
+                        NAME,
+                        TEXT
+                ).setValues(
+                        Lists.of(
+                                "Hello",
+                                22.0,
+                                new TestPluginSelectorLike() {
+
+                                    @Override
+                                    public StringName name() {
+                                        return Names.string("plugin3");
+                                    }
+
+                                    @Override
+                                    public String text() {
+                                        return "";
+                                    }
+
+                                    @Override
+                                    public String toString() {
+                                        return "plugin3";
+                                    }
+                                }
+                        )
+                )
+        );
+    }
+
+    abstract class TestPluginSelectorLike implements PluginSelectorLike<StringName> {
+
+        @Override
+        public final PluginSelectorLike<StringName> setName(final StringName name) {
+            throw new UnsupportedOperationException();
+        }
+
+
+        @Override
+        public final PluginSelectorLike<StringName> setText(final String text) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public final PluginSelectorLike<StringName> setValues(final List<?> values) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public final void printTree(final IndentingPrinter printer) {
+            throw new UnsupportedOperationException();
+        }
     }
 
     // parse............................................................................................................
