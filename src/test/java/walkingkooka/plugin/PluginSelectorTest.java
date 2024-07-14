@@ -57,6 +57,8 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         ParseStringTesting<PluginSelector<StringName>>,
         TreePrintableTesting {
 
+    private final static StringName UNKNOWN = Names.string("unknown");
+
     private final static StringName NAME = Names.string("magic-plugin-123");
 
     private final static String TEXT = "@@";
@@ -411,7 +413,12 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                     )
             );
 
-    private final BiFunction<StringName, List<?>, TestProvided> PROVIDER = (final StringName name, final List<?> values) -> new TestProvided(name, values);
+    private final BiFunction<StringName, List<?>, Optional<TestProvided>> PROVIDER = (final StringName name, final List<?> values) ->
+            Optional.ofNullable(
+                    name.equals(UNKNOWN) ?
+                            null :
+                            new TestProvided(name, values)
+            );
 
     private static class TestProvided {
         TestProvided(final StringName name,
@@ -635,6 +642,20 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     }
 
     @Test
+    public void testEvaluateTextUnknownPlugin() {
+        this.evaluateTextAndCheck(
+                UNKNOWN + " ()"
+        );
+    }
+
+    @Test
+    public void testEvaluateTextUnknownPluginWithLiterals() {
+        this.evaluateTextAndCheck(
+                UNKNOWN + " (1, \"Hello\")"
+        );
+    }
+
+    @Test
     public void testEvaluateTextProvided() {
         this.evaluateTextAndCheck(
                 NAME + " (" + NAME2 + ")",
@@ -642,6 +663,13 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                         NAME,
                         new TestProvided(NAME2)
                 )
+        );
+    }
+
+    @Test
+    public void testEvaluateTextProvidedWithUnknown() {
+        this.evaluateTextAndCheck(
+                NAME + " (" + UNKNOWN + ")"
         );
     }
 
@@ -683,7 +711,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
 
     private void evaluateTextFails(final String selector,
                                    final BiFunction<TextCursor, ParserContext, Optional<StringName>> nameParserAndFactory,
-                                   final BiFunction<StringName, List<?>, TestProvided> provider,
+                                   final BiFunction<StringName, List<?>, Optional<TestProvided>> provider,
                                    final String expected) {
         final IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
@@ -701,8 +729,23 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         );
     }
 
+    private void evaluateTextAndCheck(final String selector) {
+        this.evaluateTextAndCheck(
+                selector,
+                Optional.empty()
+        );
+    }
+
     private void evaluateTextAndCheck(final String selector,
                                       final TestProvided expected) {
+        this.evaluateTextAndCheck(
+                selector,
+                Optional.of(expected)
+        );
+    }
+
+    private void evaluateTextAndCheck(final String selector,
+                                      final Optional<TestProvided> expected) {
         this.evaluateTextAndCheck(
                 selector,
                 NAME_PARSER_AND_FACTORY,
@@ -710,10 +753,23 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                 expected
         );
     }
+
     private void evaluateTextAndCheck(final String selector,
                                       final BiFunction<TextCursor, ParserContext, Optional<StringName>> nameParserAndCreator,
-                                      final BiFunction<StringName, List<?>, TestProvided> provider,
+                                      final BiFunction<StringName, List<?>, Optional<TestProvided>> provider,
                                       final TestProvided expected) {
+        this.evaluateTextAndCheck(
+                selector,
+                nameParserAndCreator,
+                provider,
+                Optional.of(expected)
+        );
+    }
+
+    private void evaluateTextAndCheck(final String selector,
+                                      final BiFunction<TextCursor, ParserContext, Optional<StringName>> nameParserAndCreator,
+                                      final BiFunction<StringName, List<?>, Optional<TestProvided>> provider,
+                                      final Optional<TestProvided> expected) {
         this.checkEquals(
                 expected,
                 PluginSelector.parse(
