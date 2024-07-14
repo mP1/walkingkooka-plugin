@@ -20,14 +20,13 @@ package walkingkooka.plugin;
 import walkingkooka.naming.Name;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProviderCollectionProviderGetter<P extends Provider, N extends Name, SELECTOR extends PluginSelectorLike<N>, OUT> {
 
-    Optional<OUT> get(final P provider,
-                      final N name,
-                      final List<?> values);
+    OUT get(final P provider,
+            final N name,
+            final List<?> values);
 
-    Optional<OUT> get(final P provider,
-                      final SELECTOR selector);
+    OUT get(final P provider,
+            final SELECTOR selector);
 }

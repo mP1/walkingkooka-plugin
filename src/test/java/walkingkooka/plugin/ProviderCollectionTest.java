@@ -35,7 +35,6 @@ import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.printer.IndentingPrinter;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -52,9 +51,9 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
     private final static ProviderCollectionProviderGetter<TestProvider, StringName, TestSelector, TestService> PROVIDER_GETTER = new ProviderCollectionProviderGetter<>() {
         @Override
-        public Optional<TestService> get(final TestProvider provider,
-                                         final StringName name,
-                                         final List<?> values) {
+        public TestService get(final TestProvider provider,
+                               final StringName name,
+                               final List<?> values) {
             return provider.get(
                     name,
                     values
@@ -62,8 +61,8 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         }
 
         @Override
-        public Optional<TestService> get(final TestProvider provider,
-                                         final TestSelector selector) {
+        public TestService get(final TestProvider provider,
+                               final TestSelector selector) {
             return provider.get(
                     selector
             );
@@ -244,25 +243,13 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     }
 
     @Test
-    public void testGetSelectorUnknown() {
-        this.getSelectorAndCheck(
-                new TestSelector("unknown")
-        );
-    }
-
-    private void getSelectorAndCheck(final TestSelector selector) {
-        this.getSelectorAndCheck(
-                this.createProvider(),
-                selector
-        );
-    }
-
-    private void getSelectorAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
-                                     final TestSelector selector) {
-        this.getSelectorAndCheck(
-                provider,
-                selector,
-                Optional.empty()
+    public void testGetSelectorUnknownFails() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> this.createProvider()
+                        .get(
+                                new TestSelector("unknown")
+                        )
         );
     }
 
@@ -278,16 +265,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     private void getSelectorAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
                                      final TestSelector selector,
                                      final TestService expected) {
-        this.getSelectorAndCheck(
-                provider,
-                selector,
-                Optional.of(expected)
-        );
-    }
-
-    private void getSelectorAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
-                                     final TestSelector selector,
-                                     final Optional<TestService> expected) {
         this.checkEquals(
                 expected,
                 provider.get(
@@ -327,48 +304,14 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     }
 
     @Test
-    public void testGetNameUnknown() {
-        this.getNameAndCheck(
-                "unknown",
-                VALUES
-        );
-    }
-
-    private void getNameAndCheck(final String name,
-                                 final List<?> values) {
-        this.getNameAndCheck(
-                Names.string(name),
-                values
-        );
-    }
-
-    private void getNameAndCheck(final StringName name,
-                                 final List<?> values) {
-        this.getNameAndCheck(
-                this.createProvider(),
-                name,
-                values
-        );
-    }
-
-    private void getNameAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
-                                 final String name,
-                                 final List<?> values) {
-        this.getNameAndCheck(
-                provider,
-                Names.string(name),
-                values
-        );
-    }
-
-    private void getNameAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
-                                 final StringName name,
-                                 final List<?> values) {
-        this.getNameAndCheck(
-                provider,
-                name,
-                values,
-                Optional.empty()
+    public void testGetNameUnknownFails() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> this.createProvider()
+                        .get(
+                                Names.string("unknown"),
+                                VALUES
+                        )
         );
     }
 
@@ -397,18 +340,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
                                  final StringName name,
                                  final List<?> values,
                                  final TestService expected) {
-        this.getNameAndCheck(
-                provider,
-                name,
-                values,
-                Optional.of(expected)
-        );
-    }
-
-    private void getNameAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
-                                 final StringName name,
-                                 final List<?> values,
-                                 final Optional<TestService> expected) {
         this.checkEquals(
                 expected,
                 provider.get(
@@ -449,40 +380,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
                 new TestPluginInfo(SERVICE_2_NAME),
                 new TestPluginInfo(SERVICE_3_NAME)
         );
-
-        // verify the info is present but the service itself is missing(absent)
-        this.getSelectorAndCheck(
-                collection,
-                new TestSelector(SERVICE_1_NAME)
-        );
-
-        this.getNameAndCheck(
-                collection,
-                SERVICE_1_NAME,
-                VALUES
-        );
-
-        this.getSelectorAndCheck(
-                collection,
-                new TestSelector(SERVICE_2_NAME)
-        );
-
-        this.getNameAndCheck(
-                collection,
-                SERVICE_2_NAME,
-                VALUES
-        );
-
-        this.getSelectorAndCheck(
-                collection,
-                new TestSelector(SERVICE_3_NAME)
-        );
-
-        this.getNameAndCheck(
-                collection,
-                SERVICE_3_NAME,
-                VALUES
-        );
     }
 
     @Test
@@ -506,13 +403,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         this.infosAndCheck(
                 provider,
                 Sets.of(infos)
-        );
-    }
-
-    private void infosAndCheck(final Set<TestPluginInfo> infos) {
-        this.infosAndCheck(
-                this.createProvider(),
-                infos
         );
     }
 
@@ -558,20 +448,19 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
             this.service = service;
         }
 
-        public Optional<TestService> get(final TestSelector selector) {
+        public TestService get(final TestSelector selector) {
             return this.get(
                     selector.name,
                     VALUES
             );
         }
 
-        public Optional<TestService> get(final StringName name,
-                                         final List<?> values) {
-            return Optional.ofNullable(
-                    this.name.equals(name) && VALUES.equals(values) ?
-                            this.service :
-                            null
-            );
+        public TestService get(final StringName name,
+                               final List<?> values) {
+            if(false == this.name.equals(name) || false == VALUES.equals(values)) {
+                throw new IllegalArgumentException("Unknown " + name + " or " + values);
+            }
+            return this.service;
         }
 
         final TestService service;

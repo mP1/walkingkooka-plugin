@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -120,39 +119,35 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
     /**
      * Gets the component identified by {@link SELECTOR} with the given parameter values.
      */
-    public Optional<OUT> get(final SELECTOR selector) {
+    public OUT get(final SELECTOR selector) {
         Objects.requireNonNull(selector, "selector");
 
-        // get the provided for the name and then call the provider getter with $SELECTOR.
-        return Optional.ofNullable(
-                this.nameToProvider.get(
-                        selector.name()
-                )
-        ).flatMap(
-                p -> this.providerGetter.get(
-                        p,
+        return this.providerGetter.get(
+                        this.provider(selector.name()),
                         selector
-                )
-        );
+                );
     }
 
     /**
      * Gets the component identified by SELECTOR.
      */
-    public Optional<OUT> get(final N name,
-                             final List<?> values) {
+    public OUT get(final N name,
+                   final List<?> values) {
         Objects.requireNonNull(name, "name");
 
-        // get the provided for the name and then call the provider getter with $SELECTOR.
-        return Optional.ofNullable(
-                this.nameToProvider.get(name)
-        ).flatMap(
-                p -> this.providerGetter.get(
-                        p,
+        return this.providerGetter.get(
+                        this.provider(name),
                         name,
                         values
-                )
         );
+    }
+
+    private P provider(final N name) {
+        final P provider = this.nameToProvider.get(name);
+        if(null == provider) {
+            throw new IllegalArgumentException("Unknown " + name);
+        }
+        return provider;
     }
 
     private final Map<N, P> nameToProvider;
