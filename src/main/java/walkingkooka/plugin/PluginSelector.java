@@ -161,7 +161,13 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
             if (value instanceof Double) {
                 // TODO should probably verify double in string form doesnt result in exponent.
                 final Double doubleValue = (Double) value;
-                b.append(doubleValue);
+
+                final Long longValue = doubleValue.longValue();
+                if (longValue.doubleValue() == doubleValue.doubleValue()) {
+                    b.append(longValue);
+                } else {
+                    b.append(doubleValue);
+                }
                 continue;
             }
 
