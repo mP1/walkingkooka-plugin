@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.InvalidCharacterException;
 import walkingkooka.ToStringTesting;
+import walkingkooka.collect.list.Lists;
 import walkingkooka.naming.HasNameTesting;
 import walkingkooka.naming.Name;
 import walkingkooka.reflect.ClassTesting;
@@ -197,6 +198,53 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
         this.textAndCheck(
                 selector,
                 TEXT
+        );
+    }
+
+    // setValues........................................................................................................
+
+    @Test
+    default void testSetValuesWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createPluginSelectorLike(
+                        this.createName("name"),
+                        TEXT
+                ).setValues(null)
+        );
+    }
+
+    @Test
+    default void testSetValuesWithSame() {
+        final T selector = this.createPluginSelectorLike(
+                this.createName("name"),
+                TEXT
+        );
+        assertSame(
+                selector,
+                selector.setValues(Lists.empty())
+        );
+    }
+
+    @Test
+    default void testSetValues() {
+        final T selector = this.createPluginSelectorLike(
+                this.createName("name1"),
+                TEXT
+        );
+        final T different = (T) selector.setValues(
+                Lists.of(
+                        "Hello1",
+                        1.0,
+                        this.createPluginSelectorLike(
+                                this.createName("nested2"),
+                                "(\"Hello2\", 2)"
+                        )
+                )
+        );
+        this.textAndCheck(
+                different,
+                "(\"Hello1\", 1.0, nested2 (\"Hello2\", 2))"
         );
     }
 
