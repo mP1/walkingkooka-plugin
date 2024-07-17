@@ -57,6 +57,7 @@ public final class PluginSelectorTextComponent<T extends PluginSelectorTextCompo
         this.alternatives = alternatives;
     }
 
+    @Override
     public String label() {
         return this.label;
     }
@@ -70,6 +71,7 @@ public final class PluginSelectorTextComponent<T extends PluginSelectorTextCompo
 
     private final String text;
 
+    @Override
     public List<T> alternatives() {
         return this.alternatives;
     }
