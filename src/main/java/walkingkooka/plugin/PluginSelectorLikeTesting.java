@@ -24,6 +24,7 @@ import walkingkooka.ToStringTesting;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.naming.HasNameTesting;
 import walkingkooka.naming.Name;
+import walkingkooka.net.HasUrlFragmentTesting;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.TypeNameTesting;
 import walkingkooka.test.ParseStringTesting;
@@ -38,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N extends Name> extends TreePrintableTesting,
         HasNameTesting<N>,
         HasTextTesting,
+        HasUrlFragmentTesting,
         HashCodeEqualsDefinedTesting2<T>,
         ToStringTesting<T>,
         ParseStringTesting<T>,

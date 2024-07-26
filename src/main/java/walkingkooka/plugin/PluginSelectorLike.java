@@ -19,6 +19,8 @@ package walkingkooka.plugin;
 
 import walkingkooka.naming.HasName;
 import walkingkooka.naming.Name;
+import walkingkooka.net.HasUrlFragment;
+import walkingkooka.net.UrlFragment;
 import walkingkooka.text.HasText;
 import walkingkooka.text.printer.TreePrintable;
 
@@ -27,7 +29,9 @@ import java.util.List;
 /**
  * Interface that should be implemented by all selectors.
  */
-public interface PluginSelectorLike<N extends Name> extends HasName<N>, HasText, TreePrintable {
+public interface PluginSelectorLike<N extends Name> extends HasName<N>, HasText,
+        HasUrlFragment,
+        TreePrintable {
 
     /**
      * Would be setter that returns a selector with the given {@link Name}.
@@ -44,4 +48,14 @@ public interface PluginSelectorLike<N extends Name> extends HasName<N>, HasText,
      * Would be setter that accepts values and eventually performs a setText
      */
     PluginSelectorLike<N> setValues(final List<?> values);
+
+    // HasUrlFragment...................................................................................................
+
+    /**
+     * Returns this selector as a {@link UrlFragment}.
+     */
+    @Override
+    default UrlFragment urlFragment() {
+        return UrlFragment.with(this.toString());
+    }
 }
