@@ -25,7 +25,6 @@ import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.JsonPropertyName;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
-import walkingkooka.tree.json.marshall.JsonNodeUnmarshallException;
 
 import java.util.List;
 import java.util.Objects;
@@ -60,18 +59,36 @@ public interface PluginSelectorTextComponentLike<A extends PluginSelectorTextCom
 
     default JsonNode marshall(final JsonNodeMarshallContext context) {
         Objects.requireNonNull(context, "context");
+        
+        final List<JsonNode> children = Lists.array();
+        
+        final String label = this.label();
+        if(false == label.isEmpty()) {
+            children.add(
+                    JsonNode.string(label)
+                            .setName(PluginSelectorTextComponentLikeJsonConstants.LABEL_PROPERTY)
+            );
+        }
+
+        final String text = this.text();
+        if(false == text.isEmpty()) {
+            children.add(
+                    JsonNode.string(text)
+                            .setName(PluginSelectorTextComponentLikeJsonConstants.TEXT_PROPERTY)
+            );
+        }
+
+        final List<?> alternatives = this.alternatives();
+        if(false == alternatives.isEmpty()) {
+            children.add(
+                    context.marshallCollection(
+                            alternatives
+                    ).setName(PluginSelectorTextComponentLikeJsonConstants.ALTERNATIVES_PROPERTY)
+            );
+        }
 
         return JsonNode.object()
-                .set(
-                        PluginSelectorTextComponentLikeJsonConstants.LABEL_PROPERTY,
-                        JsonNode.string(this.label())
-                ).set(
-                        PluginSelectorTextComponentLikeJsonConstants.TEXT_PROPERTY,
-                        JsonNode.string(this.text())
-                ).set(
-                        PluginSelectorTextComponentLikeJsonConstants.ALTERNATIVES_PROPERTY,
-                        context.marshallCollection(this.alternatives())
-                );
+                .setChildren(children);
     }
 
     /**
@@ -85,8 +102,8 @@ public interface PluginSelectorTextComponentLike<A extends PluginSelectorTextCom
         Objects.requireNonNull(context, "context");
         Objects.requireNonNull(factory, "factory");
 
-        String label = null;
-        String text = null;
+        String label = "";
+        String text = "";
         List<A> alternatives = Lists.empty();
 
         for (final JsonNode child : node.objectOrFail().children()) {
@@ -108,13 +125,6 @@ public interface PluginSelectorTextComponentLike<A extends PluginSelectorTextCom
                 default:
                     JsonNodeUnmarshallContext.unknownPropertyPresent(name, node);
             }
-        }
-
-        if (null == label) {
-            throw new JsonNodeUnmarshallException("Missing label", node);
-        }
-        if (null == text) {
-            throw new JsonNodeUnmarshallException("Missing text", node);
         }
 
         return factory.create(
