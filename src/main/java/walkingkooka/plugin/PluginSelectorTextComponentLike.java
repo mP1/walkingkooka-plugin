@@ -94,10 +94,10 @@ public interface PluginSelectorTextComponentLike<A extends PluginSelectorTextCom
     /**
      * Factory that creates a {@link PluginSelectorTextComponentAlternativeLike} parse a {@link JsonNode}.
      */
-    static <C extends PluginSelectorTextComponentLike, A extends PluginSelectorTextComponentAlternativeLike> C unmarshall(final JsonNode node,
-                                                                                                                          final JsonNodeUnmarshallContext context,
-                                                                                                                          final PluginSelectorTextComponentLikeFactory<C, A> factory,
-                                                                                                                          final Class<A> alternativesType) {
+    static <C extends PluginSelectorTextComponentLike<A>, A extends PluginSelectorTextComponentAlternativeLike> C unmarshall(final JsonNode node,
+                                                                                                                             final JsonNodeUnmarshallContext context,
+                                                                                                                             final PluginSelectorTextComponentLikeFactory<C, A> factory,
+                                                                                                                             final Class<A> alternativesType) {
         Objects.requireNonNull(node, "node");
         Objects.requireNonNull(context, "context");
         Objects.requireNonNull(factory, "factory");
