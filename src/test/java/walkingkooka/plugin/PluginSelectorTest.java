@@ -37,6 +37,8 @@ import walkingkooka.text.cursor.parser.Parsers;
 import walkingkooka.text.cursor.parser.StringParserToken;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintableTesting;
+import walkingkooka.tree.json.JsonNode;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContexts;
 
 import java.util.Arrays;
 import java.util.List;
@@ -819,6 +821,21 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                 this.parseString("magic-plugin-123 @@"),
                 "magic-plugin-123\n" +
                         "  \"@@\"\n"
+        );
+    }
+
+    // json.............................................................................................................
+
+    @Test
+    public void testMarshall() {
+        this.checkEquals(
+                JsonNode.string("magic-plugin-123 @@"),
+                PluginSelector.with(
+                        NAME,
+                        TEXT
+                ).marshall(
+                        JsonNodeMarshallContexts.basic()
+                )
         );
     }
 }

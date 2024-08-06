@@ -39,6 +39,8 @@ import walkingkooka.text.cursor.parser.ParserException;
 import walkingkooka.text.cursor.parser.Parsers;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
+import walkingkooka.tree.json.JsonNode;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 
 import java.math.MathContext;
 import java.util.List;
@@ -483,5 +485,14 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
             }
             printer.outdent();
         }
+    }
+
+    // json.............................................................................................................
+
+    /**
+     * Marshalls this instance to {@link JsonNode}.
+     */
+    public JsonNode marshall(final JsonNodeMarshallContext context) {
+        return context.marshall(this.toString());
     }
 }
