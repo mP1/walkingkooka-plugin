@@ -33,7 +33,7 @@ import java.util.Objects;
  * such as SpreadsheetFormatterName#DATE_FORMAT_PATTERN which might have a SHORT, MEDIUM, LONG menu items. Instances of
  * this class should be wrapped by another class which will also register itself to support json marshall/unmarshalling.
  */
-public final class PluginSelectorMenu<P extends PluginSelectorLike<N>, N extends Name> {
+public final class PluginSelectorMenu<P extends PluginSelectorLike<N>, N extends Name> implements PluginSelectorMenuLike<P, N> {
 
     /**
      * Factory that creates a {@link PluginSelectorMenu}.
@@ -55,6 +55,7 @@ public final class PluginSelectorMenu<P extends PluginSelectorLike<N>, N extends
     /**
      * The label for this {@link PluginSelector}.
      */
+    @Override
     public String label() {
         return this.label;
     }
@@ -64,6 +65,7 @@ public final class PluginSelectorMenu<P extends PluginSelectorLike<N>, N extends
     /**
      * The selector for this menu item. This will probably become the HistoryToken#setSave value.
      */
+    @Override
     public P selector() {
         return this.selector;
     }
