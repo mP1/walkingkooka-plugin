@@ -21,6 +21,8 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.naming.Name;
 import walkingkooka.reflect.ClassTesting;
+import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.Printers;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -96,13 +98,26 @@ public interface PluginSelectorMenuLikeTesting<M extends PluginSelectorMenuLike<
         final String label = "Label123";
         final P selector = this.createPluginSelector();
 
+        final StringBuilder b = new StringBuilder();
+        final IndentingPrinter printer = Printers.stringBuilder(
+                b,
+                EOL
+        ).indenting(INDENTATION);
+
+        printer.println(label);
+        printer.indent();
+        {
+            selector.printTree(printer);
+        }
+        printer.outdent();
+        printer.flush();
+
         this.treePrintAndCheck(
                 this.createPluginSelectorMenu(
                         label,
                         selector
                 ),
-                label + EOL +
-                        INDENTATION + selector + EOL
+                b.toString()
         );
     }
 
