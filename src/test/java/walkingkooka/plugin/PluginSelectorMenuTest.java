@@ -179,6 +179,11 @@ public final class PluginSelectorMenuTest implements PluginSelectorMenuLikeTesti
             return this.pluginSelector.equals(other.pluginSelector);
         }
 
+        @Override
+        public String toString() {
+            return this.pluginSelector.toString();
+        }
+
         JsonNode marshall(final JsonNodeMarshallContext context) {
             return this.pluginSelector.marshall(context);
         }

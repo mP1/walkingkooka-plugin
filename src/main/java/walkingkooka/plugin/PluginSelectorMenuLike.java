@@ -18,8 +18,9 @@
 package walkingkooka.plugin;
 
 import walkingkooka.naming.Name;
+import walkingkooka.text.printer.TreePrintable;
 
-public interface PluginSelectorMenuLike<P extends PluginSelectorLike<N>, N extends Name> {
+public interface PluginSelectorMenuLike<P extends PluginSelectorLike<N>, N extends Name> extends TreePrintable {
 
     String label();
 

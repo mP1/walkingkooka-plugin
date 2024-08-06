@@ -21,6 +21,7 @@ import walkingkooka.ToStringBuilder;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.naming.Name;
 import walkingkooka.text.CharSequences;
+import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.JsonPropertyName;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
@@ -99,6 +100,19 @@ public final class PluginSelectorMenu<P extends PluginSelectorLike<N>, N extends
                 .value(this.label)
                 .value(this.selector)
                 .build();
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Override
+    public void printTree(final IndentingPrinter printer) {
+        printer.println(this.label);
+
+        printer.indent();
+        {
+            this.selector.printTree(printer);
+        }
+        printer.outdent();
     }
 
     // json.............................................................................................................
