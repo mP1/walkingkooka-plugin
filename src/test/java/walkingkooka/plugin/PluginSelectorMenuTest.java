@@ -19,14 +19,11 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
-import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.plugin.PluginSelectorMenuTest.TestPluginSelector;
-import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.printer.IndentingPrinter;
-import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.expression.ExpressionNumberKind;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
@@ -38,11 +35,7 @@ import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContexts;
 import java.math.MathContext;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-public final class PluginSelectorMenuTest implements ClassTesting<PluginSelectorMenu<TestPluginSelector, StringName>>,
-        HashCodeEqualsDefinedTesting2<PluginSelectorMenu<TestPluginSelector, StringName>>,
-        TreePrintableTesting {
+public final class PluginSelectorMenuTest implements PluginSelectorMenuLikeTesting<PluginSelectorMenu<TestPluginSelector, StringName>, TestPluginSelector, StringName> {
 
     private final static String LABEL = "Label Short123";
 
@@ -55,90 +48,24 @@ public final class PluginSelectorMenuTest implements ClassTesting<PluginSelector
 
     // with.............................................................................................................
 
-    @Test
-    public void testWithNullLabelFails() {
-        assertThrows(
-                NullPointerException.class,
-                () -> PluginSelectorMenu.with(
-                        null,
-                        SELECTOR
-                )
-        );
-    }
 
-    @Test
-    public void testWithEmptyLabelFails() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> PluginSelectorMenu.with(
-                        "",
-                        SELECTOR
-                )
-        );
-    }
-
-    @Test
-    public void testWithNullSelectorFails() {
-        assertThrows(
-                NullPointerException.class,
-                () -> PluginSelectorMenu.with(
-                        LABEL,
-                        null
-                )
-        );
-    }
-
-    @Test
-    public void testWith() {
-        final PluginSelectorMenu<TestPluginSelector, StringName> menuItem = PluginSelectorMenu.with(
-                LABEL,
-                SELECTOR
-        );
-        this.checkEquals(
-                LABEL,
-                menuItem.label(),
-                "label"
-        );
-        this.checkEquals(
-                SELECTOR,
-                menuItem.selector(),
-                "selector"
-        );
-    }
-
-    // hashCode/equals..................................................................................................
-
-    @Test
-    public void testEqualsDifferentLabel() {
-        this.checkNotEquals(
-                PluginSelectorMenu.with(
-                        "different " + LABEL,
-                        SELECTOR
-                )
-        );
-    }
-
-    @Test
-    public void testEqualsDifferentSelector() {
-        this.checkNotEquals(
-                PluginSelectorMenu.with(
-                        LABEL,
-                        new TestPluginSelector(
-                                PluginSelector.parse(
-                                        "TestSelectorDifferent",
-                                        Names::string
-                                )
-                        )
-                )
+    @Override
+    public PluginSelectorMenu<TestPluginSelector, StringName> createPluginSelectorMenu(final String label,
+                                                                                       final TestPluginSelector selector) {
+        return PluginSelectorMenu.with(
+                label,
+                selector
         );
     }
 
     @Override
-    public PluginSelectorMenu<TestPluginSelector, StringName> createObject() {
-        return PluginSelectorMenu.with(
-                LABEL,
-                SELECTOR
-        );
+    public TestPluginSelector createPluginSelector() {
+        return TestPluginSelector.parse("TestSelector");
+    }
+
+    @Override
+    public TestPluginSelector createDifferentPluginSelector() {
+        return TestPluginSelector.parse("TestDifferentSelector");
     }
 
     // json.............................................................................................................
