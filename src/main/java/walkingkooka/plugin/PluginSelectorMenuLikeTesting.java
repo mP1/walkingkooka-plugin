@@ -88,6 +88,24 @@ public interface PluginSelectorMenuLikeTesting<M extends PluginSelectorMenu<P, N
 
     P createPluginSelector();
 
+
+    // TreePrintable....................................................................................................
+
+    @Test
+    default void testPrintTree() {
+        final String label = "Label123";
+        final P selector = this.createPluginSelector();
+
+        this.treePrintAndCheck(
+                this.createPluginSelectorMenu(
+                        label,
+                        selector
+                ),
+                label + EOL +
+                        INDENTATION + selector + EOL
+        );
+    }
+
     // hashCode/equals..................................................................................................
 
     @Test
