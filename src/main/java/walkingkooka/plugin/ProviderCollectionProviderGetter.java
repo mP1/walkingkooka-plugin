@@ -25,8 +25,10 @@ public interface ProviderCollectionProviderGetter<P extends Provider, N extends 
 
     OUT get(final P provider,
             final N name,
-            final List<?> values);
+            final List<?> values,
+            final ProviderContext context);
 
     OUT get(final P provider,
-            final SELECTOR selector);
+            final SELECTOR selector,
+            final ProviderContext context);
 }

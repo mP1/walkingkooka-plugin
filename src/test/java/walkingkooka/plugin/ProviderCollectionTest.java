@@ -53,18 +53,22 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         @Override
         public TestService get(final TestProvider provider,
                                final StringName name,
-                               final List<?> values) {
+                               final List<?> values,
+                               final ProviderContext context) {
             return provider.get(
                     name,
-                    values
+                    values,
+                    context
             );
         }
 
         @Override
         public TestService get(final TestProvider provider,
-                               final TestSelector selector) {
+                               final TestSelector selector,
+                               final ProviderContext context) {
             return provider.get(
-                    selector
+                    selector,
+                    context
             );
         }
     };
@@ -92,6 +96,8 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     );
 
     private final static List<?> VALUES = Lists.of("value");
+
+    private final static ProviderContext CONTEXT = ProviderContexts.fake();
 
     @Test
     public void testWithNullProviderGetterFails() {
@@ -248,7 +254,8 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
                 IllegalArgumentException.class,
                 () -> this.createProvider()
                         .get(
-                                new TestSelector("unknown")
+                                new TestSelector("unknown"),
+                                CONTEXT
                         )
         );
     }
@@ -268,7 +275,8 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         this.checkEquals(
                 expected,
                 provider.get(
-                        selector
+                        selector,
+                        CONTEXT
                 ),
                 () -> provider + " selector " + selector
         );
@@ -310,7 +318,8 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
                 () -> this.createProvider()
                         .get(
                                 Names.string("unknown"),
-                                VALUES
+                                VALUES,
+                                CONTEXT
                         )
         );
     }
@@ -344,7 +353,8 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
                 expected,
                 provider.get(
                         name,
-                        values
+                        values,
+                        CONTEXT
                 ),
                 () -> provider + " name " + name
         );
@@ -448,15 +458,18 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
             this.service = service;
         }
 
-        public TestService get(final TestSelector selector) {
+        public TestService get(final TestSelector selector,
+                               final ProviderContext context) {
             return this.get(
                     selector.name,
-                    VALUES
+                    VALUES,
+                    context
             );
         }
 
         public TestService get(final StringName name,
-                               final List<?> values) {
+                               final List<?> values,
+                               final ProviderContext context) {
             if(false == this.name.equals(name) || false == VALUES.equals(values)) {
                 throw new IllegalArgumentException("Unknown " + name + " or " + values);
             }
