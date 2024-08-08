@@ -217,7 +217,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      * The <code>provider</code> will be used to fetch <code>provided</code>> with any parameters.
      */
     public <N extends Name, T> T evaluateText(final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                              final BiFunction<N, List<?>, T> provider) {
+                                              final PluginSelectorEvaluateTextProvider<N, T> provider) {
         Objects.requireNonNull(nameParserAndFactory, "nameParserAndFactory");
         Objects.requireNonNull(provider, "provider");
 
@@ -248,7 +248,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
             invalidCharacter(cursor);
         }
 
-        return provider.apply(
+        return provider.get(
                 maybeName.get(),
                 parameters
         );
@@ -259,7 +259,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      */
     private <N extends Name, T> Optional<T> parseNameParametersAndCreate(final TextCursor cursor,
                                                                          final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                                                         final BiFunction<N, List<?>, T> provider) {
+                                                                         final PluginSelectorEvaluateTextProvider<N, T> provider) {
         final Optional<N> maybeName = nameParserAndFactory.apply(
                 cursor,
                 PARSER_CONTEXT
@@ -267,7 +267,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
 
         final T provided;
         if (maybeName.isPresent()) {
-            provided = provider.apply(
+            provided = provider.get(
                     maybeName.get(),
                     parseParameters(
                             cursor,
@@ -287,7 +287,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      */
     private <N extends Name, T> List<Object> parseParameters(final TextCursor cursor,
                                                              final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                                             final BiFunction<N, List<?>, T> provider) {
+                                                             final PluginSelectorEvaluateTextProvider<N, T> provider) {
         skipSpaces(cursor);
 
         final List<Object> parameters = Lists.array();
