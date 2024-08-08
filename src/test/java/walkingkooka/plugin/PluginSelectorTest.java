@@ -413,7 +413,11 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                     )
             );
 
-    private final PluginSelectorEvaluateTextProvider<StringName, TestProvided> PROVIDER = (final StringName name, final List<?> values) -> new TestProvided(name, values);
+    private final static PluginSelectorEvaluateTextProvider<StringName, TestProvided> PROVIDER = (final StringName name,
+                                                                                           final List<?> values,
+                                                                                           final ProviderContext context) -> new TestProvided(name, values);
+
+    private final static ProviderContext CONTEXT = new FakeProviderContext();
 
     private static class TestProvided {
         TestProvided(final StringName name,
@@ -472,7 +476,8 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                         Names::string
                 ).evaluateText(
                         null,
-                        PROVIDER
+                        PROVIDER,
+                        CONTEXT
                 )
         );
     }
@@ -486,6 +491,22 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                         Names::string
                 ).evaluateText(
                         NAME_PARSER_AND_FACTORY,
+                        null,
+                        CONTEXT
+                )
+        );
+    }
+
+    @Test
+    public void testEvaluateTextWIthNullContextFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> PluginSelector.parse(
+                        "name",
+                        Names::string
+                ).evaluateText(
+                        NAME_PARSER_AND_FACTORY,
+                        PROVIDER,
                         null
                 )
         );
@@ -502,7 +523,8 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                                 Names::string
                         ).evaluateText(
                         NAME_PARSER_AND_FACTORY,
-                        PROVIDER
+                        PROVIDER,
+                        CONTEXT
                 )
         );
 
@@ -568,6 +590,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                 NAME + " (1.25)",
                 NAME_PARSER_AND_FACTORY,
                 PROVIDER,
+                CONTEXT,
                 new TestProvided(NAME, 1.25)
         );
     }
@@ -674,11 +697,12 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     }
 
     private void evaluateTextFails(final String selector,
-                                         final String expected) {
+                                   final String expected) {
         this.evaluateTextFails(
                 selector,
                 NAME_PARSER_AND_FACTORY,
                 PROVIDER,
+                CONTEXT,
                 expected
         );
     }
@@ -686,6 +710,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     private void evaluateTextFails(final String selector,
                                    final BiFunction<TextCursor, ParserContext, Optional<StringName>> nameParserAndFactory,
                                    final PluginSelectorEvaluateTextProvider<StringName, TestProvided> provider,
+                                   final ProviderContext context,
                                    final String expected) {
         final IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
@@ -694,7 +719,8 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                         Names::string
                 ).evaluateText(
                         nameParserAndFactory,
-                        provider
+                        provider,
+                        context
                 )
         );
         this.checkEquals(
@@ -709,12 +735,14 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                 selector,
                 NAME_PARSER_AND_FACTORY,
                 PROVIDER,
+                CONTEXT,
                 expected
         );
     }
     private void evaluateTextAndCheck(final String selector,
                                       final BiFunction<TextCursor, ParserContext, Optional<StringName>> nameParserAndCreator,
                                       final PluginSelectorEvaluateTextProvider<StringName, TestProvided> provider,
+                                      final ProviderContext context,
                                       final TestProvided expected) {
         this.checkEquals(
                 expected,
@@ -723,7 +751,8 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                         Names::string
                 ).evaluateText(
                         nameParserAndCreator,
-                        provider
+                        provider,
+                        context
                 )
         );
     }

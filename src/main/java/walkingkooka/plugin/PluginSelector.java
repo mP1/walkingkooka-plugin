@@ -217,9 +217,11 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      * The <code>provider</code> will be used to fetch <code>provided</code>> with any parameters.
      */
     public <N extends Name, T> T evaluateText(final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                              final PluginSelectorEvaluateTextProvider<N, T> provider) {
+                                              final PluginSelectorEvaluateTextProvider<N, T> provider,
+                                              final ProviderContext context) {
         Objects.requireNonNull(nameParserAndFactory, "nameParserAndFactory");
         Objects.requireNonNull(provider, "provider");
+        Objects.requireNonNull(context, "context");
 
         final String nameText = this.name().value();
         final TextCursor nameCursor = TextCursors.charSequence(nameText);
@@ -239,7 +241,8 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
         final List<?> parameters = parseParameters(
                 cursor,
                 nameParserAndFactory,
-                provider
+                provider,
+                context
         );
 
         skipSpaces(cursor);
@@ -250,7 +253,8 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
 
         return provider.get(
                 maybeName.get(),
-                parameters
+                parameters,
+                context
         );
     }
 
@@ -259,7 +263,8 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      */
     private <N extends Name, T> Optional<T> parseNameParametersAndCreate(final TextCursor cursor,
                                                                          final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                                                         final PluginSelectorEvaluateTextProvider<N, T> provider) {
+                                                                         final PluginSelectorEvaluateTextProvider<N, T> provider,
+                                                                         final ProviderContext context) {
         final Optional<N> maybeName = nameParserAndFactory.apply(
                 cursor,
                 PARSER_CONTEXT
@@ -272,8 +277,10 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                     parseParameters(
                             cursor,
                             nameParserAndFactory,
-                            provider
-                    )
+                            provider,
+                            context
+                    ),
+                    context
             );
         } else {
             provided = null;
@@ -287,7 +294,8 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      */
     private <N extends Name, T> List<Object> parseParameters(final TextCursor cursor,
                                                              final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                                             final PluginSelectorEvaluateTextProvider<N, T> provider) {
+                                                             final PluginSelectorEvaluateTextProvider<N, T> provider,
+                                                             final ProviderContext context) {
         skipSpaces(cursor);
 
         final List<Object> parameters = Lists.array();
@@ -300,7 +308,8 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                 final Optional<T> provided = parseNameParametersAndCreate(
                         cursor,
                         nameParserAndFactory,
-                        provider
+                        provider,
+                        context
                 );
                 if (provided.isPresent()) {
                     parameters.add(provided.get());

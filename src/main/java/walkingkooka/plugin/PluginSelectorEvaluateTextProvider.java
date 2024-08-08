@@ -26,5 +26,7 @@ import java.util.List;
  */
 public interface PluginSelectorEvaluateTextProvider<N extends Name, T> {
 
-    T get(final N name, final List<?> values);
+    T get(final N name,
+          final List<?> values,
+          final ProviderContext context);
 }
