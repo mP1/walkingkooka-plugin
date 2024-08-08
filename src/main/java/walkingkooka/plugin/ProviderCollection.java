@@ -119,12 +119,15 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
     /**
      * Gets the component identified by {@link SELECTOR} with the given parameter values.
      */
-    public OUT get(final SELECTOR selector) {
+    public OUT get(final SELECTOR selector,
+                   final ProviderContext context) {
         Objects.requireNonNull(selector, "selector");
+        Objects.requireNonNull(context, "context");
 
         return this.providerGetter.get(
                         this.provider(selector.name()),
-                        selector
+                        selector,
+                        context
                 );
     }
 
@@ -132,13 +135,16 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
      * Gets the component identified by SELECTOR.
      */
     public OUT get(final N name,
-                   final List<?> values) {
+                   final List<?> values,
+                   final ProviderContext context) {
         Objects.requireNonNull(name, "name");
+        Objects.requireNonNull(context, "context");
 
         return this.providerGetter.get(
                         this.provider(name),
                         name,
-                        values
+                        values,
+                        context
         );
     }
 
