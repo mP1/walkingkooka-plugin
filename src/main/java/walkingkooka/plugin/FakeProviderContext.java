@@ -19,5 +19,5 @@ package walkingkooka.plugin;
 
 import walkingkooka.environment.FakeEnvironmentContext;
 
-public class FakeProviderContext extends FakeEnvironmentContext {
+public class FakeProviderContext extends FakeEnvironmentContext implements ProviderContext{
 }
