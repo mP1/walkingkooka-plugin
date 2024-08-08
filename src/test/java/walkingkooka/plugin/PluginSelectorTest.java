@@ -413,7 +413,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                     )
             );
 
-    private final BiFunction<StringName, List<?>, TestProvided> PROVIDER = (final StringName name, final List<?> values) -> new TestProvided(name, values);
+    private final PluginSelectorEvaluateTextProvider<StringName, TestProvided> PROVIDER = (final StringName name, final List<?> values) -> new TestProvided(name, values);
 
     private static class TestProvided {
         TestProvided(final StringName name,
@@ -685,7 +685,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
 
     private void evaluateTextFails(final String selector,
                                    final BiFunction<TextCursor, ParserContext, Optional<StringName>> nameParserAndFactory,
-                                   final BiFunction<StringName, List<?>, TestProvided> provider,
+                                   final PluginSelectorEvaluateTextProvider<StringName, TestProvided> provider,
                                    final String expected) {
         final IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
@@ -714,7 +714,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     }
     private void evaluateTextAndCheck(final String selector,
                                       final BiFunction<TextCursor, ParserContext, Optional<StringName>> nameParserAndCreator,
-                                      final BiFunction<StringName, List<?>, TestProvided> provider,
+                                      final PluginSelectorEvaluateTextProvider<StringName, TestProvided> provider,
                                       final TestProvided expected) {
         this.checkEquals(
                 expected,
