@@ -23,6 +23,7 @@ import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.InvalidCharacterException;
 import walkingkooka.ToStringTesting;
 import walkingkooka.collect.list.Lists;
+import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.naming.HasNameTesting;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
@@ -414,10 +415,23 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
             );
 
     private final static PluginSelectorEvaluateTextProvider<StringName, TestProvided> PROVIDER = (final StringName name,
-                                                                                           final List<?> values,
-                                                                                           final ProviderContext context) -> new TestProvided(name, values);
+                                                                                                  final List<?> values,
+                                                                                                  final ProviderContext context) -> new TestProvided(name, values);
 
-    private final static ProviderContext CONTEXT = new FakeProviderContext();
+    private final static ProviderContext CONTEXT = new FakeProviderContext() {
+        @Override
+        public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
+            return Cast.to(
+                    Optional.ofNullable(
+                            ENVIRONMENT_VALUE_NAME_1.equals(name) ?
+                                    ENVIRONMENT_VALUE_1 :
+                                    ENVIRONMENT_VALUE_NAME_2.equals(name) ?
+                                            ENVIRONMENT_VALUE_2 :
+                                            null
+                    )
+            );
+        }
+    };
 
     private static class TestProvided {
         TestProvided(final StringName name,
@@ -656,6 +670,30 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         this.evaluateTextAndCheck(
                 NAME + "  ( \"string-literal-parameter-1\" , \"string-literal-parameter-2\" )",
                 new TestProvided(NAME, "string-literal-parameter-1", "string-literal-parameter-2")
+        );
+    }
+
+    private final static EnvironmentValueName<String> ENVIRONMENT_VALUE_NAME_1 = EnvironmentValueName.with("environment-value-name-1");
+
+    private final static String ENVIRONMENT_VALUE_1 = "environment-value-1";
+
+    private final static EnvironmentValueName<Double> ENVIRONMENT_VALUE_NAME_2 = EnvironmentValueName.with("environment-value-name-2");
+
+    private final static double ENVIRONMENT_VALUE_2 = 2.5;
+
+    @Test
+    public void testEvaluateTextEnvironmentValueName() {
+        this.evaluateTextAndCheck(
+                NAME + "  ( $" + ENVIRONMENT_VALUE_NAME_1 + ")",
+                new TestProvided(NAME, ENVIRONMENT_VALUE_1)
+        );
+    }
+
+    @Test
+    public void testEvaluateTextEnvironmentValueName2() {
+        this.evaluateTextAndCheck(
+                NAME + "  ( $" + ENVIRONMENT_VALUE_NAME_1 + ",$" + ENVIRONMENT_VALUE_NAME_2 + ",\"string-literal-parameter-3\" )",
+                new TestProvided(NAME, ENVIRONMENT_VALUE_1, ENVIRONMENT_VALUE_2, "string-literal-parameter-3")
         );
     }
 
