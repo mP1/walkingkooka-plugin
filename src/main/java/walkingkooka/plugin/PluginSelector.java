@@ -261,10 +261,10 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
     /**
      * Attempts to parse an optional plugin including its parameters which must be within parens.
      */
-    private <N extends Name, T> Optional<T> parseNameParametersAndCreate(final TextCursor cursor,
-                                                                         final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                                                         final PluginSelectorEvaluateTextProvider<N, T> provider,
-                                                                         final ProviderContext context) {
+    private <N extends Name, T> Optional<T> tryParseNameParametersAndCreate(final TextCursor cursor,
+                                                                            final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
+                                                                            final PluginSelectorEvaluateTextProvider<N, T> provider,
+                                                                            final ProviderContext context) {
         final Optional<N> maybeName = nameParserAndFactory.apply(
                 cursor,
                 PARSER_CONTEXT
@@ -305,7 +305,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                 skipSpaces(cursor);
 
                 // try parsing for a provided with or without parameters
-                final Optional<T> provided = parseNameParametersAndCreate(
+                final Optional<T> provided = tryParseNameParametersAndCreate(
                         cursor,
                         nameParserAndFactory,
                         provider,
@@ -317,12 +317,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                 }
 
                 // try for a double literal
-                final Optional<Double> maybeNumber = NUMBER_LITERAL.parse(
-                        cursor,
-                        PARSER_CONTEXT
-                ).map(
-                        t -> t.cast(DoubleParserToken.class).value()
-                );
+                final Optional<Double> maybeNumber = tryParseNumber(cursor);
                 if (maybeNumber.isPresent()) {
                     parameters.add(maybeNumber.get());
                     continue;
@@ -330,12 +325,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
 
                 // try for a string literal
                 try {
-                    final Optional<String> maybeString = STRING_LITERAL.parse(
-                            cursor,
-                            PARSER_CONTEXT
-                    ).map(
-                            t -> t.cast(DoubleQuotedParserToken.class).value()
-                    );
+                    final Optional<String> maybeString = tryParseString(cursor);
                     if (maybeString.isPresent()) {
                         parameters.add(maybeString.get());
                         continue;
@@ -406,9 +396,33 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
     private final static Parser<ParserContext> PARAMETER_END = Parsers.string(PARAMETER_END_STRING, CaseSensitivity.SENSITIVE);
 
     /**
+     * Tries to parse a number value.
+     */
+    private static Optional<Double> tryParseNumber(final TextCursor cursor) {
+        return NUMBER_LITERAL.parse(
+                cursor,
+                PARSER_CONTEXT
+        ).map(
+                t -> t.cast(DoubleParserToken.class).value()
+        );
+    }
+
+    /**
      * Number literal parameters are double literals using DOT as the decimal separator.
      */
     private final static Parser<ParserContext> NUMBER_LITERAL = Parsers.doubleParser();
+
+    /**
+     * Tries to parse a string literal.
+     */
+    private static Optional<String> tryParseString(final TextCursor cursor) {
+        return STRING_LITERAL.parse(
+                cursor,
+                PARSER_CONTEXT
+        ).map(
+                t -> t.cast(DoubleQuotedParserToken.class).value()
+        );
+    }
 
     /**
      * String literal parameters must be double-quoted and support backslash escaping.
