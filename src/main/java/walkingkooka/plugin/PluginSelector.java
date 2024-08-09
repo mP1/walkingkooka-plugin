@@ -20,6 +20,7 @@ package walkingkooka.plugin;
 import walkingkooka.InvalidCharacterException;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.datetime.DateTimeContexts;
+import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.naming.HasName;
 import walkingkooka.naming.Name;
@@ -304,34 +305,51 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
             for (; ; ) {
                 skipSpaces(cursor);
 
+                {
+                    final Optional<?> maybeEnvironmentValue = tryParseEnvironmentValue(
+                            cursor,
+                            context
+                    );
+                    if (maybeEnvironmentValue.isPresent()) {
+                        parameters.add(maybeEnvironmentValue.get());
+                        continue;
+                    }
+                }
+
                 // try parsing for a provided with or without parameters
-                final Optional<T> provided = tryParseNameParametersAndCreate(
-                        cursor,
-                        nameParserAndFactory,
-                        provider,
-                        context
-                );
-                if (provided.isPresent()) {
-                    parameters.add(provided.get());
-                    continue;
+                {
+                    final Optional<T> provided = tryParseNameParametersAndCreate(
+                            cursor,
+                            nameParserAndFactory,
+                            provider,
+                            context
+                    );
+                    if (provided.isPresent()) {
+                        parameters.add(provided.get());
+                        continue;
+                    }
                 }
 
                 // try for a double literal
-                final Optional<Double> maybeNumber = tryParseNumber(cursor);
-                if (maybeNumber.isPresent()) {
-                    parameters.add(maybeNumber.get());
-                    continue;
+                {
+                    final Optional<Double> maybeNumber = tryParseNumber(cursor);
+                    if (maybeNumber.isPresent()) {
+                        parameters.add(maybeNumber.get());
+                        continue;
+                    }
                 }
 
                 // try for a string literal
-                try {
-                    final Optional<String> maybeString = tryParseString(cursor);
-                    if (maybeString.isPresent()) {
-                        parameters.add(maybeString.get());
-                        continue;
+                {
+                    try {
+                        final Optional<String> maybeString = tryParseString(cursor);
+                        if (maybeString.isPresent()) {
+                            parameters.add(maybeString.get());
+                            continue;
+                        }
+                    } catch (final ParserException cause) {
+                        throw new IllegalArgumentException(cause.getMessage(), cause);
                     }
-                } catch (final ParserException cause) {
-                    throw new IllegalArgumentException(cause.getMessage(), cause);
                 }
 
                 if (tryMatch(PARAMETER_SEPARATOR, cursor)) {
@@ -428,6 +446,36 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      * String literal parameters must be double-quoted and support backslash escaping.
      */
     private final static Parser<ParserContext> STRING_LITERAL = Parsers.doubleQuoted();
+
+    private static Optional<Object> tryParseEnvironmentValue(final TextCursor cursor,
+                                                             final ProviderContext context) {
+        return ENVIRONMENT_VALUE_NAME.parse(
+                cursor,
+                PARSER_CONTEXT
+        ).map(
+            s -> context.environmentValueOrFail(
+                    EnvironmentValueName.with(
+                            s.text()
+                                    .substring(1) // skip leading DOLLAR-SIGN
+                    )
+            )
+        );
+    }
+
+    /**
+     * Parses a DOLLAR-SIGN then {@link EnvironmentValueName}
+     */
+    private final static Parser<ParserContext> ENVIRONMENT_VALUE_NAME = Parsers.sequenceParserBuilder()
+                    .required(
+                            Parsers.string("$", CaseSensitivity.SENSITIVE)
+                    ).required(
+                            Parsers.stringInitialAndPartCharPredicate(
+                                    EnvironmentValueName.INITIAL,
+                                    EnvironmentValueName.PART,
+                                    2,
+                                    EnvironmentValueName.MAX_LENGTH
+                            )
+            ).build();
 
     /**
      * Singleton which can be reused.
