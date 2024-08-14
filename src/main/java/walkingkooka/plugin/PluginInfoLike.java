@@ -38,7 +38,7 @@ import java.util.function.Function;
 /**
  * Captures the common members for a plugin INFO.
  * <br>
- * The type parameter N does not extend {@link PluginNameLike} because of {@link walkingkooka.tree.expression.FunctionExpressionName}.
+ * The type parameter N does not extend {@link PluginNameLike} because of {@link walkingkooka.tree.expression.ExpressionFunctionName}.
  * <br>
  * Note each {@link PluginInfoLike} must provide a public static parse method which must also be able to parse {@link Object#toString()}.
  */
