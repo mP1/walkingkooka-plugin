@@ -17,12 +17,20 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.reflect.PublicStaticHelper;
 
 /**
  * A collection of {@link ProviderContext} factory methods.
  */
 public final class ProviderContexts implements PublicStaticHelper {
+
+    /**
+     * {@see BasicProviderContext}
+     */
+    public static ProviderContext basic(final EnvironmentContext environmentContext) {
+        return BasicProviderContext.with(environmentContext);
+    }
 
     /**
      * {@see FakeProviderContext}
