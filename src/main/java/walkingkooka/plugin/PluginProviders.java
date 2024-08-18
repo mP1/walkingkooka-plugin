@@ -18,6 +18,7 @@
 package walkingkooka.plugin;
 
 import javaemul.internal.annotations.GwtIncompatible;
+import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.reflect.PublicStaticHelper;
 
 import java.io.IOException;
@@ -30,6 +31,13 @@ public final class PluginProviders implements PublicStaticHelper {
     public final static String MANIFEST_MF_PATH = "META-INF/MANIFEST.MF";
 
     public final static String PLUGIN_PROVIDER_FACTORY = "plugin-provider-factory-className";
+
+    /**
+     * {@see BasicProviderContext}
+     */
+    public static ProviderContext basic(final EnvironmentContext environmentContext) {
+        return BasicProviderContext.with(environmentContext);
+    }
 
     /**
      * A {@link PluginProvider} that eagerly loads the manifest looking for the plugin-provider-factory and uses that class
