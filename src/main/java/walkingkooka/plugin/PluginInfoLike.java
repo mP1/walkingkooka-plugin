@@ -18,6 +18,7 @@
 package walkingkooka.plugin;
 
 import walkingkooka.InvalidCharacterException;
+import walkingkooka.compare.Comparators;
 import walkingkooka.naming.HasName;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
@@ -106,7 +107,25 @@ public interface PluginInfoLike<I extends PluginInfoLike<I, N>, N extends Name &
 
     @Override
     default int compareTo(final I other) {
-        return this.name().compareTo(other.name());
+        int compare = this.name().compareTo(other.name());
+
+        if (Comparators.EQUAL == compare) {
+            final AbsoluteUrl url = this.url().normalize();
+            final AbsoluteUrl otherUrl = other.url().normalize();
+
+            compare = url.host()
+                    .compareTo(otherUrl.host());
+            if (Comparators.EQUAL == compare) {
+                compare = url.relativeUrl()
+                        .toString()
+                        .compareTo(
+                                otherUrl.relativeUrl()
+                                        .toString()
+                        );
+            }
+        }
+
+        return compare;
     }
 
     // HateosResource...................................................................................................
