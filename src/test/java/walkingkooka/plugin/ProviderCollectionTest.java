@@ -411,6 +411,34 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     }
 
     @Test
+    public void testInfosIncludesDuplicate() {
+        final String url1 = "https://example.com/service-1";
+        final String url2 = "https://example.com/service-2";
+        final String url3 = "https://example.com/service-3";
+        final String url4 = "https://example.com/service-4";
+
+        final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> collection = ProviderCollection.with(
+                PROVIDER_GETTER,
+                INFO_GETTER,
+                PROVIDED_LABEL,
+                Sets.of(
+                        new TestProvider(SERVICE_1_NAME, url1, SERVICE1),
+                        new TestProvider(SERVICE_2_NAME, url2, SERVICE2),
+                        new TestProvider(SERVICE_3_NAME, url3, SERVICE3),
+                        new TestProvider(SERVICE_1_NAME, url4, SERVICE1)
+                )
+        );
+
+        this.infosAndCheck(
+                collection,
+                new TestPluginInfo(SERVICE_1_NAME, url1),
+                new TestPluginInfo(SERVICE_2_NAME, url2),
+                new TestPluginInfo(SERVICE_3_NAME, url3),
+                new TestPluginInfo(SERVICE_1_NAME, url4)
+        );
+    }
+
+    @Test
     public void TestInfosMissingFromGet() {
         final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> collection = ProviderCollection.with(
                 PROVIDER_GETTER,
