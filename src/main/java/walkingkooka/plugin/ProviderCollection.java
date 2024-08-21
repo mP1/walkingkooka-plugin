@@ -20,7 +20,6 @@ package walkingkooka.plugin;
 import walkingkooka.collect.map.Maps;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Name;
-import walkingkooka.net.HasAbsoluteUrl;
 import walkingkooka.text.CharSequences;
 
 import java.util.List;
@@ -32,7 +31,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * A helper that may be used to provide a view of a collection of providers. Instances of this class should be wrapped by implementations of the provider interface and simply delegate to the two provider methods.
+ * A helper that may be used to provide a view of a collection of providers.
+ * Instances of this class should be wrapped by implementations of the provider interface and simply delegate to the two provider methods.
+ * If a {@link Name} appears twice then both will NOT be available when fetched by the getter method.
  */
 public final class ProviderCollection<P extends Provider, N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, SELECTOR extends PluginSelectorLike<N>, OUT> {
     public static <P extends Provider,
@@ -90,14 +91,14 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
             }
         }
 
-        // complain if any duplicates in nameToProvider
-        final String duplicates = nameToInfos.entrySet()
-                .stream()
-                .filter(ntp -> ntp.getValue().size() > 1)
-                .map(this::nameAndInfosToString)
-                .collect(Collectors.joining(", "));
-        if (false == duplicates.isEmpty()) {
-            throw new IllegalArgumentException("Found multiple " + providedLabel + " for " + duplicates);
+        // remove duplicates
+        for(final Entry<N, Set<I>> nameAndInfos : nameToInfos.entrySet()) {
+            final Set<I> info = nameAndInfos.getValue();
+            if(info.size() > 1) {
+                nameToProvider.remove(
+                        nameAndInfos.getKey()
+                );
+            }
         }
 
         this.providerGetter = providerGetter;
@@ -105,15 +106,6 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
         this.infos = Sets.immutable(infos);
 
         this.providers = providers;
-    }
-
-    private String nameAndInfosToString(final Entry<N, Set<I>> nameAndInfos) {
-        return nameAndInfos.getKey() +
-                nameAndInfos.getValue()
-                        .stream()
-                        .map(HasAbsoluteUrl::url)
-                        .map(Object::toString)
-                        .collect(Collectors.joining(", ", "(", ")"));
     }
 
     /**

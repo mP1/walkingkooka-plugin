@@ -177,51 +177,6 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         );
     }
 
-    @Test
-    public void testWithDuplicatePluginsFails() {
-        final IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
-                () -> ProviderCollection.with(
-                        PROVIDER_GETTER,
-                        INFO_GETTER,
-                        PROVIDED_LABEL,
-                        Sets.of(
-                                PROVIDER1,
-                                PROVIDER2,
-                                PROVIDER3,
-                                new TestProvider(SERVICE_1_NAME, "http://example.com/duplicate-service1", SERVICE1)
-                        )
-                )
-        );
-        this.checkEquals(
-                "Found multiple TestService for service-1(http://example.com/duplicate-service1, https://example.com/service-1)",
-                thrown.getMessage()
-        );
-    }
-
-    @Test
-    public void testWithDuplicatePluginsFails2() {
-        final IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
-                () -> ProviderCollection.with(
-                        PROVIDER_GETTER,
-                        INFO_GETTER,
-                        PROVIDED_LABEL,
-                        Sets.of(
-                                PROVIDER1,
-                                PROVIDER2,
-                                PROVIDER3,
-                                new TestProvider(SERVICE_1_NAME, "http://example.com/duplicate-service1", SERVICE1),
-                                new TestProvider(SERVICE_2_NAME, "http://example.com/duplicate-service2", SERVICE2)
-                        )
-                )
-        );
-        this.checkEquals(
-                "Found multiple TestService for service-1(http://example.com/duplicate-service1, https://example.com/service-1), service-2(http://example.com/duplicate-service2, https://example.com/service-2)",
-                thrown.getMessage()
-        );
-    }
-
     // get(PluginSelectorLike)..........................................................................................
 
     @Test
@@ -249,12 +204,51 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     }
 
     @Test
+    public void testGetSelectorDuplicate() {
+        final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider = ProviderCollection.with(
+                PROVIDER_GETTER,
+                INFO_GETTER,
+                PROVIDED_LABEL,
+                Sets.of(
+                        PROVIDER1,
+                        PROVIDER2,
+                        PROVIDER3,
+                        new TestProvider(SERVICE_1_NAME, "http://example.com/duplicate-service1", SERVICE1)
+                )
+        );
+
+        this.getSelectorFails(
+                provider,
+                new TestSelector(SERVICE_1_NAME)
+        );
+
+        this.getSelectorAndCheck(
+                provider,
+                new TestSelector(SERVICE_2_NAME),
+                SERVICE2
+        );
+    }
+
+    @Test
     public void testGetSelectorUnknownFails() {
+        this.getSelectorFails(
+                new TestSelector("unknown")
+        );
+    }
+
+    private void getSelectorFails(final TestSelector selector) {
+        this.getSelectorFails(
+                this.createProvider(),
+                selector
+        );
+    }
+
+    private void getSelectorFails(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
+                                  final TestSelector selector) {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> this.createProvider()
-                        .get(
-                                new TestSelector("unknown"),
+                () -> provider.get(
+                                selector,
                                 CONTEXT
                         )
         );
@@ -313,14 +307,59 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
     @Test
     public void testGetNameUnknownFails() {
+        this.getNameFails(
+                Names.string("unknown"),
+                VALUES
+        );
+    }
+
+    @Test
+    public void testGetNameDuplicateFails() {
+        final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider = ProviderCollection.with(
+                PROVIDER_GETTER,
+                INFO_GETTER,
+                PROVIDED_LABEL,
+                Sets.of(
+                        PROVIDER1,
+                        PROVIDER2,
+                        PROVIDER3,
+                        new TestProvider(SERVICE_1_NAME, "http://example.com/duplicate-service1", SERVICE1)
+                )
+        );
+
+        this.getNameFails(
+                provider,
+                Names.string(SERVICE_1_NAME),
+                VALUES
+        );
+
+        this.getNameAndCheck(
+                provider,
+                Names.string(SERVICE_2_NAME),
+                VALUES,
+                SERVICE2
+        );
+    }
+
+    private void getNameFails(final StringName name,
+                              final List<?> values) {
+        getNameFails(
+                this.createProvider(),
+                name,
+                values
+        );
+    }
+
+    private void getNameFails(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
+                              final StringName name,
+                              final List<?> values) {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> this.createProvider()
-                        .get(
-                                Names.string("unknown"),
-                                VALUES,
-                                CONTEXT
-                        )
+                () -> provider.get(
+                        name,
+                        values,
+                        CONTEXT
+                )
         );
     }
 
