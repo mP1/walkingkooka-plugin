@@ -246,7 +246,7 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
         );
         this.textAndCheck(
                 different,
-                "(\"Hello1\", 1.0, nested2(\"Hello2\", 2))"
+                "(\"Hello1\", 1, nested2(\"Hello2\", 2))"
         );
     }
 
