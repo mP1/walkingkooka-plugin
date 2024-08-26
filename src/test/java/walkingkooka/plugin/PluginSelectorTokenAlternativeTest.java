@@ -24,7 +24,7 @@ public final class PluginSelectorTokenAlternativeTest implements PluginSelectorT
         ClassTesting2<PluginSelectorTokenAlternative> {
 
     @Override
-    public PluginSelectorTokenAlternative createPluginSelectorTextComponentAlternativeLike(final String label,
+    public PluginSelectorTokenAlternative createPluginSelectorTokenAlternativeLike(final String label,
                                                                                            final String text) {
         return PluginSelectorTokenAlternative.with(
                 label,
