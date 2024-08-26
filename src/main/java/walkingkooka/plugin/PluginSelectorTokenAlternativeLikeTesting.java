@@ -24,7 +24,7 @@ import walkingkooka.text.printer.TreePrintableTesting;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public interface PluginSelectorTextComponentAlternativeLikeTesting<T extends PluginSelectorTextComponentAlternativeLike> extends HasTextTesting,
+public interface PluginSelectorTokenAlternativeLikeTesting<T extends PluginSelectorTokenAlternativeLike> extends HasTextTesting,
         TreePrintableTesting,
         HashCodeEqualsDefinedTesting2<T> {
 

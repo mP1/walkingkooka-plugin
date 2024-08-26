@@ -30,9 +30,9 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 
 /**
- * An interface that should be implemented by all selector text component alternatives.
+ * An interface that should be implemented by all selector token alternatives.
  */
-public interface PluginSelectorTextComponentAlternativeLike extends HasText,
+public interface PluginSelectorTokenAlternativeLike extends HasText,
         TreePrintable {
 
     String label();
@@ -52,20 +52,20 @@ public interface PluginSelectorTextComponentAlternativeLike extends HasText,
 
         return JsonNode.object()
                 .set(
-                        PluginSelectorTextComponentAlternativeLikeJsonConstants.LABEL_PROPERTY,
+                        PluginSelectorTokenAlternativeLikeJsonConstants.LABEL_PROPERTY,
                         JsonNode.string(this.label())
                 ).set(
-                        PluginSelectorTextComponentAlternativeLikeJsonConstants.TEXT_PROPERTY,
+                        PluginSelectorTokenAlternativeLikeJsonConstants.TEXT_PROPERTY,
                         JsonNode.string(this.text())
                 );
     }
 
     /**
-     * Factory that creates a {@link PluginSelectorTextComponentAlternativeLike} parse a {@link JsonNode}.
+     * Factory that creates a {@link PluginSelectorTokenAlternativeLike} parse a {@link JsonNode}.
      */
-    static <T extends PluginSelectorTextComponentAlternativeLike> T unmarshall(final JsonNode node,
-                                                                               final JsonNodeUnmarshallContext context,
-                                                                               final BiFunction<String, String, T> factory) {
+    static <T extends PluginSelectorTokenAlternativeLike> T unmarshall(final JsonNode node,
+                                                                       final JsonNodeUnmarshallContext context,
+                                                                       final BiFunction<String, String, T> factory) {
         Objects.requireNonNull(node, "node");
         Objects.requireNonNull(context, "context");
         Objects.requireNonNull(factory, "factory");
@@ -77,10 +77,10 @@ public interface PluginSelectorTextComponentAlternativeLike extends HasText,
             final JsonPropertyName name = child.name();
 
             switch (child.name().value()) {
-                case PluginSelectorTextComponentAlternativeLikeJsonConstants.LABEL_PROPERTY_STRING:
+                case PluginSelectorTokenAlternativeLikeJsonConstants.LABEL_PROPERTY_STRING:
                     label = child.stringOrFail();
                     break;
-                case PluginSelectorTextComponentAlternativeLikeJsonConstants.TEXT_PROPERTY_STRING:
+                case PluginSelectorTokenAlternativeLikeJsonConstants.TEXT_PROPERTY_STRING:
                     text = child.stringOrFail();
                     break;
                 default:

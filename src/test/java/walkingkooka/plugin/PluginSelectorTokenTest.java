@@ -13,19 +13,19 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class PluginSelectorTextComponentTest implements PluginSelectorTextComponentLikeTesting<PluginSelectorTextComponent<PluginSelectorTextComponentAlternative>, PluginSelectorTextComponentAlternative>,
-        ClassTesting2<PluginSelectorTextComponent<PluginSelectorTextComponentAlternative>> {
+public final class PluginSelectorTokenTest implements PluginSelectorTokenLikeTesting<PluginSelectorToken<PluginSelectorTokenAlternative>, PluginSelectorTokenAlternative>,
+        ClassTesting2<PluginSelectorToken<PluginSelectorTokenAlternative>> {
 
     private final static String LABEL = "Label123";
 
     private final static String TEXT = "Text123";
 
-    private final static List<PluginSelectorTextComponentAlternative> ALTERNATIVES = Lists.of(
-            PluginSelectorTextComponentAlternative.with(
+    private final static List<PluginSelectorTokenAlternative> ALTERNATIVES = Lists.of(
+            PluginSelectorTokenAlternative.with(
                     "alternative-label-1",
                     "alternative-text-1"
             ),
-            PluginSelectorTextComponentAlternative.with(
+            PluginSelectorTokenAlternative.with(
                     "alternative-label-2",
                     "alternative-text-2"
             )
@@ -35,7 +35,7 @@ public final class PluginSelectorTextComponentTest implements PluginSelectorText
     public void testWithNullLabelFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> PluginSelectorTextComponent.with(
+                () -> PluginSelectorToken.with(
                         null,
                         TEXT,
                         ALTERNATIVES
@@ -47,7 +47,7 @@ public final class PluginSelectorTextComponentTest implements PluginSelectorText
     public void testWithNullLTextFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> PluginSelectorTextComponent.with(
+                () -> PluginSelectorToken.with(
                         LABEL,
                         null,
                         ALTERNATIVES
@@ -57,7 +57,7 @@ public final class PluginSelectorTextComponentTest implements PluginSelectorText
 
     @Test
     public void testWith() {
-        final PluginSelectorTextComponent<PluginSelectorTextComponentAlternative> component = PluginSelectorTextComponent.with(
+        final PluginSelectorToken<PluginSelectorTokenAlternative> component = PluginSelectorToken.with(
                 LABEL,
                 TEXT,
                 ALTERNATIVES
@@ -82,9 +82,9 @@ public final class PluginSelectorTextComponentTest implements PluginSelectorText
     public void testWithEmptyLabelEmptyTextAndEmptyAlternatives() {
         final String label = "";
         final String text = "";
-        final List<PluginSelectorTextComponentAlternative> alternatives = Lists.empty();
+        final List<PluginSelectorTokenAlternative> alternatives = Lists.empty();
 
-        final PluginSelectorTextComponent<PluginSelectorTextComponentAlternative> component = PluginSelectorTextComponent.with(
+        final PluginSelectorToken<PluginSelectorTokenAlternative> component = PluginSelectorToken.with(
                 label,
                 text,
                 alternatives
@@ -101,10 +101,10 @@ public final class PluginSelectorTextComponentTest implements PluginSelectorText
     }
 
     @Override
-    public PluginSelectorTextComponent<PluginSelectorTextComponentAlternative> createPluginSelectorTextComponentLike(final String label,
-                                                                                                                     final String text,
-                                                                                                                     final List<PluginSelectorTextComponentAlternative> alternatives) {
-        return PluginSelectorTextComponent.with(
+    public PluginSelectorToken<PluginSelectorTokenAlternative> createPluginSelectorTextComponentLike(final String label,
+                                                                                                     final String text,
+                                                                                                     final List<PluginSelectorTokenAlternative> alternatives) {
+        return PluginSelectorToken.with(
                 label,
                 text,
                 alternatives
@@ -112,9 +112,9 @@ public final class PluginSelectorTextComponentTest implements PluginSelectorText
     }
 
     @Override
-    public PluginSelectorTextComponentAlternative createPluginSelectorTextComponentAlternativesLike(final String label,
-                                                                                                    final String text) {
-        return PluginSelectorTextComponentAlternative.with(
+    public PluginSelectorTokenAlternative createPluginSelectorTextComponentAlternativesLike(final String label,
+                                                                                            final String text) {
+        return PluginSelectorTokenAlternative.with(
                 label,
                 text
         );
@@ -125,7 +125,7 @@ public final class PluginSelectorTextComponentTest implements PluginSelectorText
     @Test
     public void testEqualsDifferentLabel() {
         this.checkNotEquals(
-                PluginSelectorTextComponent.with(
+                PluginSelectorToken.with(
                         "different " + LABEL,
                         TEXT,
                         ALTERNATIVES
@@ -136,7 +136,7 @@ public final class PluginSelectorTextComponentTest implements PluginSelectorText
     @Test
     public void testEqualsDifferentText() {
         this.checkNotEquals(
-                PluginSelectorTextComponent.with(
+                PluginSelectorToken.with(
                         LABEL,
                         "different " + TEXT,
                         ALTERNATIVES
@@ -147,7 +147,7 @@ public final class PluginSelectorTextComponentTest implements PluginSelectorText
     @Test
     public void testEqualsDifferentAlternatives() {
         this.checkNotEquals(
-                PluginSelectorTextComponent.with(
+                PluginSelectorToken.with(
                         LABEL,
                         TEXT,
                         Lists.empty()
@@ -156,8 +156,8 @@ public final class PluginSelectorTextComponentTest implements PluginSelectorText
     }
 
     @Override
-    public PluginSelectorTextComponent createObject() {
-        return PluginSelectorTextComponent.with(
+    public PluginSelectorToken createObject() {
+        return PluginSelectorToken.with(
                 LABEL,
                 TEXT,
                 ALTERNATIVES
@@ -169,7 +169,7 @@ public final class PluginSelectorTextComponentTest implements PluginSelectorText
     @Test
     public void testTreePrint() {
         this.treePrintAndCheck(
-                PluginSelectorTextComponent.with(
+                PluginSelectorToken.with(
                         LABEL,
                         TEXT,
                         ALTERNATIVES
@@ -186,35 +186,35 @@ public final class PluginSelectorTextComponentTest implements PluginSelectorText
     // json..............................................................................................................
 
     @Override
-    public PluginSelectorTextComponent<PluginSelectorTextComponentAlternative> unmarshall(final JsonNode json,
-                                                                                          final JsonNodeUnmarshallContext context) {
-        return PluginSelectorTextComponentLike.unmarshall(
+    public PluginSelectorToken<PluginSelectorTokenAlternative> unmarshall(final JsonNode json,
+                                                                          final JsonNodeUnmarshallContext context) {
+        return PluginSelectorTokenLike.unmarshall(
                 json,
                 context,
-                PluginSelectorTextComponent::with,
-                PluginSelectorTextComponentAlternative.class
+                PluginSelectorToken::with,
+                PluginSelectorTokenAlternative.class
         );
     }
 
     static {
         JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(PluginSelectorTextComponent.class),
-                (json, context) -> PluginSelectorTextComponentLike.unmarshall(
+                JsonNodeContext.computeTypeName(PluginSelectorToken.class),
+                (json, context) -> PluginSelectorTokenLike.unmarshall(
                         json,
                         context,
-                        PluginSelectorTextComponent::with,
-                        PluginSelectorTextComponentAlternative.class
+                        PluginSelectorToken::with,
+                        PluginSelectorTokenAlternative.class
                 ),
-                PluginSelectorTextComponent::marshall,
-                PluginSelectorTextComponent.class
+                PluginSelectorToken::marshall,
+                PluginSelectorToken.class
         );
     }
 
     // Class............................................................................................................
 
     @Override
-    public Class<PluginSelectorTextComponent<PluginSelectorTextComponentAlternative>> type() {
-        return Cast.to(PluginSelectorTextComponent.class);
+    public Class<PluginSelectorToken<PluginSelectorTokenAlternative>> type() {
+        return Cast.to(PluginSelectorToken.class);
     }
 
     @Override
