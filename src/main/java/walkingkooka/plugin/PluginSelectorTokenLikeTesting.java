@@ -64,7 +64,7 @@ public interface PluginSelectorTokenLikeTesting<T extends PluginSelectorTokenLik
     default void testWithNullLabelFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> this.createPluginSelectorTextComponentLike(
+                () -> this.createPluginSelectorTokenLike(
                         null,
                         TEXT
                 )
@@ -75,7 +75,7 @@ public interface PluginSelectorTokenLikeTesting<T extends PluginSelectorTokenLik
     default void testWithNullTextFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> this.createPluginSelectorTextComponentLike(
+                () -> this.createPluginSelectorTokenLike(
                         LABEL,
                         null
                 )
@@ -86,7 +86,7 @@ public interface PluginSelectorTokenLikeTesting<T extends PluginSelectorTokenLik
     default void testWithNullAlternativesFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> this.createPluginSelectorTextComponentLike(
+                () -> this.createPluginSelectorTokenLike(
                         LABEL,
                         TEXT,
                         null
@@ -96,8 +96,8 @@ public interface PluginSelectorTokenLikeTesting<T extends PluginSelectorTokenLik
 
     @Test
     default void testWith() {
-        final List<A> alternatives = this.createPluginSelectorTextComponentAlternativesLike(1);
-        final T component = this.createPluginSelectorTextComponentLike(
+        final List<A> alternatives = this.createPluginSelectorTokenAlternativesLike(1);
+        final T component = this.createPluginSelectorTokenLike(
                 LABEL,
                 TEXT,
                 alternatives
@@ -120,11 +120,11 @@ public interface PluginSelectorTokenLikeTesting<T extends PluginSelectorTokenLik
 
     @Test
     default void testWithEmptyLabelEmptyTextEmptyAlternatives() {
-        final List<A> alternatives = this.createPluginSelectorTextComponentAlternativesLike(0);
+        final List<A> alternatives = this.createPluginSelectorTokenAlternativesLike(0);
         final String label = "";
         final String text = "";
 
-        final T component = this.createPluginSelectorTextComponentLike(
+        final T component = this.createPluginSelectorTokenLike(
                 label,
                 text,
                 alternatives
@@ -150,7 +150,7 @@ public interface PluginSelectorTokenLikeTesting<T extends PluginSelectorTokenLik
     @Test
     default void testEqualsDifferentLabel() {
         this.checkNotEquals(
-                this.createPluginSelectorTextComponentLike(
+                this.createPluginSelectorTokenLike(
                         "different " + LABEL,
                         TEXT
                 )
@@ -160,7 +160,7 @@ public interface PluginSelectorTokenLikeTesting<T extends PluginSelectorTokenLik
     @Test
     default void testEqualsDifferentText() {
         this.checkNotEquals(
-                this.createPluginSelectorTextComponentLike(
+                this.createPluginSelectorTokenLike(
                         LABEL,
                         "different " + TEXT
                 )
@@ -170,54 +170,54 @@ public interface PluginSelectorTokenLikeTesting<T extends PluginSelectorTokenLik
     @Test
     default void testEqualsDifferentAlternatives() {
         this.checkNotEquals(
-                this.createPluginSelectorTextComponentLike(
+                this.createPluginSelectorTokenLike(
                         LABEL,
                         TEXT,
-                        this.createPluginSelectorTextComponentAlternativesLike(2)
+                        this.createPluginSelectorTokenAlternativesLike(2)
                 )
         );
     }
 
     @Override
     default T createObject() {
-        return this.createPluginSelectorTextComponentLike(
+        return this.createPluginSelectorTokenLike(
                 LABEL,
                 TEXT,
-                this.createPluginSelectorTextComponentAlternativesLike(1)
+                this.createPluginSelectorTokenAlternativesLike(1)
         );
     }
 
-    default T createPluginSelectorTextComponentLike(final String label,
-                                                    final String text) {
-        return this.createPluginSelectorTextComponentLike(
+    default T createPluginSelectorTokenLike(final String label,
+                                            final String text) {
+        return this.createPluginSelectorTokenLike(
                 label,
                 text,
-                this.createPluginSelectorTextComponentAlternativesLike(1)
+                this.createPluginSelectorTokenAlternativesLike(1)
         );
     }
 
-    T createPluginSelectorTextComponentLike(final String label,
-                                            final String text,
-                                            final List<A> alternatives);
+    T createPluginSelectorTokenLike(final String label,
+                                    final String text,
+                                    final List<A> alternatives);
 
-    default List<A> createPluginSelectorTextComponentAlternativesLike(final int count) {
+    default List<A> createPluginSelectorTokenAlternativesLike(final int count) {
         return IntStream.range(1, 1 + count)
-                .mapToObj(i -> this.createPluginSelectorTextComponentAlternativesLike("alternative-label-" + i, "alternative-text-" + i))
+                .mapToObj(i -> this.createPluginSelectorTokenAlternativesLike("alternative-label-" + i, "alternative-text-" + i))
                 .collect(Collectors.toList());
     }
 
-    A createPluginSelectorTextComponentAlternativesLike(final String label,
-                                                        final String text);
+    A createPluginSelectorTokenAlternativesLike(final String label,
+                                                final String text);
 
     // json.............................................................................................................
 
     @Test
     default void testJsonMarshall() {
         this.marshallAndCheck(
-                this.createPluginSelectorTextComponentLike(
+                this.createPluginSelectorTokenLike(
                         LABEL,
                         TEXT,
-                        this.createPluginSelectorTextComponentAlternativesLike(2)
+                        this.createPluginSelectorTokenAlternativesLike(2)
                 ),
                 "{\n" +
                         "  \"label\": \"Label123\",\n" +
@@ -253,17 +253,17 @@ public interface PluginSelectorTokenLikeTesting<T extends PluginSelectorTokenLik
                         "    }\n" +
                         "  ]\n" +
                         "}",
-                this.createPluginSelectorTextComponentLike(
+                this.createPluginSelectorTokenLike(
                         LABEL,
                         TEXT,
-                        this.createPluginSelectorTextComponentAlternativesLike(2)
+                        this.createPluginSelectorTokenAlternativesLike(2)
                 )
         );
     }
 
     @Override
     default T createJsonNodeMarshallingValue() {
-        return this.createPluginSelectorTextComponentLike(
+        return this.createPluginSelectorTokenLike(
                 LABEL,
                 TEXT
         );

@@ -101,7 +101,7 @@ public final class PluginSelectorTokenTest implements PluginSelectorTokenLikeTes
     }
 
     @Override
-    public PluginSelectorToken<PluginSelectorTokenAlternative> createPluginSelectorTextComponentLike(final String label,
+    public PluginSelectorToken<PluginSelectorTokenAlternative> createPluginSelectorTokenLike(final String label,
                                                                                                      final String text,
                                                                                                      final List<PluginSelectorTokenAlternative> alternatives) {
         return PluginSelectorToken.with(
@@ -112,7 +112,7 @@ public final class PluginSelectorTokenTest implements PluginSelectorTokenLikeTes
     }
 
     @Override
-    public PluginSelectorTokenAlternative createPluginSelectorTextComponentAlternativesLike(final String label,
+    public PluginSelectorTokenAlternative createPluginSelectorTokenAlternativesLike(final String label,
                                                                                             final String text) {
         return PluginSelectorTokenAlternative.with(
                 label,

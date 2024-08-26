@@ -36,7 +36,7 @@ public interface PluginSelectorTokenAlternativeLikeTesting<T extends PluginSelec
     default void testWithNullLabelFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> this.createPluginSelectorTextComponentAlternativeLike(
+                () -> this.createPluginSelectorTokenAlternativeLike(
                         null,
                         TEXT
                 )
@@ -47,7 +47,7 @@ public interface PluginSelectorTokenAlternativeLikeTesting<T extends PluginSelec
     default void testWithNullTextFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> this.createPluginSelectorTextComponentAlternativeLike(
+                () -> this.createPluginSelectorTokenAlternativeLike(
                         LABEL,
                         null
                 )
@@ -56,7 +56,7 @@ public interface PluginSelectorTokenAlternativeLikeTesting<T extends PluginSelec
 
     @Test
     default void testWith() {
-        final T alternative = this.createPluginSelectorTextComponentAlternativeLike(
+        final T alternative = this.createPluginSelectorTokenAlternativeLike(
                 LABEL,
                 TEXT
         );
@@ -76,7 +76,7 @@ public interface PluginSelectorTokenAlternativeLikeTesting<T extends PluginSelec
         final String label = "";
         final String text = "";
 
-        final T alternative = this.createPluginSelectorTextComponentAlternativeLike(
+        final T alternative = this.createPluginSelectorTokenAlternativeLike(
                 label,
                 text
         );
@@ -96,7 +96,7 @@ public interface PluginSelectorTokenAlternativeLikeTesting<T extends PluginSelec
     @Test
     default void testEqualsDifferentLabel() {
         this.checkNotEquals(
-                this.createPluginSelectorTextComponentAlternativeLike(
+                this.createPluginSelectorTokenAlternativeLike(
                         "different " + LABEL,
                         TEXT
                 )
@@ -106,7 +106,7 @@ public interface PluginSelectorTokenAlternativeLikeTesting<T extends PluginSelec
     @Test
     default void testEqualsDifferentText() {
         this.checkNotEquals(
-                this.createPluginSelectorTextComponentAlternativeLike(
+                this.createPluginSelectorTokenAlternativeLike(
                         LABEL,
                         "different " + TEXT
                 )
@@ -115,12 +115,12 @@ public interface PluginSelectorTokenAlternativeLikeTesting<T extends PluginSelec
 
     @Override
     default T createObject() {
-        return this.createPluginSelectorTextComponentAlternativeLike(
+        return this.createPluginSelectorTokenAlternativeLike(
                 LABEL,
                 TEXT
         );
     }
 
-    T createPluginSelectorTextComponentAlternativeLike(final String label,
-                                                       final String text);
+    T createPluginSelectorTokenAlternativeLike(final String label,
+                                               final String text);
 }
