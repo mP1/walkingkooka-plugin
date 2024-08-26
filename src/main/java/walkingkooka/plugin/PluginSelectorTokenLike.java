@@ -30,9 +30,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This interface defines properties and some marshalling helpers for a selector text component.
+ * This interface defines properties and some marshalling helpers for a selector token.
  */
-public interface PluginSelectorTextComponentLike<A extends PluginSelectorTextComponentAlternativeLike> extends HasText,
+public interface PluginSelectorTokenLike<A extends PluginSelectorTokenAlternativeLike> extends HasText,
         TreePrintable {
 
     String label();
@@ -66,7 +66,7 @@ public interface PluginSelectorTextComponentLike<A extends PluginSelectorTextCom
         if(false == label.isEmpty()) {
             children.add(
                     JsonNode.string(label)
-                            .setName(PluginSelectorTextComponentLikeJsonConstants.LABEL_PROPERTY)
+                            .setName(PluginSelectorTokenLikeJsonConstants.LABEL_PROPERTY)
             );
         }
 
@@ -74,7 +74,7 @@ public interface PluginSelectorTextComponentLike<A extends PluginSelectorTextCom
         if(false == text.isEmpty()) {
             children.add(
                     JsonNode.string(text)
-                            .setName(PluginSelectorTextComponentLikeJsonConstants.TEXT_PROPERTY)
+                            .setName(PluginSelectorTokenLikeJsonConstants.TEXT_PROPERTY)
             );
         }
 
@@ -83,7 +83,7 @@ public interface PluginSelectorTextComponentLike<A extends PluginSelectorTextCom
             children.add(
                     context.marshallCollection(
                             alternatives
-                    ).setName(PluginSelectorTextComponentLikeJsonConstants.ALTERNATIVES_PROPERTY)
+                    ).setName(PluginSelectorTokenLikeJsonConstants.ALTERNATIVES_PROPERTY)
             );
         }
 
@@ -92,12 +92,12 @@ public interface PluginSelectorTextComponentLike<A extends PluginSelectorTextCom
     }
 
     /**
-     * Factory that creates a {@link PluginSelectorTextComponentAlternativeLike} parse a {@link JsonNode}.
+     * Factory that creates a {@link PluginSelectorTokenAlternativeLike} parse a {@link JsonNode}.
      */
-    static <C extends PluginSelectorTextComponentLike<A>, A extends PluginSelectorTextComponentAlternativeLike> C unmarshall(final JsonNode node,
-                                                                                                                             final JsonNodeUnmarshallContext context,
-                                                                                                                             final PluginSelectorTextComponentLikeFactory<C, A> factory,
-                                                                                                                             final Class<A> alternativesType) {
+    static <C extends PluginSelectorTokenLike<A>, A extends PluginSelectorTokenAlternativeLike> C unmarshall(final JsonNode node,
+                                                                                                             final JsonNodeUnmarshallContext context,
+                                                                                                             final PluginSelectorTokenLikeFactory<C, A> factory,
+                                                                                                             final Class<A> alternativesType) {
         Objects.requireNonNull(node, "node");
         Objects.requireNonNull(context, "context");
         Objects.requireNonNull(factory, "factory");
@@ -110,13 +110,13 @@ public interface PluginSelectorTextComponentLike<A extends PluginSelectorTextCom
             final JsonPropertyName name = child.name();
 
             switch (child.name().value()) {
-                case PluginSelectorTextComponentLikeJsonConstants.LABEL_PROPERTY_STRING:
+                case PluginSelectorTokenLikeJsonConstants.LABEL_PROPERTY_STRING:
                     label = child.stringOrFail();
                     break;
-                case PluginSelectorTextComponentLikeJsonConstants.TEXT_PROPERTY_STRING:
+                case PluginSelectorTokenLikeJsonConstants.TEXT_PROPERTY_STRING:
                     text = child.stringOrFail();
                     break;
-                case PluginSelectorTextComponentLikeJsonConstants.ALTERNATIVES_PROPERTY_STRING:
+                case PluginSelectorTokenLikeJsonConstants.ALTERNATIVES_PROPERTY_STRING:
                     alternatives = context.unmarshallList(
                             child,
                             alternativesType

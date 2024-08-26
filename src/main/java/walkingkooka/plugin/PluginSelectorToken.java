@@ -26,21 +26,21 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Should be used to present a text component within a {@link PluginSelector} along with possible alternatives.
+ * Should be used to present a token within a {@link PluginSelector} along with possible alternatives.
  * <pre>
  * dd / mm / yyyy
  *
  * DAY SLASH MONTH SLASH YEAR
  * </pre>
- * The above spreadsheet format pattern has 5 {@link PluginSelectorTextComponent}, the dd component would have several
+ * The above spreadsheet format pattern has 5 {@link PluginSelectorToken}, the dd component would have several
  * alternatives such as D, DDD, DDDD, DDDDD
  */
-public final class PluginSelectorTextComponent<T extends PluginSelectorTextComponentAlternativeLike> implements PluginSelectorTextComponentLike<T> {
+public final class PluginSelectorToken<T extends PluginSelectorTokenAlternativeLike> implements PluginSelectorTokenLike<T> {
 
-    public static <T extends PluginSelectorTextComponentAlternativeLike> PluginSelectorTextComponent<T> with(final String label,
-                                                                                                             final String text,
-                                                                                                             final List<T> alternatives) {
-        return new PluginSelectorTextComponent<>(
+    public static <T extends PluginSelectorTokenAlternativeLike> PluginSelectorToken<T> with(final String label,
+                                                                                             final String text,
+                                                                                             final List<T> alternatives) {
+        return new PluginSelectorToken<>(
                 Objects.requireNonNull(label, "label"),
                 Objects.requireNonNull(text, "text"),
                 Lists.immutable(
@@ -49,9 +49,9 @@ public final class PluginSelectorTextComponent<T extends PluginSelectorTextCompo
         );
     }
 
-    private PluginSelectorTextComponent(final String label,
-                                        final String text,
-                                        final List<T> alternatives) {
+    private PluginSelectorToken(final String label,
+                                final String text,
+                                final List<T> alternatives) {
         this.label = label;
         this.text = text;
         this.alternatives = alternatives;
@@ -92,11 +92,11 @@ public final class PluginSelectorTextComponent<T extends PluginSelectorTextCompo
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-                other instanceof PluginSelectorTextComponent &&
+                other instanceof PluginSelectorToken &&
                         this.equals0(Cast.to(other));
     }
 
-    private boolean equals0(final PluginSelectorTextComponent<?> other) {
+    private boolean equals0(final PluginSelectorToken<?> other) {
         return this.label.equals(other.label) &&
                 this.text.equals(other.text) &&
                 this.alternatives.equals(other.alternatives);

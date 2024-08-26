@@ -22,7 +22,7 @@ import walkingkooka.tree.json.JsonPropertyName;
 /**
  * Holds non-public marshall constants
  */
-final class PluginSelectorTextComponentAlternativeLikeJsonConstants {
+final class PluginSelectorTokenAlternativeLikeJsonConstants {
 
     final static String LABEL_PROPERTY_STRING = "label";
     final static String TEXT_PROPERTY_STRING = "text";
@@ -31,7 +31,7 @@ final class PluginSelectorTextComponentAlternativeLikeJsonConstants {
     final static JsonPropertyName TEXT_PROPERTY = JsonPropertyName.with(TEXT_PROPERTY_STRING);
 
 
-    private PluginSelectorTextComponentAlternativeLikeJsonConstants() {
+    private PluginSelectorTokenAlternativeLikeJsonConstants() {
         throw new UnsupportedOperationException();
     }
 }

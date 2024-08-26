@@ -11,17 +11,17 @@ import java.util.Objects;
 /**
  * A pair holding label and text both of which can be anything except for null. One example of this class utility is within a list of alternatives for a single component within a format pattern.
  */
-public final class PluginSelectorTextComponentAlternative implements PluginSelectorTextComponentAlternativeLike {
+public final class PluginSelectorTokenAlternative implements PluginSelectorTokenAlternativeLike {
 
-    public static PluginSelectorTextComponentAlternative with(final String label,
-                                                              final String text) {
-        return new PluginSelectorTextComponentAlternative(
+    public static PluginSelectorTokenAlternative with(final String label,
+                                                      final String text) {
+        return new PluginSelectorTokenAlternative(
                 Objects.requireNonNull(label, "label"),
                 Objects.requireNonNull(text, "text")
         );
     }
 
-    private PluginSelectorTextComponentAlternative(final String label, final String text) {
+    private PluginSelectorTokenAlternative(final String label, final String text) {
         this.label = label;
         this.text = text;
     }
@@ -52,11 +52,11 @@ public final class PluginSelectorTextComponentAlternative implements PluginSelec
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-                other instanceof PluginSelectorTextComponentAlternative &&
+                other instanceof PluginSelectorTokenAlternative &&
                         this.equals0(Cast.to(other));
     }
 
-    private boolean equals0(final PluginSelectorTextComponentAlternative other) {
+    private boolean equals0(final PluginSelectorTokenAlternative other) {
         return this.label.equals(other.label) &&
                 this.text.equals(other.text);
     }
@@ -68,21 +68,21 @@ public final class PluginSelectorTextComponentAlternative implements PluginSelec
 
     // json.............................................................................................................
 
-    static PluginSelectorTextComponentAlternative unmarshall(final JsonNode node,
-                                                             final JsonNodeUnmarshallContext context) {
-        return PluginSelectorTextComponentAlternativeLike.unmarshall(
+    static PluginSelectorTokenAlternative unmarshall(final JsonNode node,
+                                                     final JsonNodeUnmarshallContext context) {
+        return PluginSelectorTokenAlternativeLike.unmarshall(
                 node,
                 context,
-                PluginSelectorTextComponentAlternative::with
+                PluginSelectorTokenAlternative::with
         );
     }
 
     static {
         JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(PluginSelectorTextComponentAlternative.class),
-                PluginSelectorTextComponentAlternative::unmarshall,
-                PluginSelectorTextComponentAlternative::marshall,
-                PluginSelectorTextComponentAlternative.class
+                JsonNodeContext.computeTypeName(PluginSelectorTokenAlternative.class),
+                PluginSelectorTokenAlternative::unmarshall,
+                PluginSelectorTokenAlternative::marshall,
+                PluginSelectorTokenAlternative.class
         );
     }
 }

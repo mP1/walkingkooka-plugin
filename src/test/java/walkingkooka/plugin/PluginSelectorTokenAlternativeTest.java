@@ -20,13 +20,13 @@ package walkingkooka.plugin;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 
-public final class PluginSelectorTextComponentAlternativeTest implements PluginSelectorTextComponentAlternativeLikeTesting<PluginSelectorTextComponentAlternative>,
-        ClassTesting2<PluginSelectorTextComponentAlternative> {
+public final class PluginSelectorTokenAlternativeTest implements PluginSelectorTokenAlternativeLikeTesting<PluginSelectorTokenAlternative>,
+        ClassTesting2<PluginSelectorTokenAlternative> {
 
     @Override
-    public PluginSelectorTextComponentAlternative createPluginSelectorTextComponentAlternativeLike(final String label,
-                                                                                                   final String text) {
-        return PluginSelectorTextComponentAlternative.with(
+    public PluginSelectorTokenAlternative createPluginSelectorTextComponentAlternativeLike(final String label,
+                                                                                           final String text) {
+        return PluginSelectorTokenAlternative.with(
                 label,
                 text
         );
@@ -35,8 +35,8 @@ public final class PluginSelectorTextComponentAlternativeTest implements PluginS
     // Class............................................................................................................
 
     @Override
-    public Class<PluginSelectorTextComponentAlternative> type() {
-        return PluginSelectorTextComponentAlternative.class;
+    public Class<PluginSelectorTokenAlternative> type() {
+        return PluginSelectorTokenAlternative.class;
     }
 
     @Override

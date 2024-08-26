@@ -19,7 +19,7 @@ package walkingkooka.plugin;
 
 import java.util.List;
 
-public interface PluginSelectorTextComponentLikeFactory<C extends PluginSelectorTextComponentLike, A extends PluginSelectorTextComponentAlternativeLike> {
+public interface PluginSelectorTokenLikeFactory<C extends PluginSelectorTokenLike, A extends PluginSelectorTokenAlternativeLike> {
 
     C create(final String label,
              final String text,

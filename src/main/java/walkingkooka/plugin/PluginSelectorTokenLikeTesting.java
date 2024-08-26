@@ -32,7 +32,7 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public interface PluginSelectorTextComponentLikeTesting<T extends PluginSelectorTextComponentLike<A>, A extends PluginSelectorTextComponentAlternativeLike> extends HasTextTesting,
+public interface PluginSelectorTokenLikeTesting<T extends PluginSelectorTokenLike<A>, A extends PluginSelectorTokenAlternativeLike> extends HasTextTesting,
         TreePrintableTesting,
         HashCodeEqualsDefinedTesting2<T>,
         JsonNodeMarshallingTesting<T> {
