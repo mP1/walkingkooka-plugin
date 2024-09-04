@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import walkingkooka.InvalidCharacterException;
 import walkingkooka.collect.map.Maps;
+import walkingkooka.collect.set.ImmutableSet;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
@@ -41,7 +42,7 @@ import java.util.stream.Collectors;
 /**
  * A {@link Set} that holds {@link PluginInfoLike} and a few related helpers.
  */
-public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends Set<I>,
+public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends ImmutableSet<I>,
         HasText,
         HasUrlFragment,
         TreePrintable {

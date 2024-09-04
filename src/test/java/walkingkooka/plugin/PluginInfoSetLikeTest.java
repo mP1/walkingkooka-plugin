@@ -22,6 +22,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import walkingkooka.collect.iterator.Iterators;
 import walkingkooka.collect.list.Lists;
+import walkingkooka.collect.set.ImmutableSetDefaults;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
@@ -40,6 +41,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -47,8 +49,6 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
 
     @BeforeAll
     public static void beforeAll() {
-        Sets.registerImmutableType(TestPluginInfoSet.class);
-
         unregister.add(
                 JsonNodeContext.register(
                         JsonNodeContext.computeTypeName(TestPluginInfoSet.class),
@@ -404,7 +404,8 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
         );
     }
 
-    static class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements PluginInfoSetLike<TestPluginInfo, StringName> {
+    static class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements PluginInfoSetLike<TestPluginInfo, StringName>,
+            ImmutableSetDefaults<TestPluginInfoSet, TestPluginInfo> {
 
         static TestPluginInfoSet parse(final String text) {
             return PluginInfoSetLike.parse(
@@ -452,6 +453,18 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
         @Override
         public String toString() {
             return this.text();
+        }
+
+        // ImmutableSet.................................................................................................
+
+        @Override
+        public TestPluginInfoSet setElements(final Set<TestPluginInfo> elements) {
+            return new TestPluginInfoSet(elements);
+        }
+
+        @Override
+        public Set<TestPluginInfo> toSet() {
+            return new TreeSet<>(this.set);
         }
     }
 

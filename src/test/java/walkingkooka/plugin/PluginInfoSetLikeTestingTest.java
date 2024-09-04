@@ -22,6 +22,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import walkingkooka.collect.iterator.Iterators;
 import walkingkooka.collect.list.Lists;
+import walkingkooka.collect.set.ImmutableSetDefaults;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
@@ -39,6 +40,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 
 public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTesting<TestPluginInfoSet, TestPluginInfo, StringName> {
 
@@ -198,7 +200,8 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
         return TestPluginInfoSet.class;
     }
 
-    static class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements PluginInfoSetLike<TestPluginInfo, StringName> {
+    static class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements PluginInfoSetLike<TestPluginInfo, StringName>,
+            ImmutableSetDefaults<TestPluginInfoSet, TestPluginInfo> {
 
         static TestPluginInfoSet parse(final String text) {
             return PluginInfoSetLike.parse(
@@ -224,7 +227,19 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
 
         private final Set<TestPluginInfo> set;
 
-        // json.............................................................................................................
+        // ImmutableSet.................................................................................................
+
+        @Override
+        public TestPluginInfoSet setElements(final Set<TestPluginInfo> set) {
+            return new TestPluginInfoSet(set);
+        }
+
+        @Override
+        public Set<TestPluginInfo> toSet() {
+            return new TreeSet<>(this.set);
+        }
+
+        // json.........................................................................................................
 
         private JsonNode marshall(final JsonNodeMarshallContext context) {
             return context.marshallCollection(this);
