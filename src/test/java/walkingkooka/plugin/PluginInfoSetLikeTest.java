@@ -459,7 +459,10 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
 
         @Override
         public TestPluginInfoSet setElements(final Set<TestPluginInfo> elements) {
-            return new TestPluginInfoSet(elements);
+            Objects.requireNonNull(elements, "elements");
+
+            final TestPluginInfoSet copy = new TestPluginInfoSet(elements);
+            return this.equals(copy) ? this : copy;
         }
 
         @Override
