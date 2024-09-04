@@ -23,11 +23,14 @@ import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.HasAbsoluteUrl;
+import walkingkooka.net.HasUrlFragment;
+import walkingkooka.net.UrlFragment;
 import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.HasText;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 
+import java.util.AbstractSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -40,6 +43,7 @@ import java.util.stream.Collectors;
  */
 public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends Set<I>,
         HasText,
+        HasUrlFragment,
         TreePrintable {
 
     /**
@@ -205,6 +209,19 @@ public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Nam
         return SEPARATOR.toSeparatedString(
                 this,
                 Object::toString
+        );
+    }
+
+    // HasUrlFragment...................................................................................................
+
+    /**
+     * Custom UrlFragment support is required otherwise the {@link AbstractSet#toString} will be used when creating a
+     * save token which will eventually cause failure when the text is parsed back into the {@link PluginInfoSetLike}.
+     */
+    @Override
+    default UrlFragment urlFragment() {
+        return UrlFragment.with(
+                this.text()
         );
     }
 
