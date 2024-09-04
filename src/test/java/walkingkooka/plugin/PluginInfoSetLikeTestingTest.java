@@ -230,8 +230,11 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
         // ImmutableSet.................................................................................................
 
         @Override
-        public TestPluginInfoSet setElements(final Set<TestPluginInfo> set) {
-            return new TestPluginInfoSet(set);
+        public TestPluginInfoSet setElements(final Set<TestPluginInfo> elements) {
+            Objects.requireNonNull(elements, "elements");
+
+            final TestPluginInfoSet copy = new TestPluginInfoSet(elements);
+            return this.equals(copy) ? this : copy;
         }
 
         @Override
