@@ -18,6 +18,7 @@
 package walkingkooka.plugin;
 
 import walkingkooka.naming.Name;
+import walkingkooka.text.CaseKind;
 import walkingkooka.text.CaseSensitivity;
 
 /**
@@ -33,6 +34,20 @@ public interface PluginNameLike<N extends Name & Comparable<N>> extends Name, Co
         return (0 == pos ?
                 PluginName.INITIAL :
                 PluginName.PART).test(c);
+    }
+
+    /**
+     * This helper is useful for names which should follow kebab-case naming standards and need to be formatted as a
+     * title case to display in a UI.
+     * <pre>
+     * day-of-month -> Day of Month
+     * </pre>
+     */
+    default String kebabToTitleCase() {
+        return CaseKind.KEBAB.change(
+                this.value(),
+                CaseKind.TITLE
+        );
     }
 
     // Comparable ......................................................................................................
