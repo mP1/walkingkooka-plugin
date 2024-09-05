@@ -21,7 +21,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import walkingkooka.collect.list.Lists;
-import walkingkooka.collect.set.Sets;
+import walkingkooka.collect.set.SortedSets;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.net.AbsoluteUrl;
@@ -56,7 +56,7 @@ public final class PluginInfoLikeTest implements PluginInfoLikeTesting<TestPlugi
                 Names.string("plugin1")
         );
 
-        final Set<TestPluginInfo> infos = Sets.sorted();
+        final Set<TestPluginInfo> infos = SortedSets.tree();
         infos.add(info1);
         infos.add(info2);
         infos.add(info3);

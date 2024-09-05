@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import walkingkooka.collect.map.Maps;
 import walkingkooka.collect.set.Sets;
+import walkingkooka.collect.set.SortedSets;
 import walkingkooka.naming.Name;
 import walkingkooka.text.CharSequences;
 
@@ -64,7 +65,7 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
         if (providers.isEmpty()) {
             throw new IllegalArgumentException("Empty " + providedLabel + " providers");
         }
-        final Set<I> infos = Sets.sorted();
+        final Set<I> infos = SortedSets.tree();
         final Map<N, P> nameToProvider = Maps.sorted();
         final Map<N, Set<I>> nameToInfos = Maps.sorted(); // used to detect duplicates.
 

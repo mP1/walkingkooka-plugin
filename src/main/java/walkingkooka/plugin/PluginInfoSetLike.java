@@ -21,6 +21,7 @@ import walkingkooka.InvalidCharacterException;
 import walkingkooka.collect.map.Maps;
 import walkingkooka.collect.set.ImmutableSet;
 import walkingkooka.collect.set.Sets;
+import walkingkooka.collect.set.SortedSets;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.HasAbsoluteUrl;
@@ -70,7 +71,7 @@ public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Nam
                 .map(HasAbsoluteUrl::url)
                 .collect(Collectors.toSet());
 
-        final Set<I> all = Sets.sorted();
+        final Set<I> all = SortedSets.tree();
 
         for(final I info : target) {
             if(false == viewUrls.contains(info.url())) {
@@ -154,7 +155,7 @@ public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Nam
 
         final int length = text.length();
         int i = 0;
-        final Set<I> parsed = Sets.sorted();
+        final Set<I> parsed = SortedSets.tree();
 
         while (i < length) {
             // https://example.com/1 SPACE info COMMA
