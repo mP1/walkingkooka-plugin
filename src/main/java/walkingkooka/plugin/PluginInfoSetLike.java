@@ -20,6 +20,7 @@ package walkingkooka.plugin;
 import walkingkooka.InvalidCharacterException;
 import walkingkooka.collect.map.Maps;
 import walkingkooka.collect.set.ImmutableSet;
+import walkingkooka.collect.set.ImmutableSetDefaults;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.collect.set.SortedSets;
 import walkingkooka.naming.Name;
@@ -43,7 +44,8 @@ import java.util.stream.Collectors;
 /**
  * A {@link Set} that holds {@link PluginInfoLike} and a few related helpers.
  */
-public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends ImmutableSet<I>,
+public interface PluginInfoSetLike<S extends PluginInfoSetLike<S, I, N>, I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends ImmutableSet<I>,
+        ImmutableSetDefaults<S, I>,
         HasText,
         HasUrlFragment,
         TreePrintable {
@@ -147,9 +149,9 @@ public interface PluginInfoSetLike<I extends PluginInfoLike<I, N>, N extends Nam
      * https://example.com/service-111 service-111,https://example.com/service-222 service-222
      * </pre>
      */
-    static <S extends PluginInfoSetLike<I, N>, I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> S parse(final String text,
-                                                                                                                       final Function<String, I> infoParser,
-                                                                                                                       final Function<Set<I>, S> setFactory) {
+    static <S extends PluginInfoSetLike<S, I, N>, I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> S parse(final String text,
+                                                                                                                          final Function<String, I> infoParser,
+                                                                                                                          final Function<Set<I>, S> setFactory) {
         Objects.requireNonNull(text, "text");
         Objects.requireNonNull(infoParser, "infoParser");
 

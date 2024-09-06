@@ -24,6 +24,7 @@ import walkingkooka.collect.iterator.Iterators;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.collect.set.ImmutableSetDefaults;
 import walkingkooka.collect.set.Sets;
+import walkingkooka.naming.Name;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.net.AbsoluteUrl;
@@ -390,6 +391,42 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
         );
     }
 
+    @Test
+    public void testDeleteAndText2() {
+        this.textAndCheck(
+                delete(
+                        new TestPluginInfoSet(
+                                Sets.of(
+                                        new TestPluginInfo(
+                                                "https://example.com/test-111",
+                                                "test-111"
+                                        ),
+                                        new TestPluginInfo(
+                                                "https://example.com/test-222",
+                                                "test-222"
+                                        ),
+                                        new TestPluginInfo(
+                                                "https://example.com/test-333",
+                                                "test-333"
+                                        )
+                                )
+                        ),
+                        new TestPluginInfo(
+                                "https://example.com/test-333",
+                                "test-333"
+                        )
+                ),
+                "https://example.com/test-111 test-111,https://example.com/test-222 test-222"
+        );
+    }
+
+    static <S extends PluginInfoSetLike<S, I, N>, I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> S delete(final S s,
+                                                                                                                           final I i) {
+        return s.delete(
+                i
+        );
+    }
+
     // set..............................................................................................................
 
     @Override
@@ -432,8 +469,9 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
         );
     }
 
-    static class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements PluginInfoSetLike<TestPluginInfo, StringName>,
-            ImmutableSetDefaults<TestPluginInfoSet, TestPluginInfo> {
+    static class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements
+            ImmutableSetDefaults<TestPluginInfoSet, TestPluginInfo>,
+            PluginInfoSetLike<TestPluginInfoSet, TestPluginInfo, StringName> {
 
         static TestPluginInfoSet parse(final String text) {
             return PluginInfoSetLike.parse(
