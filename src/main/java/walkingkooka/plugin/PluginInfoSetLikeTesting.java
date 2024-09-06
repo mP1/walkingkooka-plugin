@@ -25,7 +25,7 @@ import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.HasTextTesting;
 
-public interface PluginInfoSetLikeTesting<S extends PluginInfoSetLike<I, N>, I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends ImmutableSetTesting<S, I>,
+public interface PluginInfoSetLikeTesting<S extends PluginInfoSetLike<S, I, N>, I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends ImmutableSetTesting<S, I>,
         HateosResourceSetTesting<S, I, N>,
         ParseStringTesting<S>,
         HasTextTesting {

@@ -200,7 +200,7 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
         return TestPluginInfoSet.class;
     }
 
-    static class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements PluginInfoSetLike<TestPluginInfo, StringName>,
+    static class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements PluginInfoSetLike<TestPluginInfoSet, TestPluginInfo, StringName>,
             ImmutableSetDefaults<TestPluginInfoSet, TestPluginInfo> {
 
         static TestPluginInfoSet parse(final String text) {
