@@ -362,6 +362,34 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
         );
     }
 
+    @Test
+    public void testDeleteAndText() {
+        this.textAndCheck(
+                new TestPluginInfoSet(
+                        Sets.of(
+                                new TestPluginInfo(
+                                        "https://example.com/test-111",
+                                        "test-111"
+                                ),
+                                new TestPluginInfo(
+                                        "https://example.com/test-222",
+                                        "test-222"
+                                ),
+                                new TestPluginInfo(
+                                        "https://example.com/test-333",
+                                        "test-333"
+                                )
+                        )
+                ).delete(
+                        new TestPluginInfo(
+                                "https://example.com/test-333",
+                                "test-333"
+                        )
+                ),
+                "https://example.com/test-111 test-111,https://example.com/test-222 test-222"
+        );
+    }
+
     // set..............................................................................................................
 
     @Override
@@ -464,6 +492,8 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
             final TestPluginInfoSet copy = new TestPluginInfoSet(elements);
             return this.equals(copy) ? this : copy;
         }
+
+
 
         @Override
         public Set<TestPluginInfo> toSet() {
