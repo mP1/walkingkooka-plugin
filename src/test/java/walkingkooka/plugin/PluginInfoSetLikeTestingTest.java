@@ -186,6 +186,13 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
         );
     }
 
+    public TestPluginInfo info() {
+        return new TestPluginInfo(
+                "https://example.com/test-plugin-111",
+                "test-plugin-111"
+        );
+    }
+
     @Override
     public TestPluginInfoSet unmarshall(final JsonNode node,
                                         final JsonNodeUnmarshallContext context) {
@@ -203,11 +210,15 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
     static class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements PluginInfoSetLike<TestPluginInfoSet, TestPluginInfo, StringName>,
             ImmutableSetDefaults<TestPluginInfoSet, TestPluginInfo> {
 
+        public final static TestPluginInfoSet EMPTY = new TestPluginInfoSet(Sets.empty());
+
         static TestPluginInfoSet parse(final String text) {
             return PluginInfoSetLike.parse(
                     text,
                     TestPluginInfo::parse,
-                    TestPluginInfoSet::new
+                    (s) -> s.isEmpty() ?
+                            EMPTY :
+                            new TestPluginInfoSet(s)
             );
         }
 

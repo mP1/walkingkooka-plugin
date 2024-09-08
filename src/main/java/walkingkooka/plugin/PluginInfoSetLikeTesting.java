@@ -30,6 +30,36 @@ public interface PluginInfoSetLikeTesting<S extends PluginInfoSetLike<S, I, N>, 
         ParseStringTesting<S>,
         HasTextTesting {
 
+    // empty............................................................................................................
+
+    @Test
+    default void testEmpty() throws Exception {
+        this.textAndCheck(
+                (S) this.type()
+                        .getField("EMPTY")
+                        .get(null),
+                ""
+        );
+    }
+
+    @Test
+    default void testEmptyConcatText() throws Exception {
+        final S set = (S) this.type()
+                .getField("EMPTY")
+                .get(null);
+
+        final I info = this.info();
+
+        this.textAndCheck(
+                set.concat(
+                        info
+                ),
+                info.toString()
+        );
+    }
+
+    I info();
+
     // parseString......................................................................................................
 
     @Override
