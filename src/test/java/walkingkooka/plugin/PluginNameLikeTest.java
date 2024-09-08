@@ -17,36 +17,12 @@
 
 package walkingkooka.plugin;
 
-import org.junit.jupiter.api.Test;
 import walkingkooka.plugin.PluginNameLikeTest.TestPluginNameLike;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.CaseSensitivity;
 
 final class PluginNameLikeTest implements ClassTesting<TestPluginNameLike> {
-
-    @Override
-    public void testTestNaming() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Test
-    public void testKebabToTitleCase() {
-        this.checkEquals(
-                "Title 123",
-                new TestPluginNameLike("title-123")
-                        .kebabToTitleCase()
-        );
-    }
-
-    @Test
-    public void testKebabToTitleCase2() {
-        this.checkEquals(
-                "Title Xyz 123",
-                new TestPluginNameLike("title-xyz-123")
-                        .kebabToTitleCase()
-        );
-    }
 
     // class............................................................................................................
 
@@ -101,5 +77,10 @@ final class PluginNameLikeTest implements ClassTesting<TestPluginNameLike> {
                     other.value
             );
         }
+    }
+
+    @Override
+    public void testTestNaming() {
+        throw new UnsupportedOperationException();
     }
 }
