@@ -364,6 +364,19 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
     }
 
     @Test
+    public void testEmptyConcatAndText() {
+        this.textAndCheck(
+                TestPluginInfoSet.EMPTY.concat(
+                        new TestPluginInfo(
+                                "https://example.com/test-111",
+                                "test-111"
+                        )
+                ),
+                "https://example.com/test-111 test-111"
+        );
+    }
+
+    @Test
     public void testDeleteAndText() {
         this.textAndCheck(
                 new TestPluginInfoSet(
@@ -446,6 +459,14 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
     }
 
     @Override
+    public TestPluginInfo info() {
+        return new TestPluginInfo(
+                "https://example.com/test-111",
+                "test-111"
+        );
+    }
+
+    @Override
     public Class<TestPluginInfoSet> type() {
         return TestPluginInfoSet.class;
     }
@@ -473,11 +494,15 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
             ImmutableSetDefaults<TestPluginInfoSet, TestPluginInfo>,
             PluginInfoSetLike<TestPluginInfoSet, TestPluginInfo, StringName> {
 
+        public final static TestPluginInfoSet EMPTY = new TestPluginInfoSet(Sets.empty());
+
         static TestPluginInfoSet parse(final String text) {
             return PluginInfoSetLike.parse(
                     text,
                     TestPluginInfo::parse,
-                    TestPluginInfoSet::new
+                    (s) -> s.isEmpty() ?
+                            EMPTY :
+                            new TestPluginInfoSet(s)
             );
         }
 
