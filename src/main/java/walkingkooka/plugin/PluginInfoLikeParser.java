@@ -103,7 +103,7 @@ final class PluginInfoLikeParser<N extends Name & Comparable<N>> {
     }
 
     private final static Parser<ParserContext> SKIP_NOT_SPACES = Parsers.stringCharPredicate(
-            CharPredicates.any(" " + PluginInfoSetLike.SEPARATOR.character()).negate(),
+            CharPredicates.is(' ').negate(),
             1,
             Character.MAX_VALUE
     );
