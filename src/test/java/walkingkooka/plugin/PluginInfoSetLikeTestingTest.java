@@ -80,7 +80,7 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
     }
 
     @Test
-    public void testParseInfoFails() {
+    public void testParseUrlSpaceNameFails() {
         final String text = "https://example.com/test-123 test/123";
         this.parseStringInvalidCharacterFails(
                 text,
@@ -89,7 +89,7 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
     }
 
     @Test
-    public void testParseInfoMissingNameFails() {
+    public void testParseInfoCommaUrlSpaceMissingNameFails() {
         final String text = "https://example.com/test-111 test-111,https://example.com/test-222";
         this.parseStringFails(
                 text,
@@ -98,9 +98,54 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
     }
 
     @Test
-    public void testParseOne() {
+    public void testParseUrlSpaceName() {
         this.parseStringAndCheck(
                 "https://example.com/test-123 test-123",
+                new TestPluginInfoSet(
+                        Sets.of(
+                                new TestPluginInfo(
+                                        "https://example.com/test-123",
+                                        "test-123"
+                                )
+                        )
+                )
+        );
+    }
+
+    @Test
+    public void testParseSpaceUrlSpaceName() {
+        this.parseStringAndCheck(
+                " https://example.com/test-123 test-123",
+                new TestPluginInfoSet(
+                        Sets.of(
+                                new TestPluginInfo(
+                                        "https://example.com/test-123",
+                                        "test-123"
+                                )
+                        )
+                )
+        );
+    }
+
+    @Test
+    public void testParseSpaceSpaceUrlSpaceName() {
+        this.parseStringAndCheck(
+                "  https://example.com/test-123 test-123",
+                new TestPluginInfoSet(
+                        Sets.of(
+                                new TestPluginInfo(
+                                        "https://example.com/test-123",
+                                        "test-123"
+                                )
+                        )
+                )
+        );
+    }
+
+    @Test
+    public void testParseUrlSpaceSpaceName() {
+        this.parseStringAndCheck(
+                "https://example.com/test-123  test-123",
                 new TestPluginInfoSet(
                         Sets.of(
                                 new TestPluginInfo(

@@ -471,15 +471,136 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
         return TestPluginInfoSet.class;
     }
 
+    // parse............................................................................................................
     @Override
     public void testParseStringEmptyFails() {
         throw new UnsupportedOperationException();
+    }
+
+    @Test
+    public void testParseEmpty() {
+        this.parseStringAndCheck(
+                "",
+                new TestPluginInfoSet(
+                        Sets.empty()
+                )
+        );
+    }
+
+    @Test
+    public void testParseUrlStringName() {
+        final String text = "https://example.com/1 test-1";
+
+        this.parseStringAndCheck(
+                text,
+                new TestPluginInfoSet(
+                    Sets.of(
+                            TestPluginInfo.parse(text)
+                    )
+                )
+        );
+    }
+
+    @Test
+    public void testParseStringUrlStringNameString() {
+        final String text = " https://example.com/1 test-1 ";
+
+        this.parseStringAndCheck(
+                text,
+                new TestPluginInfoSet(
+                        Sets.of(
+                                TestPluginInfo.parse(text)
+                        )
+                )
+        );
+    }
+
+    @Test
+    public void testParseUrlStringNameCommaFails() {
+        this.parseStringFails(
+                "https://example.com/1 test-1,",
+                new IllegalArgumentException("Missing url")
+        );
+    }
+
+    @Test
+    public void testParseUrlStringNameCommaSpaceFails() {
+        this.parseStringFails(
+                "https://example.com/1 test-1,   ",
+                new IllegalArgumentException("Missing url")
+        );
+    }
+
+    @Test
+    public void testParseUrlStringNameCommaUrlFails() {
+        this.parseStringFails(
+                "https://example.com/1 test-1,https://example.com/2",
+                new IllegalArgumentException("Missing name")
+        );
+    }
+
+    @Test
+    public void testParseUrlStringNameCommaUrlStringFails() {
+        this.parseStringFails(
+                "https://example.com/1 test-1,https://example.com/2 ",
+                new IllegalArgumentException("Missing name")
+        );
+    }
+
+    @Test
+    public void testParseStringUrlStringNameStringCommaUrlStringName() {
+        final String text1 = " https://example.com/1 test-1 ";
+        final String text2 = "https://example.com/2 test-2";
+
+        this.parseStringAndCheck(
+                text1 + "," + text2,
+                new TestPluginInfoSet(
+                        Sets.of(
+                                TestPluginInfo.parse(text1),
+                                TestPluginInfo.parse(text2)
+                        )
+                )
+        );
+    }
+
+    @Test
+    public void testParseStringUrlStringNameStringCommaSpaceUrlStringNameSpace() {
+        final String text1 = " https://example.com/1 test-1 ";
+        final String text2 = " https://example.com/2 test-2 ";
+
+        this.parseStringAndCheck(
+                text1 + "," + text2,
+                new TestPluginInfoSet(
+                        Sets.of(
+                                TestPluginInfo.parse(text1),
+                                TestPluginInfo.parse(text2)
+                        )
+                )
+        );
+    }
+
+    @Test
+    public void testParseStringSpaceUrlStringSpaceNameSpaceStringCommaSpaceSpaceUrlSpaceStringNameSpaceSpace() {
+        final String text1 = "  https://example.com/1  test-1  ";
+        final String text2 = "  https://example.com/2  test-2  ";
+
+        this.parseStringAndCheck(
+                text1 + "," + text2,
+                new TestPluginInfoSet(
+                        Sets.of(
+                                TestPluginInfo.parse(text1),
+                                TestPluginInfo.parse(text2)
+                        )
+                )
+        );
     }
 
     @Override
     public TestPluginInfoSet parseString(final String text) {
         return TestPluginInfoSet.parse(text);
     }
+
+    // json.............................................................................................................
 
     @Override
     public TestPluginInfoSet unmarshall(final JsonNode json,
@@ -555,8 +676,6 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
             final TestPluginInfoSet copy = new TestPluginInfoSet(elements);
             return this.equals(copy) ? this : copy;
         }
-
-
 
         @Override
         public Set<TestPluginInfo> toSet() {
