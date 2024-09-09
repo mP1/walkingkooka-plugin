@@ -86,6 +86,86 @@ public final class PluginInfoLikeTest implements PluginInfoLikeTesting<TestPlugi
 
     // parse............................................................................................................
 
+    @Test
+    public void testParseUrlFails() {
+        this.parseStringFails(
+                " https://example.com/1",
+                new IllegalArgumentException("Missing name")
+        );
+    }
+
+    @Test
+    public void testParseSpaceUrlSpaceName() {
+        this.parseStringAndCheck(
+                " https://example.com/1 plugin1",
+                new TestPluginInfo(
+                        Url.parseAbsolute("https://example.com/1"),
+                        Names.string("plugin1")
+                )
+        );
+    }
+
+    @Test
+    public void testParseSpaceSpaceUrlSpaceName() {
+        this.parseStringAndCheck(
+                "  https://example.com/1 plugin1",
+                new TestPluginInfo(
+                        Url.parseAbsolute("https://example.com/1"),
+                        Names.string("plugin1")
+                )
+        );
+    }
+
+    @Test
+    public void testParseSpaceSpaceUrlSpaceSpaceName() {
+        this.parseStringAndCheck(
+                "  https://example.com/1  plugin1",
+                new TestPluginInfo(
+                        Url.parseAbsolute("https://example.com/1"),
+                        Names.string("plugin1")
+                )
+        );
+    }
+
+    @Test
+    public void testParseSpaceSpaceUrlSpaceSpaceNameSpace() {
+        this.parseStringAndCheck(
+                "  https://example.com/1  plugin1 ",
+                new TestPluginInfo(
+                        Url.parseAbsolute("https://example.com/1"),
+                        Names.string("plugin1")
+                )
+        );
+    }
+
+    @Test
+    public void testParseSpaceSpaceUrlSpaceSpaceNameSpaceSpace() {
+        this.parseStringAndCheck(
+                "  https://example.com/1  plugin1  ",
+                new TestPluginInfo(
+                        Url.parseAbsolute("https://example.com/1"),
+                        Names.string("plugin1")
+                )
+        );
+    }
+
+    @Test
+    public void testParseUrlSpaceNameCommaFails() {
+        this.parseStringInvalidCharacterFails(
+                " https://example.com/1 name,",
+                ','
+        );
+    }
+
+    @Test
+    public void testParseUrlSpaceNameSpaceTokenFails() {
+        this.parseStringInvalidCharacterFails(
+                " https://example.com/1 name X",
+                'X'
+        );
+    }
+
+
     @Override
     public TestPluginInfo parseString(final String text) {
         return TestPluginInfo.parse(text);
