@@ -17,7 +17,6 @@
 
 package walkingkooka.plugin;
 
-import walkingkooka.InvalidCharacterException;
 import walkingkooka.collect.map.Maps;
 import walkingkooka.collect.set.ImmutableSet;
 import walkingkooka.collect.set.ImmutableSetDefaults;
@@ -75,8 +74,8 @@ public interface PluginInfoSetLike<S extends PluginInfoSetLike<S, I, N>, I exten
 
         final Set<I> all = SortedSets.tree();
 
-        for(final I info : target) {
-            if(false == viewUrls.contains(info.url())) {
+        for (final I info : target) {
+            if (false == viewUrls.contains(info.url())) {
                 all.add(info);
             }
         }
@@ -146,6 +145,15 @@ public interface PluginInfoSetLike<S extends PluginInfoSetLike<S, I, N>, I exten
     /**
      * Parses some text (actually a csv) holding multiple {@link PluginInfoLike} instances.
      * <pre>
+     * SPACE*
+     * URL
+     * SPACE+
+     * NAME
+     * SPACE*
+     * SEPARATOR-COMMA
+     * </pre>
+     *
+     * <pre>
      * https://example.com/service-111 service-111,https://example.com/service-222 service-222
      * </pre>
      */
@@ -155,55 +163,36 @@ public interface PluginInfoSetLike<S extends PluginInfoSetLike<S, I, N>, I exten
         Objects.requireNonNull(text, "text");
         Objects.requireNonNull(infoParser, "infoParser");
 
-        final int length = text.length();
-        int i = 0;
-        final Set<I> parsed = SortedSets.tree();
+        final Set<I> infos = SortedSets.tree();
 
-        while (i < length) {
-            // https://example.com/1 SPACE info COMMA
-            final int space = text.indexOf(' ', i);
-            if (-1 == space) {
-                try {
-                    parsed.add(
-                            infoParser.apply(text.substring(i))
-                    ); // let the parse fail...
-                    break;
-                } catch (final InvalidCharacterException cause) {
-                    throw cause.setTextAndPosition(
-                            text,
-                            i + 1 + cause.position()
-                    );
+        final PluginInfoSetLikeParser<N, I> parser = PluginInfoSetLikeParser.with(
+                text,
+                infoParser
+        );
+
+        parser.spaces();
+
+        if (false == parser.isEmpty()) {
+            for (; ; ) {
+                parser.spaces();
+
+                infos.add(parser.info());
+
+                parser.spaces();
+
+                if (PluginInfoSetLike.SEPARATOR.string().equals(parser.comma())) {
+                    continue;
                 }
+
+                if (parser.isEmpty()) {
+                    break;
+                }
+
+                parser.invalidCharacterException();
             }
-
-            final int separator = text.indexOf(
-                    SEPARATOR.character(),
-                    space
-            );
-
-            final int end = -1 == separator ?
-                    length :
-                    separator;
-            try {
-                parsed.add(
-                        infoParser.apply(
-                                text.substring(
-                                        i,
-                                        end
-                                )
-                        )
-                );
-            } catch (final InvalidCharacterException cause) {
-                throw cause.setTextAndPosition(
-                        text,
-                        i + cause.position()
-                );
-            }
-
-            i = end + 1;
         }
 
-        return setFactory.apply(parsed);
+        return setFactory.apply(infos);
     }
 
     // HasText..........................................................................................................
