@@ -17,15 +17,12 @@
 
 package walkingkooka.plugin;
 
-import walkingkooka.InvalidCharacterException;
 import walkingkooka.compare.Comparators;
 import walkingkooka.naming.HasName;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.HasAbsoluteUrl;
-import walkingkooka.net.Url;
 import walkingkooka.net.http.server.hateos.HateosResource;
-import walkingkooka.text.CharSequences;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.JsonPropertyName;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
@@ -51,44 +48,34 @@ public interface PluginInfoLike<I extends PluginInfoLike<I, N>, N extends Name &
 
     /**
      * Useful helper that should be used by {@link PluginInfoLike} implementation parse methods.
+     * <pre>
+     *     SPACE*
+     *     URL
+     *     SPACE+
+     *     NAME
+     *     SPACE*
+     * </pre>
      */
     static <I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> I parse(final String text,
                                                                                     final Function<String, N> nameFactory,
                                                                                     final BiFunction<AbsoluteUrl, N, I> infoFactory) {
-        CharSequences.failIfNullOrEmpty(text, "text");
-        Objects.requireNonNull(nameFactory, "nameFactory");
-        Objects.requireNonNull(infoFactory, "infoFactory");
+        final PluginInfoLikeParser<N> parser = PluginInfoLikeParser.with(
+                text,
+                nameFactory
+        );
 
-        final int space = text.indexOf(' ');
+        parser.spaces();
 
-        final String urlText = -1 != space ?
-                text.substring(0, space) :
-                text;
-        final AbsoluteUrl url;
+        final AbsoluteUrl url = parser.url();
 
-        try {
-            url = Url.parseAbsolute(urlText);
-        } catch (final InvalidCharacterException cause) {
-            throw cause.setTextAndPosition(
-                    text,
-                    cause.position()
-            );
-        }
+        parser.spaces();
 
-        if (-1 == space) {
-            throw new IllegalArgumentException("Missing name");
-        }
+        final N name = parser.name();
 
-        final String nameText = text.substring(space + 1);
+        parser.spaces();
 
-        final N name;
-        try {
-            name = nameFactory.apply(nameText);
-        } catch (final InvalidCharacterException cause) {
-            throw cause.setTextAndPosition(
-                    text,
-                    space + cause.position() +1
-            );
+        if(false == parser.isEmpty()) {
+            parser.invalidCharacterException();
         }
 
         return infoFactory.apply(
