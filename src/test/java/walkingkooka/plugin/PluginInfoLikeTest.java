@@ -36,10 +36,7 @@ import java.util.Set;
 
 public final class PluginInfoLikeTest implements PluginInfoLikeTesting<TestPluginInfo, StringName> {
 
-    @Override
-    public void testTestNaming() {
-        throw new UnsupportedOperationException();
-    }
+    // name.............................................................................................................
 
     @Test
     public void testSort() {
@@ -87,15 +84,26 @@ public final class PluginInfoLikeTest implements PluginInfoLikeTesting<TestPlugi
         );
     }
 
+    // parse............................................................................................................
+
     @Override
     public TestPluginInfo parseString(final String text) {
         return TestPluginInfo.parse(text);
+    }
+
+    // class............................................................................................................
+
+    @Override
+    public void testTestNaming() {
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Class<TestPluginInfo> type() {
         return TestPluginInfo.class;
     }
+
+    // json.............................................................................................................
 
     @Override
     public TestPluginInfo unmarshall(final JsonNode json,
