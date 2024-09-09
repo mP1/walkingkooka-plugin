@@ -87,6 +87,22 @@ public final class PluginInfoLikeTest implements PluginInfoLikeTesting<TestPlugi
     // parse............................................................................................................
 
     @Test
+    public void testParseEmptyFails() {
+        this.parseStringFails(
+                "",
+                new IllegalArgumentException("Missing url")
+        );
+    }
+
+    @Test
+    public void testParseMissingUrlFails() {
+        this.parseStringFails(
+                " ",
+                new IllegalArgumentException("Missing url")
+        );
+    }
+
+    @Test
     public void testParseUrlFails() {
         this.parseStringFails(
                 " https://example.com/1",

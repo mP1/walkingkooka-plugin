@@ -65,6 +65,9 @@ final class PluginInfoLikeParser<N extends Name & Comparable<N>> {
 
     AbsoluteUrl url() {
         final String token = this.token();
+        if(token.isEmpty()) {
+            throw new IllegalArgumentException("Missing url");
+        }
 
         try {
             return Url.parseAbsolute(token);
