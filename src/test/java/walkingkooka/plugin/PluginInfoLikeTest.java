@@ -95,6 +95,28 @@ public final class PluginInfoLikeTest implements PluginInfoLikeTesting<TestPlugi
     }
 
     @Test
+    public void testParseUrlSpaceName() {
+        this.parseStringAndCheck(
+                "https://example.com/1 plugin1",
+                new TestPluginInfo(
+                        Url.parseAbsolute("https://example.com/1"),
+                        Names.string("plugin1")
+                )
+        );
+    }
+
+    @Test
+    public void testParseUrlIncludesCommaSpaceName() {
+        this.parseStringAndCheck(
+                "https://example.com/1,2 plugin1",
+                new TestPluginInfo(
+                        Url.parseAbsolute("https://example.com/1,2"),
+                        Names.string("plugin1")
+                )
+        );
+    }
+
+    @Test
     public void testParseSpaceUrlSpaceName() {
         this.parseStringAndCheck(
                 " https://example.com/1 plugin1",
@@ -146,14 +168,6 @@ public final class PluginInfoLikeTest implements PluginInfoLikeTesting<TestPlugi
                         Url.parseAbsolute("https://example.com/1"),
                         Names.string("plugin1")
                 )
-        );
-    }
-
-    @Test
-    public void testParseUrlSpaceNameCommaFails() {
-        this.parseStringInvalidCharacterFails(
-                " https://example.com/1 name,",
-                ','
         );
     }
 
