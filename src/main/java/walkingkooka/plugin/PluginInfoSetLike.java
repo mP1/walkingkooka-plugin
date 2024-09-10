@@ -87,6 +87,8 @@ public interface PluginInfoSetLike<S extends PluginInfoSetLike<S, I, N>, I exten
                 Sets.immutable(all);
     }
 
+    // nameMapper.......................................................................................................
+
     /**
      * Computes a mapper {@link Function} merges names from the view and target. Note that targets with the same URL
      * will be replaced and only the view name will work.
