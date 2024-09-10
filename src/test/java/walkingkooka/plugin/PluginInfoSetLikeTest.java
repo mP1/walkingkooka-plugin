@@ -48,6 +48,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<TestPluginInfoSet, TestPluginInfo, StringName> {
 
+    private final static List<Runnable> unregister = Lists.array();
+
     @BeforeAll
     public static void beforeAll() {
         unregister.add(
@@ -74,7 +76,153 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
         unregister.forEach(Runnable::run);
     }
 
-    private final static List<Runnable> unregister = Lists.array();
+    // filter............................................................................................................
+
+    static <S extends PluginInfoSetLike<S, I, N>, I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> S delete(final S s,
+                                                                                                                           final I i) {
+        return s.delete(
+                i
+        );
+    }
+
+    @Test
+    public void testFilterWithNullProviderFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> new TestPluginInfoSet(
+                        Sets.empty()
+                ).filter(null)
+        );
+    }
+
+    @Test
+    public void testFilterWithSame() {
+        final TestPluginInfoSet set = this.createSet();
+
+        this.checkEquals(
+                set,
+                set.filter(set)
+        );
+    }
+
+    @Test
+    public void testFilterLess() {
+        final TestPluginInfo info1 = new TestPluginInfo(
+                "https://example.com/test-111",
+                "test-111"
+        );
+        final TestPluginInfo info2 = new TestPluginInfo(
+                "https://example.com/test-222",
+                "test-222"
+        );
+        final TestPluginInfo info3 = new TestPluginInfo(
+                "https://example.com/test-333",
+                "test-333"
+        );
+
+        this.filterAndCheck(
+                Sets.of(
+                        info1,
+                        info2
+                ),
+                Sets.of(
+                        info1,
+                        info2,
+                        info3
+                ),
+                info1,
+                info2
+        );
+    }
+
+    @Test
+    public void testFilterDifferentNames() {
+        final TestPluginInfo info1 = new TestPluginInfo(
+                "https://example.com/test-111",
+                "test-111"
+        );
+        final TestPluginInfo info2 = new TestPluginInfo(
+                "https://example.com/test-222",
+                "test-222"
+        );
+
+        this.filterAndCheck(
+                Sets.of(
+                        info1,
+                        info2
+                ),
+                Sets.of(
+                        new TestPluginInfo(
+                                "https://example.com/test-111",
+                                "test-original-111"
+                        ),
+                        new TestPluginInfo(
+                                "https://example.com/test-222",
+                                "test-original-222"
+                        )
+                ),
+                info1,
+                info2
+        );
+    }
+
+    @Test
+    public void testFilterMoreSelectedRemoved() {
+        final TestPluginInfo info1 = new TestPluginInfo(
+                "https://example.com/test-111",
+                "test-111"
+        );
+        final TestPluginInfo info2 = new TestPluginInfo(
+                "https://example.com/test-222",
+                "test-222"
+        );
+        final TestPluginInfo info3 = new TestPluginInfo(
+                "https://example.com/test-333",
+                "test-333"
+        );
+
+        this.filterAndCheck(
+                Sets.of(
+                        info1,
+                        info2,
+                        info3
+                ),
+                Sets.of(
+                        info1,
+                        info2
+                ),
+                info1,
+                info2
+        );
+    }
+
+    private void filterAndCheck(final Set<TestPluginInfo> selected,
+                                final Set<TestPluginInfo> provider,
+                                final TestPluginInfo... expected) {
+        this.filterAndCheck(
+                selected,
+                provider,
+                Sets.of(
+                        expected
+                )
+        );
+    }
+
+    private void filterAndCheck(final Set<TestPluginInfo> selected,
+                                final Set<TestPluginInfo> provider,
+                                final Set<TestPluginInfo> expected) {
+        this.checkEquals(
+                expected,
+                new TestPluginInfoSet(
+                        selected
+                ).filter(
+                        new TestPluginInfoSet(
+                                provider
+                        )
+                ),
+                () -> selected + " filter " + provider
+        );
+    }
 
     // merge............................................................................................................
 
@@ -220,6 +368,8 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
         );
     }
 
+    // nameMapper.......................................................................................................
+
     private void mergeAndCheck(final Set<TestPluginInfo> view,
                                final Set<TestPluginInfo> target,
                                final Set<TestPluginInfo> expected) {
@@ -231,8 +381,6 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
                 )
         );
     }
-
-    // nameMapper.......................................................................................................
 
     @Test
     public void testNameMapperWithNullViewFails() {
@@ -433,13 +581,6 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
         );
     }
 
-    static <S extends PluginInfoSetLike<S, I, N>, I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> S delete(final S s,
-                                                                                                                           final I i) {
-        return s.delete(
-                i
-        );
-    }
-
     // set..............................................................................................................
 
     @Override
@@ -494,9 +635,9 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
         this.parseStringAndCheck(
                 text,
                 new TestPluginInfoSet(
-                    Sets.of(
-                            TestPluginInfo.parse(text)
-                    )
+                        Sets.of(
+                                TestPluginInfo.parse(text)
+                        )
                 )
         );
     }
@@ -616,6 +757,11 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
             PluginInfoSetLike<TestPluginInfoSet, TestPluginInfo, StringName> {
 
         public final static TestPluginInfoSet EMPTY = new TestPluginInfoSet(Sets.empty());
+        private final Set<TestPluginInfo> set;
+
+        TestPluginInfoSet(final Set<TestPluginInfo> set) {
+            this.set = set;
+        }
 
         static TestPluginInfoSet parse(final String text) {
             return PluginInfoSetLike.parse(
@@ -627,28 +773,6 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
             );
         }
 
-        TestPluginInfoSet(final Set<TestPluginInfo> set) {
-            this.set = set;
-        }
-
-        @Override
-        public Iterator<TestPluginInfo> iterator() {
-            return Iterators.readOnly(this.set.iterator());
-        }
-
-        @Override
-        public int size() {
-            return this.set.size();
-        }
-
-        private final Set<TestPluginInfo> set;
-
-        // json.............................................................................................................
-
-        private JsonNode marshall(final JsonNodeMarshallContext context) {
-            return context.marshallCollection(this);
-        }
-
         // @VisibleForTesting
         static TestPluginInfoSet unmarshall(final JsonNode node,
                                             final JsonNodeUnmarshallContext context) {
@@ -658,6 +782,22 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
                             TestPluginInfo.class
                     )
             );
+        }
+
+        @Override
+        public Iterator<TestPluginInfo> iterator() {
+            return Iterators.readOnly(this.set.iterator());
+        }
+
+        // json.............................................................................................................
+
+        @Override
+        public int size() {
+            return this.set.size();
+        }
+
+        private JsonNode marshall(final JsonNodeMarshallContext context) {
+            return context.marshallCollection(this);
         }
 
         // toString.....................................................................................................
@@ -685,13 +825,8 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
 
     static class TestPluginInfo implements PluginInfoLike<TestPluginInfo, StringName> {
 
-        static TestPluginInfo parse(final String text) {
-            return PluginInfoLike.parse(
-                    text,
-                    Names::string,
-                    TestPluginInfo::new
-            );
-        }
+        private final StringName name;
+        private final AbsoluteUrl url;
 
         TestPluginInfo(final AbsoluteUrl url,
                        final StringName name) {
@@ -707,21 +842,36 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
             );
         }
 
+        static TestPluginInfo parse(final String text) {
+            return PluginInfoLike.parse(
+                    text,
+                    Names::string,
+                    TestPluginInfo::new
+            );
+        }
+
+        // @VisibleForTesting
+        static TestPluginInfo unmarshall(final JsonNode node,
+                                         final JsonNodeUnmarshallContext context) {
+            return PluginInfoLike.unmarshall(
+                    node,
+                    context,
+                    Names::string,
+                    TestPluginInfo::new
+            );
+        }
+
         @Override
         public StringName name() {
             return this.name;
         }
 
-        private final StringName name;
+        // object.......................................................................................................
 
         @Override
         public AbsoluteUrl url() {
             return this.url;
         }
-
-        private final AbsoluteUrl url;
-
-        // object.......................................................................................................
 
         @Override
         public int hashCode() {
@@ -741,22 +891,11 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
                     this.name.equals(other.name);
         }
 
+        // json.........................................................................................................
+
         @Override
         public String toString() {
             return PluginInfoLike.toString(this);
-        }
-
-        // json.........................................................................................................
-
-        // @VisibleForTesting
-        static TestPluginInfo unmarshall(final JsonNode node,
-                                         final JsonNodeUnmarshallContext context) {
-            return PluginInfoLike.unmarshall(
-                    node,
-                    context,
-                    Names::string,
-                    TestPluginInfo::new
-            );
         }
     }
 }
