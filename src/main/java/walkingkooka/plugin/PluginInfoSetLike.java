@@ -54,6 +54,25 @@ public interface PluginInfoSetLike<S extends PluginInfoSetLike<S, I, N>, I exten
      */
     CharacterConstant SEPARATOR = CharacterConstant.COMMA;
 
+    // filter...........................................................................................................
+
+    /**
+     * Returns a filtered {@link PluginInfoSetLike} only keeping {@link PluginInfoLike} that exist in the provider with the same {@link AbsoluteUrl}.
+     */
+    default S filter(final S provider) {
+        Objects.requireNonNull(provider, "provider");
+
+        final Set<AbsoluteUrl> providerUrls = provider.stream()
+                .map(HasAbsoluteUrl::url)
+                .collect(Collectors.toSet());
+
+        return this.setElements(
+                this.stream()
+                        .filter(i -> providerUrls.contains(i.url()))
+                        .collect(Collectors.toSet())
+        );
+    }
+
     // merge...........................................................................................................
 
     /**
