@@ -24,7 +24,6 @@ import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.HasAbsoluteUrl;
 import walkingkooka.net.http.server.hateos.HateosResource;
 import walkingkooka.tree.json.JsonNode;
-import walkingkooka.tree.json.JsonPropertyName;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
@@ -137,56 +136,24 @@ public interface PluginInfoLike<I extends PluginInfoLike<I, N>, N extends Name &
     default JsonNode marshall(final JsonNodeMarshallContext context) {
         Objects.requireNonNull(context, "context");
 
-        return JsonNode.object()
-                .set(
-                        PluginInfoLikeJsonConstants.URL_PROPERTY,
-                        context.marshall(this.url())
-                ).set(
-                        PluginInfoLikeJsonConstants.NAME_PROPERTY,
-                        context.marshall(this.name())
-                );
+        return JsonNode.string(
+                this.toString()
+        );
     }
 
     static <I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> I unmarshall(final JsonNode node,
                                                                                          final JsonNodeUnmarshallContext context,
-                                                                                         final Class<N> nameType,
+                                                                                         final Function<String, N> nameFactory,
                                                                                          final BiFunction<AbsoluteUrl, N, I> factory) {
         Objects.requireNonNull(node, "node");
         Objects.requireNonNull(context, "context");
-        Objects.requireNonNull(nameType, "nameType");
+        Objects.requireNonNull(nameFactory, "nameFactory");
         Objects.requireNonNull(factory, "factory");
 
-        AbsoluteUrl url = null;
-        N name = null;
-
-        for (final JsonNode child : node.objectOrFail().children()) {
-            final JsonPropertyName jsonPropertyName = child.name();
-
-            switch (jsonPropertyName.value()) {
-                case PluginInfoLikeJsonConstants.URL_PROPERTY_STRING:
-                    url = context.unmarshall(
-                            child,
-                            AbsoluteUrl.class
-                    );
-                    break;
-                case PluginInfoLikeJsonConstants.NAME_PROPERTY_STRING:
-                    name = context.unmarshall(
-                            child,
-                            nameType
-                    );
-                    break;
-                default:
-                    JsonNodeUnmarshallContext.unknownPropertyPresent(
-                            jsonPropertyName,
-                            node
-                    );
-                    break;
-            }
-        }
-
-        return factory.apply(
-                url,
-                name
+        return parse(
+                node.stringOrFail(),
+                nameFactory,
+                factory
         );
     }
 }

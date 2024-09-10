@@ -295,7 +295,7 @@ public final class PluginInfoLikeTest implements PluginInfoLikeTesting<TestPlugi
             return PluginInfoLike.unmarshall(
                     node,
                     context,
-                    StringName.class,
+                    Names::string,
                     TestPluginInfo::new
             );
         }
