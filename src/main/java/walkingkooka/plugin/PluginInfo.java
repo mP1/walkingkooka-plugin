@@ -102,7 +102,7 @@ public final class PluginInfo implements PluginInfoLike<PluginInfo, PluginName> 
         return PluginInfoLike.unmarshall(
                 node,
                 context,
-                PluginName.class,
+                PluginName::with,
                 PluginInfo::with
         );
     }
