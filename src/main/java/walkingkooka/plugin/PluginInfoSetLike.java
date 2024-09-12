@@ -22,6 +22,7 @@ import walkingkooka.collect.set.ImmutableSet;
 import walkingkooka.collect.set.ImmutableSetDefaults;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.collect.set.SortedSets;
+import walkingkooka.naming.HasName;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.HasAbsoluteUrl;
@@ -214,6 +215,17 @@ public interface PluginInfoSetLike<S extends PluginInfoSetLike<S, I, N>, I exten
         }
 
         return setFactory.apply(infos);
+    }
+
+    /**
+     * Returns all the names in this set.
+     */
+    default Set<N> names() {
+        return SortedSets.immutable(
+                this.stream()
+                        .map(HasName::name)
+                        .collect(Collectors.toCollection(SortedSets::tree))
+        );
     }
 
     // HasText..........................................................................................................
