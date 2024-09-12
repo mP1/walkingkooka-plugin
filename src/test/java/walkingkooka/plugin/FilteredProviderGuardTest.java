@@ -196,6 +196,7 @@ public final class FilteredProviderGuardTest implements ClassTesting2<FilteredPr
             return this.compareTo(other) == 0;
         }
 
+        @Override
         public String toString() {
             return this.name.toString();
         }
