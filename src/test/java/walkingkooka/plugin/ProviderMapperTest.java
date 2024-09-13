@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
+import walkingkooka.ToStringTesting;
 import walkingkooka.collect.iterator.Iterators;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Name;
@@ -45,7 +46,8 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class ProviderMapperTest implements TreePrintableTesting,
-        ClassTesting2<ProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>> {
+        ClassTesting2<ProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>>,
+        ToStringTesting<ProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>> {
 
     private final static TestName NAME_IN = new TestName("NameIn1");
 
@@ -260,6 +262,16 @@ public final class ProviderMapperTest implements TreePrintableTesting,
                         )
                 ),
                 MAPPER.infos()
+        );
+    }
+
+    // toString.........................................................................................................
+
+    @Test
+    public void testToString() {
+        this.toStringAndCheck(
+                MAPPER,
+                "https://example.com/Name Name,https://example.com/NameIn1NameOut1 NameIn1"
         );
     }
 
