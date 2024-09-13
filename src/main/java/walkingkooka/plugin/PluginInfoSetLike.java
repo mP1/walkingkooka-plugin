@@ -228,6 +228,21 @@ public interface PluginInfoSetLike<S extends PluginInfoSetLike<S, I, N>, I exten
         );
     }
 
+    /**
+     * Returns all the {@link AbsoluteUrl} in this set.
+     */
+    default Set<AbsoluteUrl> url() {
+        return Sets.immutable(
+                this.stream()
+                        .map(HasAbsoluteUrl::url)
+                        .collect(
+                                Collectors.toCollection(
+                                        Sets::hash
+                                )
+                        )
+        );
+    }
+
     // HasText..........................................................................................................
 
     @Override

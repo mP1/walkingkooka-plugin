@@ -224,6 +224,39 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
         );
     }
 
+    // urls.............................................................................................................
+
+    @Test
+    public void testUrls() {
+        final TestPluginInfo info1 = new TestPluginInfo(
+                "https://example.com/test-111",
+                "test-111"
+        );
+        final TestPluginInfo info2 = new TestPluginInfo(
+                "https://example.com/test-222",
+                "test-222"
+        );
+        final TestPluginInfo info3 = new TestPluginInfo(
+                "https://example.com/test-222",
+                "test-222"
+        );
+
+        this.checkEquals(
+                Sets.of(
+                        info1.url(),
+                        info2.url(),
+                        info3.url()
+                ),
+                new TestPluginInfoSet(
+                        Sets.of(
+                                info1,
+                                info2,
+                                info3
+                        )
+                ).url()
+        );
+    }
+
     // merge............................................................................................................
 
     @Test
