@@ -122,7 +122,6 @@ public final class ProviderMapper<N extends Name & Comparable<N>, PS extends Plu
 
     @Override
     public String toString() {
-        return this.inToOut.keySet()
-                .toString();
+        return this.infos.text();
     }
 }
