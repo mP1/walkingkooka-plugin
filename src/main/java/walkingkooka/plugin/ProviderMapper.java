@@ -89,6 +89,10 @@ public final class ProviderMapper<N extends Name & Comparable<N>, PS extends Plu
         return urlToInfo;
     }
 
+    /**
+     * Returns the {@link Name} after translating it as necessary by matching {@link AbsoluteUrl}.<br>
+     * If the name is missing from the original {@link PluginInfoSetLike} an exception will be thrown.
+     */
     public N name(final N name) {
         Objects.requireNonNull(name, "name");
 
@@ -104,6 +108,10 @@ public final class ProviderMapper<N extends Name & Comparable<N>, PS extends Plu
 
     private final Function<N, RuntimeException> unknown;
 
+    /**
+     * Returns the {@link PluginSelectorLike} after translating it as necessary by matching {@link AbsoluteUrl}.<br>
+     * If the name is missing from the original {@link PluginInfoSetLike} an exception will be thrown.
+     */
     public PS selector(final PS selector) {
         Objects.requireNonNull(selector, "selector");
 
@@ -114,6 +122,10 @@ public final class ProviderMapper<N extends Name & Comparable<N>, PS extends Plu
         );
     }
 
+    /**
+     * Returns all {@link PluginInfoLike} that exist in both IN and OUT {@link PluginInfoSetLike}. Note the {@link Name}
+     * component returned will need translating before using on a {@link Provider}.
+     */
     public S infos() {
         return this.infos;
     }
