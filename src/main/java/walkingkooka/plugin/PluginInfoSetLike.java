@@ -71,39 +71,6 @@ public interface PluginInfoSetLike<S extends PluginInfoSetLike<S, I, N>, I exten
         );
     }
 
-    // merge...........................................................................................................
-
-    /**
-     * Returns a merge {@link Set INFOs} where the view entries will replace any from target if they have the same URL.
-     * This supports environments such as the browser where not all SpreadsheetComparator instances are available,
-     * but those that are available could be renamed by SpreadsheetComparatorInfo(s) in the active SpreadsheetMetadata.
-     */
-    static <I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> Set<I> merge(final Set<I> view,
-                                                                                         final Set<I> target) {
-        Objects.requireNonNull(view, "view");
-        Objects.requireNonNull(target, "target");
-
-        final Set<I> viewCopy = Sets.immutable(view);
-
-        final Set<AbsoluteUrl> viewUrls = viewCopy.stream()
-                .map(HasAbsoluteUrl::url)
-                .collect(Collectors.toSet());
-
-        final Set<I> all = SortedSets.tree();
-
-        for (final I info : target) {
-            if (false == viewUrls.contains(info.url())) {
-                all.add(info);
-            }
-        }
-
-        all.addAll(viewCopy);
-
-        return all.equals(viewCopy) ?
-                viewCopy :
-                Sets.immutable(all);
-    }
-
     // parse............................................................................................................
 
     /**
