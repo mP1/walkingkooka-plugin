@@ -56,20 +56,20 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
         final Map<AbsoluteUrl, I> urlToMappingInfos = this.urlToInfo(mappingInfos);
         final Map<AbsoluteUrl, I> urlToProviderInfos = this.urlToInfo(providerInfos);
 
-        final Map<N, N> mappingToProvider = Maps.sorted();
+        final Map<N, N> mappingNameToProviderName = Maps.sorted();
 
         for (final Entry<AbsoluteUrl, I> urlAndMappingInfo : urlToMappingInfos.entrySet()) {
-            final AbsoluteUrl inUrl = urlAndMappingInfo.getKey();
-            final I providerInfo = urlToProviderInfos.get(inUrl);
+            final AbsoluteUrl mappingInfoUrl = urlAndMappingInfo.getKey();
+            final I providerInfo = urlToProviderInfos.get(mappingInfoUrl);
             if (null != providerInfo) {
-                mappingToProvider.put(
+                mappingNameToProviderName.put(
                         urlAndMappingInfo.getValue()
                                 .name(),
                         providerInfo.name()
                 );
             }
         }
-        this.mappingToProvider = mappingToProvider;
+        this.mappingNameToProviderName = mappingNameToProviderName;
         this.unknown = unknown;
 
         final Set<I> infos = Sets.hash();
@@ -84,10 +84,10 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
         this.infos = providerInfos.setElements(infos);
     }
 
-    private Map<AbsoluteUrl, I> urlToInfo(final S set) {
+    private Map<AbsoluteUrl, I> urlToInfo(final S infos) {
         final Map<AbsoluteUrl, I> urlToInfo = Maps.hash();
 
-        for (final I info : set) {
+        for (final I info : infos) {
             urlToInfo.put(
                     info.url(),
                     info
@@ -104,15 +104,15 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
     public N name(final N name) {
         Objects.requireNonNull(name, "name");
 
-        final N out = this.mappingToProvider.get(name);
-        if (null == out) {
+        final N nameOut = this.mappingNameToProviderName.get(name);
+        if (null == nameOut) {
             throw this.unknown.apply(name);
         }
 
-        return out;
+        return nameOut;
     }
 
-    private final Map<N, N> mappingToProvider;
+    private final Map<N, N> mappingNameToProviderName;
 
     private final Function<N, RuntimeException> unknown;
 
