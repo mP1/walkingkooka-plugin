@@ -121,7 +121,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     // with.............................................................................................................
 
     @Test
-    public void testWithNullInFails() {
+    public void testWithNullMappingInfosFails() {
         assertThrows(
                 NullPointerException.class,
                 () -> FilteredProviderMapper.with(
@@ -133,7 +133,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     }
 
     @Test
-    public void testWithNullOutFails() {
+    public void testWithNullProviderInfosFails() {
         assertThrows(
                 NullPointerException.class,
                 () -> FilteredProviderMapper.with(
