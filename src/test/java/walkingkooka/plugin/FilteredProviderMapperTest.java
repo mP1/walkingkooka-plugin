@@ -25,10 +25,10 @@ import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.Url;
-import walkingkooka.plugin.ProviderMapperTest.TestInfo;
-import walkingkooka.plugin.ProviderMapperTest.TestInfoSet;
-import walkingkooka.plugin.ProviderMapperTest.TestName;
-import walkingkooka.plugin.ProviderMapperTest.TestSelector;
+import walkingkooka.plugin.FilteredProviderMapperTest.TestInfo;
+import walkingkooka.plugin.FilteredProviderMapperTest.TestInfoSet;
+import walkingkooka.plugin.FilteredProviderMapperTest.TestName;
+import walkingkooka.plugin.FilteredProviderMapperTest.TestSelector;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.CaseSensitivity;
@@ -45,9 +45,9 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class ProviderMapperTest implements TreePrintableTesting,
-        ClassTesting2<ProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>>,
-        ToStringTesting<ProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>> {
+public final class FilteredProviderMapperTest implements TreePrintableTesting,
+        ClassTesting2<FilteredProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>>,
+        ToStringTesting<FilteredProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>> {
 
     private final static TestName NAME_IN = new TestName("NameIn1");
 
@@ -112,7 +112,7 @@ public final class ProviderMapperTest implements TreePrintableTesting,
             "Unknown TestName " + n
     );
 
-    private final static ProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet> MAPPER = ProviderMapper.with(
+    private final static FilteredProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet> MAPPER = FilteredProviderMapper.with(
             INFOS_IN,
             INFOS_OUT,
             UNKNOWN
@@ -124,7 +124,7 @@ public final class ProviderMapperTest implements TreePrintableTesting,
     public void testWithNullInFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> ProviderMapper.with(
+                () -> FilteredProviderMapper.with(
                         null,
                         INFOS_OUT,
                         UNKNOWN
@@ -136,7 +136,7 @@ public final class ProviderMapperTest implements TreePrintableTesting,
     public void testWithNullOutFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> ProviderMapper.with(
+                () -> FilteredProviderMapper.with(
                         INFOS_IN,
                         null,
                         UNKNOWN
@@ -148,7 +148,7 @@ public final class ProviderMapperTest implements TreePrintableTesting,
     public void testWithNullUnknownFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> ProviderMapper.with(
+                () -> FilteredProviderMapper.with(
                         INFOS_IN,
                         INFOS_OUT,
                         null
@@ -278,8 +278,8 @@ public final class ProviderMapperTest implements TreePrintableTesting,
     // class............................................................................................................
 
     @Override
-    public Class<ProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>> type() {
-        return Cast.to(ProviderMapper.class);
+    public Class<FilteredProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>> type() {
+        return Cast.to(FilteredProviderMapper.class);
     }
 
     @Override

@@ -31,20 +31,20 @@ import java.util.function.Function;
 /**
  * A mapper {@link Provider} that maps and filters {@link Name}, {@link PluginInfoLike} and {@link PluginInfoSetLike}.
  */
-public final class ProviderMapper<N extends Name & Comparable<N>, PS extends PluginSelectorLike<N>, I extends PluginInfoLike<I, N>, S extends PluginInfoSetLike<S, I, N>> {
-    public static <N extends Name & Comparable<N>, PS extends PluginSelectorLike<N>, I extends PluginInfoLike<I, N>, S extends PluginInfoSetLike<S, I, N>> ProviderMapper<N, PS, I, S> with(final S in,
-                                                                                                                                                                                            final S out,
-                                                                                                                                                                                            final Function<N, RuntimeException> unknown) {
-        return new ProviderMapper<>(
+public final class FilteredProviderMapper<N extends Name & Comparable<N>, PS extends PluginSelectorLike<N>, I extends PluginInfoLike<I, N>, S extends PluginInfoSetLike<S, I, N>> {
+    public static <N extends Name & Comparable<N>, PS extends PluginSelectorLike<N>, I extends PluginInfoLike<I, N>, S extends PluginInfoSetLike<S, I, N>> FilteredProviderMapper<N, PS, I, S> with(final S in,
+                                                                                                                                                                                                    final S out,
+                                                                                                                                                                                                    final Function<N, RuntimeException> unknown) {
+        return new FilteredProviderMapper<>(
                 Objects.requireNonNull(in, "in"),
                 Objects.requireNonNull(out, "out"),
                 Objects.requireNonNull(unknown, "unknown")
         );
     }
 
-    private ProviderMapper(final S in,
-                           final S out,
-                           final Function<N, RuntimeException> unknown) {
+    private FilteredProviderMapper(final S in,
+                                   final S out,
+                                   final Function<N, RuntimeException> unknown) {
         final Map<AbsoluteUrl, I> urlToIn = this.urlToInfo(in);
         final Map<AbsoluteUrl, I> urlToOut = this.urlToInfo(out);
 
