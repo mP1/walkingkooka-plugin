@@ -17,7 +17,6 @@
 
 package walkingkooka.plugin;
 
-import walkingkooka.collect.map.Maps;
 import walkingkooka.collect.set.ImmutableSet;
 import walkingkooka.collect.set.ImmutableSetDefaults;
 import walkingkooka.collect.set.Sets;
@@ -34,9 +33,7 @@ import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 
 import java.util.AbstractSet;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -105,61 +102,6 @@ public interface PluginInfoSetLike<S extends PluginInfoSetLike<S, I, N>, I exten
         return all.equals(viewCopy) ?
                 viewCopy :
                 Sets.immutable(all);
-    }
-
-    // nameMapper.......................................................................................................
-
-    /**
-     * Computes a mapper {@link Function} merges names from the view and target. Note that targets with the same URL
-     * will be replaced and only the view name will work.
-     */
-    static <I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> Function<N, Optional<N>> nameMapper(final Set<I> view,
-                                                                                                                final Set<I> target) {
-        Objects.requireNonNull(view, "view");
-        Objects.requireNonNull(target, "target");
-
-        final Map<AbsoluteUrl, Name[]> urlToNames = Maps.hash();
-
-        for (final I info : target) {
-            final N name = info.name();
-
-            urlToNames.put(
-                    info.url(),
-                    new Name[]{name, name}
-            );
-        }
-
-        for (final I info : view) {
-            final AbsoluteUrl url = info.url();
-            final N name = info.name();
-
-            Name[] names = urlToNames.get(url);
-            if (null == names) {
-                names = new Name[]{
-                        name,
-                        name
-                };
-                urlToNames.put(
-                        url,
-                        names
-                );
-            } else {
-                names[0] = name;
-            }
-        }
-
-        final Map<N, N> viewNameToTargetName = Maps.sorted();
-
-        for (final Name[] names : urlToNames.values()) {
-            viewNameToTargetName.put(
-                    (N) names[0],
-                    (N) names[1]
-            );
-        }
-
-        return n -> Optional.ofNullable(
-                viewNameToTargetName.get(n)
-        );
     }
 
     // parse............................................................................................................
