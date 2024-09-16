@@ -40,48 +40,48 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
             PS extends PluginSelectorLike<N>,
             I extends PluginInfoLike<I, N>,
             S extends PluginInfoSetLike<S, I, N>>
-    FilteredProviderMapper<N, PS, I, S> with(final S in,
-                                             final S out,
+    FilteredProviderMapper<N, PS, I, S> with(final S mappingInfos,
+                                             final S providerInfos,
                                              final Function<N, RuntimeException> unknown) {
         return new FilteredProviderMapper<>(
-                Objects.requireNonNull(in, "in"),
-                Objects.requireNonNull(out, "out"),
+                Objects.requireNonNull(mappingInfos, "mappingInfos"),
+                Objects.requireNonNull(providerInfos, "providerInfos"),
                 Objects.requireNonNull(unknown, "unknown")
         );
     }
 
-    private FilteredProviderMapper(final S in,
-                                   final S out,
+    private FilteredProviderMapper(final S mappingInfos,
+                                   final S providerInfos,
                                    final Function<N, RuntimeException> unknown) {
-        final Map<AbsoluteUrl, I> urlToIn = this.urlToInfo(in);
-        final Map<AbsoluteUrl, I> urlToOut = this.urlToInfo(out);
+        final Map<AbsoluteUrl, I> urlToMappingInfos = this.urlToInfo(mappingInfos);
+        final Map<AbsoluteUrl, I> urlToProviderInfos = this.urlToInfo(providerInfos);
 
-        final Map<N, N> inToOut = Maps.sorted();
+        final Map<N, N> mappingToProvider = Maps.sorted();
 
-        for (final Entry<AbsoluteUrl, I> urlAndIn : urlToIn.entrySet()) {
-            final AbsoluteUrl inUrl = urlAndIn.getKey();
-            final I outInfo = urlToOut.get(inUrl);
-            if (null != outInfo) {
-                inToOut.put(
-                        urlAndIn.getValue()
+        for (final Entry<AbsoluteUrl, I> urlAndMappingInfo : urlToMappingInfos.entrySet()) {
+            final AbsoluteUrl inUrl = urlAndMappingInfo.getKey();
+            final I providerInfo = urlToProviderInfos.get(inUrl);
+            if (null != providerInfo) {
+                mappingToProvider.put(
+                        urlAndMappingInfo.getValue()
                                 .name(),
-                        outInfo.name()
+                        providerInfo.name()
                 );
             }
         }
-        this.inToOut = inToOut;
+        this.mappingToProvider = mappingToProvider;
         this.unknown = unknown;
 
         final Set<I> infos = Sets.hash();
 
-        for (final I outInfo : out) {
-            final I inInfo = urlToIn.get(outInfo.url());
-            if (null != inInfo) {
-                infos.add(inInfo);
+        for (final I providerInfo : providerInfos) {
+            final I mappingInfo = urlToMappingInfos.get(providerInfo.url());
+            if (null != mappingInfo) {
+                infos.add(mappingInfo);
             }
         }
 
-        this.infos = out.setElements(infos);
+        this.infos = providerInfos.setElements(infos);
     }
 
     private Map<AbsoluteUrl, I> urlToInfo(final S set) {
@@ -104,7 +104,7 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
     public N name(final N name) {
         Objects.requireNonNull(name, "name");
 
-        final N out = this.inToOut.get(name);
+        final N out = this.mappingToProvider.get(name);
         if (null == out) {
             throw this.unknown.apply(name);
         }
@@ -112,7 +112,7 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
         return out;
     }
 
-    private final Map<N, N> inToOut;
+    private final Map<N, N> mappingToProvider;
 
     private final Function<N, RuntimeException> unknown;
 
