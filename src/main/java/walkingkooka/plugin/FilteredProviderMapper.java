@@ -31,10 +31,18 @@ import java.util.function.Function;
 /**
  * A mapper {@link Provider} that maps and filters {@link Name}, {@link PluginInfoLike} and {@link PluginInfoSetLike}.
  */
-public final class FilteredProviderMapper<N extends Name & Comparable<N>, PS extends PluginSelectorLike<N>, I extends PluginInfoLike<I, N>, S extends PluginInfoSetLike<S, I, N>> {
-    public static <N extends Name & Comparable<N>, PS extends PluginSelectorLike<N>, I extends PluginInfoLike<I, N>, S extends PluginInfoSetLike<S, I, N>> FilteredProviderMapper<N, PS, I, S> with(final S in,
-                                                                                                                                                                                                    final S out,
-                                                                                                                                                                                                    final Function<N, RuntimeException> unknown) {
+public final class FilteredProviderMapper<N extends Name & Comparable<N>,
+        PS extends PluginSelectorLike<N>,
+        I extends PluginInfoLike<I, N>,
+        S extends PluginInfoSetLike<S, I, N>> {
+
+    public static <N extends Name & Comparable<N>,
+            PS extends PluginSelectorLike<N>,
+            I extends PluginInfoLike<I, N>,
+            S extends PluginInfoSetLike<S, I, N>>
+    FilteredProviderMapper<N, PS, I, S> with(final S in,
+                                             final S out,
+                                             final Function<N, RuntimeException> unknown) {
         return new FilteredProviderMapper<>(
                 Objects.requireNonNull(in, "in"),
                 Objects.requireNonNull(out, "out"),
