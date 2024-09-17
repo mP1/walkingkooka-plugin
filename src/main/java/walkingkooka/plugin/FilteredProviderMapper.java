@@ -99,7 +99,7 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
 
     /**
      * Returns the {@link Name} after translating it as necessary by matching {@link AbsoluteUrl}.<br>
-     * If the name is missing from the original {@link PluginInfoSetLike} an exception will be thrown.
+     * If the name is missing from the provider {@link PluginInfoSetLike} an exception will be thrown.
      */
     public N name(final N name) {
         Objects.requireNonNull(name, "name");
@@ -118,7 +118,7 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
 
     /**
      * Returns the {@link PluginSelectorLike} after translating it as necessary by matching {@link AbsoluteUrl}.<br>
-     * If the name is missing from the original {@link PluginInfoSetLike} an exception will be thrown.
+     * If the name is missing from the provider {@link PluginInfoSetLike} an exception will be thrown.
      */
     public PS selector(final PS selector) {
         Objects.requireNonNull(selector, "selector");
@@ -131,8 +131,8 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
     }
 
     /**
-     * Returns all {@link PluginInfoLike} that exist in both IN and OUT {@link PluginInfoSetLike}. Note the {@link Name}
-     * component returned will need translating before using on a {@link Provider}.
+     * Returns all {@link PluginInfoLike} that exist in both {@link PluginInfoSetLike}.<br>
+     * Note the {@link Name} component returned will need translating before using on a {@link Provider}.
      */
     public S infos() {
         return this.infos;
