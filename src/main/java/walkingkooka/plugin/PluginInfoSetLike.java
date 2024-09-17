@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.collect.map.Maps;
 import walkingkooka.collect.set.ImmutableSet;
 import walkingkooka.collect.set.ImmutableSetDefaults;
 import walkingkooka.collect.set.Sets;
@@ -33,6 +34,7 @@ import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 
 import java.util.AbstractSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
@@ -69,6 +71,39 @@ public interface PluginInfoSetLike<S extends PluginInfoSetLike<S, I, N>, I exten
                         .filter(i -> providerUrls.contains(i.url()))
                         .collect(Collectors.toSet())
         );
+    }
+
+    // renameIfPresent..................................................................................................
+
+    /**
+     * Renames any infos if another {@link PluginNameLike} is present, that is another info with the same {@link AbsoluteUrl}.
+     */
+    default S renameIfPresent(final S renameInfos) {
+        Objects.requireNonNull(renameInfos, "renameInfos");
+
+        final Map<AbsoluteUrl, I> urlToInfo = Maps.hash();
+
+        for (final I info : this) {
+            urlToInfo.put(
+                    info.url(),
+                    info
+            );
+        }
+
+        for (final I renameInfo : renameInfos) {
+            final AbsoluteUrl renameInfoUrl = renameInfo.url();
+            final I info = urlToInfo.get(renameInfoUrl);
+            if(null != info) {
+                urlToInfo.put(
+                        renameInfoUrl,
+                        renameInfo
+                );
+            }
+        }
+
+        final Set<I> newInfos = Sets.hash();
+        newInfos.addAll(urlToInfo.values());
+        return this.setElements(newInfos);
     }
 
     // parse............................................................................................................
