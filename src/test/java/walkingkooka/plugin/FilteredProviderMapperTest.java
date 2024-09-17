@@ -49,62 +49,62 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
         ClassTesting2<FilteredProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>>,
         ToStringTesting<FilteredProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>> {
 
-    private final static TestName NAME_IN = new TestName("NameIn1");
+    private final static TestName RENAMED_RENAME_NAME = new TestName("RenamedRenameName1");
 
-    private final static TestName NAME_OUT = new TestName("NameOut1");
+    private final static TestName RENAMED_PROVIDER_NAME = new TestName("RenamedProviderName1");
 
-    private final static TestName NAME = new TestName("Name");
+    private final static AbsoluteUrl RENAMED_URL = Url.parseAbsolute("https://example.com/" + RENAMED_RENAME_NAME + "/" + RENAMED_PROVIDER_NAME);
 
-    private final static TestName NAME_IN_ONLY = new TestName("NameInOnly");
-
-    private final static TestName NAME_OUT_ONLY = new TestName("NameOutOnly");
-
-    private final static AbsoluteUrl URL_IN_OUT = Url.parseAbsolute("https://example.com/NameIn1NameOut1");
-
-    private final static AbsoluteUrl URL = Url.parseAbsolute("https://example.com/Name");
-
-    private final static AbsoluteUrl URL_IN_ONLY = Url.parseAbsolute("https://example.com/InOnly");
-
-    private final static AbsoluteUrl URL_OUT_ONLY = Url.parseAbsolute("https://example.com/OutOnly");
-
-    private final static TestInfo INFO_IN = new TestInfo(
-            NAME_IN,
-            URL_IN_OUT
+    private final static TestInfo RENAMED_FILTERED_INFO = new TestInfo(
+            RENAMED_RENAME_NAME,
+            RENAMED_URL
     );
 
-    private final static TestInfo INFO_OUT = new TestInfo(
-            NAME_OUT,
-            URL_IN_OUT
+    private final static TestInfo RENAMED_PROVIDER_INFO = new TestInfo(
+            RENAMED_PROVIDER_NAME,
+            RENAMED_URL
     );
 
-    private final static TestInfo INFO = new TestInfo(
-            NAME,
-            URL
+    private final static TestName BOTH_NAME = new TestName("Name");
+
+    private final static AbsoluteUrl BOTH_URL = Url.parseAbsolute("https://example.com/" + BOTH_NAME);
+
+    private final static TestInfo BOTH_INFO = new TestInfo(
+            BOTH_NAME,
+            BOTH_URL
     );
 
-    private final static TestInfo INFO_IN_ONLY = new TestInfo(
-            NAME_IN_ONLY,
-            URL_IN_ONLY
+    private final static TestName FILTERED_ONLY_NAME = new TestName("FilteredOnlyName");
+
+    private final static AbsoluteUrl FILTERED_ONLY_URL = Url.parseAbsolute("https://example.com/" + FILTERED_ONLY_NAME);
+
+    private final static TestInfo FILTERED_ONLY_INFO = new TestInfo(
+            FILTERED_ONLY_NAME,
+            FILTERED_ONLY_URL
     );
 
-    private final static TestInfo INFO_OUT_ONLY = new TestInfo(
-            NAME_OUT_ONLY,
-            URL_OUT_ONLY
+    private final static TestName PROVIDER_ONLY_NAME = new TestName("ProviderOnlyName");
+
+    private final static AbsoluteUrl PROVIDER_ONLY_URL = Url.parseAbsolute("https://example.com/" + PROVIDER_ONLY_NAME);
+
+    private final static TestInfo PROVIDER_ONLY_INFO = new TestInfo(
+            PROVIDER_ONLY_NAME,
+            PROVIDER_ONLY_URL
     );
 
-    private final static TestInfoSet INFOS_IN = new TestInfoSet(
+    private final static TestInfoSet FILTERED_INFOS = new TestInfoSet(
             Sets.of(
-                    INFO_IN,
-                    INFO,
-                    INFO_IN_ONLY
+                    RENAMED_FILTERED_INFO,
+                    BOTH_INFO,
+                    FILTERED_ONLY_INFO
             )
     );
 
-    private final static TestInfoSet INFOS_OUT = new TestInfoSet(
+    private final static TestInfoSet PROVIDER_INFOS = new TestInfoSet(
             Sets.of(
-                    INFO_OUT,
-                    INFO,
-                    INFO_OUT_ONLY
+                    RENAMED_PROVIDER_INFO,
+                    BOTH_INFO,
+                    PROVIDER_ONLY_INFO
             )
     );
 
@@ -113,8 +113,8 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     );
 
     private final static FilteredProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet> MAPPER = FilteredProviderMapper.with(
-            INFOS_IN,
-            INFOS_OUT,
+            FILTERED_INFOS,
+            PROVIDER_INFOS,
             UNKNOWN
     );
 
@@ -126,7 +126,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
                 NullPointerException.class,
                 () -> FilteredProviderMapper.with(
                         null,
-                        INFOS_OUT,
+                        PROVIDER_INFOS,
                         UNKNOWN
                 )
         );
@@ -137,7 +137,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
         assertThrows(
                 NullPointerException.class,
                 () -> FilteredProviderMapper.with(
-                        INFOS_IN,
+                        FILTERED_INFOS,
                         null,
                         UNKNOWN
                 )
@@ -149,8 +149,8 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
         assertThrows(
                 NullPointerException.class,
                 () -> FilteredProviderMapper.with(
-                        INFOS_IN,
-                        INFOS_OUT,
+                        FILTERED_INFOS,
+                        PROVIDER_INFOS,
                         null
                 )
         );
@@ -162,7 +162,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     public void testNameFilteredNameFailed() {
         assertThrows(
                 UnknownTestNameException.class,
-                () -> MAPPER.name(NAME_OUT)
+                () -> MAPPER.name(RENAMED_PROVIDER_NAME)
         );
     }
 
@@ -170,7 +170,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     public void testNameFilteredNameFailed2() {
         assertThrows(
                 UnknownTestNameException.class,
-                () -> MAPPER.name(NAME_OUT_ONLY)
+                () -> MAPPER.name(PROVIDER_ONLY_NAME)
         );
     }
 
@@ -178,23 +178,23 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     public void testNameUnknownFails() {
         assertThrows(
                 UnknownTestNameException.class,
-                () -> MAPPER.name(NAME_IN_ONLY)
+                () -> MAPPER.name(FILTERED_ONLY_NAME)
         );
     }
 
     @Test
     public void testName() {
         this.checkEquals(
-                NAME,
-                MAPPER.name(NAME)
+                BOTH_NAME,
+                MAPPER.name(BOTH_NAME)
         );
     }
 
     @Test
     public void testNameMapped() {
         this.checkEquals(
-                NAME_OUT,
-                MAPPER.name(NAME_IN)
+                RENAMED_PROVIDER_NAME,
+                MAPPER.name(RENAMED_RENAME_NAME)
         );
     }
 
@@ -205,7 +205,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
         assertThrows(
                 UnknownTestNameException.class,
                 () -> MAPPER.selector(
-                        new TestSelector(NAME_OUT)
+                        new TestSelector(RENAMED_PROVIDER_NAME)
                 )
         );
     }
@@ -215,7 +215,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
         assertThrows(
                 UnknownTestNameException.class,
                 () -> MAPPER.selector(
-                        new TestSelector(NAME_OUT_ONLY)
+                        new TestSelector(PROVIDER_ONLY_NAME)
                 )
         );
     }
@@ -225,14 +225,14 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
         assertThrows(
                 UnknownTestNameException.class,
                 () -> MAPPER.selector(
-                        new TestSelector(NAME_IN_ONLY)
+                        new TestSelector(FILTERED_ONLY_NAME)
                 )
         );
     }
 
     @Test
     public void testSelector() {
-        final TestSelector selector = new TestSelector(NAME);
+        final TestSelector selector = new TestSelector(BOTH_NAME);
 
         this.checkEquals(
                 selector,
@@ -243,9 +243,9 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     @Test
     public void testSelectorMapped() {
         this.checkEquals(
-                new TestSelector(NAME_OUT),
+                new TestSelector(RENAMED_PROVIDER_NAME),
                 MAPPER.selector(
-                        new TestSelector(NAME_IN)
+                        new TestSelector(RENAMED_RENAME_NAME)
                 )
         );
     }
@@ -257,8 +257,8 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
         this.checkEquals(
                 new TestInfoSet(
                         Sets.of(
-                                INFO_IN,
-                                INFO
+                                RENAMED_FILTERED_INFO,
+                                BOTH_INFO
                         )
                 ),
                 MAPPER.infos()
@@ -271,7 +271,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     public void testToString() {
         this.toStringAndCheck(
                 MAPPER,
-                "https://example.com/Name Name,https://example.com/NameIn1NameOut1 NameIn1"
+                "https://example.com/Name Name,https://example.com/RenamedRenameName1/RenamedProviderName1 RenamedRenameName1"
         );
     }
 
