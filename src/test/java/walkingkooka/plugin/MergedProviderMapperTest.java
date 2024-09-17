@@ -25,10 +25,10 @@ import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.Url;
-import walkingkooka.plugin.RenamingProviderMapperTest.TestInfo;
-import walkingkooka.plugin.RenamingProviderMapperTest.TestInfoSet;
-import walkingkooka.plugin.RenamingProviderMapperTest.TestName;
-import walkingkooka.plugin.RenamingProviderMapperTest.TestSelector;
+import walkingkooka.plugin.MergedProviderMapperTest.TestInfo;
+import walkingkooka.plugin.MergedProviderMapperTest.TestInfoSet;
+import walkingkooka.plugin.MergedProviderMapperTest.TestName;
+import walkingkooka.plugin.MergedProviderMapperTest.TestSelector;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.CaseSensitivity;
@@ -45,9 +45,9 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class RenamingProviderMapperTest implements TreePrintableTesting,
-        ClassTesting2<RenamingProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>>,
-        ToStringTesting<RenamingProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>> {
+public final class MergedProviderMapperTest implements TreePrintableTesting,
+        ClassTesting2<MergedProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>>,
+        ToStringTesting<MergedProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>> {
 
     private final static TestName NAME_RENAME = new TestName("RenameName");
 
@@ -114,7 +114,7 @@ public final class RenamingProviderMapperTest implements TreePrintableTesting,
             "Unknown TestName " + n
     );
 
-    private final static RenamingProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet> MAPPER = RenamingProviderMapper.with(
+    private final static MergedProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet> MAPPER = MergedProviderMapper.with(
             INFOS_RENAME,
             INFOS_PROVIDER,
             UNKNOWN
@@ -126,7 +126,7 @@ public final class RenamingProviderMapperTest implements TreePrintableTesting,
     public void testWithNullRenamingInfosFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> RenamingProviderMapper.with(
+                () -> MergedProviderMapper.with(
                         null,
                         INFOS_PROVIDER,
                         UNKNOWN
@@ -138,7 +138,7 @@ public final class RenamingProviderMapperTest implements TreePrintableTesting,
     public void testWithNullProviderInfosFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> RenamingProviderMapper.with(
+                () -> MergedProviderMapper.with(
                         INFOS_RENAME,
                         null,
                         UNKNOWN
@@ -150,7 +150,7 @@ public final class RenamingProviderMapperTest implements TreePrintableTesting,
     public void testWithNullUnknownFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> RenamingProviderMapper.with(
+                () -> MergedProviderMapper.with(
                         INFOS_RENAME,
                         INFOS_PROVIDER,
                         null
@@ -295,8 +295,8 @@ public final class RenamingProviderMapperTest implements TreePrintableTesting,
     // class............................................................................................................
 
     @Override
-    public Class<RenamingProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>> type() {
-        return Cast.to(RenamingProviderMapper.class);
+    public Class<MergedProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>> type() {
+        return Cast.to(MergedProviderMapper.class);
     }
 
     @Override
