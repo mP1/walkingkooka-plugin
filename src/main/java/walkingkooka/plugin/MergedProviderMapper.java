@@ -30,6 +30,7 @@ import java.util.function.Function;
 
 /**
  * A mapper {@link Provider} that renames any provider infos if the URL matches ignoring all other entries.
+ * The final {@link #infos()} will contain infos from both the renamingInfo and providerInfos, where renamingInfos overwrites providerInfos.
  */
 public final class MergedProviderMapper<N extends Name & Comparable<N>,
         PS extends PluginSelectorLike<N>,
@@ -77,14 +78,12 @@ public final class MergedProviderMapper<N extends Name & Comparable<N>,
         final Set<I> infos = Sets.hash();
 
         for (final I providerInfo : providerInfos) {
-            final I renamingInfo = urlToRenamingInfos.get(providerInfo.url());
-
-            infos.add(
-                    null != renamingInfo ?
-                            renamingInfo :
-                    providerInfo
-            );
+            if(false == urlToRenamingInfos.containsKey(providerInfo.url())) {
+                infos.add(providerInfo);
+            }
         }
+
+        infos.addAll(renamingInfos);
 
         this.infos = providerInfos.setElements(infos);
     }
