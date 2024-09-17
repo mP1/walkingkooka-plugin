@@ -60,15 +60,15 @@ public final class RenamingProviderMapper<N extends Name & Comparable<N>,
 
         for (final Entry<AbsoluteUrl, I> urlToProviderInfo : urlToProviderInfos.entrySet()) {
             final AbsoluteUrl providerInfoUrl = urlToProviderInfo.getKey();
-            final N name = urlToProviderInfo.getValue()
+            final N providerName = urlToProviderInfo.getValue()
                     .name();
 
             final I renamingInfo = urlToRenamingInfos.get(providerInfoUrl);
             renamingNameToProviderName.put(
                     null != renamingInfo ?
                             renamingInfo.name() :
-                            name,
-                    name
+                            providerName,
+                    providerName
             );
         }
         this.renamingNameToProviderName = renamingNameToProviderName;
@@ -78,9 +78,12 @@ public final class RenamingProviderMapper<N extends Name & Comparable<N>,
 
         for (final I providerInfo : providerInfos) {
             final I renamingInfo = urlToRenamingInfos.get(providerInfo.url());
-            if (null != renamingInfo) {
-                infos.add(renamingInfo);
-            }
+
+            infos.add(
+                    null != renamingInfo ?
+                            renamingInfo :
+                    providerInfo
+            );
         }
 
         this.infos = providerInfos.setElements(infos);
