@@ -223,6 +223,258 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
         );
     }
 
+    // renameIfPresent..................................................................................................
+
+    @Test
+    public void testRenameIfPresentWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> new TestPluginInfoSet(
+                        Sets.empty()
+                ).renameIfPresent(null)
+        );
+    }
+
+    @Test
+    public void testRenameIfPresentEmptyRenames() {
+        final TestPluginInfo info1 = new TestPluginInfo(
+                "https://example.com/test-111",
+                "test-111"
+        );
+        final TestPluginInfo info2 = new TestPluginInfo(
+                "https://example.com/test-222",
+                "test-222"
+        );
+        final TestPluginInfo info3 = new TestPluginInfo(
+                "https://example.com/test-333",
+                "test-333"
+        );
+
+        final Set<TestPluginInfo> infos = Sets.of(
+                info1,
+                info2,
+                info3
+        );
+
+        this.renameIfPresentAndCheck(
+                infos,
+                Sets.empty(),
+                infos
+        );
+    }
+
+    @Test
+    public void testRenameIfPresentIgnoreUnknownRenames() {
+        final TestPluginInfo info1 = new TestPluginInfo(
+                "https://example.com/test-111",
+                "test-111"
+        );
+        final TestPluginInfo info2 = new TestPluginInfo(
+                "https://example.com/test-222",
+                "test-222"
+        );
+        final TestPluginInfo info3 = new TestPluginInfo(
+                "https://example.com/test-333",
+                "test-333"
+        );
+
+        final Set<TestPluginInfo> infos = Sets.of(
+                info1,
+                info2,
+                info3
+        );
+
+        this.renameIfPresentAndCheck(
+                infos,
+                Sets.of(
+                        new TestPluginInfo(
+                                "https://example.com/test-444",
+                                "test-444"
+                        )
+                ),
+                infos
+        );
+    }
+
+    @Test
+    public void testRenameIfPresentSomeRenames() {
+        final TestPluginInfo info1 = new TestPluginInfo(
+                "https://example.com/test-111",
+                "test-111"
+        );
+        final TestPluginInfo info2 = new TestPluginInfo(
+                "https://example.com/test-222",
+                "test-222"
+        );
+        final TestPluginInfo info3 = new TestPluginInfo(
+                "https://example.com/test-333",
+                "test-333"
+        );
+        final TestPluginInfo info1Renamed = new TestPluginInfo(
+                "https://example.com/test-111",
+                "test-111-renamed"
+        );
+
+        this.renameIfPresentAndCheck(
+                Sets.of(
+                        info1,
+                        info2,
+                        info3
+                ),
+                Sets.of(
+                        info1Renamed
+                ),
+                info1Renamed,
+                info2,
+                info3
+        );
+    }
+
+    @Test
+    public void testRenameIfPresentSomeRenames2() {
+        final TestPluginInfo info1 = new TestPluginInfo(
+                "https://example.com/test-111",
+                "test-111"
+        );
+        final TestPluginInfo info2 = new TestPluginInfo(
+                "https://example.com/test-222",
+                "test-222"
+        );
+        final TestPluginInfo info3 = new TestPluginInfo(
+                "https://example.com/test-333",
+                "test-333"
+        );
+        final TestPluginInfo info1Renamed = new TestPluginInfo(
+                "https://example.com/test-111",
+                "test-111-renamed"
+        );
+
+        final TestPluginInfo info2Renamed = new TestPluginInfo(
+                "https://example.com/test-222",
+                "test-222-renamed"
+        );
+
+        this.renameIfPresentAndCheck(
+                Sets.of(
+                        info1,
+                        info2,
+                        info3
+                ),
+                Sets.of(
+                        info1Renamed,
+                        info2Renamed
+                ),
+                info1Renamed,
+                info2Renamed,
+                info3
+        );
+    }
+
+    @Test
+    public void testRenameIfPresentIgnoreUnknownRenames2() {
+        final TestPluginInfo info1 = new TestPluginInfo(
+                "https://example.com/test-111",
+                "test-111"
+        );
+        final TestPluginInfo info2 = new TestPluginInfo(
+                "https://example.com/test-222",
+                "test-222"
+        );
+        final TestPluginInfo info3 = new TestPluginInfo(
+                "https://example.com/test-333",
+                "test-333"
+        );
+
+        final Set<TestPluginInfo> infos = Sets.of(
+                info1,
+                info2,
+                info3
+        );
+
+        this.renameIfPresentAndCheck(
+                infos,
+                Sets.of(
+                        new TestPluginInfo(
+                                "https://example.com/test-ignored-rename-444",
+                                "test-ignored-rename-444"
+                        )
+                ),
+                infos
+        );
+    }
+
+    @Test
+    public void testRenameIfPresentSomeRenamesAndIgnoredRenames() {
+        final TestPluginInfo info1 = new TestPluginInfo(
+                "https://example.com/test-111",
+                "test-111"
+        );
+        final TestPluginInfo info2 = new TestPluginInfo(
+                "https://example.com/test-222",
+                "test-222"
+        );
+        final TestPluginInfo info3 = new TestPluginInfo(
+                "https://example.com/test-333",
+                "test-333"
+        );
+        final TestPluginInfo info1Renamed = new TestPluginInfo(
+                "https://example.com/test-111",
+                "test-111-renamed"
+        );
+
+        final TestPluginInfo info2Renamed = new TestPluginInfo(
+                "https://example.com/test-222",
+                "test-222-renamed"
+        );
+
+        this.renameIfPresentAndCheck(
+                Sets.of(
+                        info1,
+                        info2,
+                        info3
+                ),
+                Sets.of(
+                        info1Renamed,
+                        info2Renamed,
+                        new TestPluginInfo(
+                                "https://example.com/test-444",
+                                "test-444-ignored"
+                        )
+                ),
+                info1Renamed,
+                info2Renamed,
+                info3
+        );
+    }
+
+    private void renameIfPresentAndCheck(final Set<TestPluginInfo> infos,
+                                         final Set<TestPluginInfo> renameInfos,
+                                         final TestPluginInfo... expected) {
+        this.renameIfPresentAndCheck(
+                infos,
+                renameInfos,
+                Sets.of(
+                        expected
+                )
+        );
+    }
+
+    private void renameIfPresentAndCheck(final Set<TestPluginInfo> infos,
+                                         final Set<TestPluginInfo> renameInfos,
+                                         final Set<TestPluginInfo> expected) {
+        this.checkEquals(
+                expected,
+                new TestPluginInfoSet(
+                        infos
+                ).renameIfPresent(
+                        new TestPluginInfoSet(
+                                renameInfos
+                        )
+                ),
+                () -> infos + " renameIfPresent " + renameInfos
+        );
+    }
+
     // urls.............................................................................................................
 
     @Test
