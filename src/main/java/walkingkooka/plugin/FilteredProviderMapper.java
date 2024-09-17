@@ -29,7 +29,10 @@ import java.util.Set;
 import java.util.function.Function;
 
 /**
- * A mapper {@link Provider} that maps and filters {@link Name}, {@link PluginInfoLike} and {@link PluginInfoSetLike}.
+ * A mapper that supports merging a larger {@link PluginInfoSetLike} mappingInfos with a smaller {@link PluginInfoSetLike}
+ * the providerInfos. Note that {@link #name(Name)} and {@link #selector(PluginSelectorLike)} will be translated if present
+ * in the mapping with a different name from  the provider infos. The {@link #infos()} will contain all the original provider
+ * infos with some names updated if they are present in the mapping with a different name.
  */
 public final class FilteredProviderMapper<N extends Name & Comparable<N>,
         PS extends PluginSelectorLike<N>,
