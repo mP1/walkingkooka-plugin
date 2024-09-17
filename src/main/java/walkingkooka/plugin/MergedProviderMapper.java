@@ -31,7 +31,7 @@ import java.util.function.Function;
 /**
  * A mapper {@link Provider} that renames any provider infos if the URL matches ignoring all other entries.
  */
-public final class RenamingProviderMapper<N extends Name & Comparable<N>,
+public final class MergedProviderMapper<N extends Name & Comparable<N>,
         PS extends PluginSelectorLike<N>,
         I extends PluginInfoLike<I, N>,
         S extends PluginInfoSetLike<S, I, N>> {
@@ -40,19 +40,19 @@ public final class RenamingProviderMapper<N extends Name & Comparable<N>,
             PS extends PluginSelectorLike<N>,
             I extends PluginInfoLike<I, N>,
             S extends PluginInfoSetLike<S, I, N>>
-    RenamingProviderMapper<N, PS, I, S> with(final S renamingInfos,
-                                             final S providerInfos,
-                                             final Function<N, RuntimeException> unknown) {
-        return new RenamingProviderMapper<>(
+    MergedProviderMapper<N, PS, I, S> with(final S renamingInfos,
+                                           final S providerInfos,
+                                           final Function<N, RuntimeException> unknown) {
+        return new MergedProviderMapper<>(
                 Objects.requireNonNull(renamingInfos, "renamingInfos"),
                 Objects.requireNonNull(providerInfos, "providerInfos"),
                 Objects.requireNonNull(unknown, "unknown")
         );
     }
 
-    private RenamingProviderMapper(final S renamingInfos,
-                                   final S providerInfos,
-                                   final Function<N, RuntimeException> unknown) {
+    private MergedProviderMapper(final S renamingInfos,
+                                 final S providerInfos,
+                                 final Function<N, RuntimeException> unknown) {
         final Map<AbsoluteUrl, I> urlToRenamingInfos = this.urlToInfo(renamingInfos);
         final Map<AbsoluteUrl, I> urlToProviderInfos = this.urlToInfo(providerInfos);
 
