@@ -49,61 +49,63 @@ public final class RenamingProviderMapperTest implements TreePrintableTesting,
         ClassTesting2<RenamingProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>>,
         ToStringTesting<RenamingProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>> {
 
-    private final static TestName NAME_RENAME = new TestName("NameIn1");
+    private final static TestName NAME_RENAME = new TestName("RenameName");
 
-    private final static TestName NAME_PROVIDER = new TestName("NameOut1");
+    private final static TestName NAME_PROVIDER = new TestName("ProviderName");
 
-    private final static TestName NAME = new TestName("Name");
-
-    private final static TestName NAME_RENAME_ONLY = new TestName("NameInOnly");
-
-    private final static TestName NAME_PROVIDER_ONLY = new TestName("NameOutOnly");
-
-    private final static AbsoluteUrl URL_RENAME_PROVIDER = Url.parseAbsolute("https://example.com/NameIn1NameOut1");
-
-    private final static AbsoluteUrl URL = Url.parseAbsolute("https://example.com/Name");
-
-    private final static AbsoluteUrl URL_RENAME_ONLY = Url.parseAbsolute("https://example.com/InOnly");
-
-    private final static AbsoluteUrl URL_PROVIDER_ONLY = Url.parseAbsolute("https://example.com/OutOnly");
+    private final static AbsoluteUrl URL_RENAME_PROVIDER = Url.parseAbsolute("https://example.com/RenamedName-RenamedProviderName");
 
     private final static TestInfo INFO_RENAME = new TestInfo(
             NAME_RENAME,
             URL_RENAME_PROVIDER
     );
 
-    private final static TestInfo INFO_PROVIDER = new TestInfo(
+    private final static TestInfo INFO_RENAME_PROVIDER = new TestInfo(
             NAME_PROVIDER,
             URL_RENAME_PROVIDER
     );
 
-    private final static TestInfo INFO = new TestInfo(
-            NAME,
-            URL
+    private final static TestName NAME_BOTH = new TestName("NameBoth");
+
+    private final static AbsoluteUrl URL_BOTH = Url.parseAbsolute("https://example.com/NameBoth");
+
+    private final static TestInfo INFO_BOTH = new TestInfo(
+            NAME_BOTH,
+            URL_BOTH
     );
+
+    private final static AbsoluteUrl URL_RENAME_ONLY = Url.parseAbsolute("https://example.com/RenameOnly");
+
+    private final static TestName NAME_RENAME_ONLY = new TestName("RenameOnlyName");
 
     private final static TestInfo INFO_RENAME_ONLY = new TestInfo(
             NAME_RENAME_ONLY,
             URL_RENAME_ONLY
     );
 
+    private final static TestName NAME_PROVIDER_ONLY = new TestName("ProviderOnlyName");
+
+    private final static AbsoluteUrl URL_PROVIDER_ONLY = Url.parseAbsolute("https://example.com/ProviderOnly");
+
     private final static TestInfo INFO_PROVIDER_ONLY = new TestInfo(
             NAME_PROVIDER_ONLY,
             URL_PROVIDER_ONLY
     );
 
+    // TestInfoSet......................................................................................................
+
     private final static TestInfoSet INFOS_RENAME = new TestInfoSet(
             Sets.of(
                     INFO_RENAME,
-                    INFO,
+                    INFO_BOTH,
                     INFO_RENAME_ONLY
             )
     );
 
     private final static TestInfoSet INFOS_PROVIDER = new TestInfoSet(
             Sets.of(
-                    INFO_PROVIDER,
-                    INFO,
+                    INFO_RENAME_PROVIDER,
+                    INFO_BOTH,
                     INFO_PROVIDER_ONLY
             )
     );
@@ -177,8 +179,8 @@ public final class RenamingProviderMapperTest implements TreePrintableTesting,
     @Test
     public void testName() {
         this.nameAndCheck(
-                NAME,
-                NAME
+                NAME_BOTH,
+                NAME_BOTH
         );
     }
 
@@ -231,7 +233,7 @@ public final class RenamingProviderMapperTest implements TreePrintableTesting,
 
     @Test
     public void testSelector() {
-        final TestSelector selector = new TestSelector(NAME);
+        final TestSelector selector = new TestSelector(NAME_BOTH);
 
         this.selectorAndCheck(
                 selector,
@@ -272,7 +274,8 @@ public final class RenamingProviderMapperTest implements TreePrintableTesting,
                 new TestInfoSet(
                         Sets.of(
                                 INFO_RENAME,
-                                INFO
+                                INFO_PROVIDER_ONLY,
+                                INFO_BOTH
                         )
                 ),
                 MAPPER.infos()
@@ -285,7 +288,7 @@ public final class RenamingProviderMapperTest implements TreePrintableTesting,
     public void testToString() {
         this.toStringAndCheck(
                 MAPPER,
-                "https://example.com/Name Name,https://example.com/NameIn1NameOut1 NameIn1"
+                "https://example.com/NameBoth NameBoth,https://example.com/ProviderOnly ProviderOnlyName,https://example.com/RenamedName-RenamedProviderName RenameName"
         );
     }
 
