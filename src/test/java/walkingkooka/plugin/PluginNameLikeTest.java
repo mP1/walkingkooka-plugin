@@ -17,12 +17,95 @@
 
 package walkingkooka.plugin;
 
+import org.junit.jupiter.api.Test;
+import walkingkooka.collect.list.Lists;
 import walkingkooka.plugin.PluginNameLikeTest.TestPluginNameLike;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.CaseSensitivity;
 
-final class PluginNameLikeTest implements ClassTesting<TestPluginNameLike> {
+import java.util.List;
+
+final class PluginNameLikeTest implements ParseStringTesting<List<PluginName>>,
+        ClassTesting<TestPluginNameLike> {
+
+    // parse............................................................................................................
+
+    @Override
+    public void testParseStringEmptyFails() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Test
+    public void testParseCommaFails() {
+        this.parseStringInvalidCharacterFails(
+                ",",
+                0
+        );
+    }
+
+    @Test
+    public void testParseEmptyString() {
+        this.parseStringAndCheck(
+                "",
+                Lists.empty()
+        );
+    }
+
+    @Test
+    public void testParseSpaces() {
+        this.parseStringAndCheck(
+                "   ",
+                Lists.empty()
+        );
+    }
+
+    @Test
+    public void testParseName() {
+        this.parseStringAndCheck(
+                "abc",
+                Lists.of(PluginName.with("abc"))
+        );
+    }
+
+    @Test
+    public void testParseNameSpaces() {
+        this.parseStringAndCheck(
+                "abc   ",
+                Lists.of(PluginName.with("abc"))
+        );
+    }
+
+    @Test
+    public void testParseNameSpaceSeparatorSpaceName() {
+        this.parseStringAndCheck(
+                "abc , xyz",
+                Lists.of(
+                        PluginName.with("abc"),
+                        PluginName.with("xyz")
+                )
+        );
+    }
+
+    @Override
+    public List<PluginName> parseString(final String text) {
+        return PluginNameLike.parse(
+                text,
+                PluginName::with,
+                Lists::immutable
+        );
+    }
+
+    @Override
+    public Class<? extends RuntimeException> parseStringFailedExpected(final Class<? extends RuntimeException> thrown) {
+        return thrown;
+    }
+
+    @Override
+    public RuntimeException parseStringFailedExpected(final RuntimeException thrown) {
+        return thrown;
+    }
 
     // class............................................................................................................
 

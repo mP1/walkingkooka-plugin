@@ -17,8 +17,14 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.collect.list.ImmutableList;
+import walkingkooka.collect.list.Lists;
 import walkingkooka.naming.Name;
 import walkingkooka.text.CaseSensitivity;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * Used to tag {@link Name} of components, and also adds a few useful helpers.
@@ -33,6 +39,61 @@ public interface PluginNameLike<N extends Name & Comparable<N>> extends Name, Co
         return (0 == pos ?
                 PluginName.INITIAL :
                 PluginName.PART).test(c);
+    }
+
+    // parse............................................................................................................
+
+    /**
+     * Parses some text (actually a csv) holding multiple {@link PluginNameLike} instances.
+     * <pre>
+     * SPACE*
+     * NAME
+     * SPACE*
+     * SEPARATOR-COMMA
+     * </pre>
+     *
+     * <pre>
+     * name1,name2
+     * name1, name2
+     * name1 , name2
+     * </pre>
+     */
+    static <L extends ImmutableList<N>, N extends Name & Comparable<N>> L parse(final String text,
+                                                                                final Function<String, N> nameParser,
+                                                                                final Function<List<N>, L> listFactory) {
+        Objects.requireNonNull(text, "text");
+        Objects.requireNonNull(nameParser, "nameParser");
+
+        final List<N> names = Lists.array();
+
+        final PluginNameLikeParser<N> parser = PluginNameLikeParser.with(
+                text,
+                nameParser
+        );
+
+        parser.spaces();
+
+        if (false == parser.isEmpty()) {
+            for (; ; ) {
+                parser.spaces();
+
+                names.add(parser.name());
+
+                parser.spaces();
+
+                if (PluginInfoSetLike.SEPARATOR.string().equals(parser.comma())) {
+                    continue;
+                }
+
+                if (parser.isEmpty()) {
+                    break;
+                }
+
+                parser.invalidCharacterException();
+            }
+        }
+
+        return listFactory.apply(names);
     }
 
     // Comparable ......................................................................................................
