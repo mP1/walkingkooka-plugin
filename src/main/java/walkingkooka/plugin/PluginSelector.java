@@ -92,7 +92,6 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
         }
     }
 
-
     /**
      * Creates a new {@link PluginSelector}.
      */
@@ -108,7 +107,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
     }
 
     private PluginSelector(final N name,
-                          final String text) {
+                           final String text) {
         this.name = name;
         this.text = text;
     }
@@ -140,7 +139,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                         text
                 );
     }
-    
+
     private final String text;
 
     /**
@@ -194,7 +193,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
             throw new IllegalArgumentException("Unsupported value " + CharSequences.quoteIfChars(value) + " " + value.getClass().getName() + " expected only double | String | PLuginSelector");
         }
 
-        if(b.length() > 0) {
+        if (b.length() > 0) {
             b.append(PARAMETER_END_STRING);
         }
 
@@ -453,12 +452,12 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                 cursor,
                 PARSER_CONTEXT
         ).map(
-            s -> context.environmentValueOrFail(
-                    EnvironmentValueName.with(
-                            s.text()
-                                    .substring(1) // skip leading DOLLAR-SIGN
-                    )
-            )
+                s -> context.environmentValueOrFail(
+                        EnvironmentValueName.with(
+                                s.text()
+                                        .substring(1) // skip leading DOLLAR-SIGN
+                        )
+                )
         );
     }
 
@@ -466,15 +465,15 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      * Parses a DOLLAR-SIGN then {@link EnvironmentValueName}
      */
     private final static Parser<ParserContext> ENVIRONMENT_VALUE_NAME = Parsers.sequenceParserBuilder()
-                    .required(
-                            Parsers.string("$", CaseSensitivity.SENSITIVE)
-                    ).required(
-                            Parsers.stringInitialAndPartCharPredicate(
-                                    EnvironmentValueName.INITIAL,
-                                    EnvironmentValueName.PART,
-                                    2,
-                                    EnvironmentValueName.MAX_LENGTH
-                            )
+            .required(
+                    Parsers.string("$", CaseSensitivity.SENSITIVE)
+            ).required(
+                    Parsers.stringInitialAndPartCharPredicate(
+                            EnvironmentValueName.INITIAL,
+                            EnvironmentValueName.PART,
+                            2,
+                            EnvironmentValueName.MAX_LENGTH
+                    )
             ).build();
 
     /**
