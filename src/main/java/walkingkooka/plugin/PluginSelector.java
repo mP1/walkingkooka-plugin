@@ -561,7 +561,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
     // json.............................................................................................................
 
     /**
-     * Marshalls this instance to {@link JsonNode}.
+     * Marshalls this instance to a {@link JsonNode} using the {@link #toString()} representation.
      */
     public JsonNode marshall(final JsonNodeMarshallContext context) {
         return context.marshall(this.toString());
