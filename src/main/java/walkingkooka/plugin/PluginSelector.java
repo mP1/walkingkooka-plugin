@@ -67,8 +67,8 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      * text-format-pattern @
      * </pre>
      */
-    public static <N extends Name> PluginSelector<N> parse(final String text,
-                                                           final Function<String, N> nameFactory) {
+    public static <N extends Name & Comparable<N>> PluginSelector<N> parse(final String text,
+                                                                           final Function<String, N> nameFactory) {
         CharSequences.failIfNullOrEmpty(text, "text");
 
         final String textAfter;
@@ -95,8 +95,8 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
     /**
      * Creates a new {@link PluginSelector}.
      */
-    public static <N extends Name> PluginSelector<N> with(final N name,
-                                                          final String text) {
+    public static <N extends Name & Comparable<N>> PluginSelector<N> with(final N name,
+                                                                          final String text) {
         Objects.requireNonNull(name, "name");
         Objects.requireNonNull(text, "text");
 
@@ -216,9 +216,9 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      * </pre>
      * The <code>provider</code> will be used to fetch <code>provided</code>> with any parameters.
      */
-    public <N extends Name, T> T evaluateText(final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                              final PluginSelectorEvaluateTextProvider<N, T> provider,
-                                              final ProviderContext context) {
+    public <N extends Name & Comparable<N>, T> T evaluateText(final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
+                                                              final PluginSelectorEvaluateTextProvider<N, T> provider,
+                                                              final ProviderContext context) {
         Objects.requireNonNull(nameParserAndFactory, "nameParserAndFactory");
         Objects.requireNonNull(provider, "provider");
         Objects.requireNonNull(context, "context");
@@ -261,10 +261,10 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
     /**
      * Attempts to parse an optional plugin including its parameters which must be within parens.
      */
-    private <N extends Name, T> Optional<T> tryParseNameParametersAndCreate(final TextCursor cursor,
-                                                                            final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                                                            final PluginSelectorEvaluateTextProvider<N, T> provider,
-                                                                            final ProviderContext context) {
+    private <N extends Name & Comparable<N>, T> Optional<T> tryParseNameParametersAndCreate(final TextCursor cursor,
+                                                                                            final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
+                                                                                            final PluginSelectorEvaluateTextProvider<N, T> provider,
+                                                                                            final ProviderContext context) {
         final Optional<N> maybeName = nameParserAndFactory.apply(
                 cursor,
                 PARSER_CONTEXT
@@ -295,10 +295,10 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      * ( 1.23, "string-literal", $environmental-variable, plugin-name )
      * </pre>
      */
-    private <N extends Name, T> List<Object> parseParameters(final TextCursor cursor,
-                                                             final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                                             final PluginSelectorEvaluateTextProvider<N, T> provider,
-                                                             final ProviderContext context) {
+    private <N extends Name & Comparable<N>, T> List<Object> parseParameters(final TextCursor cursor,
+                                                                             final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
+                                                                             final PluginSelectorEvaluateTextProvider<N, T> provider,
+                                                                             final ProviderContext context) {
         skipSpaces(cursor);
 
         final List<Object> parameters = Lists.array();
