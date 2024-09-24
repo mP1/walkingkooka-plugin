@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N extends Name> extends TreePrintableTesting,
+public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N extends Name & Comparable<N>> extends TreePrintableTesting,
         HasNameTesting<N>,
         HasTextTesting,
         HasUrlFragmentTesting,

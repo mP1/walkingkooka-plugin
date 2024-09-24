@@ -27,7 +27,7 @@ import walkingkooka.text.printer.TreePrintableTesting;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public interface PluginSelectorMenuLikeTesting<M extends PluginSelectorMenuLike<P, N>, P extends PluginSelectorLike<N>, N extends Name> extends ClassTesting<M>,
+public interface PluginSelectorMenuLikeTesting<M extends PluginSelectorMenuLike<P, N>, P extends PluginSelectorLike<N>, N extends Name & Comparable<N>> extends ClassTesting<M>,
         HashCodeEqualsDefinedTesting2<M>,
         TreePrintableTesting {
 

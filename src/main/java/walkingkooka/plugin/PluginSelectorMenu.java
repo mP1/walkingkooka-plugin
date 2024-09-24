@@ -34,13 +34,13 @@ import java.util.Objects;
  * such as SpreadsheetFormatterName#DATE_FORMAT_PATTERN which might have a SHORT, MEDIUM, LONG menu items. Instances of
  * this class should be wrapped by another class which will also register itself to support json marshall/unmarshalling.
  */
-public final class PluginSelectorMenu<P extends PluginSelectorLike<N>, N extends Name> implements PluginSelectorMenuLike<P, N> {
+public final class PluginSelectorMenu<P extends PluginSelectorLike<N>, N extends Name & Comparable<N>> implements PluginSelectorMenuLike<P, N> {
 
     /**
      * Factory that creates a {@link PluginSelectorMenu}.
      */
-    public static <P extends PluginSelectorLike<N>, N extends Name> PluginSelectorMenu<P, N> with(final String label,
-                                                                                                  final P selector) {
+    public static <P extends PluginSelectorLike<N>, N extends Name & Comparable<N>> PluginSelectorMenu<P, N> with(final String label,
+                                                                                                                  final P selector) {
         return new PluginSelectorMenu<>(
                 CharSequences.failIfNullOrEmpty(label, "label"),
                 Objects.requireNonNull(selector, "selector")
@@ -117,9 +117,9 @@ public final class PluginSelectorMenu<P extends PluginSelectorLike<N>, N extends
 
     // json.............................................................................................................
 
-    public static <P extends PluginSelectorLike<N>, N extends Name> PluginSelectorMenu<P, N> unmarshall(final JsonNode node,
-                                                                                                        final JsonNodeUnmarshallContext context,
-                                                                                                        final Class<P> pluginSelectorType) {
+    public static <P extends PluginSelectorLike<N>, N extends Name & Comparable<N>> PluginSelectorMenu<P, N> unmarshall(final JsonNode node,
+                                                                                                                        final JsonNodeUnmarshallContext context,
+                                                                                                                        final Class<P> pluginSelectorType) {
         String label = null;
         P selector = null;
 
