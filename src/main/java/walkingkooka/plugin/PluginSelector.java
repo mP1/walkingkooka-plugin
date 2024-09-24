@@ -202,7 +202,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      * number-to-number
      * collection ( number-to-boolean, number-number, string-to-local-date "yyyy-mm-dd")
      * </pre>
-     * The <code>provider</code> will be used to fetch <code>provided</code>> with any parameters.
+     * The <code>provider</code> will be used to fetch <code>plugin</code>> with any parameters.
      */
     public <N extends Name & Comparable<N>, T> T evaluateText(final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
                                                               final PluginSelectorEvaluateTextProvider<N, T> provider,
@@ -258,9 +258,9 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                                                                                    final PluginSelectorEvaluateTextProvider<N, T> provider) {
         final Optional<N> name = parser.name();
 
-        final T provided;
+        final T plugin;
         if (name.isPresent()) {
-            provided = provider.get(
+            plugin = provider.get(
                     name.get(),
                     parseParameters(
                             parser,
@@ -269,10 +269,10 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                     parser.context
             );
         } else {
-            provided = null;
+            plugin = null;
         }
 
-        return Optional.ofNullable(provided);
+        return Optional.ofNullable(plugin);
     }
 
     /**
@@ -299,7 +299,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                     }
                 }
 
-                // try parsing for a provided with or without parameters
+                // try parsing for a plugin with or without parameters
                 {
                     final Optional<T> plugin = parseNameAndParameters(
                             parser,
