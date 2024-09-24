@@ -261,10 +261,10 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
     /**
      * Attempts to parse an optional plugin including its parameters which must be within parens.
      */
-    private <N extends Name & Comparable<N>, T> Optional<T> tryParseNameParametersAndCreate(final TextCursor cursor,
-                                                                                            final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                                                                            final PluginSelectorEvaluateTextProvider<N, T> provider,
-                                                                                            final ProviderContext context) {
+    private <N extends Name & Comparable<N>, T> Optional<T> parseNameAndParameters(final TextCursor cursor,
+                                                                                   final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
+                                                                                   final PluginSelectorEvaluateTextProvider<N, T> provider,
+                                                                                   final ProviderContext context) {
         final Optional<N> maybeName = nameParserAndFactory.apply(
                 cursor,
                 PARSER_CONTEXT
@@ -303,7 +303,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
 
         final List<Object> parameters = Lists.array();
 
-        if (tryMatch(PARAMETER_BEGIN, cursor)) {
+        if (tryParseToken(PARAMETER_BEGIN, cursor)) {
             for (; ; ) {
                 skipSpaces(cursor);
 
@@ -320,14 +320,14 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
 
                 // try parsing for a provided with or without parameters
                 {
-                    final Optional<T> provided = tryParseNameParametersAndCreate(
+                    final Optional<T> plugin = parseNameAndParameters(
                             cursor,
                             nameParserAndFactory,
                             provider,
                             context
                     );
-                    if (provided.isPresent()) {
-                        parameters.add(provided.get());
+                    if (plugin.isPresent()) {
+                        parameters.add(plugin.get());
                         continue;
                     }
                 }
@@ -354,11 +354,11 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                     }
                 }
 
-                if (tryMatch(PARAMETER_SEPARATOR, cursor)) {
+                if (tryParseToken(PARAMETER_SEPARATOR, cursor)) {
                     continue;
                 }
 
-                if (tryMatch(PARAMETER_END, cursor)) {
+                if (tryParseToken(PARAMETER_END, cursor)) {
                     break;
                 }
 
@@ -386,8 +386,8 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
     /**
      * Returns true if the token represented by the given {@link Parser} was found.
      */
-    private static boolean tryMatch(final Parser<ParserContext> parser,
-                                    final TextCursor cursor) {
+    private static boolean tryParseToken(final Parser<ParserContext> parser,
+                                         final TextCursor cursor) {
         return parser.parse(
                 cursor,
                 PARSER_CONTEXT
