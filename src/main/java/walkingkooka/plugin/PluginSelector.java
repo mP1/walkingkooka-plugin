@@ -290,7 +290,10 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
     }
 
     /**
-     * Tries to parse a parameter list if an OPEN-PARENS is present.
+     * Tries to parse a parameter list if an initial OPEN-PARENS is present.
+     * <pre>
+     * ( 1.23, "string-literal", $environmental-variable, plugin-name )
+     * </pre>
      */
     private <N extends Name, T> List<Object> parseParameters(final TextCursor cursor,
                                                              final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
