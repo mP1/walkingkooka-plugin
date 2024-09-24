@@ -403,6 +403,18 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
             return this.name;
         }
 
+        @Override
+        public TestInfo setName(final TestName name) {
+            Objects.requireNonNull(name, "name");
+
+            return this.name.equals(name) ?
+                    this :
+                    new TestInfo(
+                            name,
+                            this.url
+                    );
+        }
+
         private final TestName name;
 
         @Override

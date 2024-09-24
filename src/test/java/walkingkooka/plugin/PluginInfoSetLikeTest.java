@@ -865,6 +865,18 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Tes
             return this.name;
         }
 
+        @Override
+        public TestPluginInfo setName(final StringName name) {
+            Objects.requireNonNull(name, "name");
+
+            return this.name.equals(name) ?
+                    this :
+                    new TestPluginInfo(
+                            this.url,
+                            name
+                    );
+        }
+
         // object.......................................................................................................
 
         @Override

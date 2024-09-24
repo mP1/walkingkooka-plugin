@@ -128,6 +128,8 @@ public interface PluginInfoLike<I extends PluginInfoLike<I, N>, N extends Name &
         );
     }
 
+    I setName(final N name);
+
     // json.............................................................................................................
 
     /**
