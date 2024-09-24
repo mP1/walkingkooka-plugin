@@ -20,9 +20,9 @@ package walkingkooka.plugin;
 import walkingkooka.naming.Name;
 import walkingkooka.text.printer.TreePrintable;
 
-public interface PluginSelectorMenuLike<P extends PluginSelectorLike<N>, N extends Name & Comparable<N>> extends TreePrintable {
+public interface PluginSelectorMenuLike<S extends PluginSelectorLike<N>, N extends Name & Comparable<N>> extends TreePrintable {
 
     String label();
 
-    P selector();
+    S selector();
 }

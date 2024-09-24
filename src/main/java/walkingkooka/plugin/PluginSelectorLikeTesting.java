@@ -36,16 +36,16 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N extends Name & Comparable<N>> extends TreePrintableTesting,
+public interface PluginSelectorLikeTesting<S extends PluginSelectorLike<N>, N extends Name & Comparable<N>> extends TreePrintableTesting,
         HasNameTesting<N>,
         HasTextTesting,
         HasUrlFragmentTesting,
-        HashCodeEqualsDefinedTesting2<T>,
-        ToStringTesting<T>,
-        ParseStringTesting<T>,
-        JsonNodeMarshallingTesting<T>,
-        ClassTesting<T>,
-        TypeNameTesting<T> {
+        HashCodeEqualsDefinedTesting2<S>,
+        ToStringTesting<S>,
+        ParseStringTesting<S>,
+        JsonNodeMarshallingTesting<S>,
+        ClassTesting<S>,
+        TypeNameTesting<S> {
 
     String TEXT = "";
 
@@ -74,7 +74,7 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
     @Test
     default void testWith() {
         final N name = this.createName("name");
-        final T selector = this.createPluginSelectorLike(
+        final S selector = this.createPluginSelectorLike(
                 name,
                 TEXT
         );
@@ -102,7 +102,7 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
     @Test
     default void testSetNameWithSame() {
         final N name = this.createName("name");
-        final T selector = this.createPluginSelectorLike(
+        final S selector = this.createPluginSelectorLike(
                 name,
                 TEXT
         );
@@ -114,12 +114,12 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
 
     @Test
     default void testSetNameWithDifferent() {
-        final T selector = this.createPluginSelectorLike(
+        final S selector = this.createPluginSelectorLike(
                 this.createName("name"),
                 TEXT
         );
         final N differentName = this.createName("different");
-        final T different = (T) selector.setName(differentName);
+        final S different = (S) selector.setName(differentName);
 
         assertNotSame(
                 different,
@@ -151,7 +151,7 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
 
     @Test
     default void testSetTextWithSame() {
-        final T selector = this.createPluginSelectorLike(
+        final S selector = this.createPluginSelectorLike(
                 this.createName("name"),
                 TEXT
         );
@@ -165,7 +165,7 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
     default void testSetTextWithSame2() {
         final String text = "(\"Hello\")";
 
-        final T selector = this.createPluginSelectorLike(
+        final S selector = this.createPluginSelectorLike(
                 this.createName("name"),
                 text
         );
@@ -178,12 +178,12 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
     @Test
     default void testSetTextWithDifferentText() {
         final N name = this.createName("name");
-        final T selector = this.createPluginSelectorLike(
+        final S selector = this.createPluginSelectorLike(
                 name,
                 TEXT
         );
         final String differentText = "(\"Different\")";
-        final T different = (T) selector.setText(differentText);
+        final S different = (S) selector.setText(differentText);
 
         assertNotSame(
                 different,
@@ -218,7 +218,7 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
 
     @Test
     default void testSetValuesWithSame() {
-        final T selector = this.createPluginSelectorLike(
+        final S selector = this.createPluginSelectorLike(
                 this.createName("name"),
                 TEXT
         );
@@ -230,11 +230,11 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
 
     @Test
     default void testSetValues() {
-        final T selector = this.createPluginSelectorLike(
+        final S selector = this.createPluginSelectorLike(
                 this.createName("name1"),
                 TEXT
         );
-        final T different = (T) selector.setValues(
+        final S different = (S) selector.setValues(
                 Lists.of(
                         "Hello1",
                         1.0,
@@ -273,7 +273,7 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
     }
 
     @Override
-    default T createObject() {
+    default S createObject() {
         return this.createPluginSelectorLike(
                 this.createName("name123"),
                 TEXT
@@ -320,7 +320,7 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
 
     @Test
     default void testParseToString() {
-        final T selector = this.parseString("supermagic123 \"hello\"");
+        final S selector = this.parseString("supermagic123 \"hello\"");
 
         this.parseStringAndCheck(
                 selector.toString(),
@@ -363,7 +363,7 @@ public interface PluginSelectorLikeTesting<T extends PluginSelectorLike<N>, N ex
         );
     }
 
-    T createPluginSelectorLike(final N name,
+    S createPluginSelectorLike(final N name,
                                final String text);
 
     N createName(final String name);

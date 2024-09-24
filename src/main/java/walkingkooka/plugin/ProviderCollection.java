@@ -36,15 +36,15 @@ import java.util.stream.Collectors;
  * Instances of this class should be wrapped by implementations of the provider interface and simply delegate to the two provider methods.
  * If a {@link Name} appears twice then both will NOT be available when fetched by the getter method.
  */
-public final class ProviderCollection<P extends Provider, N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, SELECTOR extends PluginSelectorLike<N>, OUT> {
+public final class ProviderCollection<P extends Provider, N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, S extends PluginSelectorLike<N>, OUT> {
     public static <P extends Provider,
             N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
-            SELECTOR extends PluginSelectorLike<N>,
-            OUT> ProviderCollection<P, N, I, SELECTOR, OUT> with(final ProviderCollectionProviderGetter<P, N, SELECTOR, OUT> providerGetter,
-                                                                 final Function<P, Set<I>> infoGetter,
-                                                                 final String providedLabel,
-                                                                 final Set<P> providers) {
+            S extends PluginSelectorLike<N>,
+            OUT> ProviderCollection<P, N, I, S, OUT> with(final ProviderCollectionProviderGetter<P, N, S, OUT> providerGetter,
+                                                          final Function<P, Set<I>> infoGetter,
+                                                          final String providedLabel,
+                                                          final Set<P> providers) {
         Objects.requireNonNull(providerGetter, "providerGetter");
         Objects.requireNonNull(infoGetter, "infoGetter");
         CharSequences.failIfNullOrEmpty(providedLabel, "providedLabel");
@@ -58,7 +58,7 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
         );
     }
 
-    private ProviderCollection(final ProviderCollectionProviderGetter<P, N, SELECTOR, OUT> providerGetter,
+    private ProviderCollection(final ProviderCollectionProviderGetter<P, N, S, OUT> providerGetter,
                                final Function<P, Set<I>> infoGetter,
                                final String providedLabel,
                                final Set<P> providers) {
@@ -110,9 +110,9 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
     }
 
     /**
-     * Gets the component identified by {@link SELECTOR} with the given parameter values.
+     * Gets the component identified by {@link S} with the given parameter values.
      */
-    public OUT get(final SELECTOR selector,
+    public OUT get(final S selector,
                    final ProviderContext context) {
         Objects.requireNonNull(selector, "selector");
         Objects.requireNonNull(context, "context");
@@ -125,7 +125,7 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
     }
 
     /**
-     * Gets the component identified by SELECTOR.
+     * Gets the component identified by S.
      */
     public OUT get(final N name,
                    final List<?> values,
@@ -151,7 +151,7 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
 
     private final Map<N, P> nameToProvider;
 
-    private final ProviderCollectionProviderGetter<P, N, SELECTOR, OUT> providerGetter;
+    private final ProviderCollectionProviderGetter<P, N, S, OUT> providerGetter;
 
     /**
      * Returns a {@link Set} with an aggregation of all SELECTORFOS from all the provided Providers.

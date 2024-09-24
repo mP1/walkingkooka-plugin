@@ -33,16 +33,16 @@ import java.util.function.Function;
  * The final {@link #infos()} will contain infos from both the renamingInfo and providerInfos, where renamingInfos overwrites providerInfos.
  */
 public final class MergedProviderMapper<N extends Name & Comparable<N>,
-        PS extends PluginSelectorLike<N>,
+        S extends PluginSelectorLike<N>,
         I extends PluginInfoLike<I, N>,
-        S extends PluginInfoSetLike<S, I, N>> {
+        IS extends PluginInfoSetLike<IS, I, N>> {
 
     public static <N extends Name & Comparable<N>,
-            PS extends PluginSelectorLike<N>,
+            S extends PluginSelectorLike<N>,
             I extends PluginInfoLike<I, N>,
-            S extends PluginInfoSetLike<S, I, N>>
-    MergedProviderMapper<N, PS, I, S> with(final S renamingInfos,
-                                           final S providerInfos,
+            IS extends PluginInfoSetLike<IS, I, N>>
+    MergedProviderMapper<N, S, I, IS> with(final IS renamingInfos,
+                                           final IS providerInfos,
                                            final Function<N, RuntimeException> unknown) {
         return new MergedProviderMapper<>(
                 Objects.requireNonNull(renamingInfos, "renamingInfos"),
@@ -51,8 +51,8 @@ public final class MergedProviderMapper<N extends Name & Comparable<N>,
         );
     }
 
-    private MergedProviderMapper(final S renamingInfos,
-                                 final S providerInfos,
+    private MergedProviderMapper(final IS renamingInfos,
+                                 final IS providerInfos,
                                  final Function<N, RuntimeException> unknown) {
         final Map<AbsoluteUrl, I> urlToRenamingInfos = this.urlToInfo(renamingInfos);
         final Map<AbsoluteUrl, I> urlToProviderInfos = this.urlToInfo(providerInfos);
@@ -88,7 +88,7 @@ public final class MergedProviderMapper<N extends Name & Comparable<N>,
         this.infos = providerInfos.setElements(infos);
     }
 
-    private Map<AbsoluteUrl, I> urlToInfo(final S infos) {
+    private Map<AbsoluteUrl, I> urlToInfo(final IS infos) {
         final Map<AbsoluteUrl, I> urlToInfo = Maps.hash();
 
         for (final I info : infos) {
@@ -124,10 +124,10 @@ public final class MergedProviderMapper<N extends Name & Comparable<N>,
      * Returns the {@link PluginSelectorLike} after translating it as necessary by matching {@link AbsoluteUrl}.<br>
      * If the name is missing from the plugin {@link PluginInfoSetLike} an exception will be thrown.
      */
-    public PS selector(final PS selector) {
+    public S selector(final S selector) {
         Objects.requireNonNull(selector, "selector");
 
-        return (PS) selector.setName(
+        return (S) selector.setName(
                 this.name(
                         selector.name()
                 )
@@ -138,11 +138,11 @@ public final class MergedProviderMapper<N extends Name & Comparable<N>,
      * Returns all {@link PluginInfoLike} that exist in the provider {@link PluginInfoSetLike}. If the {@link PluginInfoLike}
      * also exists in the renaming infos that will be returned.
      */
-    public S infos() {
+    public IS infos() {
         return this.infos;
     }
 
-    private final S infos;
+    private final IS infos;
 
     @Override
     public String toString() {
