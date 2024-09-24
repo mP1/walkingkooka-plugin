@@ -190,7 +190,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                 continue;
             }
 
-            throw new IllegalArgumentException("Unsupported value " + CharSequences.quoteIfChars(value) + " " + value.getClass().getName() + " expected only double | String | PLuginSelector");
+            throw new IllegalArgumentException("Unsupported value " + CharSequences.quoteIfChars(value) + " " + value.getClass().getName() + " expected only double | String | PluginSelector");
         }
 
         if (b.length() > 0) {
