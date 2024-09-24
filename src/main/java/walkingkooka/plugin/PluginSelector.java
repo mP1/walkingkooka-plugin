@@ -19,31 +19,19 @@ package walkingkooka.plugin;
 
 import walkingkooka.InvalidCharacterException;
 import walkingkooka.collect.list.Lists;
-import walkingkooka.datetime.DateTimeContexts;
-import walkingkooka.environment.EnvironmentValueName;
-import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.naming.HasName;
 import walkingkooka.naming.Name;
-import walkingkooka.predicate.character.CharPredicates;
-import walkingkooka.text.CaseSensitivity;
 import walkingkooka.text.CharSequences;
 import walkingkooka.text.HasText;
 import walkingkooka.text.cursor.TextCursor;
 import walkingkooka.text.cursor.TextCursorLineInfo;
-import walkingkooka.text.cursor.TextCursors;
-import walkingkooka.text.cursor.parser.DoubleParserToken;
-import walkingkooka.text.cursor.parser.DoubleQuotedParserToken;
-import walkingkooka.text.cursor.parser.Parser;
 import walkingkooka.text.cursor.parser.ParserContext;
-import walkingkooka.text.cursor.parser.ParserContexts;
 import walkingkooka.text.cursor.parser.ParserException;
-import walkingkooka.text.cursor.parser.Parsers;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 
-import java.math.MathContext;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -150,11 +138,11 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
 
         final StringBuilder b = new StringBuilder();
 
-        String separator = PARAMETER_BEGIN_STRING;
+        String separator = PluginExpressionParser.PARAMETER_BEGIN;
 
         for (final Object value : values) {
             b.append(separator);
-            separator = PARAMETER_SEPARATOR_STRING + " ";
+            separator = PluginExpressionParser.PARAMETER_SEPARATOR + " ";
 
             if (null == value) {
                 throw new IllegalArgumentException("Null values are not supported");
@@ -194,7 +182,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
         }
 
         if (b.length() > 0) {
-            b.append(PARAMETER_END_STRING);
+            b.append(PluginExpressionParser.PARAMETER_END);
         }
 
         return this.setText(b.toString());
@@ -223,36 +211,41 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
         Objects.requireNonNull(provider, "provider");
         Objects.requireNonNull(context, "context");
 
-        final String nameText = this.name().value();
-        final TextCursor nameCursor = TextCursors.charSequence(nameText);
-        final Optional<N> maybeName = nameParserAndFactory.apply(
-                nameCursor,
-                PARSER_CONTEXT
+        final String nameText = this.name()
+                .value();
+        final PluginExpressionParser<N> nameParser = PluginExpressionParser.with(
+                nameText,
+                nameParserAndFactory,
+                context
         );
-        if (false == maybeName.isPresent() || false == nameCursor.isEmpty()) {
+
+        final Optional<N> name = nameParser.name();
+        if (false == name.isPresent() || false == nameParser.isEmpty()) {
             throw new IllegalArgumentException(
                     "Unable to parse name in " +
                             CharSequences.quoteAndEscape(nameText)
             );
         }
 
-        final TextCursor cursor = TextCursors.charSequence(this.text());
-
-        final List<?> parameters = parseParameters(
-                cursor,
+        final PluginExpressionParser<N> parser = PluginExpressionParser.with(
+                this.text(),
                 nameParserAndFactory,
-                provider,
                 context
         );
 
-        skipSpaces(cursor);
+        final List<?> parameters = parseParameters(
+                parser,
+                provider
+        );
 
-        if (false == cursor.isEmpty()) {
-            invalidCharacter(cursor);
+        parser.spaces();
+
+        if (false == parser.isEmpty()) {
+            this.invalidCharacter(parser);
         }
 
         return provider.get(
-                maybeName.get(),
+                name.get(),
                 parameters,
                 context
         );
@@ -261,26 +254,19 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
     /**
      * Attempts to parse an optional plugin including its parameters which must be within parens.
      */
-    private <N extends Name & Comparable<N>, T> Optional<T> parseNameAndParameters(final TextCursor cursor,
-                                                                                   final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                                                                   final PluginSelectorEvaluateTextProvider<N, T> provider,
-                                                                                   final ProviderContext context) {
-        final Optional<N> maybeName = nameParserAndFactory.apply(
-                cursor,
-                PARSER_CONTEXT
-        );
+    private <N extends Name & Comparable<N>, T> Optional<T> parseNameAndParameters(final PluginExpressionParser<N> parser,
+                                                                                   final PluginSelectorEvaluateTextProvider<N, T> provider) {
+        final Optional<N> name = parser.name();
 
         final T provided;
-        if (maybeName.isPresent()) {
+        if (name.isPresent()) {
             provided = provider.get(
-                    maybeName.get(),
+                    name.get(),
                     parseParameters(
-                            cursor,
-                            nameParserAndFactory,
-                            provider,
-                            context
+                            parser,
+                            provider
                     ),
-                    context
+                    parser.context
             );
         } else {
             provided = null;
@@ -295,25 +281,20 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      * ( 1.23, "string-literal", $environmental-variable, plugin-name )
      * </pre>
      */
-    private <N extends Name & Comparable<N>, T> List<Object> parseParameters(final TextCursor cursor,
-                                                                             final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                                                             final PluginSelectorEvaluateTextProvider<N, T> provider,
-                                                                             final ProviderContext context) {
-        skipSpaces(cursor);
+    private <N extends Name & Comparable<N>, T> List<Object> parseParameters(final PluginExpressionParser<N> parser,
+                                                                             final PluginSelectorEvaluateTextProvider<N, T> provider) {
+        parser.spaces();
 
         final List<Object> parameters = Lists.array();
 
-        if (tryParseToken(PARAMETER_BEGIN, cursor)) {
+        if (parser.parametersBegin()) {
             for (; ; ) {
-                skipSpaces(cursor);
+                parser.spaces();
 
                 {
-                    final Optional<?> maybeEnvironmentValue = tryParseEnvironmentValue(
-                            cursor,
-                            context
-                    );
-                    if (maybeEnvironmentValue.isPresent()) {
-                        parameters.add(maybeEnvironmentValue.get());
+                    final Optional<?> environmentValue = parser.environmentValue();
+                    if (environmentValue.isPresent()) {
+                        parameters.add(environmentValue.get());
                         continue;
                     }
                 }
@@ -321,10 +302,8 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                 // try parsing for a provided with or without parameters
                 {
                     final Optional<T> plugin = parseNameAndParameters(
-                            cursor,
-                            nameParserAndFactory,
-                            provider,
-                            context
+                            parser,
+                            provider
                     );
                     if (plugin.isPresent()) {
                         parameters.add(plugin.get());
@@ -334,9 +313,9 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
 
                 // try for a double literal
                 {
-                    final Optional<Double> maybeNumber = tryParseNumber(cursor);
-                    if (maybeNumber.isPresent()) {
-                        parameters.add(maybeNumber.get());
+                    final Optional<Double> number = parser.number();
+                    if (number.isPresent()) {
+                        parameters.add(number.get());
                         continue;
                     }
                 }
@@ -344,9 +323,9 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                 // try for a string literal
                 {
                     try {
-                        final Optional<String> maybeString = tryParseString(cursor);
-                        if (maybeString.isPresent()) {
-                            parameters.add(maybeString.get());
+                        final Optional<String> string = parser.string();
+                        if (string.isPresent()) {
+                            parameters.add(string.get());
                             continue;
                         }
                     } catch (final ParserException cause) {
@@ -354,16 +333,16 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                     }
                 }
 
-                if (tryParseToken(PARAMETER_SEPARATOR, cursor)) {
+                if (parser.parameterSeparator()) {
                     continue;
                 }
 
-                if (tryParseToken(PARAMETER_END, cursor)) {
+                if (parser.parametersEnd()) {
                     break;
                 }
 
                 // must be an invalid character complain!
-                invalidCharacter(cursor);
+                this.invalidCharacter(parser);
             }
         }
 
@@ -371,127 +350,10 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
     }
 
     /**
-     * Consumes any whitespace, don't really care how many or if any were skipped.
-     */
-    private static void skipSpaces(final TextCursor cursor) {
-        SPACE.parse(cursor, PARSER_CONTEXT);
-    }
-
-    /**
-     * Matches any whitespace.
-     */
-    private final static Parser<ParserContext> SPACE = Parsers.character(CharPredicates.whitespace())
-            .repeating();
-
-    /**
-     * Returns true if the token represented by the given {@link Parser} was found.
-     */
-    private static boolean tryParseToken(final Parser<ParserContext> parser,
-                                         final TextCursor cursor) {
-        return parser.parse(
-                cursor,
-                PARSER_CONTEXT
-        ).isPresent();
-    }
-
-    private final static String PARAMETER_BEGIN_STRING = "(";
-
-    /**
-     * Matches a LEFT PARENS which marks the start of a plugin parameters.
-     */
-    private final static Parser<ParserContext> PARAMETER_BEGIN = Parsers.string(PARAMETER_BEGIN_STRING, CaseSensitivity.SENSITIVE);
-
-    private final static String PARAMETER_SEPARATOR_STRING = ",";
-
-    /**
-     * Matches a COMMA which separates individual parameters.
-     */
-    private final static Parser<ParserContext> PARAMETER_SEPARATOR = Parsers.string(PARAMETER_SEPARATOR_STRING, CaseSensitivity.SENSITIVE);
-
-    private final static String PARAMETER_END_STRING = ")";
-
-    /**
-     * Matches a RIGHT PARENS which marks the end of a plugin parameters.
-     */
-    private final static Parser<ParserContext> PARAMETER_END = Parsers.string(PARAMETER_END_STRING, CaseSensitivity.SENSITIVE);
-
-    /**
-     * Tries to parse a number value.
-     */
-    private static Optional<Double> tryParseNumber(final TextCursor cursor) {
-        return NUMBER_LITERAL.parse(
-                cursor,
-                PARSER_CONTEXT
-        ).map(
-                t -> t.cast(DoubleParserToken.class).value()
-        );
-    }
-
-    /**
-     * Number literal parameters are double literals using DOT as the decimal separator.
-     */
-    private final static Parser<ParserContext> NUMBER_LITERAL = Parsers.doubleParser();
-
-    /**
-     * Tries to parse a string literal.
-     */
-    private static Optional<String> tryParseString(final TextCursor cursor) {
-        return STRING_LITERAL.parse(
-                cursor,
-                PARSER_CONTEXT
-        ).map(
-                t -> t.cast(DoubleQuotedParserToken.class).value()
-        );
-    }
-
-    /**
-     * String literal parameters must be double-quoted and support backslash escaping.
-     */
-    private final static Parser<ParserContext> STRING_LITERAL = Parsers.doubleQuoted();
-
-    private static Optional<Object> tryParseEnvironmentValue(final TextCursor cursor,
-                                                             final ProviderContext context) {
-        return ENVIRONMENT_VALUE_NAME.parse(
-                cursor,
-                PARSER_CONTEXT
-        ).map(
-                s -> context.environmentValueOrFail(
-                        EnvironmentValueName.with(
-                                s.text()
-                                        .substring(1) // skip leading DOLLAR-SIGN
-                        )
-                )
-        );
-    }
-
-    /**
-     * Parses a DOLLAR-SIGN then {@link EnvironmentValueName}
-     */
-    private final static Parser<ParserContext> ENVIRONMENT_VALUE_NAME = Parsers.sequenceParserBuilder()
-            .required(
-                    Parsers.string("$", CaseSensitivity.SENSITIVE)
-            ).required(
-                    Parsers.stringInitialAndPartCharPredicate(
-                            EnvironmentValueName.INITIAL,
-                            EnvironmentValueName.PART,
-                            2,
-                            EnvironmentValueName.MAX_LENGTH
-                    )
-            ).build();
-
-    /**
-     * Singleton which can be reused.
-     */
-    private final static ParserContext PARSER_CONTEXT = ParserContexts.basic(
-            DateTimeContexts.fake(), // dates are not supported
-            DecimalNumberContexts.american(MathContext.UNLIMITED) // only the decimal char is actually required.
-    );
-
-    /**
      * Helper that reports an invalid character.
      */
-    private void invalidCharacter(final TextCursor cursor) {
-        final TextCursorLineInfo lineInfo = cursor.lineInfo();
+    private void invalidCharacter(final PluginExpressionParser<?> parser) {
+        final TextCursorLineInfo lineInfo = parser.cursor.lineInfo();
         final int pos = Math.max(
                 lineInfo.textOffset() - 1,
                 0
@@ -506,7 +368,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                 this.name().textLength() + pos + 1 // +1 or the SPACE following the name
         );
     }
-
+    
     // Object...........................................................................................................
 
     @Override
