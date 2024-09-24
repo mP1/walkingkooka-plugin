@@ -323,7 +323,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                 // try for a string literal
                 {
                     try {
-                        final Optional<String> string = parser.string();
+                        final Optional<String> string = parser.doubleQuotedString();
                         if (string.isPresent()) {
                             parameters.add(string.get());
                             continue;

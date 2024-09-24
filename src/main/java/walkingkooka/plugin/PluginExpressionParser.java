@@ -152,7 +152,7 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
     /**
      * Tries to parse a string literal.
      */
-    Optional<String> string() {
+    Optional<String> doubleQuotedString() {
         return this.token(
                 STRING_LITERAL,
                 t -> t.cast(DoubleQuotedParserToken.class).value()
