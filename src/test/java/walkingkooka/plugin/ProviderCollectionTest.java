@@ -35,6 +35,7 @@ import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.printer.IndentingPrinter;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -611,13 +612,33 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
         TestPluginInfo(final String name,
                        final String url) {
-            this.name = Names.string(name);
-            this.url = Url.parseAbsolute(url);
+            this(
+                    Url.parseAbsolute(url),
+                    Names.string(name)
+            );
+        }
+
+        TestPluginInfo(final AbsoluteUrl url,
+                       final StringName name) {
+            this.name = name;
+            this.url = url;
         }
 
         @Override
         public StringName name() {
             return this.name;
+        }
+
+        @Override
+        public TestPluginInfo setName(final StringName name) {
+            Objects.requireNonNull(name, "name");
+
+            return this.name.equals(name) ?
+                    this :
+                    new TestPluginInfo(
+                            this.url,
+                            name
+                    );
         }
 
         private StringName name;

@@ -59,6 +59,18 @@ public final class PluginInfo implements PluginInfoLike<PluginInfo, PluginName> 
         return this.name;
     }
 
+    @Override
+    public PluginInfo setName(final PluginName name) {
+        Objects.requireNonNull(name, "name");
+
+        return this.name.equals(name) ?
+                this :
+                new PluginInfo(
+                        this.url,
+                        name
+                );
+    }
+
     private final PluginName name;
 
     // Comparable.......................................................................................................

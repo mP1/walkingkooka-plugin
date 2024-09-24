@@ -19,7 +19,6 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
-import walkingkooka.InvalidCharacterException;
 import walkingkooka.ToStringTesting;
 import walkingkooka.compare.ComparableTesting2;
 import walkingkooka.naming.Name;
@@ -32,10 +31,10 @@ import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.test.ParseStringTesting;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
 
-import java.beans.Visibility;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends ClassTesting2<I>,
@@ -185,6 +184,36 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     @Override
     default I createHateosResource() {
         return this.createPluginInfoLike();
+    }
+
+    // setName..........................................................................................................
+
+    @Test
+    default void testSetNameWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createPluginInfoLike()
+                        .setName(null)
+        );
+    }
+
+    @Test
+    default void testSetNameWithSame() {
+        final I info = this.createPluginInfoLike();
+        assertSame(
+                info,
+                info.setName(info.name())
+        );
+    }
+
+    default void setNameAndCheck(final I info,
+                                 final N name,
+                                 final I expected) {
+        this.checkEquals(
+                expected,
+                info.setName(name),
+                () -> info + " setName " + name
+        );
     }
 
     // parse/toString...................................................................................................
