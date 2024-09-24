@@ -154,7 +154,7 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
      */
     Optional<String> doubleQuotedString() {
         return this.token(
-                STRING_LITERAL,
+                DOUBLE_QUOTED_STRING_LITERAL,
                 t -> t.cast(DoubleQuotedParserToken.class).value()
         );
     }
@@ -162,7 +162,7 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
     /**
      * String literal parameters must be double-quoted and support backslash escaping.
      */
-    private final static Parser<ParserContext> STRING_LITERAL = Parsers.doubleQuoted();
+    private final static Parser<ParserContext> DOUBLE_QUOTED_STRING_LITERAL = Parsers.doubleQuoted();
 
     /**
      * Tries to parse an environmental variable returning its actual value from the {@link ProviderContext}.
