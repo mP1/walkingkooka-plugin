@@ -29,10 +29,10 @@ import java.util.Objects;
  * @param <S>
  * @param <N>
  */
-public final class PluginSelectorSample<S extends PluginSelectorLike<N>, N extends Name> implements TreePrintable {
+public final class PluginSelectorSample<S extends PluginSelectorLike<N>, N extends Name & Comparable<N>> implements TreePrintable {
 
-    public static <S extends PluginSelectorLike<N>, N extends Name> PluginSelectorSample<S, N> with(final String label,
-                                                                                                    final S selector) {
+    public static <S extends PluginSelectorLike<N>, N extends Name & Comparable<N>> PluginSelectorSample<S, N> with(final String label,
+                                                                                                                    final S selector) {
         return new PluginSelectorSample<>(
                 CharSequences.failIfNullOrEmpty(label, "label"),
                 Objects.requireNonNull(selector, "selector")

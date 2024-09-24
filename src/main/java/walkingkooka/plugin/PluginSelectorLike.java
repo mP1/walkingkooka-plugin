@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * Interface that should be implemented by all selectors.
  */
-public interface PluginSelectorLike<N extends Name> extends HasName<N>, HasText,
+public interface PluginSelectorLike<N extends Name & Comparable<N>> extends HasName<N>, HasText,
         HasUrlFragment,
         TreePrintable {
 
