@@ -34,13 +34,13 @@ import java.util.Objects;
  * such as SpreadsheetFormatterName#DATE_FORMAT_PATTERN which might have a SHORT, MEDIUM, LONG menu items. Instances of
  * this class should be wrapped by another class which will also register itself to support json marshall/unmarshalling.
  */
-public final class PluginSelectorMenu<P extends PluginSelectorLike<N>, N extends Name & Comparable<N>> implements PluginSelectorMenuLike<P, N> {
+public final class PluginSelectorMenu<S extends PluginSelectorLike<N>, N extends Name & Comparable<N>> implements PluginSelectorMenuLike<S, N> {
 
     /**
      * Factory that creates a {@link PluginSelectorMenu}.
      */
-    public static <P extends PluginSelectorLike<N>, N extends Name & Comparable<N>> PluginSelectorMenu<P, N> with(final String label,
-                                                                                                                  final P selector) {
+    public static <S extends PluginSelectorLike<N>, N extends Name & Comparable<N>> PluginSelectorMenu<S, N> with(final String label,
+                                                                                                                  final S selector) {
         return new PluginSelectorMenu<>(
                 CharSequences.failIfNullOrEmpty(label, "label"),
                 Objects.requireNonNull(selector, "selector")
@@ -48,7 +48,7 @@ public final class PluginSelectorMenu<P extends PluginSelectorLike<N>, N extends
     }
 
     private PluginSelectorMenu(final String label,
-                               final P selector) {
+                               final S selector) {
         this.label = label;
         this.selector = selector;
     }
@@ -67,11 +67,11 @@ public final class PluginSelectorMenu<P extends PluginSelectorLike<N>, N extends
      * The selector for this menu item. This will probably become the HistoryToken#setSave value.
      */
     @Override
-    public P selector() {
+    public S selector() {
         return this.selector;
     }
 
-    private final P selector;
+    private final S selector;
 
     // Object...........................................................................................................
 
@@ -117,11 +117,11 @@ public final class PluginSelectorMenu<P extends PluginSelectorLike<N>, N extends
 
     // json.............................................................................................................
 
-    public static <P extends PluginSelectorLike<N>, N extends Name & Comparable<N>> PluginSelectorMenu<P, N> unmarshall(final JsonNode node,
+    public static <S extends PluginSelectorLike<N>, N extends Name & Comparable<N>> PluginSelectorMenu<S, N> unmarshall(final JsonNode node,
                                                                                                                         final JsonNodeUnmarshallContext context,
-                                                                                                                        final Class<P> pluginSelectorType) {
+                                                                                                                        final Class<S> pluginSelectorType) {
         String label = null;
-        P selector = null;
+        S selector = null;
 
 
         for (final JsonNode child : node.objectOrFail().children()) {

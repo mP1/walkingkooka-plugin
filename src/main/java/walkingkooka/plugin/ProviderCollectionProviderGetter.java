@@ -21,7 +21,7 @@ import walkingkooka.naming.Name;
 
 import java.util.List;
 
-public interface ProviderCollectionProviderGetter<P extends Provider, N extends Name & Comparable<N>, SELECTOR extends PluginSelectorLike<N>, OUT> {
+public interface ProviderCollectionProviderGetter<P extends Provider, N extends Name & Comparable<N>, S extends PluginSelectorLike<N>, OUT> {
 
     OUT get(final P provider,
             final N name,
@@ -29,6 +29,6 @@ public interface ProviderCollectionProviderGetter<P extends Provider, N extends 
             final ProviderContext context);
 
     OUT get(final P provider,
-            final SELECTOR selector,
+            final S selector,
             final ProviderContext context);
 }

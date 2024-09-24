@@ -27,7 +27,7 @@ import walkingkooka.text.printer.TreePrintableTesting;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public interface PluginSelectorMenuLikeTesting<M extends PluginSelectorMenuLike<P, N>, P extends PluginSelectorLike<N>, N extends Name & Comparable<N>> extends ClassTesting<M>,
+public interface PluginSelectorMenuLikeTesting<M extends PluginSelectorMenuLike<S, N>, S extends PluginSelectorLike<N>, N extends Name & Comparable<N>> extends ClassTesting<M>,
         HashCodeEqualsDefinedTesting2<M>,
         TreePrintableTesting {
 
@@ -67,7 +67,7 @@ public interface PluginSelectorMenuLikeTesting<M extends PluginSelectorMenuLike<
     @Test
     default void testWith() {
         final String label = "Label123";
-        final P pluginSelector = this.createPluginSelector();
+        final S pluginSelector = this.createPluginSelector();
 
         final M menu = this.createPluginSelectorMenu(
                 label,
@@ -86,9 +86,9 @@ public interface PluginSelectorMenuLikeTesting<M extends PluginSelectorMenuLike<
     }
 
     M createPluginSelectorMenu(final String label,
-                               final P selector);
+                               final S selector);
 
-    P createPluginSelector();
+    S createPluginSelector();
 
 
     // TreePrintable....................................................................................................
@@ -96,7 +96,7 @@ public interface PluginSelectorMenuLikeTesting<M extends PluginSelectorMenuLike<
     @Test
     default void testPrintTree() {
         final String label = "Label123";
-        final P selector = this.createPluginSelector();
+        final S selector = this.createPluginSelector();
 
         final StringBuilder b = new StringBuilder();
         final IndentingPrinter printer = Printers.stringBuilder(
@@ -151,5 +151,5 @@ public interface PluginSelectorMenuLikeTesting<M extends PluginSelectorMenuLike<
         );
     }
 
-    P createDifferentPluginSelector();
+    S createDifferentPluginSelector();
 }

@@ -35,16 +35,16 @@ import java.util.function.Function;
  * infos with some names updated if they are present in the mapping with a different name.
  */
 public final class FilteredProviderMapper<N extends Name & Comparable<N>,
-        PS extends PluginSelectorLike<N>,
+        S extends PluginSelectorLike<N>,
         I extends PluginInfoLike<I, N>,
-        S extends PluginInfoSetLike<S, I, N>> {
+        IS extends PluginInfoSetLike<IS, I, N>> {
 
     public static <N extends Name & Comparable<N>,
-            PS extends PluginSelectorLike<N>,
+            S extends PluginSelectorLike<N>,
             I extends PluginInfoLike<I, N>,
-            S extends PluginInfoSetLike<S, I, N>>
-    FilteredProviderMapper<N, PS, I, S> with(final S mappingInfos,
-                                             final S providerInfos,
+            IS extends PluginInfoSetLike<IS, I, N>>
+    FilteredProviderMapper<N, S, I, IS> with(final IS mappingInfos,
+                                             final IS providerInfos,
                                              final Function<N, RuntimeException> unknown) {
         return new FilteredProviderMapper<>(
                 Objects.requireNonNull(mappingInfos, "mappingInfos"),
@@ -53,8 +53,8 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
         );
     }
 
-    private FilteredProviderMapper(final S mappingInfos,
-                                   final S providerInfos,
+    private FilteredProviderMapper(final IS mappingInfos,
+                                   final IS providerInfos,
                                    final Function<N, RuntimeException> unknown) {
         final Map<AbsoluteUrl, I> urlToMappingInfos = this.urlToInfo(mappingInfos);
         final Map<AbsoluteUrl, I> urlToProviderInfos = this.urlToInfo(providerInfos);
@@ -87,7 +87,7 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
         this.infos = providerInfos.setElements(infos);
     }
 
-    private Map<AbsoluteUrl, I> urlToInfo(final S infos) {
+    private Map<AbsoluteUrl, I> urlToInfo(final IS infos) {
         final Map<AbsoluteUrl, I> urlToInfo = Maps.hash();
 
         for (final I info : infos) {
@@ -123,10 +123,10 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
      * Returns the {@link PluginSelectorLike} after translating it as necessary by matching {@link AbsoluteUrl}.<br>
      * If the name is missing from the provider {@link PluginInfoSetLike} an exception will be thrown.
      */
-    public PS selector(final PS selector) {
+    public S selector(final S selector) {
         Objects.requireNonNull(selector, "selector");
 
-        return (PS) selector.setName(
+        return (S) selector.setName(
                 this.name(
                         selector.name()
                 )
@@ -137,11 +137,11 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
      * Returns all {@link PluginInfoLike} that exist in both {@link PluginInfoSetLike}.<br>
      * Note the {@link Name} component returned will need translating before using on a {@link Provider}.
      */
-    public S infos() {
+    public IS infos() {
         return this.infos;
     }
 
-    private final S infos;
+    private final IS infos;
 
     @Override
     public String toString() {
