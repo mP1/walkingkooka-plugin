@@ -21,19 +21,13 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
-import walkingkooka.plugin.PluginSelectorMenuTest.TestPluginSelector;
 import walkingkooka.reflect.JavaVisibility;
-import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.tree.expression.ExpressionNumberKind;
 import walkingkooka.tree.json.JsonNode;
-import walkingkooka.tree.json.marshall.JsonNodeContext;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContexts;
-import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContexts;
 
 import java.math.MathContext;
-import java.util.List;
 
 public final class PluginSelectorMenuTest implements PluginSelectorMenuLikeTesting<PluginSelectorMenu<TestPluginSelector, StringName>, TestPluginSelector, StringName> {
 
@@ -116,90 +110,5 @@ public final class PluginSelectorMenuTest implements PluginSelectorMenuLikeTesti
     @Override
     public JavaVisibility typeVisibility() {
         return JavaVisibility.PUBLIC;
-    }
-
-    static class TestPluginSelector implements PluginSelectorLike<StringName> {
-
-        static TestPluginSelector parse(final String selector) {
-            return new TestPluginSelector(
-                    PluginSelector.parse(
-                            selector,
-                            Names::string
-                    )
-            );
-        }
-
-        TestPluginSelector(final PluginSelector<StringName> pluginSelector) {
-            this.pluginSelector = pluginSelector;
-        }
-
-        @Override
-        public PluginSelectorLike<StringName> setName(final StringName name) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public PluginSelectorLike<StringName> setText(final String text) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public PluginSelectorLike<StringName> setValues(final List<?> values) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public StringName name() {
-            return this.pluginSelector.name();
-        }
-
-        @Override
-        public String text() {
-            return this.pluginSelector.text();
-        }
-
-        @Override
-        public void printTree(final IndentingPrinter printer) {
-            this.pluginSelector.printTree(printer);
-        }
-
-        private final PluginSelector<StringName> pluginSelector;
-
-        @Override
-        public int hashCode() {
-            return this.pluginSelector.hashCode();
-        }
-
-        @Override
-        public boolean equals(final Object other) {
-            return this == other || other instanceof TestPluginSelector && this.equals0((TestPluginSelector)other);
-        }
-
-        private boolean equals0(final TestPluginSelector other) {
-            return this.pluginSelector.equals(other.pluginSelector);
-        }
-
-        @Override
-        public String toString() {
-            return this.pluginSelector.toString();
-        }
-
-        JsonNode marshall(final JsonNodeMarshallContext context) {
-            return this.pluginSelector.marshall(context);
-        }
-
-        static TestPluginSelector unmarshall(final JsonNode json,
-                                             final JsonNodeUnmarshallContext context) {
-            return parse(json.stringOrFail());
-        }
-    }
-
-    static {
-        JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(TestPluginSelector.class),
-                TestPluginSelector::unmarshall,
-                TestPluginSelector::marshall,
-                TestPluginSelector.class
-        );
     }
 }

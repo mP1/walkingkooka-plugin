@@ -36,7 +36,6 @@ import walkingkooka.text.cursor.parser.ParserContext;
 import walkingkooka.text.cursor.parser.ParserToken;
 import walkingkooka.text.cursor.parser.Parsers;
 import walkingkooka.text.cursor.parser.StringParserToken;
-import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintableTesting;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContexts;
@@ -264,23 +263,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                         Lists.of(
                                 "Hello",
                                 2.5,
-                                new TestPluginSelectorLike() {
-
-                                    @Override
-                                    public StringName name() {
-                                        return Names.string("plugin3");
-                                    }
-
-                                    @Override
-                                    public String text() {
-                                        return "";
-                                    }
-
-                                    @Override
-                                    public String toString() {
-                                        return "plugin3";
-                                    }
-                                }
+                                TestPluginSelector.parse("plugin3")
                         )
                 )
         );
@@ -300,50 +283,10 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                         Lists.of(
                                 "Hello",
                                 22.0,
-                                new TestPluginSelectorLike() {
-
-                                    @Override
-                                    public StringName name() {
-                                        return Names.string("plugin3");
-                                    }
-
-                                    @Override
-                                    public String text() {
-                                        return "";
-                                    }
-
-                                    @Override
-                                    public String toString() {
-                                        return "plugin3";
-                                    }
-                                }
+                                TestPluginSelector.parse("plugin3")
                         )
                 )
         );
-    }
-
-    abstract class TestPluginSelectorLike implements PluginSelectorLike<StringName> {
-
-        @Override
-        public final PluginSelectorLike<StringName> setName(final StringName name) {
-            throw new UnsupportedOperationException();
-        }
-
-
-        @Override
-        public final PluginSelectorLike<StringName> setText(final String text) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public final PluginSelectorLike<StringName> setValues(final List<?> values) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public final void printTree(final IndentingPrinter printer) {
-            throw new UnsupportedOperationException();
-        }
     }
 
     // parse............................................................................................................

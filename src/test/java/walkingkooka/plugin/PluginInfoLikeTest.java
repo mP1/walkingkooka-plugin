@@ -17,8 +17,6 @@
 
 package walkingkooka.plugin;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.collect.set.SortedSets;
@@ -26,9 +24,7 @@ import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.Url;
-import walkingkooka.plugin.PluginInfoLikeTest.TestPluginInfo;
 import walkingkooka.tree.json.JsonNode;
-import walkingkooka.tree.json.marshall.JsonNodeContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.Objects;
@@ -222,113 +218,5 @@ public final class PluginInfoLikeTest implements PluginInfoLikeTesting<TestPlugi
                 json,
                 context
         );
-    }
-
-    public static class TestPluginInfo implements PluginInfoLike<TestPluginInfo, StringName> {
-
-        public static TestPluginInfo parse(final String text) {
-            return PluginInfoLike.parse(
-                    text,
-                    Names::string,
-                    TestPluginInfo::new
-            );
-        }
-
-        TestPluginInfo(final AbsoluteUrl url,
-                       final StringName name) {
-            this.url = url;
-            this.name = name;
-        }
-
-        TestPluginInfo(final String url,
-                       final String name) {
-            this(
-                    Url.parseAbsolute(url),
-                    Names.string(name)
-            );
-        }
-
-        @Override
-        public StringName name() {
-            return this.name;
-        }
-
-        @Override
-        public TestPluginInfo setName(final StringName name) {
-            Objects.requireNonNull(name, "name");
-
-            return this.name.equals(name) ?
-                    this :
-                    new TestPluginInfo(
-                            this.url,
-                            name
-                    );
-        }
-
-        private final StringName name;
-
-        @Override
-        public AbsoluteUrl url() {
-            return this.url;
-        }
-
-        private final AbsoluteUrl url;
-
-        // object.......................................................................................................
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(
-                    this.url,
-                    this.name
-            );
-        }
-
-        @Override
-        public boolean equals(final Object other) {
-            return this == other || other instanceof TestPluginInfo && this.equals0((TestPluginInfo) other);
-        }
-
-        private boolean equals0(final TestPluginInfo other) {
-            return this.url.equals(other.url) &&
-                    this.name.equals(other.name);
-        }
-
-        @Override
-        public String toString() {
-            return PluginInfoLike.toString(this);
-        }
-
-        // json.........................................................................................................
-
-        // @VisibleForTesting
-        static TestPluginInfo unmarshall(final JsonNode node,
-                                         final JsonNodeUnmarshallContext context) {
-            return PluginInfoLike.unmarshall(
-                    node,
-                    context,
-                    Names::string,
-                    TestPluginInfo::new
-            );
-        }
-    }
-
-    @BeforeAll
-    public static void beforeAll() {
-        unregister = JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(TestPluginInfo.class),
-                TestPluginInfo::unmarshall,
-                TestPluginInfo::marshall,
-                TestPluginInfo.class
-        );
-    }
-
-    private static Runnable unregister;
-
-    @AfterAll
-    public static void afterAll() {
-        if(null != unregister) {
-            unregister.run();
-        }
     }
 }

@@ -20,79 +20,67 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.ToStringTesting;
-import walkingkooka.collect.iterator.Iterators;
 import walkingkooka.collect.set.Sets;
-import walkingkooka.naming.Name;
+import walkingkooka.naming.Names;
+import walkingkooka.naming.StringName;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.Url;
-import walkingkooka.plugin.FilteredProviderMapperTest.TestInfo;
-import walkingkooka.plugin.FilteredProviderMapperTest.TestInfoSet;
-import walkingkooka.plugin.FilteredProviderMapperTest.TestName;
-import walkingkooka.plugin.FilteredProviderMapperTest.TestSelector;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
-import walkingkooka.text.CaseSensitivity;
-import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintableTesting;
 
-import java.util.AbstractSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class FilteredProviderMapperTest implements TreePrintableTesting,
-        ClassTesting2<FilteredProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>>,
-        ToStringTesting<FilteredProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>> {
+        ClassTesting2<FilteredProviderMapper<StringName, TestPluginSelector, TestPluginInfo, TestPluginInfoSet>>,
+        ToStringTesting<FilteredProviderMapper<StringName, TestPluginSelector, TestPluginInfo, TestPluginInfoSet>> {
 
-    private final static TestName RENAMED_RENAME_NAME = new TestName("RenamedRenameName1");
+    private final static StringName RENAMED_RENAME_NAME = Names.string("RenamedRenameName1");
 
-    private final static TestName RENAMED_PROVIDER_NAME = new TestName("RenamedProviderName1");
+    private final static StringName RENAMED_PROVIDER_NAME = Names.string("RenamedProviderName1");
 
     private final static AbsoluteUrl RENAMED_URL = Url.parseAbsolute("https://example.com/" + RENAMED_RENAME_NAME + "/" + RENAMED_PROVIDER_NAME);
 
-    private final static TestInfo RENAMED_FILTERED_INFO = new TestInfo(
-            RENAMED_RENAME_NAME,
-            RENAMED_URL
+    private final static TestPluginInfo RENAMED_FILTERED_INFO = new TestPluginInfo(
+            RENAMED_URL,
+            RENAMED_RENAME_NAME
     );
 
-    private final static TestInfo RENAMED_PROVIDER_INFO = new TestInfo(
-            RENAMED_PROVIDER_NAME,
-            RENAMED_URL
+    private final static TestPluginInfo RENAMED_PROVIDER_INFO = new TestPluginInfo(
+            RENAMED_URL,
+            RENAMED_PROVIDER_NAME
     );
 
-    private final static TestName BOTH_NAME = new TestName("Name");
+    private final static StringName BOTH_NAME = Names.string("Name");
 
     private final static AbsoluteUrl BOTH_URL = Url.parseAbsolute("https://example.com/" + BOTH_NAME);
 
-    private final static TestInfo BOTH_INFO = new TestInfo(
-            BOTH_NAME,
-            BOTH_URL
+    private final static TestPluginInfo BOTH_INFO = new TestPluginInfo(
+            BOTH_URL,
+            BOTH_NAME
     );
 
-    private final static TestName FILTERED_ONLY_NAME = new TestName("FilteredOnlyName");
+    private final static StringName FILTERED_ONLY_NAME = Names.string("FilteredOnlyName");
 
     private final static AbsoluteUrl FILTERED_ONLY_URL = Url.parseAbsolute("https://example.com/" + FILTERED_ONLY_NAME);
 
-    private final static TestInfo FILTERED_ONLY_INFO = new TestInfo(
-            FILTERED_ONLY_NAME,
-            FILTERED_ONLY_URL
+    private final static TestPluginInfo FILTERED_ONLY_INFO = new TestPluginInfo(
+            FILTERED_ONLY_URL,
+            FILTERED_ONLY_NAME
     );
 
-    private final static TestName PROVIDER_ONLY_NAME = new TestName("ProviderOnlyName");
+    private final static StringName PROVIDER_ONLY_NAME = Names.string("ProviderOnlyName");
 
     private final static AbsoluteUrl PROVIDER_ONLY_URL = Url.parseAbsolute("https://example.com/" + PROVIDER_ONLY_NAME);
 
-    private final static TestInfo PROVIDER_ONLY_INFO = new TestInfo(
-            PROVIDER_ONLY_NAME,
-            PROVIDER_ONLY_URL
+    private final static TestPluginInfo PROVIDER_ONLY_INFO = new TestPluginInfo(
+            PROVIDER_ONLY_URL,
+            PROVIDER_ONLY_NAME
     );
 
-    private final static TestInfoSet FILTERED_INFOS = new TestInfoSet(
+    private final static TestPluginInfoSet FILTERED_INFOS = new TestPluginInfoSet(
             Sets.of(
                     RENAMED_FILTERED_INFO,
                     BOTH_INFO,
@@ -100,7 +88,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
             )
     );
 
-    private final static TestInfoSet PROVIDER_INFOS = new TestInfoSet(
+    private final static TestPluginInfoSet PROVIDER_INFOS = new TestPluginInfoSet(
             Sets.of(
                     RENAMED_PROVIDER_INFO,
                     BOTH_INFO,
@@ -108,11 +96,11 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
             )
     );
 
-    private final static Function<TestName, RuntimeException> UNKNOWN = (n) -> new UnknownTestNameException(
-            "Unknown TestName " + n
+    private final static Function<StringName, RuntimeException> UNKNOWN = (n) -> new UnknownStringNameException(
+            "Unknown StringName " + n
     );
 
-    private final static FilteredProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet> MAPPER = FilteredProviderMapper.with(
+    private final static FilteredProviderMapper<StringName, TestPluginSelector, TestPluginInfo, TestPluginInfoSet> MAPPER = FilteredProviderMapper.with(
             FILTERED_INFOS,
             PROVIDER_INFOS,
             UNKNOWN
@@ -161,7 +149,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     @Test
     public void testNameFilteredNameFailed() {
         assertThrows(
-                UnknownTestNameException.class,
+                UnknownStringNameException.class,
                 () -> MAPPER.name(RENAMED_PROVIDER_NAME)
         );
     }
@@ -169,7 +157,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     @Test
     public void testNameFilteredNameFailed2() {
         assertThrows(
-                UnknownTestNameException.class,
+                UnknownStringNameException.class,
                 () -> MAPPER.name(PROVIDER_ONLY_NAME)
         );
     }
@@ -177,7 +165,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     @Test
     public void testNameUnknownFails() {
         assertThrows(
-                UnknownTestNameException.class,
+                UnknownStringNameException.class,
                 () -> MAPPER.name(FILTERED_ONLY_NAME)
         );
     }
@@ -203,9 +191,9 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     @Test
     public void testSelectorFilteredSelectorFailed() {
         assertThrows(
-                UnknownTestNameException.class,
+                UnknownStringNameException.class,
                 () -> MAPPER.selector(
-                        new TestSelector(RENAMED_PROVIDER_NAME)
+                        new TestPluginSelector(RENAMED_PROVIDER_NAME)
                 )
         );
     }
@@ -213,9 +201,9 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     @Test
     public void testSelectorFilteredSelectorFailed2() {
         assertThrows(
-                UnknownTestNameException.class,
+                UnknownStringNameException.class,
                 () -> MAPPER.selector(
-                        new TestSelector(PROVIDER_ONLY_NAME)
+                        new TestPluginSelector(PROVIDER_ONLY_NAME)
                 )
         );
     }
@@ -223,16 +211,16 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     @Test
     public void testSelectorUnknownFails() {
         assertThrows(
-                UnknownTestNameException.class,
+                UnknownStringNameException.class,
                 () -> MAPPER.selector(
-                        new TestSelector(FILTERED_ONLY_NAME)
+                        new TestPluginSelector(FILTERED_ONLY_NAME)
                 )
         );
     }
 
     @Test
     public void testSelector() {
-        final TestSelector selector = new TestSelector(BOTH_NAME);
+        final TestPluginSelector selector = new TestPluginSelector(BOTH_NAME);
 
         this.checkEquals(
                 selector,
@@ -243,9 +231,9 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     @Test
     public void testSelectorMapped() {
         this.checkEquals(
-                new TestSelector(RENAMED_PROVIDER_NAME),
+                new TestPluginSelector(RENAMED_PROVIDER_NAME),
                 MAPPER.selector(
-                        new TestSelector(RENAMED_RENAME_NAME)
+                        new TestPluginSelector(RENAMED_RENAME_NAME)
                 )
         );
     }
@@ -255,7 +243,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     @Test
     public void testInfos() {
         this.checkEquals(
-                new TestInfoSet(
+                new TestPluginInfoSet(
                         Sets.of(
                                 RENAMED_FILTERED_INFO,
                                 BOTH_INFO
@@ -278,7 +266,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     // class............................................................................................................
 
     @Override
-    public Class<FilteredProviderMapper<TestName, TestSelector, TestInfo, TestInfoSet>> type() {
+    public Class<FilteredProviderMapper<StringName, TestPluginSelector, TestPluginInfo, TestPluginInfoSet>> type() {
         return Cast.to(FilteredProviderMapper.class);
     }
 
@@ -287,203 +275,10 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
         return JavaVisibility.PUBLIC;
     }
 
-    // helpers..........................................................................................................
-
-    public static class TestName implements Name,
-            Comparable<TestName> {
-
-        TestName(final String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String value() {
-            return this.name;
-        }
-
-        private final String name;
-
-        @Override
-        public int compareTo(final TestName other) {
-            return this.name.compareTo(other.name);
-        }
-
-        @Override
-        public int hashCode() {
-            return this.name.hashCode();
-        }
-
-        @Override
-        public boolean equals(final Object other) {
-            return this == other || other instanceof TestName && this.equals0((TestName) other);
-        }
-
-        private boolean equals0(final TestName other) {
-            return this.compareTo(other) == 0;
-        }
-
-        @Override
-        public String toString() {
-            return this.name.toString();
-        }
-
-        @Override
-        public CaseSensitivity caseSensitivity() {
-            return CaseSensitivity.SENSITIVE;
-        }
-    }
-
-    public static class TestSelector implements PluginSelectorLike<TestName> {
-
-        TestSelector(final TestName name) {
-            this.name = name;
-        }
-
-        @Override
-        public TestName name() {
-            return this.name;
-        }
-
-        private final TestName name;
-
-        @Override
-        public TestSelector setName(final TestName name) {
-            return new TestSelector(name);
-        }
-
-        @Override
-        public String text() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public PluginSelectorLike<TestName> setText(final String text) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public PluginSelectorLike<TestName> setValues(List<?> values) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void printTree(final IndentingPrinter printer) {
-            printer.println(this.name().toString());
-        }
-
-        @Override
-        public int hashCode() {
-            return this.name.hashCode();
-        }
-
-        public boolean equals(final Object other) {
-            return this == other || other instanceof TestSelector && this.equals0((TestSelector) other);
-        }
-
-        private boolean equals0(final TestSelector other) {
-            return this.name.equals(other.name);
-        }
-
-        @Override
-        public String toString() {
-            return this.name.toString();
-        }
-    }
-
-    public static class TestInfo implements PluginInfoLike<TestInfo, TestName> {
-
-        TestInfo(final TestName name,
-                 final AbsoluteUrl url) {
-            this.name = name;
-            this.url = url;
-        }
-
-        @Override
-        public TestName name() {
-            return this.name;
-        }
-
-        @Override
-        public TestInfo setName(final TestName name) {
-            Objects.requireNonNull(name, "name");
-
-            return this.name.equals(name) ?
-                    this :
-                    new TestInfo(
-                            name,
-                            this.url
-                    );
-        }
-
-        private final TestName name;
-
-        @Override
-        public AbsoluteUrl url() {
-            return this.url;
-        }
-
-        private final AbsoluteUrl url;
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(
-                    this.name,
-                    this.url
-            );
-        }
-
-        public boolean equals(final Object other) {
-            return this == other || other instanceof TestInfo && this.equals0((TestInfo) other);
-        }
-
-        private boolean equals0(final TestInfo other) {
-            return this.name.equals(other.name) &&
-                    this.url.equals(other.url);
-        }
-
-        @Override
-        public String toString() {
-            return this.url + " " + this.name;
-        }
-    }
-
-    public static class TestInfoSet extends AbstractSet<TestInfo> implements PluginInfoSetLike<TestInfoSet, TestInfo, TestName> {
-
-        TestInfoSet(final Set<TestInfo> infos) {
-            this.infos = new TreeSet<>(infos);
-        }
-
-        @Override
-        public Iterator<TestInfo> iterator() {
-            return Iterators.readOnly(
-                    this.infos.iterator()
-            );
-        }
-
-        @Override
-        public int size() {
-            return this.infos.size();
-        }
-
-        @Override
-        public TestInfoSet setElements(final Set<TestInfo> infos) {
-            return new TestInfoSet(
-                    new TreeSet<>(infos)
-            );
-        }
-
-        @Override
-        public Set<TestInfo> toSet() {
-            return new TreeSet<>(this.infos);
-        }
-
-        private final Set<TestInfo> infos;
-    }
-
-    static class UnknownTestNameException extends IllegalArgumentException {
+    static class UnknownStringNameException extends IllegalArgumentException {
         private static final long serialVersionUID = 1;
 
-        UnknownTestNameException(final String message) {
+        UnknownStringNameException(final String message) {
             super(message);
         }
     }

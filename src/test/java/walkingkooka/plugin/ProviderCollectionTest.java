@@ -24,25 +24,20 @@ import walkingkooka.collect.list.Lists;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
-import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.Url;
-import walkingkooka.plugin.ProviderCollectionTest.TestPluginInfo;
 import walkingkooka.plugin.ProviderCollectionTest.TestProvider;
-import walkingkooka.plugin.ProviderCollectionTest.TestSelector;
 import walkingkooka.plugin.ProviderCollectionTest.TestService;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
-import walkingkooka.text.printer.IndentingPrinter;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class ProviderCollectionTest implements ClassTesting<ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService>>,
-        ToStringTesting<ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService>> {
+public final class ProviderCollectionTest implements ClassTesting<ProviderCollection<TestProvider, StringName, TestPluginInfo, TestPluginSelector, TestService>>,
+        ToStringTesting<ProviderCollection<TestProvider, StringName, TestPluginInfo, TestPluginSelector, TestService>> {
 
     private final static TestService SERVICE1 = new TestService();
 
@@ -50,7 +45,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
     private final static TestService SERVICE3 = new TestService();
 
-    private final static ProviderCollectionProviderGetter<TestProvider, StringName, TestSelector, TestService> PROVIDER_GETTER = new ProviderCollectionProviderGetter<>() {
+    private final static ProviderCollectionProviderGetter<TestProvider, StringName, TestPluginSelector, TestService> PROVIDER_GETTER = new ProviderCollectionProviderGetter<>() {
         @Override
         public TestService get(final TestProvider provider,
                                final StringName name,
@@ -65,7 +60,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
         @Override
         public TestService get(final TestProvider provider,
-                               final TestSelector selector,
+                               final TestPluginSelector selector,
                                final ProviderContext context) {
             return provider.get(
                     selector,
@@ -183,7 +178,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     @Test
     public void testGetSelector() {
         this.getSelectorAndCheck(
-                new TestSelector(SERVICE_1_NAME),
+                new TestPluginSelector(SERVICE_1_NAME),
                 SERVICE1
         );
     }
@@ -191,7 +186,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     @Test
     public void testGetSelector2() {
         this.getSelectorAndCheck(
-                new TestSelector(SERVICE_2_NAME),
+                new TestPluginSelector(SERVICE_2_NAME),
                 SERVICE2
         );
     }
@@ -199,14 +194,14 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     @Test
     public void testGetSelector3() {
         this.getSelectorAndCheck(
-                new TestSelector(SERVICE_3_NAME),
+                new TestPluginSelector(SERVICE_3_NAME),
                 SERVICE3
         );
     }
 
     @Test
     public void testGetSelectorDuplicate() {
-        final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider = ProviderCollection.with(
+        final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestPluginSelector, TestService> provider = ProviderCollection.with(
                 PROVIDER_GETTER,
                 INFO_GETTER,
                 PROVIDED_LABEL,
@@ -220,12 +215,12 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
         this.getSelectorFails(
                 provider,
-                new TestSelector(SERVICE_1_NAME)
+                new TestPluginSelector(SERVICE_1_NAME)
         );
 
         this.getSelectorAndCheck(
                 provider,
-                new TestSelector(SERVICE_2_NAME),
+                new TestPluginSelector(SERVICE_2_NAME),
                 SERVICE2
         );
     }
@@ -233,19 +228,19 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     @Test
     public void testGetSelectorUnknownFails() {
         this.getSelectorFails(
-                new TestSelector("unknown")
+                new TestPluginSelector("unknown")
         );
     }
 
-    private void getSelectorFails(final TestSelector selector) {
+    private void getSelectorFails(final TestPluginSelector selector) {
         this.getSelectorFails(
                 this.createProvider(),
                 selector
         );
     }
 
-    private void getSelectorFails(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
-                                  final TestSelector selector) {
+    private void getSelectorFails(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestPluginSelector, TestService> provider,
+                                  final TestPluginSelector selector) {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> provider.get(
@@ -255,7 +250,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         );
     }
 
-    private void getSelectorAndCheck(final TestSelector selector,
+    private void getSelectorAndCheck(final TestPluginSelector selector,
                                      final TestService expected) {
         this.getSelectorAndCheck(
                 this.createProvider(),
@@ -264,8 +259,8 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         );
     }
 
-    private void getSelectorAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
-                                     final TestSelector selector,
+    private void getSelectorAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestPluginSelector, TestService> provider,
+                                     final TestPluginSelector selector,
                                      final TestService expected) {
         this.checkEquals(
                 expected,
@@ -316,7 +311,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
     @Test
     public void testGetNameDuplicateFails() {
-        final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider = ProviderCollection.with(
+        final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestPluginSelector, TestService> provider = ProviderCollection.with(
                 PROVIDER_GETTER,
                 INFO_GETTER,
                 PROVIDED_LABEL,
@@ -351,7 +346,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         );
     }
 
-    private void getNameFails(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
+    private void getNameFails(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestPluginSelector, TestService> provider,
                               final StringName name,
                               final List<?> values) {
         assertThrows(
@@ -385,7 +380,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         );
     }
 
-    private void getNameAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
+    private void getNameAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestPluginSelector, TestService> provider,
                                  final StringName name,
                                  final List<?> values,
                                  final TestService expected) {
@@ -405,9 +400,9 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     @Test
     public void TestInfos() {
         this.infosAndCheck(
-                new TestPluginInfo(SERVICE_1_NAME),
-                new TestPluginInfo(SERVICE_2_NAME),
-                new TestPluginInfo(SERVICE_3_NAME)
+                testPluginInfo(SERVICE_1_NAME),
+                testPluginInfo(SERVICE_2_NAME),
+                testPluginInfo(SERVICE_3_NAME)
         );
     }
 
@@ -418,7 +413,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         final String url3 = "https://example.com/service-3";
         final String url4 = "https://example.com/service-4";
 
-        final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> collection = ProviderCollection.with(
+        final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestPluginSelector, TestService> collection = ProviderCollection.with(
                 PROVIDER_GETTER,
                 INFO_GETTER,
                 PROVIDED_LABEL,
@@ -432,16 +427,16 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
         this.infosAndCheck(
                 collection,
-                new TestPluginInfo(SERVICE_1_NAME, url1),
-                new TestPluginInfo(SERVICE_2_NAME, url2),
-                new TestPluginInfo(SERVICE_3_NAME, url3),
-                new TestPluginInfo(SERVICE_1_NAME, url4)
+                testPluginInfo(SERVICE_1_NAME, url1),
+                testPluginInfo(SERVICE_2_NAME, url2),
+                testPluginInfo(SERVICE_3_NAME, url3),
+                testPluginInfo(SERVICE_1_NAME, url4)
         );
     }
 
     @Test
     public void TestInfosMissingFromGet() {
-        final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> collection = ProviderCollection.with(
+        final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestPluginSelector, TestService> collection = ProviderCollection.with(
                 PROVIDER_GETTER,
                 INFO_GETTER,
                 PROVIDED_LABEL,
@@ -454,9 +449,9 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
 
         this.infosAndCheck(
                 collection,
-                new TestPluginInfo(SERVICE_1_NAME),
-                new TestPluginInfo(SERVICE_2_NAME),
-                new TestPluginInfo(SERVICE_3_NAME)
+                testPluginInfo(SERVICE_1_NAME),
+                testPluginInfo(SERVICE_2_NAME),
+                testPluginInfo(SERVICE_3_NAME)
         );
     }
 
@@ -476,7 +471,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         );
     }
 
-    private void infosAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
+    private void infosAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestPluginSelector, TestService> provider,
                                final TestPluginInfo... infos) {
         this.infosAndCheck(
                 provider,
@@ -484,7 +479,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         );
     }
 
-    private void infosAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> provider,
+    private void infosAndCheck(final ProviderCollection<TestProvider, StringName, TestPluginInfo, TestPluginSelector, TestService> provider,
                                final Set<TestPluginInfo> infos) {
         this.checkEquals(
                 infos,
@@ -493,7 +488,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         );
     }
 
-    private ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService> createProvider() {
+    private ProviderCollection<TestProvider, StringName, TestPluginInfo, TestPluginSelector, TestService> createProvider() {
         return ProviderCollection.with(
                 PROVIDER_GETTER,
                 INFO_GETTER,
@@ -521,15 +516,15 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
                      final TestService service) {
             this.name = Names.string(name);
             this.info = null == url ?
-                    new TestPluginInfo(name) :
-                    new TestPluginInfo(name, url);
+                    testPluginInfo(name) :
+                    testPluginInfo(name, url);
             this.service = service;
         }
 
-        public TestService get(final TestSelector selector,
+        public TestService get(final TestPluginSelector selector,
                                final ProviderContext context) {
             return this.get(
-                    selector.name,
+                    selector.name(),
                     VALUES,
                     context
             );
@@ -557,118 +552,19 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
         final StringName name;
     }
 
-    static class TestSelector implements PluginSelectorLike<StringName> {
-
-        TestSelector(final String name) {
-            this.name = Names.string(name);
-        }
-
-        @Override
-        public StringName name() {
-            return this.name;
-        }
-
-        @Override
-        public TestSelector setName(final StringName name) {
-            throw new UnsupportedOperationException();
-        }
-
-        private StringName name;
-
-        @Override
-        public String text() {
-            return "";
-        }
-
-        @Override
-        public TestSelector setText(final String text) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public TestSelector setValues(final List<?> values) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void printTree(final IndentingPrinter printer) {
-            printer.println(this.name.value());
-        }
-
-        @Override
-        public String toString() {
-            return this.name.toString();
-        }
+    private static TestPluginInfo testPluginInfo(final String name) {
+        return testPluginInfo(
+                name,
+                "https://example.com/" + name
+        );
     }
 
-    static class TestPluginInfo implements PluginInfoLike<TestPluginInfo, StringName> {
-
-        TestPluginInfo(final String name) {
-            this(
-                    name,
-                    "https://example.com/" + name
-            );
-        }
-
-        TestPluginInfo(final String name,
-                       final String url) {
-            this(
-                    Url.parseAbsolute(url),
-                    Names.string(name)
-            );
-        }
-
-        TestPluginInfo(final AbsoluteUrl url,
-                       final StringName name) {
-            this.name = name;
-            this.url = url;
-        }
-
-        @Override
-        public StringName name() {
-            return this.name;
-        }
-
-        @Override
-        public TestPluginInfo setName(final StringName name) {
-            Objects.requireNonNull(name, "name");
-
-            return this.name.equals(name) ?
-                    this :
-                    new TestPluginInfo(
-                            this.url,
-                            name
-                    );
-        }
-
-        private StringName name;
-
-        @Override
-        public AbsoluteUrl url() {
-            return this.url;
-        }
-
-        private final AbsoluteUrl url;
-
-        @Override
-        public int hashCode() {
-            return this.toString().hashCode();
-        }
-
-        @Override
-        public boolean equals(final Object other) {
-            return this == other ||
-                    other instanceof TestPluginInfo && this.equals0((TestPluginInfo) other);
-        }
-
-        private boolean equals0(final TestPluginInfo other) {
-            return this.toString().equals(other.toString());
-        }
-
-        @Override
-        public String toString() {
-            return this.name + " " + this.url;
-        }
+    private static TestPluginInfo testPluginInfo(final String name,
+                                                 final String url) {
+        return new TestPluginInfo(
+                Url.parseAbsolute(url),
+                Names.string(name)
+        );
     }
 
     // toString.........................................................................................................
@@ -689,7 +585,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
     // ClassTesting.....................................................................................................
 
     @Override
-    public Class<ProviderCollection<TestProvider, StringName, TestPluginInfo, TestSelector, TestService>> type() {
+    public Class<ProviderCollection<TestProvider, StringName, TestPluginInfo, TestPluginSelector, TestService>> type() {
         return Cast.to(ProviderCollection.class);
     }
 

@@ -20,25 +20,21 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.collect.set.Sets;
-import walkingkooka.naming.Name;
-import walkingkooka.plugin.FilteredProviderGuardTest.TestName;
-import walkingkooka.plugin.FilteredProviderGuardTest.TestSelector;
+import walkingkooka.naming.Names;
+import walkingkooka.naming.StringName;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
-import walkingkooka.text.CaseSensitivity;
-import walkingkooka.text.printer.IndentingPrinter;
 
-import java.util.List;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class FilteredProviderGuardTest implements ClassTesting2<FilteredProviderGuard<TestName, TestSelector>> {
+public final class FilteredProviderGuardTest implements ClassTesting2<FilteredProviderGuard<StringName, TestPluginSelector>> {
 
-    private final static TestName NAME = new TestName("Hello123");
+    private final static StringName NAME = Names.string("Hello123");
 
-    private final static Function<TestName, RuntimeException> UNKNOWN = (n) -> new IllegalArgumentException(
-            "Unknown TestName " + n
+    private final static Function<StringName, RuntimeException> UNKNOWN = (n) -> new IllegalArgumentException(
+            "Unknown StringName " + n
     );
 
     @Test
@@ -89,11 +85,11 @@ public final class FilteredProviderGuardTest implements ClassTesting2<FilteredPr
     public void testNameUnknownFails() {
         final IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
-                () -> this.guard().name(new TestName("Unknown123"))
+                () -> this.guard().name(Names.string("Unknown123"))
         );
 
         this.checkEquals(
-                "Unknown TestName Unknown123",
+                "Unknown StringName Unknown123",
                 thrown.getMessage()
         );
     }
@@ -104,7 +100,7 @@ public final class FilteredProviderGuardTest implements ClassTesting2<FilteredPr
     public void testSelector() {
         this.guard()
                 .selector(
-                        new TestSelector(
+                        new TestPluginSelector(
                                 NAME
                         )
                 );
@@ -130,19 +126,19 @@ public final class FilteredProviderGuardTest implements ClassTesting2<FilteredPr
                 IllegalArgumentException.class,
                 () -> this.guard()
                         .selector(
-                                new TestSelector(
-                                        new TestName("Unknown123")
+                                new TestPluginSelector(
+                                        Names.string("Unknown123")
                                 )
                         )
         );
 
         this.checkEquals(
-                "Unknown TestName Unknown123",
+                "Unknown StringName Unknown123",
                 thrown.getMessage()
         );
     }
 
-    private FilteredProviderGuard<TestName, TestSelector> guard() {
+    private FilteredProviderGuard<StringName, TestPluginSelector> guard() {
         return FilteredProviderGuard.with(
                 Sets.of(
                         NAME
@@ -154,100 +150,12 @@ public final class FilteredProviderGuardTest implements ClassTesting2<FilteredPr
     // class............................................................................................................
 
     @Override
-    public Class<FilteredProviderGuard<TestName, TestSelector>> type() {
+    public Class<FilteredProviderGuard<StringName, TestPluginSelector>> type() {
         return Cast.to(FilteredProviderGuard.class);
     }
 
     @Override
     public JavaVisibility typeVisibility() {
         return JavaVisibility.PUBLIC;
-    }
-
-    public static class TestName implements Name,
-            Comparable<TestName> {
-
-        TestName(final String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String value() {
-            return this.name;
-        }
-
-        private final String name;
-
-        @Override
-        public int compareTo(final TestName other) {
-            return this.name.compareTo(other.name);
-        }
-
-        @Override
-        public int hashCode() {
-            return this.name.hashCode();
-        }
-
-        @Override
-        public boolean equals(final Object other) {
-            return this == other || other instanceof TestName && this.equals0((TestName) other);
-        }
-
-        private boolean equals0(final TestName other) {
-            return this.compareTo(other) == 0;
-        }
-
-        @Override
-        public String toString() {
-            return this.name.toString();
-        }
-
-        @Override
-        public CaseSensitivity caseSensitivity() {
-            return CaseSensitivity.SENSITIVE;
-        }
-    }
-
-    public static class TestSelector implements PluginSelectorLike<TestName> {
-
-        TestSelector(final TestName name) {
-            this.name = name;
-        }
-
-        @Override
-        public TestName name() {
-            return this.name;
-        }
-
-        private final TestName name;
-
-        @Override
-        public PluginSelectorLike<TestName> setName(final TestName name) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public String text() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public PluginSelectorLike<TestName> setText(final String text) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public PluginSelectorLike<TestName> setValues(List<?> values) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void printTree(final IndentingPrinter printer) {
-            printer.println(this.name().toString());
-        }
-
-        @Override
-        public String toString() {
-            return this.name().toString();
-        }
     }
 }
