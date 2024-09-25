@@ -26,6 +26,7 @@ import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.plugin.PlugInfoLikeTestingTest.TestPluginInfoLike;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.Objects;
@@ -97,50 +98,62 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
     public static class TestPluginInfoLike implements PluginInfoLike<TestPluginInfoLike, StringName> {
 
         public static TestPluginInfoLike parse(final String text) {
-            return PluginInfoLike.parse(
-                    text,
-                    Names::string,
-                    TestPluginInfoLike::new
+            return new TestPluginInfoLike(
+                    PluginInfo.parse(
+                            text,
+                            Names::string
+                    )
             );
         }
 
         TestPluginInfoLike(final AbsoluteUrl url,
                            final StringName name) {
-            Objects.requireNonNull(url, "url");
-            Objects.requireNonNull(name, "name");
-            this.url = url;
-            this.name = name;
+            this(
+                    PluginInfo.with(
+                    url,
+                    name
+                    )
+            );
+        }
+
+        private TestPluginInfoLike(final PluginInfo<StringName> info) {
+            Objects.requireNonNull(info, "info");
+            this.info = info;
         }
 
         @Override
         public StringName name() {
-            return this.name;
+            return this.info.name();
         }
 
         @Override
         public TestPluginInfoLike setName(final StringName name) {
-            Objects.requireNonNull(name, "name");
-
-            return this.name.equals(name) ?
+            return this.name().equals(name) ?
                     this :
                     new TestPluginInfoLike(
-                            this.url,
-                            name
+                            this.info.setName(name)
                     );
         }
 
-        private final StringName name;
-
         @Override
         public AbsoluteUrl url() {
-            return this.url;
+            return this.info.url();
         }
 
-        private final AbsoluteUrl url;
+        private final PluginInfo<StringName> info;
+
+        // Comparable...................................................................................................
+
+        @Override
+        public int compareTo(final TestPluginInfoLike other) {
+            return this.info.compareTo(other.info);
+        }
+
+        // Object.......................................................................................................
 
         @Override
         public int hashCode() {
-            return Objects.hash(this.url, this.name);
+            return this.info.hashCode();
         }
 
         @Override
@@ -151,13 +164,20 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
         }
 
         private boolean equals0(final TestPluginInfoLike other) {
-            return this.url.equals(other.url) &&
-                    this.name.equals(other.name);
+            return this.info.equals(other.info);
         }
 
         @Override
         public String toString() {
-            return this.url + " " + this.name;
+            return this.info.toString();
+        }
+
+        private JsonNode marshall(final JsonNodeMarshallContext context) {
+            Objects.requireNonNull(context, "context");
+
+            return JsonNode.string(
+                    this.toString()
+            );
         }
     }
 
@@ -165,11 +185,8 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
 
     static TestPluginInfoLike unmarshall2(final JsonNode node,
                                           final JsonNodeUnmarshallContext context) {
-        return PluginInfoLike.unmarshall(
-                node,
-                context,
-                Names::string,
-                TestPluginInfoLike::new
+        return TestPluginInfoLike.parse(
+                node.stringOrFail()
         );
     }
 

@@ -18,32 +18,77 @@
 package walkingkooka.plugin;
 
 import walkingkooka.Cast;
+import walkingkooka.compare.Comparators;
+import walkingkooka.naming.HasName;
+import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
-import walkingkooka.tree.json.JsonNode;
-import walkingkooka.tree.json.marshall.JsonNodeContext;
-import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
+import walkingkooka.net.HasAbsoluteUrl;
+import walkingkooka.net.http.server.hateos.HateosResource;
 
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
- * Provides a few bits of info describing a Plugin. The {@link AbsoluteUrl} must be a unique identifier,
- * with the {@link PluginInfo} being a shorter human friendly reference.
+ * Provides a unique identifying {@link AbsoluteUrl} and {@link Name}.
  */
-public final class PluginInfo implements PluginInfoLike<PluginInfo, PluginName> {
+public final class PluginInfo<N extends Name & Comparable<N>> implements HasName<N>,
+        HasAbsoluteUrl,
+        Comparable<PluginInfo<N>>,
+        HateosResource<N> {
 
-    public static PluginInfo with(final AbsoluteUrl url,
-                                  final PluginName name) {
-        return new PluginInfo(
+    /**
+     * Useful helper that should be used by {@link PluginInfoLike} implementation parse methods.
+     * <pre>
+     *     SPACE*
+     *     URL
+     *     SPACE+
+     *     NAME
+     *     SPACE*
+     * </pre>
+     */
+    static <N extends Name & Comparable<N>> PluginInfo<N> parse(final String text,
+                                                                final Function<String, N> nameFactory) {
+        final PluginInfoLikeParser<N> parser = PluginInfoLikeParser.with(
+                text,
+                nameFactory
+        );
+
+        parser.spaces();
+
+        final AbsoluteUrl url = parser.url();
+
+        parser.spaces();
+
+        final N name = parser.name();
+
+        parser.spaces();
+
+        if(false == parser.isEmpty()) {
+            parser.invalidCharacterException();
+        }
+
+        return new PluginInfo<>(
+                url,
+                name
+        );
+    }
+
+    public static <N extends Name & Comparable<N>> PluginInfo<N> with(final AbsoluteUrl url,
+                                                                      final N name) {
+        return new PluginInfo<>(
                 Objects.requireNonNull(url, "url"),
                 Objects.requireNonNull(name, "name")
         );
     }
 
     private PluginInfo(final AbsoluteUrl url,
-                       final PluginName name) {
+                       final N name) {
         this.url = url;
         this.name = name;
     }
+
+    // HasAbsoluteUrl...................................................................................................
 
     @Override
     public AbsoluteUrl url() {
@@ -55,29 +100,61 @@ public final class PluginInfo implements PluginInfoLike<PluginInfo, PluginName> 
     // HasName..........................................................................................................
 
     @Override
-    public PluginName name() {
+    public N name() {
         return this.name;
     }
 
-    @Override
-    public PluginInfo setName(final PluginName name) {
+    public PluginInfo<N> setName(final N name) {
         Objects.requireNonNull(name, "name");
 
         return this.name.equals(name) ?
                 this :
-                new PluginInfo(
+                new PluginInfo<>(
                         this.url,
                         name
                 );
     }
 
-    private final PluginName name;
+    private final N name;
+
+    // HateosResource...................................................................................................
+
+    @Override
+    public String hateosLinkId() {
+        return this.name()
+                .value();
+    }
+
+    @Override
+    public Optional<N> id() {
+        return Optional.of(
+                this.name()
+        );
+    }
 
     // Comparable.......................................................................................................
 
     @Override
-    public int compareTo(final PluginInfo other) {
-        return this.name.compareTo(other.name);
+    public int compareTo(final PluginInfo<N> other) {
+        int compare = this.name().compareTo(other.name());
+
+        if (Comparators.EQUAL == compare) {
+            final AbsoluteUrl url = this.url().normalize();
+            final AbsoluteUrl otherUrl = other.url().normalize();
+
+            compare = url.host()
+                    .compareTo(otherUrl.host());
+            if (Comparators.EQUAL == compare) {
+                compare = url.relativeUrl()
+                        .toString()
+                        .compareTo(
+                                otherUrl.relativeUrl()
+                                        .toString()
+                        );
+            }
+        }
+
+        return compare;
     }
 
     // Object...........................................................................................................
@@ -97,7 +174,7 @@ public final class PluginInfo implements PluginInfoLike<PluginInfo, PluginName> 
                         this.equals0(Cast.to(other));
     }
 
-    private boolean equals0(final PluginInfo other) {
+    private boolean equals0(final PluginInfo<?> other) {
         return this.url.equals(other.url) &&
                 this.name.equals(other.name);
     }
@@ -105,26 +182,5 @@ public final class PluginInfo implements PluginInfoLike<PluginInfo, PluginName> 
     @Override
     public String toString() {
         return this.url + " " + this.name;
-    }
-
-    // Json.............................................................................................................
-
-    static PluginInfo unmarshall(final JsonNode node,
-                                 final JsonNodeUnmarshallContext context) {
-        return PluginInfoLike.unmarshall(
-                node,
-                context,
-                PluginName::with,
-                PluginInfo::with
-        );
-    }
-
-    static {
-        JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(PluginInfo.class),
-                PluginInfo::unmarshall,
-                PluginInfo::marshall,
-                PluginInfo.class
-        );
     }
 }
