@@ -23,6 +23,7 @@ import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.Url;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.Objects;
@@ -30,17 +31,12 @@ import java.util.Objects;
 public class TestPluginInfo implements PluginInfoLike<TestPluginInfo, StringName> {
 
     public static TestPluginInfo parse(final String text) {
-        return PluginInfoLike.parse(
-                text,
-                Names::string,
-                TestPluginInfo::new
+        return new TestPluginInfo(
+                PluginInfo.parse(
+                        text,
+                        Names::string
+                )
         );
-    }
-
-    TestPluginInfo(final AbsoluteUrl url,
-                   final StringName name) {
-        this.url = url;
-        this.name = name;
     }
 
     TestPluginInfo(final String url,
@@ -51,40 +47,50 @@ public class TestPluginInfo implements PluginInfoLike<TestPluginInfo, StringName
         );
     }
 
+    TestPluginInfo(final AbsoluteUrl url,
+                   final StringName name) {
+        this(PluginInfo.with(url, name));
+    }
+
+    TestPluginInfo(final PluginInfo<StringName> pluginInfo) {
+        this.pluginInfo = pluginInfo;
+    }
+
     @Override
     public StringName name() {
-        return this.name;
+        return this.pluginInfo.name();
     }
 
     @Override
     public TestPluginInfo setName(final StringName name) {
         Objects.requireNonNull(name, "name");
 
-        return this.name.equals(name) ?
+        return this.name().equals(name) ?
                 this :
                 new TestPluginInfo(
-                        this.url,
-                        name
+                        this.pluginInfo.setName(name)
                 );
     }
 
-    private final StringName name;
-
     @Override
     public AbsoluteUrl url() {
-        return this.url;
+        return this.pluginInfo.url();
     }
 
-    private final AbsoluteUrl url;
+    private final PluginInfo<StringName> pluginInfo;
+
+    // object.......................................................................................................
+
+    @Override
+    public int compareTo(final TestPluginInfo other) {
+        return this.pluginInfo.compareTo(other.pluginInfo);
+    }
 
     // object.......................................................................................................
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                this.url,
-                this.name
-        );
+        return this.pluginInfo.hashCode();
     }
 
     @Override
@@ -93,26 +99,25 @@ public class TestPluginInfo implements PluginInfoLike<TestPluginInfo, StringName
     }
 
     private boolean equals0(final TestPluginInfo other) {
-        return this.url.equals(other.url) &&
-                this.name.equals(other.name);
+        return this.pluginInfo.equals(other.pluginInfo);
     }
 
     @Override
     public String toString() {
-        return PluginInfoLike.toString(this);
+        return this.pluginInfo.toString();
     }
 
     // json.........................................................................................................
 
+    private JsonNode marshall(final JsonNodeMarshallContext context) {
+        Objects.requireNonNull(context, "context");
+        return JsonNode.string(this.toString());
+    }
+
     // @VisibleForTesting
     static TestPluginInfo unmarshall(final JsonNode node,
                                      final JsonNodeUnmarshallContext context) {
-        return PluginInfoLike.unmarshall(
-                node,
-                context,
-                Names::string,
-                TestPluginInfo::new
-        );
+        return TestPluginInfo.parse(node.stringOrFail());
     }
 
     static {

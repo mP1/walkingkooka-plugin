@@ -18,27 +18,23 @@
 package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.Cast;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.compare.ComparableTesting2;
 import walkingkooka.naming.HasNameTesting;
 import walkingkooka.net.AbsoluteUrl;
-import walkingkooka.net.HasAbsoluteUrl;
 import walkingkooka.net.HasAbsoluteUrlTesting;
 import walkingkooka.net.Url;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
-import walkingkooka.tree.json.JsonNode;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
-import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class PluginInfoTest implements ClassTesting2<PluginInfo>,
+public final class PluginInfoTest implements ClassTesting2<PluginInfo<PluginName>>,
         HasNameTesting<PluginName>,
-        HasAbsoluteUrlTesting<PluginInfo>,
-        HashCodeEqualsDefinedTesting2<PluginInfo>,
-        JsonNodeMarshallingTesting<PluginInfo>,
-        ComparableTesting2<PluginInfo> {
+        HasAbsoluteUrlTesting<PluginInfo<PluginName>>,
+        HashCodeEqualsDefinedTesting2<PluginInfo<PluginName>>,
+        ComparableTesting2<PluginInfo<PluginName>> {
 
     private final static AbsoluteUrl URL = Url.parseAbsolute("https://example.com");
 
@@ -89,7 +85,7 @@ public final class PluginInfoTest implements ClassTesting2<PluginInfo>,
     }
 
     @Override
-    public PluginInfo createObject() {
+    public PluginInfo<PluginName> createObject() {
         return PluginInfo.with(
                 URL,
                 NAME
@@ -109,32 +105,15 @@ public final class PluginInfoTest implements ClassTesting2<PluginInfo>,
     }
 
     @Override
-    public PluginInfo createComparable() {
-        return this.createObject();
-    }
-
-
-    // json.............................................................................................................
-
-    @Override
-    public PluginInfo unmarshall(final JsonNode json,
-                                 final JsonNodeUnmarshallContext context) {
-        return PluginInfo.unmarshall(
-                json,
-                context
-        );
-    }
-
-    @Override
-    public PluginInfo createJsonNodeMarshallingValue() {
+    public PluginInfo<PluginName> createComparable() {
         return this.createObject();
     }
 
     // ClassTesting.....................................................................................................
 
     @Override
-    public Class<PluginInfo> type() {
-        return PluginInfo.class;
+    public Class<PluginInfo<PluginName>> type() {
+        return Cast.to(PluginInfo.class);
     }
 
     @Override
