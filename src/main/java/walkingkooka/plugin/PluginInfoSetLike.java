@@ -59,16 +59,14 @@ public interface PluginInfoSetLike<S extends PluginInfoSetLike<S, I, N>, I exten
     /**
      * Returns a filtered {@link PluginInfoSetLike} only keeping {@link PluginInfoLike} that exist in the provider with the same {@link AbsoluteUrl}.
      */
-    default S filter(final S provider) {
-        Objects.requireNonNull(provider, "provider");
+    default S filter(final S infos) {
+        Objects.requireNonNull(infos, "infos");
 
-        final Set<AbsoluteUrl> providerUrls = provider.stream()
-                .map(HasAbsoluteUrl::url)
-                .collect(Collectors.toSet());
+        final Set<AbsoluteUrl> infoUrls = infos.url();
 
         return this.setElements(
                 this.stream()
-                        .filter(i -> providerUrls.contains(i.url()))
+                        .filter(i -> infoUrls.contains(i.url()))
                         .collect(Collectors.toSet())
         );
     }
