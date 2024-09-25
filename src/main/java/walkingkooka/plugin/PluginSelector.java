@@ -105,6 +105,17 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
         return this.name;
     }
 
+    public PluginSelector<N> setName(final N name) {
+        Objects.requireNonNull(name, "name");
+
+        return this.name.equals(name) ?
+                this :
+                new PluginSelector<>(
+                        name,
+                        text
+                );
+    }
+
     private final N name;
 
     /**

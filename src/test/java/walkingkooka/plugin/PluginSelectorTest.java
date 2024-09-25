@@ -103,6 +103,48 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         );
     }
 
+    // setName..........................................................................................................
+
+    @Test
+    public void testSetNameWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> PluginSelector.with(
+                        NAME,
+                        TEXT
+                ).setName(null)
+        );
+    }
+
+    @Test
+    public void testSetNameWithSame() {
+        final PluginSelector<StringName> selector = PluginSelector.with(
+                NAME,
+                TEXT
+        );
+        assertSame(
+                selector,
+                selector.setName(NAME)
+        );
+    }
+
+    @Test
+    public void testSetNameWithDifferent() {
+        final PluginSelector<StringName> selector = PluginSelector.with(
+                NAME,
+                TEXT
+        );
+        final StringName different = Names.string("different");
+
+        this.checkEquals(
+                PluginSelector.with(
+                        different,
+                        TEXT
+                ),
+                selector.setName(different)
+        );
+    }
+
     // setText..........................................................................................................
 
     @Test
