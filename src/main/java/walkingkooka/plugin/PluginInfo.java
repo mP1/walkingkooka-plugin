@@ -49,7 +49,7 @@ public final class PluginInfo<N extends Name & Comparable<N>> implements HasName
      */
     public static <N extends Name & Comparable<N>> PluginInfo<N> parse(final String text,
                                                                        final Function<String, N> nameFactory) {
-        final PluginInfoLikeParser<N> parser = PluginInfoLikeParser.with(
+        final PluginInfoParser<N> parser = PluginInfoParser.with(
                 text,
                 nameFactory
         );

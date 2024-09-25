@@ -33,21 +33,21 @@ import walkingkooka.text.cursor.parser.Parsers;
 import java.util.Objects;
 import java.util.function.Function;
 
-final class PluginInfoLikeParser<N extends Name & Comparable<N>> {
+final class PluginInfoParser<N extends Name & Comparable<N>> {
 
-    static <N extends Name & Comparable<N>> PluginInfoLikeParser<N> with(final String text,
-                                                                         final Function<String, N> name) {
+    static <N extends Name & Comparable<N>> PluginInfoParser<N> with(final String text,
+                                                                     final Function<String, N> name) {
         Objects.requireNonNull(text, "text");
         Objects.requireNonNull(name, "name");
 
-        return new PluginInfoLikeParser<>(
+        return new PluginInfoParser<>(
                 text,
                 name
         );
     }
 
-    private PluginInfoLikeParser(final String text,
-                                 final Function<String, N> name) {
+    private PluginInfoParser(final String text,
+                             final Function<String, N> name) {
         this.text = text;
         this.cursor = TextCursors.charSequence(text);
         this.name = name;

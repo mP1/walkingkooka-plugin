@@ -22,11 +22,11 @@ import walkingkooka.naming.StringName;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
 
-public final class PluginInfoLikeParserTest implements ClassTesting<PluginInfoLikeParser<StringName>> {
+public final class PluginInfoParserTest implements ClassTesting<PluginInfoParser<StringName>> {
 
     @Override
-    public Class<PluginInfoLikeParser<StringName>> type() {
-        return Cast.to(PluginInfoLikeParser.class);
+    public Class<PluginInfoParser<StringName>> type() {
+        return Cast.to(PluginInfoParser.class);
     }
 
     @Override
