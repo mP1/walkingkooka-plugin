@@ -30,12 +30,16 @@ import walkingkooka.text.cursor.parser.ParserContexts;
 import walkingkooka.text.cursor.parser.ParserToken;
 import walkingkooka.text.cursor.parser.Parsers;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 final class PluginInfoLikeParser<N extends Name & Comparable<N>> {
 
     static <N extends Name & Comparable<N>> PluginInfoLikeParser<N> with(final String text,
                                                                          final Function<String, N> name) {
+        Objects.requireNonNull(text, "text");
+        Objects.requireNonNull(name, "name");
+
         return new PluginInfoLikeParser<>(
                 text,
                 name

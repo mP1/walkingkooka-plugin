@@ -47,8 +47,8 @@ public final class PluginInfo<N extends Name & Comparable<N>> implements HasName
      *     SPACE*
      * </pre>
      */
-    static <N extends Name & Comparable<N>> PluginInfo<N> parse(final String text,
-                                                                final Function<String, N> nameFactory) {
+    public static <N extends Name & Comparable<N>> PluginInfo<N> parse(final String text,
+                                                                       final Function<String, N> nameFactory) {
         final PluginInfoLikeParser<N> parser = PluginInfoLikeParser.with(
                 text,
                 nameFactory
