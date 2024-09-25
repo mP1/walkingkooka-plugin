@@ -87,6 +87,7 @@ public class TestPluginInfo implements PluginInfoLike<TestPluginInfo, StringName
         );
     }
 
+    @Override
     public boolean equals(final Object other) {
         return this == other || other instanceof TestPluginInfo && this.equals0((TestPluginInfo) other);
     }
