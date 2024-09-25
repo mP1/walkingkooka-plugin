@@ -17,60 +17,13 @@
 
 package walkingkooka.plugin;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import walkingkooka.collect.iterator.Iterators;
-import walkingkooka.collect.list.Lists;
-import walkingkooka.collect.set.ImmutableSetDefaults;
 import walkingkooka.collect.set.Sets;
-import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
-import walkingkooka.net.AbsoluteUrl;
-import walkingkooka.net.Url;
-import walkingkooka.plugin.PluginInfoSetLikeTestingTest.TestPluginInfo;
-import walkingkooka.plugin.PluginInfoSetLikeTestingTest.TestPluginInfoSet;
 import walkingkooka.tree.json.JsonNode;
-import walkingkooka.tree.json.marshall.JsonNodeContext;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
-import java.util.AbstractSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
-
 public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTesting<TestPluginInfoSet, TestPluginInfo, StringName> {
-
-    @BeforeAll
-    public static void beforeAll() {
-        unregister.add(
-                JsonNodeContext.register(
-                        JsonNodeContext.computeTypeName(TestPluginInfo.class),
-                        TestPluginInfo::unmarshall,
-                        TestPluginInfo::marshall,
-                        TestPluginInfo.class
-                )
-        );
-
-        unregister.add(
-                JsonNodeContext.register(
-                        JsonNodeContext.computeTypeName(TestPluginInfoSet.class),
-                        TestPluginInfoSet::unmarshall,
-                        TestPluginInfoSet::marshall,
-                        TestPluginInfoSet.class
-                )
-        );
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        unregister.forEach(Runnable::run);
-    }
-
-    private final static List<Runnable> unregister = Lists.array();
 
     // parse............................................................................................................
 
@@ -240,7 +193,7 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
 
     @Override
     public TestPluginInfoSet unmarshall(final JsonNode node,
-                                        final JsonNodeUnmarshallContext context) {
+                                            final JsonNodeUnmarshallContext context) {
         return TestPluginInfoSet.unmarshall(
                 node,
                 context
@@ -250,158 +203,6 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
     @Override
     public Class<TestPluginInfoSet> type() {
         return TestPluginInfoSet.class;
-    }
-
-    static class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements PluginInfoSetLike<TestPluginInfoSet, TestPluginInfo, StringName>,
-            ImmutableSetDefaults<TestPluginInfoSet, TestPluginInfo> {
-
-        public final static TestPluginInfoSet EMPTY = new TestPluginInfoSet(Sets.empty());
-
-        static TestPluginInfoSet parse(final String text) {
-            return PluginInfoSetLike.parse(
-                    text,
-                    TestPluginInfo::parse,
-                    (s) -> s.isEmpty() ?
-                            EMPTY :
-                            new TestPluginInfoSet(s)
-            );
-        }
-
-        TestPluginInfoSet(final Set<TestPluginInfo> set) {
-            this.set = set;
-        }
-
-        @Override
-        public Iterator<TestPluginInfo> iterator() {
-            return Iterators.readOnly(this.set.iterator());
-        }
-
-        @Override
-        public int size() {
-            return this.set.size();
-        }
-
-        private final Set<TestPluginInfo> set;
-
-        // ImmutableSet.................................................................................................
-
-        @Override
-        public TestPluginInfoSet setElements(final Set<TestPluginInfo> elements) {
-            Objects.requireNonNull(elements, "elements");
-
-            final TestPluginInfoSet copy = new TestPluginInfoSet(elements);
-            return this.equals(copy) ? this : copy;
-        }
-
-        @Override
-        public Set<TestPluginInfo> toSet() {
-            return new TreeSet<>(this.set);
-        }
-
-        // json.........................................................................................................
-
-        private JsonNode marshall(final JsonNodeMarshallContext context) {
-            return context.marshallCollection(this);
-        }
-
-        // @VisibleForTesting
-        static TestPluginInfoSet unmarshall(final JsonNode node,
-                                            final JsonNodeUnmarshallContext context) {
-            return new TestPluginInfoSet(
-                    context.unmarshallSet(
-                            node,
-                            TestPluginInfo.class
-                    )
-            );
-        }
-    }
-
-    static class TestPluginInfo implements PluginInfoLike<TestPluginInfo, StringName> {
-
-        static TestPluginInfo parse(final String text) {
-            return PluginInfoLike.parse(
-                    text,
-                    Names::string,
-                    TestPluginInfo::new
-            );
-        }
-
-        TestPluginInfo(final AbsoluteUrl url,
-                       final StringName name) {
-            this.url = url;
-            this.name = name;
-        }
-
-        TestPluginInfo(final String url,
-                       final String name) {
-            this(
-                    Url.parseAbsolute(url),
-                    Names.string(name)
-            );
-        }
-
-        @Override
-        public StringName name() {
-            return this.name;
-        }
-
-        @Override
-        public TestPluginInfo setName(final StringName name) {
-            Objects.requireNonNull(name, "name");
-
-            return this.name.equals(name) ?
-                    this :
-                    new TestPluginInfo(
-                            this.url,
-                            name
-                    );
-        }
-
-        private final StringName name;
-
-        @Override
-        public AbsoluteUrl url() {
-            return this.url;
-        }
-
-        private final AbsoluteUrl url;
-
-        // object.......................................................................................................
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(
-                    this.url,
-                    this.name
-            );
-        }
-
-        public boolean equals(final Object other) {
-            return this == other || other instanceof TestPluginInfo && this.equals0((TestPluginInfo) other);
-        }
-
-        private boolean equals0(final TestPluginInfo other) {
-            return this.url.equals(other.url) &&
-                    this.name.equals(other.name);
-        }
-
-        @Override
-        public String toString() {
-            return PluginInfoLike.toString(this);
-        }
-
-        // json.........................................................................................................
-
-        // @VisibleForTesting
-        static TestPluginInfo unmarshall(final JsonNode node,
-                                         final JsonNodeUnmarshallContext context) {
-            return PluginInfoLike.unmarshall(
-                    node,
-                    context,
-                    Names::string,
-                    TestPluginInfo::new
-            );
-        }
     }
 
     // TreePrintable....................................................................................................
