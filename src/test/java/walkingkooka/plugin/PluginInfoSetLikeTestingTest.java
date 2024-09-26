@@ -200,6 +200,8 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
         );
     }
 
+    // class............................................................................................................
+
     @Override
     public Class<TestPluginInfoSet> type() {
         return TestPluginInfoSet.class;
@@ -212,8 +214,9 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
         this.treePrintAndCheck(
              this.createSet(),
              "TestPluginInfoSet\n" +
-                     "  https://example.com/test-plugin-1 test-plugin-1\n" +
-                     "  https://example.com/test-plugin-2 test-plugin-2\n"
+                     "  PluginInfoSet\n" +
+                     "    https://example.com/test-plugin-1 test-plugin-1\n" +
+                     "    https://example.com/test-plugin-2 test-plugin-2\n"
         );
     }
 }
