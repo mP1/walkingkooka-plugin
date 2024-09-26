@@ -17,9 +17,12 @@
 
 package walkingkooka.plugin;
 
-import walkingkooka.collect.iterator.Iterators;
+import walkingkooka.collect.set.ImmutableSet;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.StringName;
+import walkingkooka.net.AbsoluteUrl;
+import walkingkooka.net.UrlFragment;
+import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
@@ -28,52 +31,142 @@ import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.TreeSet;
 
 final class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements PluginInfoSetLike<TestPluginInfoSet, TestPluginInfo, StringName> {
 
     public final static TestPluginInfoSet EMPTY = new TestPluginInfoSet(Sets.empty());
 
     static TestPluginInfoSet parse(final String text) {
-        return PluginInfoSetLike.parse(
-                text,
-                TestPluginInfo::parse,
-                TestPluginInfoSet::new
+        return new TestPluginInfoSet(
+                PluginInfoSet.parse(
+                        text,
+                        TestPluginInfo::parse
+                )
         );
     }
 
-    TestPluginInfoSet(final Set<TestPluginInfo> infos) {
-        this.infos = new TreeSet<>(infos);
+    TestPluginInfoSet(final Set<TestPluginInfo> pluginInfoSet) {
+        this.pluginInfoSet = PluginInfoSet.with(pluginInfoSet);
+    }
+
+    // PluginInfoSetLike................................................................................................
+
+    @Override
+    public Set<StringName> names() {
+        return this.pluginInfoSet.names();
     }
 
     @Override
-    public Iterator<TestPluginInfo> iterator() {
-        return Iterators.readOnly(
-                this.infos.iterator()
+    public Set<AbsoluteUrl> url() {
+        return this.pluginInfoSet.url();
+    }
+
+    @Override
+    public UrlFragment urlFragment() {
+        return this.pluginInfoSet.urlFragment();
+    }
+
+    @Override
+    public TestPluginInfoSet filter(final TestPluginInfoSet infos) {
+        return this.setElements(
+                this.pluginInfoSet.filter(
+                        infos.pluginInfoSet
+                )
         );
     }
 
     @Override
-    public int size() {
-        return this.infos.size();
+    public TestPluginInfoSet renameIfPresent(TestPluginInfoSet renameInfos) {
+        return this.setElements(
+                this.pluginInfoSet.renameIfPresent(
+                        renameInfos.pluginInfoSet
+                )
+        );
+    }
+
+    @Override
+    public TestPluginInfoSet concat(final TestPluginInfo info) {
+        return this.setElements(
+                this.pluginInfoSet.concat(info)
+        );
+    }
+
+    @Override
+    public TestPluginInfoSet delete(final TestPluginInfo info) {
+        return this.setElements(
+                this.pluginInfoSet.delete(info)
+        );
+    }
+
+    @Override
+    public TestPluginInfoSet replace(final TestPluginInfo oldInfo,
+                                     final TestPluginInfo newInfo) {
+        return this.setElements(
+                this.pluginInfoSet.replace(
+                        oldInfo,
+                        newInfo
+                )
+        );
+    }
+
+    @Override
+    public ImmutableSet<TestPluginInfo> setElementsFailIfDifferent(final Set<TestPluginInfo> infos) {
+        return this.setElements(
+                this.pluginInfoSet.setElementsFailIfDifferent(
+                        infos
+                )
+        );
     }
 
     @Override
     public TestPluginInfoSet setElements(final Set<TestPluginInfo> infos) {
-        // not worried about taking defensive copy of infos before equals test.
-        return this.infos.equals(infos) ?
+        final TestPluginInfoSet after = new TestPluginInfoSet(
+                this.pluginInfoSet.setElements(infos)
+        );
+        return this.pluginInfoSet.equals(infos) ?
                 this :
-                new TestPluginInfoSet(
-                        new TreeSet<>(infos)
-                );
+                after;
     }
 
     @Override
     public Set<TestPluginInfo> toSet() {
-        return new TreeSet<>(this.infos);
+        return this.pluginInfoSet.toSet();
     }
 
-    private final Set<TestPluginInfo> infos;
+    // TreePrintable....................................................................................................
+
+    @Override
+    public String text() {
+        return this.pluginInfoSet.text();
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Override
+    public void printTree(final IndentingPrinter printer) {
+        printer.println(this.getClass().getSimpleName());
+        printer.indent();
+        {
+            this.pluginInfoSet.printTree(printer);
+        }
+        printer.outdent();
+    }
+
+    // AbstractSet......................................................................................................
+
+    @Override
+    public Iterator<TestPluginInfo> iterator() {
+        return this.pluginInfoSet.iterator();
+    }
+
+    @Override
+    public int size() {
+        return this.pluginInfoSet.size();
+    }
+
+    private final PluginInfoSet<StringName, TestPluginInfo> pluginInfoSet;
+
+    // json.............................................................................................................
 
     private JsonNode marshall(final JsonNodeMarshallContext context) {
         return context.marshallCollection(this);
