@@ -356,9 +356,8 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
                                 INFO2
                         )
                 ),
-                "PluginInfoSet\n" +
-                        "  https://example.com/a1 a1\n" +
-                        "  https://example.com/b2 b2\n"
+                        "https://example.com/a1 a1\n" +
+                        "https://example.com/b2 b2\n"
         );
     }
 

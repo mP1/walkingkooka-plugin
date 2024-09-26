@@ -281,18 +281,13 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
 
     @Override
     public void printTree(final IndentingPrinter printer) {
-        printer.println(this.getClass().getSimpleName());
-        printer.indent();
-        {
-            for (final I info : this) {
-                TreePrintable.printTreeOrToString(
-                        info,
-                        printer
-                );
-                printer.lineStart();
-            }
+        for (final I info : this) {
+            TreePrintable.printTreeOrToString(
+                    info,
+                    printer
+            );
+            printer.lineStart();
         }
-        printer.outdent();
     }
 
     // json.............................................................................................................
