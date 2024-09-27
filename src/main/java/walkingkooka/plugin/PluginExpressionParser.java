@@ -23,10 +23,13 @@ import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.naming.Name;
+import walkingkooka.net.AbsoluteUrl;
+import walkingkooka.net.Url;
 import walkingkooka.predicate.character.CharPredicates;
 import walkingkooka.text.CaseSensitivity;
 import walkingkooka.text.cursor.TextCursor;
 import walkingkooka.text.cursor.TextCursorLineInfo;
+import walkingkooka.text.cursor.TextCursorSavePoint;
 import walkingkooka.text.cursor.TextCursors;
 import walkingkooka.text.cursor.parser.DoubleParserToken;
 import walkingkooka.text.cursor.parser.DoubleQuotedParserToken;
@@ -165,6 +168,34 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
     private final static Parser<ParserContext> DOUBLE_QUOTED_STRING_LITERAL = Parsers.doubleQuoted();
 
     /**
+     * Tries to parse a url.
+     */
+    Optional<AbsoluteUrl> url() {
+        Optional<AbsoluteUrl> url;
+
+        final TextCursorSavePoint save = this.cursor.save();
+        try {
+            url = this.token(
+                    NON_SPACE_TOKEN,
+                    t -> Url.parseAbsolute(t.text())
+            );
+        } catch (final RuntimeException badUrl) {
+            save.restore();
+            url = Optional.empty();
+        }
+        return url;
+    }
+
+    /**
+     * Parsers a token being terminated by whitespace
+     */
+    private final static Parser<ParserContext> NON_SPACE_TOKEN = Parsers.stringCharPredicate(
+            CharPredicates.whitespace().negate(),
+            1,
+            Integer.MAX_VALUE
+    );
+
+    /**
      * Tries to parse an environmental variable returning its actual value from the {@link ProviderContext}.
      */
     Optional<Object> environmentValue() {
@@ -247,6 +278,6 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
 
     @Override
     public String toString() {
-        return this.text;
+        return this.cursor.toString();
     }
 }
