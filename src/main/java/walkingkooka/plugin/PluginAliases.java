@@ -49,20 +49,18 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
                                                                                                                                                                                              final BiFunction<TextCursor, ParserContext, Optional<N>> nameFactory,
                                                                                                                                                                                              final BiFunction<AbsoluteUrl, N, I> infoFactory,
                                                                                                                                                                                              final IS infos,
-                                                                                                                                                                                             final Function<String, S> selectorFactory,
-                                                                                                                                                                                             final ProviderContext context) {
+                                                                                                                                                                                             final Function<String, S> selectorFactory) {
         Objects.requireNonNull(text, "text");
         Objects.requireNonNull(nameFactory, "nameFactory");
         Objects.requireNonNull(infoFactory, "infoFactory");
         Objects.requireNonNull(infos, "infos");
         Objects.requireNonNull(selectorFactory, "selectorFactory");
-        Objects.requireNonNull(context, "context");
 
         return parse0(
                 PluginExpressionParser.with(
                         text,
                         nameFactory,
-                        context
+                        PluginAliasesProviderContext.INSTANCE
                 ),
                 infoFactory,
                 infos,

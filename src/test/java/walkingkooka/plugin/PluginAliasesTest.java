@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.collect.map.Maps;
 import walkingkooka.collect.set.Sets;
-import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.net.AbsoluteUrl;
@@ -99,19 +98,6 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
 
     private final static Function<String, TestPluginSelector> SELECTOR_FACTORY = TestPluginSelector::parse;
 
-    private final static ProviderContext CONTEXT = new FakeProviderContext() {
-
-        public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
-            return Cast.to(
-                    Optional.ofNullable(
-                            EnvironmentValueName.with("Magic").equals(name) ?
-                                    "MagicValue123" :
-                                    null
-                    )
-            );
-        }
-    };
-
     @Test
     public void testWithNullNameFactoryFails() {
         assertThrows(
@@ -121,8 +107,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         null,
                         INFO_FACTORY,
                         INFOS,
-                        SELECTOR_FACTORY,
-                        CONTEXT
+                        SELECTOR_FACTORY
                 )
         );
     }
@@ -136,8 +121,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         NAME_FACTORY,
                         null,
                         INFOS,
-                        SELECTOR_FACTORY,
-                        CONTEXT
+                        SELECTOR_FACTORY
                 )
         );
     }
@@ -151,8 +135,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         NAME_FACTORY,
                         INFO_FACTORY,
                         null,
-                        SELECTOR_FACTORY,
-                        CONTEXT
+                        SELECTOR_FACTORY
                 )
         );
     }
@@ -166,22 +149,6 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         NAME_FACTORY,
                         INFO_FACTORY,
                         INFOS,
-                        null,
-                        CONTEXT
-                )
-        );
-    }
-
-    @Test
-    public void testWithNullContextFails() {
-        assertThrows(
-                NullPointerException.class,
-                () -> PluginAliases.parse(
-                        TEXT,
-                        NAME_FACTORY,
-                        INFO_FACTORY,
-                        INFOS,
-                        SELECTOR_FACTORY,
                         null
                 )
         );
@@ -478,8 +445,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                 NAME_FACTORY,
                 INFO_FACTORY, // Info factory
                 infos,
-                SELECTOR_FACTORY,
-                CONTEXT
+                SELECTOR_FACTORY
         );
     }
 
