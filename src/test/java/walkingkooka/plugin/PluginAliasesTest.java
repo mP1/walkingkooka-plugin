@@ -97,7 +97,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
 
     private final static BiFunction<AbsoluteUrl, StringName, TestPluginInfo> INFO_FACTORY = TestPluginInfo::new;
 
-    private final static Function<String, TestPluginSelector> SELECTOR_PARSER = TestPluginSelector::parse;
+    private final static Function<String, TestPluginSelector> SELECTOR_FACTORY = TestPluginSelector::parse;
 
     private final static ProviderContext CONTEXT = new FakeProviderContext() {
 
@@ -121,7 +121,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         null,
                         INFO_FACTORY,
                         INFOS,
-                        SELECTOR_PARSER,
+                        SELECTOR_FACTORY,
                         CONTEXT
                 )
         );
@@ -136,7 +136,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         NAME_FACTORY,
                         null,
                         INFOS,
-                        SELECTOR_PARSER,
+                        SELECTOR_FACTORY,
                         CONTEXT
                 )
         );
@@ -151,14 +151,14 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         NAME_FACTORY,
                         INFO_FACTORY,
                         null,
-                        SELECTOR_PARSER,
+                        SELECTOR_FACTORY,
                         CONTEXT
                 )
         );
     }
 
     @Test
-    public void testWithNullSelectorParserFails() {
+    public void testWithNullSelectorFactoryFails() {
         assertThrows(
                 NullPointerException.class,
                 () -> PluginAliases.parse(
@@ -181,7 +181,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         NAME_FACTORY,
                         INFO_FACTORY,
                         INFOS,
-                        SELECTOR_PARSER,
+                        SELECTOR_FACTORY,
                         null
                 )
         );
@@ -478,7 +478,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                 NAME_FACTORY,
                 INFO_FACTORY, // Info factory
                 infos,
-                SELECTOR_PARSER,
+                SELECTOR_FACTORY,
                 CONTEXT
         );
     }
