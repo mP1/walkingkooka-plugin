@@ -24,4 +24,9 @@ import walkingkooka.text.printer.TreePrintableTesting;
 public interface ProviderContextTesting<C extends ProviderContext> extends ContextTesting<C>,
         EnvironmentContextTesting<C>,
         TreePrintableTesting {
+
+    @Override
+    default String typeNameSuffix() {
+        return ProviderContext.class.getSimpleName();
+    }
 }
