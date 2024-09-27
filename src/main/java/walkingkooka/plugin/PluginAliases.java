@@ -48,11 +48,15 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
     /**
      * Parses the given text which defines names, aliases, selectors and possibly URLs. Note that selectors are only validated for syntax, environmental value names are not validated.
      */
-    public static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> PluginAliases<N, I, IS, S> parse(final String text,
-                                                                                                                                                                                             final BiFunction<TextCursor, ParserContext, Optional<N>> nameFactory,
-                                                                                                                                                                                             final BiFunction<AbsoluteUrl, N, I> infoFactory,
-                                                                                                                                                                                             final IS infos,
-                                                                                                                                                                                             final Function<String, S> selectorFactory) {
+    public static <N extends Name & Comparable<N>,
+            I extends PluginInfoLike<I, N>,
+            IS extends PluginInfoSetLike<IS, I, N>,
+            S extends PluginSelectorLike<N>>
+    PluginAliases<N, I, IS, S> parse(final String text,
+                                     final BiFunction<TextCursor, ParserContext, Optional<N>> nameFactory,
+                                     final BiFunction<AbsoluteUrl, N, I> infoFactory,
+                                     final IS infos,
+                                     final Function<String, S> selectorFactory) {
         Objects.requireNonNull(text, "text");
         Objects.requireNonNull(nameFactory, "nameFactory");
         Objects.requireNonNull(infoFactory, "infoFactory");
