@@ -49,13 +49,13 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
                                                                                                                                                                                              final BiFunction<TextCursor, ParserContext, Optional<N>> nameFactory,
                                                                                                                                                                                              final BiFunction<AbsoluteUrl, N, I> infoFactory,
                                                                                                                                                                                              final IS infos,
-                                                                                                                                                                                             final Function<String, S> selectorParser,
+                                                                                                                                                                                             final Function<String, S> selectorFactory,
                                                                                                                                                                                              final ProviderContext context) {
         Objects.requireNonNull(text, "text");
         Objects.requireNonNull(nameFactory, "nameFactory");
         Objects.requireNonNull(infoFactory, "infoFactory");
         Objects.requireNonNull(infos, "infos");
-        Objects.requireNonNull(selectorParser, "selectorParser");
+        Objects.requireNonNull(selectorFactory, "selectorFactory");
         Objects.requireNonNull(context, "context");
 
         return parse0(
@@ -66,14 +66,14 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
                 ),
                 infoFactory,
                 infos,
-                selectorParser
+                selectorFactory
         );
     }
 
     private static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> PluginAliases<N, I, IS, S> parse0(final PluginExpressionParser<N> parser,
                                                                                                                                                                                                final BiFunction<AbsoluteUrl, N, I> infoFactory,
                                                                                                                                                                                                final IS infos,
-                                                                                                                                                                                               final Function<String, S> selectorParser) {
+                                                                                                                                                                                               final Function<String, S> selectorFactory) {
         final Function<N, I> nameToInfo = nameToInfo(infos);
         final Consumer<AbsoluteUrl> duplicateUrl = urlToInfo(infos);
 
@@ -104,7 +104,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
 
                 final Optional<S> maybeSelector = tryParseSelector(
                         parser,
-                        selectorParser
+                        selectorFactory
                 );
 
                 if (false == maybeSelector.isPresent()) {
@@ -218,7 +218,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
      * Tries to parse a selector expression returning a {@link PluginSelectorLike}.
      */
     private static <N extends Name & Comparable<N>, S extends PluginSelectorLike<N>> Optional<S> tryParseSelector(final PluginExpressionParser<N> parser,
-                                                                                                                  final Function<String, S> selectorParser) {
+                                                                                                                  final Function<String, S> selectorFactory) {
         final TextCursorSavePoint selectorStart = parser.cursor.save();
 
         S selector = null;
@@ -262,7 +262,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
                 }
             }
 
-            selector = selectorParser.apply(
+            selector = selectorFactory.apply(
                     selectorStart.textBetween()
                             .toString()
             );
