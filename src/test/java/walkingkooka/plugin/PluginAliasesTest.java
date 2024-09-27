@@ -24,16 +24,23 @@ import walkingkooka.collect.set.Sets;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
+import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.predicate.character.CharPredicates;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.CharSequences;
+import walkingkooka.text.cursor.TextCursor;
+import walkingkooka.text.cursor.parser.ParserContext;
 import walkingkooka.text.cursor.parser.ParserException;
 import walkingkooka.text.cursor.parser.Parsers;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginAliasesTest implements ParseStringTesting<PluginAliases<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>>,
         TreePrintableTesting,
@@ -73,6 +80,112 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                     INFO2
             )
     );
+
+    private final static String TEXT = "";
+
+    private final static BiFunction<TextCursor, ParserContext, Optional<StringName>> NAME_FACTORY = (t, c) -> Parsers.stringInitialAndPartCharPredicate(
+            CharPredicates.letter(),
+            CharPredicates.letterOrDigit(),
+            1,
+            32
+    ).parse(
+            t,
+            c
+    ).map(
+            tt -> Names.string(tt.text())
+    );
+
+    private final static BiFunction<AbsoluteUrl, StringName, TestPluginInfo> INFO_FACTORY = TestPluginInfo::new;
+
+    private final static Function<String, TestPluginSelector> SELECTOR_PARSER = TestPluginSelector::parse;
+
+    private final static ProviderContext CONTEXT = new FakeProviderContext() {
+
+        public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
+            return Cast.to(
+                    Optional.ofNullable(
+                            EnvironmentValueName.with("Magic").equals(name) ?
+                                    "MagicValue123" :
+                                    null
+                    )
+            );
+        }
+    };
+
+    @Test
+    public void testWithNullNameFactoryFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> PluginAliases.parse(
+                        TEXT,
+                        null,
+                        INFO_FACTORY,
+                        INFOS,
+                        SELECTOR_PARSER,
+                        CONTEXT
+                )
+        );
+    }
+
+    @Test
+    public void testWithNullInfoFactoryFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> PluginAliases.parse(
+                        TEXT,
+                        NAME_FACTORY,
+                        null,
+                        INFOS,
+                        SELECTOR_PARSER,
+                        CONTEXT
+                )
+        );
+    }
+
+    @Test
+    public void testWithNullInfosFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> PluginAliases.parse(
+                        TEXT,
+                        NAME_FACTORY,
+                        INFO_FACTORY,
+                        null,
+                        SELECTOR_PARSER,
+                        CONTEXT
+                )
+        );
+    }
+
+    @Test
+    public void testWithNullSelectorParserFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> PluginAliases.parse(
+                        TEXT,
+                        NAME_FACTORY,
+                        INFO_FACTORY,
+                        INFOS,
+                        null,
+                        CONTEXT
+                )
+        );
+    }
+
+    @Test
+    public void testWithNullContextFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> PluginAliases.parse(
+                        TEXT,
+                        NAME_FACTORY,
+                        INFO_FACTORY,
+                        INFOS,
+                        SELECTOR_PARSER,
+                        null
+                )
+        );
+    }
 
     @Override
     public void testParseStringEmptyFails() {
@@ -362,32 +475,11 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                                                                                          final TestPluginInfoSet infos) {
         return PluginAliases.parse(
                 text,
-                (t, c) -> Parsers.stringInitialAndPartCharPredicate(
-                        CharPredicates.letter(),
-                        CharPredicates.letterOrDigit(),
-                        1,
-                        32
-                ).parse(
-                        t,
-                        c
-                ).map(
-                        tt -> Names.string(tt.text())
-                ),
-                TestPluginInfo::new, // Info factory
+                NAME_FACTORY,
+                INFO_FACTORY, // Info factory
                 infos,
-                TestPluginSelector::parse,
-                new FakeProviderContext() {
-
-                    public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
-                        return Cast.to(
-                                Optional.ofNullable(
-                                        EnvironmentValueName.with("Magic").equals(name) ?
-                                                "MagicValue123" :
-                                                null
-                                )
-                        );
-                    }
-                }
+                SELECTOR_PARSER,
+                CONTEXT
         );
     }
 
