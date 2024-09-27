@@ -61,7 +61,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
 
     private final static StringName NAME = Names.string("magic-plugin-123");
 
-    private final static String TEXT = "@@";
+    private final static String TEXT = " @@";
 
     @Test
     public void testWithNullNameFails() {
@@ -529,8 +529,9 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
 
         this.checkEquals(
                 new InvalidCharacterException(
-                        text, text.indexOf(' ') + 1)
-                        .getMessage(),
+                        text,
+                        text.indexOf(' ')
+                ).getMessage(),
                 thrown.getMessage()
         );
     }
@@ -562,8 +563,8 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     @Test
     public void testEvaluateTextOpenParensFail() {
         this.evaluateTextFails(
-                NAME + " (",
-                "Invalid character '(' at 17 in \"magic-plugin-123 (\""
+                NAME + "(",
+                "Invalid character '(' at 16 in \"magic-plugin-123(\""
         );
     }
 
@@ -597,8 +598,8 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     @Test
     public void testEvaluateTextDoubleMissingClosingParensFail() {
         this.evaluateTextFails(
-                "super-magic-converter123 (1",
-                "Invalid character '1' at 26 in \"super-magic-converter123 (1\""
+                "super-magic-converter123(1",
+                "Invalid character '1' at 25 in \"super-magic-converter123(1\""
         );
     }
 
@@ -830,7 +831,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                         NAME,
                         TEXT
                 ),
-                "magic-plugin-123 @@"
+                NAME + " " + TEXT
         );
     }
 
@@ -881,7 +882,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     @Test
     public void testMarshall() {
         this.checkEquals(
-                JsonNode.string("magic-plugin-123 @@"),
+                JsonNode.string(NAME + " " + TEXT),
                 PluginSelector.with(
                         NAME,
                         TEXT
