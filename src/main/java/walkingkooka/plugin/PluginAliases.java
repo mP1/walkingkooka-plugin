@@ -45,6 +45,9 @@ import java.util.function.Function;
  */
 public final class PluginAliases<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> implements TreePrintable {
 
+    /**
+     * Parses the given text which defines names, aliases, selectors and possibly URLs. Note that selectors are only validated for syntax, environmental value names are not validated.
+     */
     public static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> PluginAliases<N, I, IS, S> parse(final String text,
                                                                                                                                                                                              final BiFunction<TextCursor, ParserContext, Optional<N>> nameFactory,
                                                                                                                                                                                              final BiFunction<AbsoluteUrl, N, I> infoFactory,
