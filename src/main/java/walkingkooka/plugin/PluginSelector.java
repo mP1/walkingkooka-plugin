@@ -61,13 +61,36 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
 
         final String textAfter;
         final String nameText;
-        final int space = text.indexOf(' ');
-        if (-1 == space) {
+        final int length = text.length();
+
+        int endOfName = -1;
+        int startOfText = -1;
+
+        for (int i = 0; i < length; i++) {
+            final char c = text.charAt(i);
+
+            switch (c) {
+                case ' ':
+                    endOfName = i;
+                    startOfText = i + 1;
+                    i = length;
+                    break;
+                case '(':
+                    endOfName = i;
+                    startOfText = i;
+                    i = length;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (-1 == endOfName) {
             nameText = text;
             textAfter = "";
         } else {
-            nameText = text.substring(0, space);
-            textAfter = text.substring(space + 1);
+            nameText = text.substring(0, endOfName);
+            textAfter = text.substring(startOfText);
         }
 
         try {
@@ -376,7 +399,7 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
                 pos
         ).setTextAndPosition(
                 this.toString(),
-                this.name().textLength() + pos + 1 // +1 or the SPACE following the name
+                this.name().textLength() + pos
         );
     }
     
@@ -407,12 +430,14 @@ public final class PluginSelector<N extends Name> implements HasName<N>, HasText
      */
     @Override
     public String toString() {
-        final String name = this.name.toString();
+        final String name = this.name.value();
         final String text = this.text;
 
         return text.isEmpty() ?
                 name :
-                name + " " + text;
+                text.startsWith("(") ?
+                        name.concat(text) :
+                        name + " " + text;
     }
 
     // TreePrintable....................................................................................................
