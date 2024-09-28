@@ -25,6 +25,7 @@ import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.HasText;
 import walkingkooka.text.printer.TreePrintable;
 
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -70,6 +71,8 @@ public interface PluginInfoSetLike<S extends PluginInfoSetLike<S, I, N>, I exten
 
     @Override
     S delete(final I info);
+
+    S deleteAll(final Collection<I> infos);
 
     @Override
     S replace(final I newInfo,
