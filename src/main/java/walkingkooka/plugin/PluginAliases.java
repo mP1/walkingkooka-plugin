@@ -89,9 +89,12 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
                                                                                final Function<String, S> selectorFactory) {
         final Set<AbsoluteUrl> urls = Sets.hash();
 
-        final Map<N, S> aliases = Maps.sorted();
+        final Map<N, S> nameToAlias = Maps.sorted();
         final Map<N, N> nameToName = Maps.sorted();
+
+        final Set<S> aliases = Sets.hash();
         final SortedSet<N> names = SortedSets.tree();
+
         final Set<I> infos = SortedSets.tree();
 
         // name
@@ -125,7 +128,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
                     final N name = nameOrAlias.get();
                     duplicateCheck(
                             name,
-                            aliases,
+                            nameToAlias,
                             nameToName
                     );
                     nameToName.put(
@@ -161,16 +164,17 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
 
                     duplicateCheck(
                             alias,
-                            aliases,
+                            nameToAlias,
                             nameToName
                     );
-                    aliases.put(
+                    nameToAlias.put(
                             alias,
                             selector
                     );
                     names.add(
                             selector.name()
                     );
+                    aliases.add(selector);
 
                     requireSeparator = true;
                 }
@@ -178,7 +182,8 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
         }
 
         return new PluginAliases<>(
-                aliases,
+                nameToAlias,
+                Sets.immutable(aliases),
                 nameToName,
                 SortedSets.immutable(names),
                 infoSetFactory.apply(infos)
@@ -250,13 +255,17 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
         }
     }
 
-    PluginAliases(final Map<N, S> aliases,
+    PluginAliases(final Map<N, S> nameToAliases,
+                  final Set<S> aliases,
                   final Map<N, N> nameToName,
                   final Set<N> names,
                   final IS infos) {
+        this.nameToAliases = nameToAliases;
         this.aliases = aliases;
+
         this.nameToName = nameToName;
         this.names = names;
+
         this.infos = infos;
     }
 
@@ -267,11 +276,20 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
         Objects.requireNonNull(name, "name");
 
         return Optional.ofNullable(
-                this.aliases.get(name)
+                this.nameToAliases.get(name)
         );
     }
 
-    private final Map<N, S> aliases;
+    private final Map<N, S> nameToAliases;
+
+    /**
+     * Getter that returns all aliases {@link PluginSelectorLike selectors}.
+     */
+    public Set<S> aliases() {
+        return this.aliases;
+    }
+
+    private final Set<S> aliases;
 
     /**
      * Queries the target name applying any aliases, or returning the name if no alias was present.
@@ -314,7 +332,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
     @Override
     public int hashCode() {
         return Objects.hash(
-                this.aliases,
+                this.nameToAliases,
                 this.names,
                 this.infos
         );
@@ -328,7 +346,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
     }
 
     private boolean equals0(final PluginAliases<?, ?, ?, ?> other) {
-        return this.aliases.equals(other.aliases) &&
+        return this.nameToAliases.equals(other.nameToAliases) &&
                 this.nameToName.equals(other.nameToName) &&
                 this.infos.equals(other.infos);
     }
@@ -338,7 +356,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
         final StringBuilder b = new StringBuilder();
 
         b.append("aliases: ");
-        b.append(this.aliases);
+        b.append(this.nameToAliases);
 
         b.append(", names: ");
         b.append(this.nameToName);
@@ -353,12 +371,12 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
 
     @Override
     public void printTree(final IndentingPrinter printer) {
-        if (false == this.aliases.isEmpty()) {
+        if (false == this.nameToAliases.isEmpty()) {
             printer.println("aliases");
             {
                 printer.indent();
 
-                for (final Entry<N, S> nameAndSelector : this.aliases.entrySet()) {
+                for (final Entry<N, S> nameAndSelector : this.nameToAliases.entrySet()) {
                     printer.println(nameAndSelector.getKey().toString());
                     printer.indent();
                     {

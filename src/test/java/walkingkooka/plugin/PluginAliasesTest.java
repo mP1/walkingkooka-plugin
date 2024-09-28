@@ -160,6 +160,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                 "",
                 new PluginAliases<>(
                         Maps.empty(), // alias -> selector
+                        Sets.empty(), // alias selectors
                         Maps.empty(), // name -> name
                         Sets.empty(), // names
                         TestPluginInfoSet.EMPTY
@@ -173,6 +174,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                 "plugin111",
                 new PluginAliases<>(
                         Maps.empty(), // alias -> selector
+                        Sets.empty(), // alias selectors
                         Maps.of(
                                 NAME1,
                                 NAME1
@@ -189,6 +191,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                 "plugin111 ",
                 new PluginAliases<>(
                         Maps.empty(), // alias -> selector
+                        Sets.empty(), // alias selectors
                         Maps.of(
                                 NAME1,
                                 NAME1
@@ -208,6 +211,9 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 INFO1_ALIAS.name(),
                                 SELECTOR1
                         ), // alias -> selector
+                        Sets.of(
+                                SELECTOR1
+                        ), // alias selectors
                         Maps.empty(), // name -> name
                         Sets.of(NAME1), // names
                         new TestPluginInfoSet(
@@ -244,6 +250,9 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 INFO1_ALIAS.name(),
                                 SELECTOR1.setText("()")
                         ), // alias -> selector
+                        Sets.of(
+                                SELECTOR1.setText("()")
+                        ), // alias selectors
                         Maps.empty(), // name -> name
                         Sets.of(NAME1), // names
                         new TestPluginInfoSet(
@@ -264,6 +273,9 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 INFO1_ALIAS.name(),
                                 SELECTOR1.setText("( )")
                         ), // alias -> selector
+                        Sets.of(
+                                SELECTOR1.setText("( )")
+                        ), // alias selectors
                         Maps.empty(), // name -> name
                         Sets.of(NAME1), // names
                         new TestPluginInfoSet(
@@ -284,6 +296,9 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 INFO1_ALIAS.name(),
                                 SELECTOR1.setText("(999)")
                         ), // alias -> selector
+                        Sets.of(
+                                SELECTOR1.setText("(999)")
+                        ), // alias selectors
                         Maps.empty(), // name -> name
                         Sets.of(NAME1), // names
                         new TestPluginInfoSet(
@@ -304,6 +319,9 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 INFO1_ALIAS.name(),
                                 SELECTOR1.setText("(\"Hello\")")
                         ), // alias -> selector
+                        Sets.of(
+                                SELECTOR1.setText("(\"Hello\")")
+                        ), // alias selectors
                         Maps.empty(), // name -> name
                         Sets.of(NAME1), // names
                         new TestPluginInfoSet(
@@ -324,6 +342,9 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 INFO1_ALIAS.name(),
                                 SELECTOR1.setText("(888,$Magic,\"Hello\")")
                         ), // alias -> selector
+                        Sets.of(
+                                SELECTOR1.setText("(888,$Magic,\"Hello\")")
+                        ), // alias selectors
                         Maps.empty(), // name -> name
                         Sets.of(NAME1), // names
                         new TestPluginInfoSet(
@@ -341,6 +362,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                 "plugin111, plugin222",
                 new PluginAliases<>(
                         Maps.empty(), // alias -> selector
+                        Sets.empty(), // alias selectors
                         Maps.of(
                                 NAME1,
                                 NAME1,
@@ -365,6 +387,9 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 INFO1_ALIAS.name(),
                                 SELECTOR1
                         ), // alias -> selector
+                        Sets.of(
+                                SELECTOR1
+                        ), // alias selectors
                         Maps.of(
                                 NAME2,
                                 NAME2
@@ -397,6 +422,10 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 INFO2_ALIAS.name(),
                                 SELECTOR2.setText("(\"Hello222\")")
                         ), // alias -> selector
+                        Sets.of(
+                                SELECTOR1.setText("(\"Hello111\")"),
+                                SELECTOR2.setText("(\"Hello222\")")
+                        ), // alias selectors
                         Maps.empty(), // name -> name
                         Sets.of(
                                 NAME1,
