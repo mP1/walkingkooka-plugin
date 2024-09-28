@@ -107,6 +107,13 @@ final class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements Plu
     }
 
     @Override
+    public TestPluginInfoSet deleteAll(final Collection<TestPluginInfo> infos) {
+        return this.setElements(
+                this.pluginInfoSet.deleteAll(infos)
+        );
+    }
+
+    @Override
     public TestPluginInfoSet replace(final TestPluginInfo oldInfo,
                                      final TestPluginInfo newInfo) {
         return this.setElements(
