@@ -89,7 +89,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
         final Map<N, S> aliases = Maps.sorted();
         final Map<N, N> nameToName = Maps.sorted();
         final SortedSet<N> names = SortedSets.tree();
-        final Set<I> newInfos = SortedSets.tree();
+        final Set<I> infos = SortedSets.tree();
 
         // name
         // alias-name SPACE name
@@ -148,7 +148,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
                             throw new IllegalArgumentException("Duplicate url " + url);
                         }
 
-                        newInfos.add(
+                        infos.add(
                                 infoFactory.apply(
                                         url,
                                         alias
@@ -178,7 +178,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
                 aliases,
                 nameToName,
                 SortedSets.immutable(names),
-                infoSetFactory.apply(newInfos)
+                infoSetFactory.apply(infos)
         );
     }
 
