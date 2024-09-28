@@ -80,10 +80,13 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
         );
     }
 
-    private static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> PluginAliases<N, I, IS, S> parse0(final PluginExpressionParser<N> parser,
-                                                                                                                                                                                               final BiFunction<AbsoluteUrl, N, I> infoFactory,
-                                                                                                                                                                                               final Function<Set<I>, IS> infoSetFactory,
-                                                                                                                                                                                               final Function<String, S> selectorFactory) {
+    private static <N extends Name & Comparable<N>,
+            I extends PluginInfoLike<I, N>,
+            IS extends PluginInfoSetLike<IS, I, N>,
+            S extends PluginSelectorLike<N>> PluginAliases<N, I, IS, S> parse0(final PluginExpressionParser<N> parser,
+                                                                               final BiFunction<AbsoluteUrl, N, I> infoFactory,
+                                                                               final Function<Set<I>, IS> infoSetFactory,
+                                                                               final Function<String, S> selectorFactory) {
         final Set<AbsoluteUrl> urls = Sets.hash();
 
         final Map<N, S> aliases = Maps.sorted();
