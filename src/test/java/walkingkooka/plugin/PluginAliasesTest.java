@@ -28,7 +28,6 @@ import walkingkooka.predicate.character.CharPredicates;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.test.ParseStringTesting;
-import walkingkooka.text.CharSequences;
 import walkingkooka.text.cursor.TextCursor;
 import walkingkooka.text.cursor.parser.ParserContext;
 import walkingkooka.text.cursor.parser.ParserException;
@@ -36,6 +35,7 @@ import walkingkooka.text.cursor.parser.Parsers;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -73,13 +73,6 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
             ""
     );
 
-    private final static TestPluginInfoSet INFOS = new TestPluginInfoSet(
-            Sets.of(
-                    INFO1,
-                    INFO2
-            )
-    );
-
     private final static String TEXT = "";
 
     private final static BiFunction<TextCursor, ParserContext, Optional<StringName>> NAME_FACTORY = (t, c) -> Parsers.stringInitialAndPartCharPredicate(
@@ -96,6 +89,8 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
 
     private final static BiFunction<AbsoluteUrl, StringName, TestPluginInfo> INFO_FACTORY = TestPluginInfo::new;
 
+    private final static Function<Set<TestPluginInfo>, TestPluginInfoSet> INFO_SET_FACTORY = TestPluginInfoSet::new;
+
     private final static Function<String, TestPluginSelector> SELECTOR_FACTORY = TestPluginSelector::parse;
 
     @Test
@@ -106,7 +101,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         TEXT,
                         null,
                         INFO_FACTORY,
-                        INFOS,
+                        INFO_SET_FACTORY,
                         SELECTOR_FACTORY
                 )
         );
@@ -120,14 +115,14 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         TEXT,
                         NAME_FACTORY,
                         null,
-                        INFOS,
+                        INFO_SET_FACTORY,
                         SELECTOR_FACTORY
                 )
         );
     }
 
     @Test
-    public void testWithNullInfosFails() {
+    public void testWithNullInfoSetFactoryFails() {
         assertThrows(
                 NullPointerException.class,
                 () -> PluginAliases.parse(
@@ -148,7 +143,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         TEXT,
                         NAME_FACTORY,
                         INFO_FACTORY,
-                        INFOS,
+                        INFO_SET_FACTORY,
                         null
                 )
         );
@@ -161,54 +156,50 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
 
     @Test
     public void testParseWithEmpty() {
-        this.parseStringAndCheck2(
+        this.parseStringAndCheck(
                 "",
-                INFOS,
                 new PluginAliases<>(
                         Maps.empty(), // alias -> selector
                         Maps.empty(), // name -> name
-                        INFOS
+                        TestPluginInfoSet.EMPTY
                 )
         );
     }
 
     @Test
     public void testParseWithName() {
-        this.parseStringAndCheck2(
+        this.parseStringAndCheck(
                 "plugin111",
-                INFOS,
                 new PluginAliases<>(
                         Maps.empty(), // alias -> selector
                         Maps.of(
                                 NAME1,
                                 NAME1
                         ), // name -> name
-                        INFOS
+                        TestPluginInfoSet.EMPTY
                 )
         );
     }
 
     @Test
     public void testParseWithNameSpace() {
-        this.parseStringAndCheck2(
+        this.parseStringAndCheck(
                 "plugin111 ",
-                INFOS,
                 new PluginAliases<>(
                         Maps.empty(), // alias -> selector
                         Maps.of(
                                 NAME1,
                                 NAME1
                         ), // name -> name
-                        INFOS
+                        TestPluginInfoSet.EMPTY
                 )
         );
     }
 
     @Test
     public void testParseWithAliasSpaceSelectorSpaceUrl() {
-        this.parseStringAndCheck2(
+        this.parseStringAndCheck(
                 "alias111 plugin111 https://example.com/alias111",
-                INFOS,
                 new PluginAliases<>(
                         Maps.of(
                                 INFO1_ALIAS.name(),
@@ -217,9 +208,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         Maps.empty(), // name -> name
                         new TestPluginInfoSet(
                                 Sets.of(
-                                        TestPluginInfo.parse("https://example.com/alias111 alias111"),
-                                        INFO1,
-                                        INFO2
+                                        TestPluginInfo.parse("https://example.com/alias111 alias111")
                                 )
                         )
                 )
@@ -244,9 +233,8 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
 
     @Test
     public void testParseWithAliasSpaceSelectorOpenCloseSpaceUrl() {
-        this.parseStringAndCheck2(
+        this.parseStringAndCheck(
                 "alias111 plugin111() https://example.com/alias111",
-                INFOS,
                 new PluginAliases<>(
                         Maps.of(
                                 INFO1_ALIAS.name(),
@@ -255,9 +243,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         Maps.empty(), // name -> name
                         new TestPluginInfoSet(
                                 Sets.of(
-                                        TestPluginInfo.parse("https://example.com/alias111 alias111"),
-                                        INFO1,
-                                        INFO2
+                                        TestPluginInfo.parse("https://example.com/alias111 alias111")
                                 )
                         )
                 )
@@ -266,9 +252,8 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
 
     @Test
     public void testParseWithAliasSpaceSelectorOpenSpaceCloseSpaceUrl() {
-        this.parseStringAndCheck2(
+        this.parseStringAndCheck(
                 "alias111 plugin111( ) https://example.com/alias111",
-                INFOS,
                 new PluginAliases<>(
                         Maps.of(
                                 INFO1_ALIAS.name(),
@@ -277,9 +262,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         Maps.empty(), // name -> name
                         new TestPluginInfoSet(
                                 Sets.of(
-                                        TestPluginInfo.parse("https://example.com/alias111 alias111"),
-                                        INFO1,
-                                        INFO2
+                                        TestPluginInfo.parse("https://example.com/alias111 alias111")
                                 )
                         )
                 )
@@ -288,9 +271,8 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
 
     @Test
     public void testParseWithAliasSpaceSelectorOpenNumberCloseSpaceUrl() {
-        this.parseStringAndCheck2(
+        this.parseStringAndCheck(
                 "alias111 plugin111(999) https://example.com/alias111",
-                INFOS,
                 new PluginAliases<>(
                         Maps.of(
                                 INFO1_ALIAS.name(),
@@ -299,9 +281,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         Maps.empty(), // name -> name
                         new TestPluginInfoSet(
                                 Sets.of(
-                                        TestPluginInfo.parse("https://example.com/alias111 alias111"),
-                                        INFO1,
-                                        INFO2
+                                        TestPluginInfo.parse("https://example.com/alias111 alias111")
                                 )
                         )
                 )
@@ -310,9 +290,8 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
 
     @Test
     public void testParseWithAliasSpaceSelectorOpenQuotedStringCloseSpaceUrl() {
-        this.parseStringAndCheck2(
+        this.parseStringAndCheck(
                 "alias111 plugin111(\"Hello\") https://example.com/alias111",
-                INFOS,
                 new PluginAliases<>(
                         Maps.of(
                                 INFO1_ALIAS.name(),
@@ -321,9 +300,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         Maps.empty(), // name -> name
                         new TestPluginInfoSet(
                                 Sets.of(
-                                        TestPluginInfo.parse("https://example.com/alias111 alias111"),
-                                        INFO1,
-                                        INFO2
+                                        TestPluginInfo.parse("https://example.com/alias111 alias111")
                                 )
                         )
                 )
@@ -332,9 +309,8 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
 
     @Test
     public void testParseWithAliasSpaceSelectorOpenNumberCommaEnvironmentalValueCommaQuotedStringCloseSpaceUrl() {
-        this.parseStringAndCheck2(
+        this.parseStringAndCheck(
                 "alias111 plugin111(888,$Magic,\"Hello\") https://example.com/alias111",
-                INFOS,
                 new PluginAliases<>(
                         Maps.of(
                                 INFO1_ALIAS.name(),
@@ -343,9 +319,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         Maps.empty(), // name -> name
                         new TestPluginInfoSet(
                                 Sets.of(
-                                        TestPluginInfo.parse("https://example.com/alias111 alias111"),
-                                        INFO1,
-                                        INFO2
+                                        TestPluginInfo.parse("https://example.com/alias111 alias111")
                                 )
                         )
                 )
@@ -354,9 +328,8 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
 
     @Test
     public void testParseWithNameCommaName() {
-        this.parseStringAndCheck2(
+        this.parseStringAndCheck(
                 "plugin111, plugin222",
-                INFOS,
                 new PluginAliases<>(
                         Maps.empty(), // alias -> selector
                         Maps.of(
@@ -365,21 +338,15 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 NAME2,
                                 NAME2
                         ), // name -> name
-                        new TestPluginInfoSet(
-                                Sets.of(
-                                        INFO1,
-                                        INFO2
-                                )
-                        )
+                        TestPluginInfoSet.EMPTY
                 )
         );
     }
 
     @Test
     public void testParseWithAliasCommaName() {
-        this.parseStringAndCheck2(
+        this.parseStringAndCheck(
                 "alias111 plugin111, plugin222",
-                INFOS,
                 new PluginAliases<>(
                         Maps.of(
                                 INFO1_ALIAS.name(),
@@ -389,12 +356,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 NAME2,
                                 NAME2
                         ), // name -> name
-                        new TestPluginInfoSet(
-                                Sets.of(
-                                        INFO1.setName(NAME1_ALIAS), // same url with alias
-                                        INFO2
-                                )
-                        )
+                        TestPluginInfoSet.EMPTY
                 )
         );
     }
@@ -403,15 +365,14 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
     public void testParseWithAliasCommaDuplicateAlias() {
         this.parseStringFails(
                 "alias111 plugin111(\"Hello111\"), alias111 plugin222(\"Hello222\")",
-                new IllegalArgumentException("Duplicate name \"alias111\"")
+                new IllegalArgumentException("Duplicate name: \"alias111\"")
         );
     }
 
     @Test
     public void testParseWithAliasSelectorCommaAliasSelector() {
-        this.parseStringAndCheck2(
+        this.parseStringAndCheck(
                 "alias111 plugin111(\"Hello111\"), alias222 plugin222(\"Hello222\")",
-                INFOS,
                 new PluginAliases<>(
                         Maps.of(
                                 INFO1_ALIAS.name(),
@@ -420,45 +381,19 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 SELECTOR2.setText("(\"Hello222\")")
                         ), // alias -> selector
                         Maps.empty(), // name -> name
-                        new TestPluginInfoSet(
-                                Sets.of(
-                                        INFO1.setName(NAME1_ALIAS),
-                                        INFO2.setName(NAME2_ALIAS)
-                                )
-                        )
+                        TestPluginInfoSet.EMPTY
                 )
         );
     }
 
     @Override
     public PluginAliases<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector> parseString(final String text) {
-        return this.parseString(
-                text,
-                INFOS
-        );
-    }
-
-    private PluginAliases<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector> parseString(final String text,
-                                                                                                         final TestPluginInfoSet infos) {
         return PluginAliases.parse(
                 text,
                 NAME_FACTORY,
                 INFO_FACTORY, // Info factory
-                infos,
+                INFO_SET_FACTORY,
                 SELECTOR_FACTORY
-        );
-    }
-
-    private void parseStringAndCheck2(final String text,
-                                      final TestPluginInfoSet infos,
-                                      final PluginAliases<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector> expected) {
-        this.checkEquals(
-                expected,
-                this.parseString(
-                        text,
-                        infos
-                ),
-                () -> "parse " + CharSequences.quoteAndEscape(text)
         );
     }
 
@@ -470,6 +405,49 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
     @Override
     public RuntimeException parseStringFailedExpected(final RuntimeException thrown) {
         return thrown;
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Test
+    public void testTreePrintWithOnlyNames() {
+        this.treePrintAndCheck(
+                this.parseString("name1, name2"),
+                "names\n" +
+                        "  name1\n" +
+                        "    name1\n" +
+                        "  name2\n" +
+                        "    name2\n"
+        );
+    }
+
+    @Test
+    public void testTreePrintWithOnlyNamesAndAlias() {
+        this.treePrintAndCheck(
+                this.parseString("name1, alias2 name2"),
+                "aliases\n" +
+                        "  alias2\n" +
+                        "    name2\n" +
+                        "names\n" +
+                        "  name1\n" +
+                        "    name1\n"
+        );
+    }
+
+    @Test
+    public void testTreePrintWithOnlyNamesAndAliasAndInfos() {
+        this.treePrintAndCheck(
+                this.parseString("name1, alias2 name2 https://example.com/name2"),
+                "aliases\n" +
+                        "  alias2\n" +
+                        "    name2\n" +
+                        "names\n" +
+                        "  name1\n" +
+                        "    name1\n" +
+                        "infos\n" +
+                        "  TestPluginInfoSet\n" +
+                        "    https://example.com/name2 alias2\n"
+        );
     }
 
     // class............................................................................................................
