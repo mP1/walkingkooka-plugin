@@ -21,12 +21,14 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.naming.Name;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.text.printer.TreePrintableTesting;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public interface PluginAliasesLikeTesting<L extends PluginAliasesLike<N, I, IS, S>, N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> extends ClassTesting2<L> {
+public interface PluginAliasesLikeTesting<L extends PluginAliasesLike<N, I, IS, S>, N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> extends ClassTesting2<L>,
+        TreePrintableTesting {
 
     @Test
     default void testNamesWithNullFails() {
