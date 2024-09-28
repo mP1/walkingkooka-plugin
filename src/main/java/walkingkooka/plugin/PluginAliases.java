@@ -256,6 +256,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
         }
     }
 
+    // @VisibleForTesting
     PluginAliases(final Map<N, S> nameToAliases,
                   final Set<N> aliases,
                   final Map<N, N> nameToName,
@@ -328,7 +329,6 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
     private final IS infos;
 
     // Object...........................................................................................................
-
 
     @Override
     public int hashCode() {
