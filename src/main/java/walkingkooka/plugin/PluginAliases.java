@@ -374,6 +374,8 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
 
     /**
      * Returns text which sorts all entries by alias or name.
+     * <br>
+     * This will be useful when marshalling an alias to JSON and using the parse method to read it back.
      */
     @Override
     public String text() {
