@@ -92,7 +92,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
         final Map<N, S> nameToAlias = Maps.sorted();
         final Map<N, N> nameToName = Maps.sorted();
 
-        final Set<S> aliases = Sets.hash();
+        final SortedSet<N> aliases = SortedSets.tree();
         final SortedSet<N> names = SortedSets.tree();
 
         final Set<I> infos = SortedSets.tree();
@@ -160,6 +160,8 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
                                         alias
                                 )
                         );
+                    } else {
+                        aliases.add(alias);
                     }
 
                     duplicateCheck(
@@ -174,7 +176,6 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
                     names.add(
                             selector.name()
                     );
-                    aliases.add(selector);
 
                     requireSeparator = true;
                 }
@@ -256,7 +257,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
     }
 
     PluginAliases(final Map<N, S> nameToAliases,
-                  final Set<S> aliases,
+                  final Set<N> aliases,
                   final Map<N, N> nameToName,
                   final Set<N> names,
                   final IS infos) {
@@ -283,13 +284,13 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
     private final Map<N, S> nameToAliases;
 
     /**
-     * Getter that returns all aliases {@link PluginSelectorLike selectors}.
+     * Getter that returns all alias {@link Name} for aliases without a {@link PluginInfoLike}.
      */
-    public Set<S> aliases() {
+    public Set<N> aliases() {
         return this.aliases;
     }
 
-    private final Set<S> aliases;
+    private final Set<N> aliases;
 
     /**
      * Queries the target name applying any aliases, or returning the name if no alias was present.

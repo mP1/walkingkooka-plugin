@@ -208,11 +208,11 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                 "alias111 plugin111 https://example.com/alias111",
                 new PluginAliases<>(
                         Maps.of(
-                                INFO1_ALIAS.name(),
+                                NAME1_ALIAS,
                                 SELECTOR1
                         ), // alias -> selector
                         Sets.of(
-                                SELECTOR1
+                                NAME1_ALIAS
                         ), // alias selectors
                         Maps.empty(), // name -> name
                         Sets.of(NAME1), // names
@@ -247,11 +247,11 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                 "alias111 plugin111() https://example.com/alias111",
                 new PluginAliases<>(
                         Maps.of(
-                                INFO1_ALIAS.name(),
+                                NAME1_ALIAS,
                                 SELECTOR1.setText("()")
                         ), // alias -> selector
                         Sets.of(
-                                SELECTOR1.setText("()")
+                                NAME1_ALIAS
                         ), // alias selectors
                         Maps.empty(), // name -> name
                         Sets.of(NAME1), // names
@@ -270,11 +270,11 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                 "alias111 plugin111( ) https://example.com/alias111",
                 new PluginAliases<>(
                         Maps.of(
-                                INFO1_ALIAS.name(),
+                                NAME1_ALIAS,
                                 SELECTOR1.setText("( )")
                         ), // alias -> selector
                         Sets.of(
-                                SELECTOR1.setText("( )")
+                                NAME1_ALIAS
                         ), // alias selectors
                         Maps.empty(), // name -> name
                         Sets.of(NAME1), // names
@@ -293,11 +293,11 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                 "alias111 plugin111(999) https://example.com/alias111",
                 new PluginAliases<>(
                         Maps.of(
-                                INFO1_ALIAS.name(),
+                                NAME1_ALIAS,
                                 SELECTOR1.setText("(999)")
                         ), // alias -> selector
                         Sets.of(
-                                SELECTOR1.setText("(999)")
+                                NAME1_ALIAS
                         ), // alias selectors
                         Maps.empty(), // name -> name
                         Sets.of(NAME1), // names
@@ -316,11 +316,11 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                 "alias111 plugin111(\"Hello\") https://example.com/alias111",
                 new PluginAliases<>(
                         Maps.of(
-                                INFO1_ALIAS.name(),
+                                NAME1_ALIAS,
                                 SELECTOR1.setText("(\"Hello\")")
                         ), // alias -> selector
                         Sets.of(
-                                SELECTOR1.setText("(\"Hello\")")
+                                NAME1_ALIAS
                         ), // alias selectors
                         Maps.empty(), // name -> name
                         Sets.of(NAME1), // names
@@ -339,11 +339,11 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                 "alias111 plugin111(888,$Magic,\"Hello\") https://example.com/alias111",
                 new PluginAliases<>(
                         Maps.of(
-                                INFO1_ALIAS.name(),
+                                NAME1_ALIAS,
                                 SELECTOR1.setText("(888,$Magic,\"Hello\")")
                         ), // alias -> selector
                         Sets.of(
-                                SELECTOR1.setText("(888,$Magic,\"Hello\")")
+                                NAME1_ALIAS
                         ), // alias selectors
                         Maps.empty(), // name -> name
                         Sets.of(NAME1), // names
@@ -384,11 +384,11 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                 "alias111 plugin111, plugin222",
                 new PluginAliases<>(
                         Maps.of(
-                                INFO1_ALIAS.name(),
+                                NAME1_ALIAS,
                                 SELECTOR1
                         ), // alias -> selector
                         Sets.of(
-                                SELECTOR1
+                                NAME1_ALIAS
                         ), // alias selectors
                         Maps.of(
                                 NAME2,
@@ -417,14 +417,14 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                 "alias111 plugin111(\"Hello111\"), alias222 plugin222(\"Hello222\")",
                 new PluginAliases<>(
                         Maps.of(
-                                INFO1_ALIAS.name(),
+                                NAME1_ALIAS,
                                 SELECTOR1.setText("(\"Hello111\")"),
-                                INFO2_ALIAS.name(),
+                                NAME2_ALIAS,
                                 SELECTOR2.setText("(\"Hello222\")")
                         ), // alias -> selector
                         Sets.of(
-                                SELECTOR1.setText("(\"Hello111\")"),
-                                SELECTOR2.setText("(\"Hello222\")")
+                                NAME1_ALIAS,
+                                NAME2_ALIAS
                         ), // alias selectors
                         Maps.empty(), // name -> name
                         Sets.of(
