@@ -161,6 +161,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                 new PluginAliases<>(
                         Maps.empty(), // alias -> selector
                         Maps.empty(), // name -> name
+                        Sets.empty(), // names
                         TestPluginInfoSet.EMPTY
                 )
         );
@@ -176,6 +177,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 NAME1,
                                 NAME1
                         ), // name -> name
+                        Sets.of(NAME1), // names
                         TestPluginInfoSet.EMPTY
                 )
         );
@@ -191,6 +193,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 NAME1,
                                 NAME1
                         ), // name -> name
+                        Sets.of(NAME1), // names
                         TestPluginInfoSet.EMPTY
                 )
         );
@@ -206,6 +209,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 SELECTOR1
                         ), // alias -> selector
                         Maps.empty(), // name -> name
+                        Sets.of(NAME1), // names
                         new TestPluginInfoSet(
                                 Sets.of(
                                         TestPluginInfo.parse("https://example.com/alias111 alias111")
@@ -241,6 +245,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 SELECTOR1.setText("()")
                         ), // alias -> selector
                         Maps.empty(), // name -> name
+                        Sets.of(NAME1), // names
                         new TestPluginInfoSet(
                                 Sets.of(
                                         TestPluginInfo.parse("https://example.com/alias111 alias111")
@@ -260,6 +265,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 SELECTOR1.setText("( )")
                         ), // alias -> selector
                         Maps.empty(), // name -> name
+                        Sets.of(NAME1), // names
                         new TestPluginInfoSet(
                                 Sets.of(
                                         TestPluginInfo.parse("https://example.com/alias111 alias111")
@@ -279,6 +285,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 SELECTOR1.setText("(999)")
                         ), // alias -> selector
                         Maps.empty(), // name -> name
+                        Sets.of(NAME1), // names
                         new TestPluginInfoSet(
                                 Sets.of(
                                         TestPluginInfo.parse("https://example.com/alias111 alias111")
@@ -298,6 +305,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 SELECTOR1.setText("(\"Hello\")")
                         ), // alias -> selector
                         Maps.empty(), // name -> name
+                        Sets.of(NAME1), // names
                         new TestPluginInfoSet(
                                 Sets.of(
                                         TestPluginInfo.parse("https://example.com/alias111 alias111")
@@ -317,6 +325,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 SELECTOR1.setText("(888,$Magic,\"Hello\")")
                         ), // alias -> selector
                         Maps.empty(), // name -> name
+                        Sets.of(NAME1), // names
                         new TestPluginInfoSet(
                                 Sets.of(
                                         TestPluginInfo.parse("https://example.com/alias111 alias111")
@@ -338,6 +347,10 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 NAME2,
                                 NAME2
                         ), // name -> name
+                        Sets.of(
+                                NAME1,
+                                NAME2
+                        ), // names
                         TestPluginInfoSet.EMPTY
                 )
         );
@@ -356,6 +369,10 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 NAME2,
                                 NAME2
                         ), // name -> name
+                        Sets.of(
+                                NAME1,
+                                NAME2
+                        ), // names
                         TestPluginInfoSet.EMPTY
                 )
         );
@@ -381,6 +398,10 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                                 SELECTOR2.setText("(\"Hello222\")")
                         ), // alias -> selector
                         Maps.empty(), // name -> name
+                        Sets.of(
+                                NAME1,
+                                NAME2
+                        ), // names
                         TestPluginInfoSet.EMPTY
                 )
         );
@@ -405,6 +426,44 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
     @Override
     public RuntimeException parseStringFailedExpected(final RuntimeException thrown) {
         return thrown;
+    }
+
+    // name.............................................................................................................
+
+    @Test
+    public void testNames() {
+        this.namesAndCheck(
+                "name1, name2",
+                Names.string("name1"),
+                Names.string("name2")
+        );
+    }
+
+    @Test
+    public void testNamesIncludesAliases() {
+        this.namesAndCheck(
+                "name1, alias2 name2",
+                Names.string("name1"),
+                Names.string("name2")
+        );
+    }
+
+    private void namesAndCheck(final String text,
+                               final StringName ... expected) {
+        this.namesAndCheck(
+                text,
+                Sets.of(expected)
+        );
+    }
+
+    private void namesAndCheck(final String text,
+                               final Set<StringName> expected) {
+        this.checkEquals(
+                expected,
+                this.parseString(text)
+                        .names(),
+                () -> "names in " + text
+        );
     }
 
     // TreePrintable....................................................................................................
