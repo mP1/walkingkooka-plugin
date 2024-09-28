@@ -19,8 +19,11 @@ package walkingkooka.plugin;
 
 import walkingkooka.Cast;
 import walkingkooka.collect.map.Maps;
+import walkingkooka.collect.set.Sets;
+import walkingkooka.collect.set.SortedSets;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
+import walkingkooka.text.CharSequences;
 import walkingkooka.text.cursor.TextCursor;
 import walkingkooka.text.cursor.TextCursorSavePoint;
 import walkingkooka.text.cursor.parser.ParserContext;
@@ -31,8 +34,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -42,6 +45,7 @@ import java.util.function.Function;
  * PluginAliasName SPACE OriginalPluginName
  * PluginAliasName SPACE https://url SPACE OriginalPluginName OPEN-PAREN PluginName | $EnvironmentalValue | StringLiteral | DoubleLiteral RIGHT-PARENS
  * </pre>
+ * Note this only holds aliases and names, no attempt is made to validate whether names actually exist or whether duplicate names or aliases are present.
  */
 public final class PluginAliases<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> implements TreePrintable {
 
@@ -55,12 +59,12 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
     PluginAliases<N, I, IS, S> parse(final String text,
                                      final BiFunction<TextCursor, ParserContext, Optional<N>> nameFactory,
                                      final BiFunction<AbsoluteUrl, N, I> infoFactory,
-                                     final IS infos,
+                                     final Function<Set<I>, IS> infoSetFactory,
                                      final Function<String, S> selectorFactory) {
         Objects.requireNonNull(text, "text");
         Objects.requireNonNull(nameFactory, "nameFactory");
         Objects.requireNonNull(infoFactory, "infoFactory");
-        Objects.requireNonNull(infos, "infos");
+        Objects.requireNonNull(infoSetFactory, "infoSetFactory");
         Objects.requireNonNull(selectorFactory, "selectorFactory");
 
         return parse0(
@@ -70,21 +74,20 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
                         PluginAliasesProviderContext.INSTANCE
                 ),
                 infoFactory,
-                infos,
+                infoSetFactory,
                 selectorFactory
         );
     }
 
     private static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> PluginAliases<N, I, IS, S> parse0(final PluginExpressionParser<N> parser,
                                                                                                                                                                                                final BiFunction<AbsoluteUrl, N, I> infoFactory,
-                                                                                                                                                                                               final IS infos,
+                                                                                                                                                                                               final Function<Set<I>, IS> infoSetFactory,
                                                                                                                                                                                                final Function<String, S> selectorFactory) {
-        final Function<N, I> nameToInfo = nameToInfo(infos);
-        final Consumer<AbsoluteUrl> duplicateUrl = urlToInfo(infos);
+        final Set<AbsoluteUrl> urls = Sets.hash();
 
         final Map<N, S> aliases = Maps.sorted();
         final Map<N, N> names = Maps.sorted();
-        IS newInfos = infos;
+        final Set<I> newInfos = SortedSets.tree();
 
         // name
         // alias-name SPACE name
@@ -137,23 +140,18 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
                     if (maybeUrl.isPresent()) {
                         // url present add a new INFO
                         final AbsoluteUrl url = maybeUrl.get();
-                        duplicateUrl.accept(url);
+                        if(false == urls.add(url)) {
+                            throw new IllegalArgumentException("Duplicate url " + url);
+                        }
 
-                        newInfos = newInfos.concat(
+                        newInfos.add(
                                 infoFactory.apply(
                                         url,
                                         alias
                                 )
                         );
-                    } else {
-                        // replace old INFO with new alias
-                        final I old = nameToInfo.apply(selector.name());
-
-                        newInfos = newInfos.replace(
-                                old,
-                                old.setName(alias)
-                        );
                     }
+
                     duplicateCheck(
                             alias,
                             aliases,
@@ -172,51 +170,8 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
         return new PluginAliases<>(
                 aliases,
                 names,
-                newInfos
+                infoSetFactory.apply(newInfos)
         );
-    }
-
-    /**
-     * Returns a {@link Function} which will complain if a {@link Name} is absent from the {@link PluginInfoSetLike}, returning the {@link PluginInfoLike}.
-     */
-    private static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>> Function<N, I> nameToInfo(final IS infos) {
-        final Map<N, I> nameToInfo = Maps.sorted();
-
-        for (final I info : infos) {
-            nameToInfo.put(
-                    info.name(),
-                    info
-            );
-        }
-
-        return (n) -> {
-            final I i = nameToInfo.get(n);
-            if (null == i) {
-                throw new IllegalArgumentException("Unknown " + n);
-            }
-            return i;
-        };
-    }
-
-    /**
-     * Returns a {@link Consumer} which will complain if a given {@link AbsoluteUrl} is already present in the infos.
-     */
-    private static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>> Consumer<AbsoluteUrl> urlToInfo(final IS infos) {
-        final Map<AbsoluteUrl, I> urlToInfo = Maps.hash();
-
-        for (final I info : infos) {
-            urlToInfo.put(
-                    info.url(),
-                    info
-            );
-        }
-
-        return (u) -> {
-            final I i = urlToInfo.get(u);
-            if (null != i) {
-                throw new IllegalArgumentException("Duplicate url " + i);
-            }
-        };
     }
 
     /**
@@ -280,7 +235,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
                                                                                                          final Map<N, S> aliases,
                                                                                                          final Map<N, N> names) {
         if (aliases.containsKey(name) || names.containsKey(name)) {
-            throw new IllegalArgumentException("Duplicate " + name);
+            throw new IllegalArgumentException("Duplicate name: " + CharSequences.quoteAndEscape(name.value()));
         }
     }
 
@@ -415,11 +370,13 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
             }
         }
 
-        printer.println("infos");
-        {
-            printer.indent();
-            this.infos.printTree(printer);
-            printer.outdent();
+        if (false == this.infos.isEmpty()) {
+            printer.println("infos");
+            {
+                printer.indent();
+                this.infos.printTree(printer);
+                printer.outdent();
+            }
         }
     }
 }
