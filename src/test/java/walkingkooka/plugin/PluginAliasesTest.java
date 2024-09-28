@@ -28,6 +28,7 @@ import walkingkooka.predicate.character.CharPredicates;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.test.ParseStringTesting;
+import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.cursor.TextCursor;
 import walkingkooka.text.cursor.parser.ParserContext;
 import walkingkooka.text.cursor.parser.ParserException;
@@ -42,6 +43,7 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginAliasesTest implements ParseStringTesting<PluginAliases<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>>,
+        HasTextTesting,
         TreePrintableTesting,
         ClassTesting<PluginAliases<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>> {
 
@@ -492,6 +494,106 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                 this.parseString(text)
                         .names(),
                 () -> "names in " + text
+        );
+    }
+
+    // text.............................................................................................................
+
+    @Test
+    public void testTextWithEmpty() {
+        this.parseAndTextCheck(
+                ""
+        );
+    }
+
+    @Test
+    public void testTextWithName() {
+        this.parseAndTextCheck(
+                "name111"
+        );
+    }
+
+    @Test
+    public void testTextWithAlias() {
+        this.parseAndTextCheck(
+                "alias111 name111"
+        );
+    }
+
+    @Test
+    public void testTextWithAliasWithParameters() {
+        this.parseAndTextCheck(
+                "alias111 name111(\"Hello\")"
+        );
+    }
+
+    @Test
+    public void testTextWithAliasExtraSpacesName() {
+        this.parseAndTextCheck(
+                "alias111   name111",
+                "alias111 name111"
+        );
+    }
+
+    @Test
+    public void testTextWithAliasNameUrl() {
+        this.parseAndTextCheck(
+                "alias111 name111 https://example.com/name111"
+        );
+    }
+
+    @Test
+    public void testTextWithAliasNameExtraSpacesUrl() {
+        this.parseAndTextCheck(
+                "alias111 name111  https://example.com/name111",
+                "alias111 name111 https://example.com/name111"
+        );
+    }
+
+    @Test
+    public void testTextWithSortedNames() {
+        this.parseAndTextCheck(
+                "a1, b2, c3",
+                "a1, b2, c3"
+        );
+    }
+
+    @Test
+    public void testTextWithUnsortedNames() {
+        this.parseAndTextCheck(
+                "c3, b2, a1",
+                "a1, b2, c3"
+        );
+    }
+
+    @Test
+    public void testTextWithUnsortedAliases() {
+        this.parseAndTextCheck(
+                "c3 x, b2 y, a1 z",
+                "a1 z, b2 y, c3 x"
+        );
+    }
+
+    @Test
+    public void testTextWithUnsortedAliasesSomeWithParameters() {
+        this.parseAndTextCheck(
+                "c3 x, b2 y(\"Hello\"), a1 z",
+                "a1 z, b2 y(\"Hello\"), c3 x"
+        );
+    }
+
+    private void parseAndTextCheck(final String text) {
+        this.parseAndTextCheck(
+                text,
+                text
+        );
+    }
+
+    private void parseAndTextCheck(final String text,
+                                   final String expected) {
+        this.textAndCheck(
+                this.parseString(text),
+                expected
         );
     }
 

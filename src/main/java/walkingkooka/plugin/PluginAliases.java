@@ -24,6 +24,7 @@ import walkingkooka.collect.set.SortedSets;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.text.CharSequences;
+import walkingkooka.text.HasText;
 import walkingkooka.text.cursor.TextCursor;
 import walkingkooka.text.cursor.TextCursorSavePoint;
 import walkingkooka.text.cursor.parser.ParserContext;
@@ -48,7 +49,8 @@ import java.util.function.Function;
  * </pre>
  * Note this only holds aliases and names, no attempt is made to validate whether names actually exist or whether duplicate names or aliases are present.
  */
-public final class PluginAliases<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> implements TreePrintable {
+public final class PluginAliases<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> implements HasText,
+        TreePrintable {
 
     /**
      * Parses the given text which defines names, aliases, selectors and possibly URLs. Note that selectors are only validated for syntax, environmental value names are not validated.
@@ -367,6 +369,66 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
 
         return b.toString();
     }
+
+    // HasText..........................................................................................................
+
+    /**
+     * Returns text which sorts all entries by alias or name.
+     */
+    @Override
+    public String text() {
+        if (null == this.text) {
+            final Map<N, S> nameOrAliasToSelector = Maps.sorted();
+
+            nameOrAliasToSelector.putAll(
+                    this.nameToAliases
+            );
+
+            for (final Entry<N, N> nameToName : this.nameToName.entrySet()) {
+                nameOrAliasToSelector.put(
+                        nameToName.getKey(),
+                        null
+                );
+            }
+
+            final Map<N, AbsoluteUrl> nameToUrl = Maps.sorted();
+            for (final I info : this.infos) {
+                nameToUrl.put(
+                        info.name(),
+                        info.url()
+                );
+            }
+
+            final StringBuilder b = new StringBuilder();
+
+            String separator = "";
+            for (final Entry<N, S> nameAndSelector : nameOrAliasToSelector.entrySet()) {
+                b.append(separator);
+                separator = ", ";
+
+                final N name = nameAndSelector.getKey();
+                b.append(name);
+
+                final S selector = nameAndSelector.getValue();
+                if (null != selector) {
+                    b.append(' ')
+                            .append(selector.toString().trim());
+
+                    final AbsoluteUrl url = nameToUrl.get(name);
+                    if (null != url) {
+                        b.append(' ')
+                                .append(url);
+                    }
+                }
+            }
+
+            this.text = b.toString();
+        }
+
+        return this.text;
+    }
+
+    private String text;
 
     // TreePrintable....................................................................................................
 
