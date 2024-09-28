@@ -29,6 +29,7 @@ import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.AbstractSet;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -88,6 +89,13 @@ final class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements Plu
     public TestPluginInfoSet concat(final TestPluginInfo info) {
         return this.setElements(
                 this.pluginInfoSet.concat(info)
+        );
+    }
+
+    @Override
+    public TestPluginInfoSet concatAll(final Collection<TestPluginInfo> infos) {
+        return this.setElements(
+                this.pluginInfoSet.concatAll(infos)
         );
     }
 
