@@ -45,8 +45,9 @@ public interface PluginAliasesLikeTesting<L extends PluginAliasesLike<N, I, IS, 
     default void namesAndCheck(final L pluginNames,
                                final Set<N> expected) {
         this.checkEquals(
+                expected,
                 pluginNames.names(),
-                expected
+                () -> pluginNames + " names"
         );
     }
 
@@ -102,8 +103,9 @@ public interface PluginAliasesLikeTesting<L extends PluginAliasesLike<N, I, IS, 
     default void aliasesAndCheck(final L pluginAliases,
                                  final Set<N> expected) {
         this.checkEquals(
+                expected,
                 pluginAliases.aliases(),
-                expected
+                () -> pluginAliases + " aliases"
         );
     }
 
@@ -160,7 +162,8 @@ public interface PluginAliasesLikeTesting<L extends PluginAliasesLike<N, I, IS, 
                                final Set<I> expected) {
         this.checkEquals(
                 pluginInfos.infos(),
-                expected
+                expected,
+                "infos"
         );
     }
 
