@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
+import walkingkooka.ToStringTesting;
 import walkingkooka.collect.map.Maps;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Names;
@@ -45,6 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class PluginAliasesTest implements ParseStringTesting<PluginAliases<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>>,
         HasTextTesting,
         TreePrintableTesting,
+        ToStringTesting<PluginAliases<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>>,
         ClassTesting<PluginAliases<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>> {
 
     // parse............................................................................................................
@@ -637,6 +639,16 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         "infos\n" +
                         "  TestPluginInfoSet\n" +
                         "    https://example.com/name2 alias2\n"
+        );
+    }
+
+    // toString.........................................................................................................
+
+    @Test
+    public void testToString() {
+        this.toStringAndCheck(
+                this.parseString("name1, alias2 name2 https://example.com/name2"),
+                "alias2 name2 https://example.com/name2 , name1"
         );
     }
 

@@ -356,18 +356,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
 
     @Override
     public String toString() {
-        final StringBuilder b = new StringBuilder();
-
-        b.append("aliases: ");
-        b.append(this.nameToAliases);
-
-        b.append(", names: ");
-        b.append(this.nameToName);
-
-        b.append(", infos: ");
-        b.append(this.infos);
-
-        return b.toString();
+        return this.text();
     }
 
     // HasText..........................................................................................................
@@ -404,6 +393,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
             final StringBuilder b = new StringBuilder();
 
             String separator = "";
+
             for (final Entry<N, S> nameAndSelector : nameOrAliasToSelector.entrySet()) {
                 b.append(separator);
                 separator = ", ";
@@ -420,6 +410,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
                     if (null != url) {
                         b.append(' ')
                                 .append(url);
+                        separator = " , "; // need a space after URL and before COMMA otherwise COMMA will be parsed as part of URL
                     }
                 }
             }
