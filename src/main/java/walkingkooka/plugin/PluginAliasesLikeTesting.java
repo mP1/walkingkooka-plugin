@@ -18,17 +18,39 @@
 package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Name;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface PluginAliasesLikeTesting<L extends PluginAliasesLike<N, I, IS, S>, N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> extends ClassTesting2<L>,
         TreePrintableTesting {
+
+    // names............................................................................................................
+
+    default void namesAndCheck(final L pluginNames,
+                               final N... expected) {
+        this.namesAndCheck(
+                pluginNames,
+                Sets.of(expected)
+        );
+    }
+
+    default void namesAndCheck(final L pluginNames,
+                               final Set<N> expected) {
+        this.checkEquals(
+                pluginNames.names(),
+                expected
+        );
+    }
+
+    // name.............................................................................................................
 
     @Test
     default void testNamesWithNullFails() {
@@ -67,6 +89,26 @@ public interface PluginAliasesLikeTesting<L extends PluginAliasesLike<N, I, IS, 
         );
     }
 
+    // aliases..........................................................................................................
+
+    default void aliasesAndCheck(final L pluginAliases,
+                                 final N... expected) {
+        this.aliasesAndCheck(
+                pluginAliases,
+                Sets.of(expected)
+        );
+    }
+
+    default void aliasesAndCheck(final L pluginAliases,
+                                 final Set<N> expected) {
+        this.checkEquals(
+                pluginAliases.aliases(),
+                expected
+        );
+    }
+
+    // alias............................................................................................................
+
     @Test
     default void testAliasWithNullFails() {
         assertThrows(
@@ -101,6 +143,24 @@ public interface PluginAliasesLikeTesting<L extends PluginAliasesLike<N, I, IS, 
                 expected,
                 pluginAliases.alias(alias),
                 () -> "alias " + alias
+        );
+    }
+
+    // infos............................................................................................................
+
+    default void infosAndCheck(final L pluginInfos,
+                               final I... expected) {
+        this.infosAndCheck(
+                pluginInfos,
+                Sets.of(expected)
+        );
+    }
+
+    default void infosAndCheck(final L pluginInfos,
+                               final Set<I> expected) {
+        this.checkEquals(
+                pluginInfos.infos(),
+                expected
         );
     }
 
