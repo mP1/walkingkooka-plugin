@@ -20,6 +20,7 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.ToStringTesting;
+import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.collect.map.Maps;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Names;
@@ -46,6 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class PluginAliasesTest implements ParseStringTesting<PluginAliases<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>>,
         HasTextTesting,
         TreePrintableTesting,
+        HashCodeEqualsDefinedTesting2<PluginAliases<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>>,
         ToStringTesting<PluginAliases<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>>,
         ClassTesting<PluginAliases<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>> {
 
@@ -640,6 +642,21 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                         "  TestPluginInfoSet\n" +
                         "    https://example.com/name2 alias2\n"
         );
+    }
+
+    // equals...........................................................................................................
+
+    @Test
+    public void testEqualsDifferent() {
+        this.checkNotEquals(
+                this.parseString("alias1 name1, name2, alias3 name3(333) https://example.com/333"),
+                this.parseString("alias1 name1, name2")
+        );
+    }
+
+    @Override
+    public PluginAliases<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector> createObject() {
+        return this.parseString("alias1 name1, name2");
     }
 
     // toString.........................................................................................................
