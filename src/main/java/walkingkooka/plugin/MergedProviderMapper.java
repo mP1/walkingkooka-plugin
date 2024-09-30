@@ -43,21 +43,21 @@ public final class MergedProviderMapper<N extends Name & Comparable<N>,
             IS extends PluginInfoSetLike<IS, I, N>>
     MergedProviderMapper<N, S, I, IS> with(final IS renamingInfos,
                                            final IS providerInfos,
-                                           final Function<N, RuntimeException> unknown) {
+                                           final PluginHelper<N, I, IS, S> helper) {
         return new MergedProviderMapper<>(
                 Objects.requireNonNull(renamingInfos, "renamingInfos"),
                 Objects.requireNonNull(providerInfos, "providerInfos"),
-                Objects.requireNonNull(unknown, "unknown")
+                Objects.requireNonNull(helper, "helper")
         );
     }
 
     private MergedProviderMapper(final IS renamingInfos,
                                  final IS providerInfos,
-                                 final Function<N, RuntimeException> unknown) {
+                                 final PluginHelper<N, I, IS, S> helper) {
         final Map<AbsoluteUrl, I> urlToRenamingInfos = this.urlToInfo(renamingInfos);
         final Map<AbsoluteUrl, I> urlToProviderInfos = this.urlToInfo(providerInfos);
 
-        final Map<N, N> renamingNameToProviderName = Maps.sorted();
+        final Map<N, N> renamingNameToProviderName = Maps.sorted(helper.nameComparator());
 
         for (final Entry<AbsoluteUrl, I> urlToProviderInfo : urlToProviderInfos.entrySet()) {
             final AbsoluteUrl providerInfoUrl = urlToProviderInfo.getKey();
@@ -73,7 +73,7 @@ public final class MergedProviderMapper<N extends Name & Comparable<N>,
             );
         }
         this.renamingNameToProviderName = renamingNameToProviderName;
-        this.unknown = unknown;
+        this.unknown = helper.unknownName();
 
         final Set<I> infos = Sets.hash();
 

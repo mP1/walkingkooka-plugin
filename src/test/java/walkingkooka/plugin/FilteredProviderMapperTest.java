@@ -29,8 +29,6 @@ import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.printer.TreePrintableTesting;
 
-import java.util.function.Function;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class FilteredProviderMapperTest implements TreePrintableTesting,
@@ -96,14 +94,12 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
             )
     );
 
-    private final static Function<StringName, RuntimeException> UNKNOWN = (n) -> new UnknownStringNameException(
-            "Unknown StringName " + n
-    );
+    private final static TestPluginHelper HELPER = TestPluginHelper.INSTANCE;
 
     private final static FilteredProviderMapper<StringName, TestPluginSelector, TestPluginInfo, TestPluginInfoSet> MAPPER = FilteredProviderMapper.with(
             FILTERED_INFOS,
             PROVIDER_INFOS,
-            UNKNOWN
+            HELPER
     );
 
     // with.............................................................................................................
@@ -115,7 +111,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
                 () -> FilteredProviderMapper.with(
                         null,
                         PROVIDER_INFOS,
-                        UNKNOWN
+                        HELPER
                 )
         );
     }
@@ -127,13 +123,13 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
                 () -> FilteredProviderMapper.with(
                         FILTERED_INFOS,
                         null,
-                        UNKNOWN
+                        HELPER
                 )
         );
     }
 
     @Test
-    public void testWithNullUnknownFails() {
+    public void testWithNullHelperFails() {
         assertThrows(
                 NullPointerException.class,
                 () -> FilteredProviderMapper.with(
@@ -273,13 +269,5 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     @Override
     public JavaVisibility typeVisibility() {
         return JavaVisibility.PUBLIC;
-    }
-
-    static class UnknownStringNameException extends IllegalArgumentException {
-        private static final long serialVersionUID = 1;
-
-        UnknownStringNameException(final String message) {
-            super(message);
-        }
     }
 }

@@ -25,22 +25,16 @@ import walkingkooka.collect.map.Maps;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
-import walkingkooka.net.AbsoluteUrl;
-import walkingkooka.predicate.character.CharPredicates;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.test.ParseStringTesting;
+import walkingkooka.text.CaseSensitivity;
 import walkingkooka.text.HasTextTesting;
-import walkingkooka.text.cursor.TextCursor;
-import walkingkooka.text.cursor.parser.ParserContext;
 import walkingkooka.text.cursor.parser.ParserException;
-import walkingkooka.text.cursor.parser.Parsers;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -81,79 +75,18 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
 
     private final static String TEXT = "";
 
-    private final static BiFunction<TextCursor, ParserContext, Optional<StringName>> NAME_FACTORY = (t, c) -> Parsers.stringInitialAndPartCharPredicate(
-            CharPredicates.letter(),
-            CharPredicates.letterOrDigit(),
-            1,
-            32
-    ).parse(
-            t,
-            c
-    ).map(
-            tt -> Names.string(tt.text())
-    );
-
-    private final static BiFunction<AbsoluteUrl, StringName, TestPluginInfo> INFO_FACTORY = TestPluginInfo::new;
-
-    private final static Function<Set<TestPluginInfo>, TestPluginInfoSet> INFO_SET_FACTORY = TestPluginInfoSet::new;
-
-    private final static Function<String, TestPluginSelector> SELECTOR_FACTORY = TestPluginSelector::parse;
-
     @Test
-    public void testWithNullNameFactoryFails() {
+    public void testWithNullPluginHelperFails() {
         assertThrows(
                 NullPointerException.class,
                 () -> PluginAliases.parse(
                         TEXT,
-                        null,
-                        INFO_FACTORY,
-                        INFO_SET_FACTORY,
-                        SELECTOR_FACTORY
-                )
-        );
-    }
-
-    @Test
-    public void testWithNullInfoFactoryFails() {
-        assertThrows(
-                NullPointerException.class,
-                () -> PluginAliases.parse(
-                        TEXT,
-                        NAME_FACTORY,
-                        null,
-                        INFO_SET_FACTORY,
-                        SELECTOR_FACTORY
-                )
-        );
-    }
-
-    @Test
-    public void testWithNullInfoSetFactoryFails() {
-        assertThrows(
-                NullPointerException.class,
-                () -> PluginAliases.parse(
-                        TEXT,
-                        NAME_FACTORY,
-                        INFO_FACTORY,
-                        null,
-                        SELECTOR_FACTORY
-                )
-        );
-    }
-
-    @Test
-    public void testWithNullSelectorFactoryFails() {
-        assertThrows(
-                NullPointerException.class,
-                () -> PluginAliases.parse(
-                        TEXT,
-                        NAME_FACTORY,
-                        INFO_FACTORY,
-                        INFO_SET_FACTORY,
                         null
                 )
         );
     }
+
+    // parse............................................................................................................
 
     @Override
     public void testParseStringEmptyFails() {
@@ -446,10 +379,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
     public PluginAliases<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector> parseString(final String text) {
         return PluginAliases.parse(
                 text,
-                NAME_FACTORY,
-                INFO_FACTORY, // Info factory
-                INFO_SET_FACTORY,
-                SELECTOR_FACTORY
+                TestPluginHelper.INSTANCE
         );
     }
 
@@ -463,7 +393,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
         return thrown;
     }
 
-    // name.............................................................................................................
+    // names............................................................................................................
 
     @Test
     public void testNames() {
@@ -484,7 +414,7 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
     }
 
     private void namesAndCheck(final String text,
-                               final StringName ... expected) {
+                               final StringName... expected) {
         this.namesAndCheck(
                 text,
                 Sets.of(expected)
@@ -498,6 +428,142 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
                 this.parseString(text)
                         .names(),
                 () -> "names in " + text
+        );
+    }
+
+    // name.............................................................................................................
+
+    @Test
+    public void testNameCaseSensitive() {
+        this.nameAndCheck(
+                "name1, name2",
+                CaseSensitivity.SENSITIVE,
+                Names.string("name1"),
+                Names.string("name1")
+        );
+    }
+
+    @Test
+    public void testNameDifferentCaseImportant() {
+        this.nameAndCheck(
+                "name1, name2",
+                CaseSensitivity.SENSITIVE,
+                Names.string("NAME1")
+        );
+    }
+
+    @Test
+    public void testNameDifferentCaseUnimportant() {
+        this.nameAndCheck(
+                "name1, name2",
+                CaseSensitivity.INSENSITIVE,
+                Names.string("NAME1"),
+                Names.string("name1")
+        );
+    }
+
+    private void nameAndCheck(final String text,
+                              final CaseSensitivity caseSensitivity,
+                              final StringName name) {
+        this.nameAndCheck(
+                text,
+                caseSensitivity,
+                name,
+                Optional.empty()
+        );
+    }
+
+    private void nameAndCheck(final String text,
+                              final CaseSensitivity caseSensitivity,
+                              final StringName name,
+                              final StringName expected) {
+        this.nameAndCheck(
+                text,
+                caseSensitivity,
+                name,
+                Optional.of(expected)
+        );
+    }
+
+    private void nameAndCheck(final String text,
+                              final CaseSensitivity caseSensitivity,
+                              final StringName name,
+                              final Optional<StringName> expected) {
+        this.checkEquals(
+                expected,
+                PluginAliases.parse(
+                        text,
+                        new TestPluginHelper(caseSensitivity)
+                ).name(name),
+                () -> "name  " + name + " in " + text
+        );
+    }
+
+    // alias.............................................................................................................
+
+    @Test
+    public void testAliasCaseSensitive() {
+        this.aliasAndCheck(
+                "alias1 name1, alias2 name2",
+                CaseSensitivity.SENSITIVE,
+                Names.string("alias1"),
+                TestPluginSelector.parse("name1")
+        );
+    }
+
+    @Test
+    public void testAliasDifferentCaseImportant() {
+        this.aliasAndCheck(
+                "alias1 name1, alias2 name2",
+                CaseSensitivity.SENSITIVE,
+                Names.string("ALIAS1")
+        );
+    }
+
+    @Test
+    public void testAliasDifferentCaseUnimportant() {
+        this.aliasAndCheck(
+                "alias1 name1, alias2 name2",
+                CaseSensitivity.INSENSITIVE,
+                Names.string("ALIAS1"),
+                TestPluginSelector.parse("name1")
+        );
+    }
+
+    private void aliasAndCheck(final String text,
+                               final CaseSensitivity caseSensitivity,
+                               final StringName alias) {
+        this.aliasAndCheck(
+                text,
+                caseSensitivity,
+                alias,
+                Optional.empty()
+        );
+    }
+
+    private void aliasAndCheck(final String text,
+                               final CaseSensitivity caseSensitivity,
+                               final StringName alias,
+                               final TestPluginSelector expected) {
+        this.aliasAndCheck(
+                text,
+                caseSensitivity,
+                alias,
+                Optional.of(expected)
+        );
+    }
+
+    private void aliasAndCheck(final String text,
+                               final CaseSensitivity caseSensitivity,
+                               final StringName alias,
+                               final Optional<TestPluginSelector> expected) {
+        this.checkEquals(
+                expected,
+                PluginAliases.parse(
+                        text,
+                        new TestPluginHelper(caseSensitivity)
+                ).alias(alias),
+                () -> "alias  " + alias + " in " + text
         );
     }
 

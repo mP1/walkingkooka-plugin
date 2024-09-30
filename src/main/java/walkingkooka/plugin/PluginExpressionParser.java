@@ -55,7 +55,7 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
                                                                            final ProviderContext context) {
         return new PluginExpressionParser<>(
                 Objects.requireNonNull(text, "text"),
-                Objects.requireNonNull(nameParser, "nameParser"),
+                Objects.requireNonNull(nameParser, "parseName"),
                 Objects.requireNonNull(context, "context")
         );
     }

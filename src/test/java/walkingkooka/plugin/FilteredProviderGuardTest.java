@@ -25,17 +25,11 @@ import walkingkooka.naming.StringName;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 
-import java.util.function.Function;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class FilteredProviderGuardTest implements ClassTesting2<FilteredProviderGuard<StringName, TestPluginSelector>> {
 
     private final static StringName NAME = Names.string("Hello123");
-
-    private final static Function<StringName, RuntimeException> UNKNOWN = (n) -> new IllegalArgumentException(
-            "Unknown StringName " + n
-    );
 
     @Test
     public void testWithNullSetFails() {
@@ -43,13 +37,13 @@ public final class FilteredProviderGuardTest implements ClassTesting2<FilteredPr
                 NullPointerException.class,
                 () -> FilteredProviderGuard.with(
                         null,
-                        UNKNOWN
+                        TestPluginHelper.INSTANCE
                 )
         );
     }
 
     @Test
-    public void testWithNullUnknownFails() {
+    public void testWithNullPluginFails() {
         assertThrows(
                 NullPointerException.class,
                 () -> FilteredProviderGuard.with(
@@ -143,7 +137,7 @@ public final class FilteredProviderGuardTest implements ClassTesting2<FilteredPr
                 Sets.of(
                         NAME
                 ),
-                UNKNOWN
+                TestPluginHelper.INSTANCE
         );
     }
 

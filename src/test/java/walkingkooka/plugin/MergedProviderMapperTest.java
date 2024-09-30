@@ -29,8 +29,6 @@ import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.printer.TreePrintableTesting;
 
-import java.util.function.Function;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class MergedProviderMapperTest implements TreePrintableTesting,
@@ -98,14 +96,12 @@ public final class MergedProviderMapperTest implements TreePrintableTesting,
             )
     );
 
-    private final static Function<StringName, RuntimeException> UNKNOWN = (n) -> new UnknownStringNameException(
-            "Unknown StringName " + n
-    );
+    private final static TestPluginHelper HELPER = TestPluginHelper.INSTANCE;
 
     private final static MergedProviderMapper<StringName, TestPluginSelector, TestPluginInfo, TestPluginInfoSet> MAPPER = MergedProviderMapper.with(
             INFOS_RENAME,
             INFOS_PROVIDER,
-            UNKNOWN
+            HELPER
     );
 
     // with.............................................................................................................
@@ -117,7 +113,7 @@ public final class MergedProviderMapperTest implements TreePrintableTesting,
                 () -> MergedProviderMapper.with(
                         null,
                         INFOS_PROVIDER,
-                        UNKNOWN
+                        HELPER
                 )
         );
     }
@@ -129,13 +125,13 @@ public final class MergedProviderMapperTest implements TreePrintableTesting,
                 () -> MergedProviderMapper.with(
                         INFOS_RENAME,
                         null,
-                        UNKNOWN
+                        HELPER
                 )
         );
     }
 
     @Test
-    public void testWithNullUnknownFails() {
+    public void testWithNullHelperFails() {
         assertThrows(
                 NullPointerException.class,
                 () -> MergedProviderMapper.with(
@@ -291,15 +287,5 @@ public final class MergedProviderMapperTest implements TreePrintableTesting,
     @Override
     public JavaVisibility typeVisibility() {
         return JavaVisibility.PUBLIC;
-    }
-
-    // helpers..........................................................................................................
-
-    static class UnknownStringNameException extends IllegalArgumentException {
-        private static final long serialVersionUID = 1;
-
-        UnknownStringNameException(final String message) {
-            super(message);
-        }
     }
 }

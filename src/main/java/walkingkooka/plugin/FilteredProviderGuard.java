@@ -17,7 +17,6 @@
 
 package walkingkooka.plugin;
 
-import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Name;
 
 import java.util.Objects;
@@ -28,13 +27,18 @@ import java.util.function.Function;
  * A guard that should be used by all filtering providers to filter/verify any incoming {@link Name} and selectors.
  */
 public final class FilteredProviderGuard<N extends Name & Comparable<N>, S extends PluginSelectorLike<N>> {
-    public static <N extends Name & Comparable<N>, S extends PluginSelectorLike<N>> FilteredProviderGuard<N, S> with(final Set<N> names,
-                                                                                                                     final Function<N, RuntimeException> unknown) {
+
+    public static <N extends Name & Comparable<N>,
+            I extends PluginInfoLike<I, N>,
+            IS extends PluginInfoSetLike<IS, I, N>,
+            S extends PluginSelectorLike<N>>
+    FilteredProviderGuard<N, S> with(final Set<N> names,
+                                     final PluginHelper<N, I, IS, S> helper) {
+        Objects.requireNonNull(helper, "helper");
+
         return new FilteredProviderGuard<>(
-                Sets.immutable(
-                        Objects.requireNonNull(names, "names")
-                ),
-                Objects.requireNonNull(unknown, "unknown")
+                helper.names(names),
+                helper.unknownName()
         );
     }
 

@@ -25,20 +25,17 @@ import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.text.CharSequences;
 import walkingkooka.text.HasText;
-import walkingkooka.text.cursor.TextCursor;
 import walkingkooka.text.cursor.TextCursorSavePoint;
-import walkingkooka.text.cursor.parser.ParserContext;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * A definition of aliases including simple name entries.
@@ -60,25 +57,17 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
             IS extends PluginInfoSetLike<IS, I, N>,
             S extends PluginSelectorLike<N>>
     PluginAliases<N, I, IS, S> parse(final String text,
-                                     final BiFunction<TextCursor, ParserContext, Optional<N>> nameFactory,
-                                     final BiFunction<AbsoluteUrl, N, I> infoFactory,
-                                     final Function<Set<I>, IS> infoSetFactory,
-                                     final Function<String, S> selectorFactory) {
+                                     final PluginHelper<N, I, IS, S> helper) {
         Objects.requireNonNull(text, "text");
-        Objects.requireNonNull(nameFactory, "nameFactory");
-        Objects.requireNonNull(infoFactory, "infoFactory");
-        Objects.requireNonNull(infoSetFactory, "infoSetFactory");
-        Objects.requireNonNull(selectorFactory, "selectorFactory");
+        Objects.requireNonNull(helper, "helper");
 
         return parse0(
                 PluginExpressionParser.with(
                         text,
-                        nameFactory,
+                        helper::parseName,
                         PluginAliasesProviderContext.INSTANCE
                 ),
-                infoFactory,
-                infoSetFactory,
-                selectorFactory
+                helper
         );
     }
 
@@ -86,16 +75,16 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
             I extends PluginInfoLike<I, N>,
             IS extends PluginInfoSetLike<IS, I, N>,
             S extends PluginSelectorLike<N>> PluginAliases<N, I, IS, S> parse0(final PluginExpressionParser<N> parser,
-                                                                               final BiFunction<AbsoluteUrl, N, I> infoFactory,
-                                                                               final Function<Set<I>, IS> infoSetFactory,
-                                                                               final Function<String, S> selectorFactory) {
+                                                                               final PluginHelper<N, I, IS, S> helper) {
         final Set<AbsoluteUrl> urls = Sets.hash();
 
-        final Map<N, S> nameToAlias = Maps.sorted();
-        final Map<N, N> nameToName = Maps.sorted();
+        final Comparator<N> nameComparator = helper.nameComparator();
 
-        final SortedSet<N> aliases = SortedSets.tree();
-        final SortedSet<N> names = SortedSets.tree();
+        final Map<N, S> nameToAlias = Maps.sorted(nameComparator);
+        final Map<N, N> nameToName = Maps.sorted(nameComparator);
+
+        final SortedSet<N> aliases = SortedSets.tree(nameComparator);
+        final SortedSet<N> names = SortedSets.tree(nameComparator);
 
         final Set<I> infos = SortedSets.tree();
 
@@ -122,7 +111,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
 
                 final Optional<S> maybeSelector = tryParseSelector(
                         parser,
-                        selectorFactory
+                        helper
                 );
 
                 if (false == maybeSelector.isPresent()) {
@@ -157,7 +146,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
                         }
 
                         infos.add(
-                                infoFactory.apply(
+                                helper.info(
                                         url,
                                         alias
                                 )
@@ -186,18 +175,21 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
 
         return new PluginAliases<>(
                 nameToAlias,
-                Sets.immutable(aliases),
+                SortedSets.immutable(aliases),
                 nameToName,
                 SortedSets.immutable(names),
-                infoSetFactory.apply(infos)
+                helper.infoSet(infos)
         );
     }
 
     /**
      * Tries to parse a selector expression returning a {@link PluginSelectorLike}.
      */
-    private static <N extends Name & Comparable<N>, S extends PluginSelectorLike<N>> Optional<S> tryParseSelector(final PluginExpressionParser<N> parser,
-                                                                                                                  final Function<String, S> selectorFactory) {
+    private static <N extends Name & Comparable<N>,
+            I extends PluginInfoLike<I, N>,
+            IS extends PluginInfoSetLike<IS, I, N>,
+            S extends PluginSelectorLike<N>> Optional<S> tryParseSelector(final PluginExpressionParser<N> parser,
+                                                                          final PluginHelper<N, I, IS, S> helper) {
         final TextCursorSavePoint selectorStart = parser.cursor.save();
 
         S selector = null;
@@ -241,7 +233,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
                 }
             }
 
-            selector = selectorFactory.apply(
+            selector = helper.parseSelector(
                     selectorStart.textBetween()
                             .toString()
             );

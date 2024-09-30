@@ -62,7 +62,7 @@ public interface PluginNameLike<N extends Name & Comparable<N>> extends Name, Co
                                                                                 final Function<String, N> nameParser,
                                                                                 final Function<List<N>, L> listFactory) {
         Objects.requireNonNull(text, "text");
-        Objects.requireNonNull(nameParser, "nameParser");
+        Objects.requireNonNull(nameParser, "parseName");
 
         final List<N> names = Lists.array();
 
