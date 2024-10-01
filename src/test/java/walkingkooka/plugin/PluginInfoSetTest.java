@@ -304,7 +304,7 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
     public PluginInfoSet<StringName, TestPluginInfo> parseString(final String text) {
         return PluginInfoSet.parse(
                 text,
-                TestPluginInfo::parse
+                TestPluginHelper.INSTANCE::parseInfo
         );
     }
 

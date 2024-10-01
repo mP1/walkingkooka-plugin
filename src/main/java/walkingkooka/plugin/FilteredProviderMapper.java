@@ -45,21 +45,21 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
             IS extends PluginInfoSetLike<IS, I, N>>
     FilteredProviderMapper<N, S, I, IS> with(final IS mappingInfos,
                                              final IS providerInfos,
-                                             final Function<N, RuntimeException> unknown) {
+                                             final PluginHelper<N, I, IS, S> helper) {
         return new FilteredProviderMapper<>(
                 Objects.requireNonNull(mappingInfos, "mappingInfos"),
                 Objects.requireNonNull(providerInfos, "providerInfos"),
-                Objects.requireNonNull(unknown, "unknown")
+                Objects.requireNonNull(helper, "helper")
         );
     }
 
     private FilteredProviderMapper(final IS mappingInfos,
                                    final IS providerInfos,
-                                   final Function<N, RuntimeException> unknown) {
+                                   final PluginHelper<N, I, IS, S> helper) {
         final Map<AbsoluteUrl, I> urlToMappingInfos = this.urlToInfo(mappingInfos);
         final Map<AbsoluteUrl, I> urlToProviderInfos = this.urlToInfo(providerInfos);
 
-        final Map<N, N> mappingNameToProviderName = Maps.sorted();
+        final Map<N, N> mappingNameToProviderName = Maps.sorted(helper.nameComparator());
 
         for (final Entry<AbsoluteUrl, I> urlAndMappingInfo : urlToMappingInfos.entrySet()) {
             final AbsoluteUrl mappingInfoUrl = urlAndMappingInfo.getKey();
@@ -73,7 +73,7 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
             }
         }
         this.mappingNameToProviderName = mappingNameToProviderName;
-        this.unknown = unknown;
+        this.unknown = helper.unknownName();
 
         final Set<I> infos = Sets.hash();
 
