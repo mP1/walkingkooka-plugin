@@ -42,6 +42,8 @@ final public class PluginName implements PluginNameLike<PluginName> {
     final static CharPredicate PART = INITIAL.or(CharPredicates.range('0', '9'))
             .or(CharPredicates.is('-'));
 
+    public final static int MIN_LENGTH = 1;
+
     /**
      * The maximum valid length
      */
@@ -57,11 +59,6 @@ final public class PluginName implements PluginNameLike<PluginName> {
                 INITIAL,
                 PART
         );
-
-        final int length = name.length();
-        if (length > MAX_LENGTH) {
-            throw new IllegalArgumentException("Name length " + length + " > " + MAX_LENGTH);
-        }
 
         return new PluginName(name);
     }
@@ -80,6 +77,20 @@ final public class PluginName implements PluginNameLike<PluginName> {
     }
 
     private final String name;
+
+    /**
+     * Note MIN/MAX length is not tested in the ctor, wrappers should invoke this method after calling new with their label.
+     */
+    public PluginName checkLength(final String label) {
+        Name.checkLength(
+                label,
+                this.value(),
+                MIN_LENGTH,
+                MAX_LENGTH
+        );
+
+        return this;
+    }
 
     // Object..................................................................................................
 
