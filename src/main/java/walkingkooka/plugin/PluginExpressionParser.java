@@ -115,7 +115,9 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
                 .isPresent();
     }
 
-    final static String PARAMETER_SEPARATOR = ",";
+    final static char PARAMETER_SEPARATOR_CHARACTER = ',';
+
+    final static String PARAMETER_SEPARATOR = "" + PARAMETER_SEPARATOR_CHARACTER;
 
     private final static Parser<ParserContext> PARAMETER_SEPARATOR_PARSER = Parsers.string(
             PARAMETER_SEPARATOR,

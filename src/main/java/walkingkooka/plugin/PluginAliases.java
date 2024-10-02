@@ -24,6 +24,7 @@ import walkingkooka.collect.set.SortedSets;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.text.CharSequences;
+import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.HasText;
 import walkingkooka.text.cursor.TextCursorSavePoint;
 import walkingkooka.text.printer.IndentingPrinter;
@@ -48,6 +49,11 @@ import java.util.SortedSet;
  */
 public final class PluginAliases<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> implements HasText,
         TreePrintable {
+
+    /**
+     * The separator character between name/alias declarations.
+     */
+    public final static CharacterConstant SEPARATOR = CharacterConstant.with(PluginExpressionParser.PARAMETER_SEPARATOR_CHARACTER);
 
     /**
      * Parses the given text which defines names, aliases, selectors and possibly URLs. Note that selectors are only validated for syntax, environmental value names are not validated.
