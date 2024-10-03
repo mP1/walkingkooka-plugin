@@ -499,6 +499,43 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
         );
     }
 
+    // aliases..........................................................................................................
+
+    @Test
+    public void testAliases() {
+        this.aliasesAndCheck(
+                "alias1 name1, alias2 name2, name3",
+                Names.string("alias1"),
+                Names.string("alias2")
+        );
+    }
+
+    @Test
+    public void testAliasesIgnoresAliasWithInfo() {
+        this.aliasesAndCheck(
+                "alias1 name1, alias2 name2 https://example.com , name3",
+                Names.string("alias1")
+        );
+    }
+
+    private void aliasesAndCheck(final String text,
+                                 final StringName... expected) {
+        this.aliasesAndCheck(
+                text,
+                Sets.of(expected)
+        );
+    }
+
+    private void aliasesAndCheck(final String text,
+                                 final Set<StringName> expected) {
+        this.checkEquals(
+                expected,
+                this.parseString(text)
+                        .aliases(),
+                () -> "aliases in " + text
+        );
+    }
+    
     // alias.............................................................................................................
 
     @Test
