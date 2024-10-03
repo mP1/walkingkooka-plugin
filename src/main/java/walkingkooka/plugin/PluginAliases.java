@@ -89,7 +89,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
         final Map<N, S> nameToAlias = Maps.sorted(nameComparator);
         final Map<N, N> nameToName = Maps.sorted(nameComparator);
 
-        final SortedSet<N> aliases = SortedSets.tree(nameComparator);
+        final SortedSet<N> aliasesWithoutInfos = SortedSets.tree(nameComparator);
         final SortedSet<N> names = SortedSets.tree(nameComparator);
 
         final Set<I> infos = SortedSets.tree();
@@ -158,7 +158,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
                                 )
                         );
                     } else {
-                        aliases.add(alias);
+                        aliasesWithoutInfos.add(alias);
                     }
 
                     duplicateCheck(
@@ -181,7 +181,7 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
 
         return new PluginAliases<>(
                 nameToAlias,
-                SortedSets.immutable(aliases),
+                SortedSets.immutable(aliasesWithoutInfos),
                 nameToName,
                 SortedSets.immutable(names),
                 helper.infoSet(infos)
@@ -258,12 +258,12 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
 
     // @VisibleForTesting
     PluginAliases(final Map<N, S> nameToAliases,
-                  final Set<N> aliases,
+                  final Set<N> aliasesWithoutInfos,
                   final Map<N, N> nameToName,
                   final Set<N> names,
                   final IS infos) {
         this.nameToAliases = nameToAliases;
-        this.aliases = aliases;
+        this.aliasesWithoutInfos = aliasesWithoutInfos;
 
         this.nameToName = nameToName;
         this.names = names;
@@ -287,11 +287,11 @@ public final class PluginAliases<N extends Name & Comparable<N>, I extends Plugi
     /**
      * Getter that returns all alias {@link Name} for aliases without a {@link PluginInfoLike}.
      */
-    public Set<N> aliases() {
-        return this.aliases;
+    public Set<N> aliasesWithoutInfos() {
+        return this.aliasesWithoutInfos;
     }
 
-    private final Set<N> aliases;
+    private final Set<N> aliasesWithoutInfos;
 
     /**
      * Queries the target name applying any aliases, or returning the name if no alias was present.

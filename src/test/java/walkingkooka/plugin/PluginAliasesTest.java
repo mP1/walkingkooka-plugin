@@ -499,11 +499,11 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
         );
     }
 
-    // aliases..........................................................................................................
+    // aliasesWithoutInfos..............................................................................................
 
     @Test
-    public void testAliases() {
-        this.aliasesAndCheck(
+    public void testAliasesWithoutInfos() {
+        this.aliasesWithoutInfosAndCheck(
                 "alias1 name1, alias2 name2, name3",
                 Names.string("alias1"),
                 Names.string("alias2")
@@ -511,27 +511,27 @@ public final class PluginAliasesTest implements ParseStringTesting<PluginAliases
     }
 
     @Test
-    public void testAliasesIgnoresAliasWithInfo() {
-        this.aliasesAndCheck(
+    public void testAliasesWIthoutInfosIgnoresAliasWithInfo() {
+        this.aliasesWithoutInfosAndCheck(
                 "alias1 name1, alias2 name2 https://example.com , name3",
                 Names.string("alias1")
         );
     }
 
-    private void aliasesAndCheck(final String text,
-                                 final StringName... expected) {
-        this.aliasesAndCheck(
+    private void aliasesWithoutInfosAndCheck(final String text,
+                                             final StringName... expected) {
+        this.aliasesWithoutInfosAndCheck(
                 text,
                 Sets.of(expected)
         );
     }
 
-    private void aliasesAndCheck(final String text,
-                                 final Set<StringName> expected) {
+    private void aliasesWithoutInfosAndCheck(final String text,
+                                             final Set<StringName> expected) {
         this.checkEquals(
                 expected,
                 this.parseString(text)
-                        .aliases(),
+                        .aliasesWithoutInfos(),
                 () -> "aliases in " + text
         );
     }
