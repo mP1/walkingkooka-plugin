@@ -19,8 +19,8 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
-import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.ToStringTesting;
+import walkingkooka.compare.ComparableTesting2;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.net.AbsoluteUrl;
@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginAliasTest implements TreePrintableTesting,
         HasTextTesting,
-        HashCodeEqualsDefinedTesting2<PluginAlias<StringName, TestPluginSelector>>,
+        ComparableTesting2<PluginAlias<StringName, TestPluginSelector>>,
         ToStringTesting<PluginAlias<StringName, TestPluginSelector>>,
         ClassTesting<PluginAlias<StringName, TestPluginSelector>> {
 
@@ -190,8 +190,98 @@ public final class PluginAliasTest implements TreePrintableTesting,
         );
     }
 
+    @Test
+    public void testCompareToWhenNameDifferent() {
+        this.compareToAndCheckLess(
+                PluginAlias.with(
+                        Names.string("abc"),
+                        SELECTOR,
+                        URL
+                ),
+                PluginAlias.with(
+                        Names.string("xyz"),
+                        SELECTOR,
+                        URL
+                )
+        );
+    }
+
+    @Test
+    public void testCompareToWhenSelectorDifferent() {
+        this.compareToAndCheckLess(
+                PluginAlias.with(
+                        NAME,
+                        Optional.of(
+                                TestPluginSelector.parse("abc")
+                        ),
+                        URL
+                ),
+                PluginAlias.with(
+                        NAME,
+                        Optional.of(
+                                TestPluginSelector.parse("xyz")
+                        ),
+                        URL
+                )
+        );
+    }
+
+    @Test
+    public void testCompareToWhenSelectorDifferent2() {
+        this.compareToAndCheckLess(
+                PluginAlias.with(
+                        NAME,
+                        Optional.empty(),
+                        Optional.empty()
+                ),
+                PluginAlias.with(
+                        NAME,
+                        Optional.of(
+                                TestPluginSelector.parse("xyz")
+                        ),
+                        URL
+                )
+        );
+    }
+
+    @Test
+    public void testCompareToWhenUrlDifferent() {
+        this.compareToAndCheckLess(
+                PluginAlias.with(
+                        NAME,
+                        SELECTOR,
+                        Optional.of(
+                                Url.parseAbsolute("https://example.com/111")
+                        )
+                ),
+                PluginAlias.with(
+                        NAME,
+                        SELECTOR,
+                        Optional.of(
+                                Url.parseAbsolute("https://EXAMPLE.com/222")
+                        )
+                )
+        );
+    }
+
+    @Test
+    public void testCompareToWhenUrlDifferent2() {
+        this.compareToAndCheckLess(
+                PluginAlias.with(
+                        NAME,
+                        SELECTOR,
+                        Optional.empty()
+                ),
+                PluginAlias.with(
+                        NAME,
+                        SELECTOR,
+                        URL
+                )
+        );
+    }
+
     @Override
-    public PluginAlias<StringName, TestPluginSelector> createObject() {
+    public PluginAlias<StringName, TestPluginSelector> createComparable() {
         return PluginAlias.with(
                 NAME,
                 SELECTOR,
