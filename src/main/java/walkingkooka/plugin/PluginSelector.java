@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import walkingkooka.InvalidCharacterException;
 import walkingkooka.collect.list.Lists;
+import walkingkooka.compare.Comparators;
 import walkingkooka.naming.HasName;
 import walkingkooka.naming.Name;
 import walkingkooka.text.CharSequences;
@@ -45,7 +46,10 @@ import java.util.function.Function;
  * Note the selector should handle serialization itself, with marshalling using the {@link #toString()} into a
  * {@link walkingkooka.tree.json.JsonString} and unmarshalling parsing an equivalent {@link walkingkooka.tree.json.JsonString}.
  */
-public final class PluginSelector<N extends Name & Comparable<N>> implements HasName<N>, HasText, TreePrintable {
+public final class PluginSelector<N extends Name & Comparable<N>> implements HasName<N>,
+        HasText,
+        Comparable<PluginSelector<N>>,
+        TreePrintable {
 
     /**
      * Parses the given text into a selector, giving the component {@link Name} and {@link String text} to the provided factory
@@ -402,7 +406,23 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
                 this.name().textLength() + pos
         );
     }
-    
+
+    // Comparable.......................................................................................................
+
+    /**
+     * First compare both names and then compare the text
+     */
+    @Override
+    public int compareTo(final PluginSelector<N> other) {
+        int result = this.name.compareTo(other.name);
+
+        if(Comparators.EQUAL == result) {
+            result = this.text.compareTo(other.text);
+        }
+
+        return 0;
+    }
+
     // Object...........................................................................................................
 
     @Override
