@@ -36,8 +36,8 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
         TreePrintable {
 
     public static <N extends Name & Comparable<N>, S extends PluginSelectorLike<N>> PluginAlias<N, S> with(final N name,
-                                                                                                    final Optional<S> selector,
-                                                                                                    final Optional<AbsoluteUrl> url) {
+                                                                                                           final Optional<S> selector,
+                                                                                                           final Optional<AbsoluteUrl> url) {
         return new PluginAlias<>(
                 Objects.requireNonNull(name, "name"),
                 Objects.requireNonNull(selector, "selector"),
