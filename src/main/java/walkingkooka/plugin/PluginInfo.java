@@ -139,19 +139,12 @@ public final class PluginInfo<N extends Name & Comparable<N>> implements HasName
         int compare = this.name().compareTo(other.name());
 
         if (Comparators.EQUAL == compare) {
-            final AbsoluteUrl url = this.url().normalize();
-            final AbsoluteUrl otherUrl = other.url().normalize();
-
-            compare = url.host()
-                    .compareTo(otherUrl.host());
-            if (Comparators.EQUAL == compare) {
-                compare = url.relativeUrl()
-                        .toString()
-                        .compareTo(
-                                otherUrl.relativeUrl()
-                                        .toString()
-                        );
-            }
+            compare = this.url()
+                    .normalize()
+                    .compareTo(
+                            other.url()
+                                    .normalize()
+                    );
         }
 
         return compare;
