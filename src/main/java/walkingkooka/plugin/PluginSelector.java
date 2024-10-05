@@ -45,7 +45,7 @@ import java.util.function.Function;
  * Note the selector should handle serialization itself, with marshalling using the {@link #toString()} into a
  * {@link walkingkooka.tree.json.JsonString} and unmarshalling parsing an equivalent {@link walkingkooka.tree.json.JsonString}.
  */
-public final class PluginSelector<N extends Name> implements HasName<N>, HasText, TreePrintable {
+public final class PluginSelector<N extends Name & Comparable<N>> implements HasName<N>, HasText, TreePrintable {
 
     /**
      * Parses the given text into a selector, giving the component {@link Name} and {@link String text} to the provided factory
