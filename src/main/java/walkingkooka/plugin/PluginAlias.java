@@ -18,6 +18,7 @@
 package walkingkooka.plugin;
 
 import walkingkooka.Cast;
+import walkingkooka.compare.Comparators;
 import walkingkooka.naming.HasName;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
@@ -31,7 +32,8 @@ import java.util.Optional;
 /**
  * An individual declaration of a name or alias.
  */
-public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginSelectorLike<N>> implements HasName<N>,
+public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginSelectorLike<N>> implements Comparable<PluginAlias<N, S>>,
+        HasName<N>,
         HasText,
         TreePrintable {
 
@@ -78,6 +80,47 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
     }
 
     private final Optional<AbsoluteUrl> url;
+
+    // Comparable.......................................................................................................
+
+    @Override
+    public int compareTo(final PluginAlias<N, S> other) {
+        int result = this.name.compareTo(other.name);
+        if (Comparators.EQUAL == result) {
+
+            final S selector = this.selector.orElse(null);
+            final S otherSelector = other.selector.orElse(null);
+            if (null != selector && null != otherSelector) {
+                result = selector.name().compareTo(otherSelector.name());
+                if (Comparators.EQUAL == result) {
+                    result = selector.text()
+                            .compareTo(
+                                    otherSelector.text()
+                            );
+
+                    if (Comparators.EQUAL == result) {
+
+                        final AbsoluteUrl url = this.url.orElse(null);
+                        final AbsoluteUrl otherUrl = other.url.orElse(null);
+
+                        if (null != url && null != otherUrl) {
+                            result = url.compareTo(otherUrl);
+                        } else {
+                            result = null == url ?
+                                    Comparators.LESS :
+                                    Comparators.MORE;
+                        }
+
+                    }
+                }
+            } else {
+                result = null == selector ?
+                        Comparators.LESS :
+                        Comparators.MORE;
+            }
+        }
+        return result;
+    }
 
     // HasText..........................................................................................................
 
