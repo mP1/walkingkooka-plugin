@@ -283,9 +283,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
                         alias,
                         selector
                 );
-//                names.add(
-//                        selector.name()
-//                );
             }
         }
 
