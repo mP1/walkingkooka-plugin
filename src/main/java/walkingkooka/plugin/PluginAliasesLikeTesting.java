@@ -167,6 +167,37 @@ public interface PluginAliasesLikeTesting<L extends PluginAliasesLike<N, I, IS, 
         );
     }
 
+    // merge............................................................................................................
+
+    @Test
+    default void testMergeWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createPluginAliases()
+                        .merge(null)
+        );
+    }
+
+    default void mergeAndCheck(final L pluginMerge,
+                               final IS providerInfos,
+                               final I... expected) {
+        this.mergeAndCheck(
+                pluginMerge,
+                providerInfos,
+                Sets.of(expected)
+        );
+    }
+
+    default void mergeAndCheck(final L pluginMerge,
+                               final IS providerInfos,
+                               final Set<I> expected) {
+        this.checkEquals(
+                pluginMerge.merge(providerInfos),
+                expected,
+                "merge"
+        );
+    }
+
     L createPluginAliases();
 
     // class............................................................................................................
