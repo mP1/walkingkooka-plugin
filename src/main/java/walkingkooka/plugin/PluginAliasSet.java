@@ -385,6 +385,85 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
 
     private final IS infos;
 
+    /**
+     * Accepts some {@link PluginInfoSetLike} and uses the aliases mappings within to produce a final {@link PluginInfoSetLike}
+     */
+    public IS merge(final IS providerInfos) {
+        Objects.requireNonNull(providerInfos, "providerInfos");
+
+        // verify all aliases -> name and names exist
+        final Set<N> providerNames = providerInfos.names();
+
+        final Set<N> unknownNames = SortedSets.tree();
+
+        this.names()
+                .stream()
+                .filter(n -> false == providerNames.contains(n))
+                .forEach(unknownNames::add);
+
+        // Fix all INFOs for each alias
+        IS newInfos = providerInfos;
+
+        final Set<N> aliasNames = this.aliasesWithoutInfos();
+        final IS aliasesInfos = this.infos();
+
+        if (aliasNames.size() + aliasesInfos.size() > 0) {
+            final Map<N, I> nameToProviderInfo = Maps.sorted();
+
+            for (final I providerInfo : providerInfos) {
+                nameToProviderInfo.put(
+                        providerInfo.name(),
+                        providerInfo
+                );
+            }
+
+            for (final N aliasName : aliasNames) {
+                final Optional<S> selector = this.alias(aliasName);
+                if (selector.isPresent()) {
+                    final I providerInfo = nameToProviderInfo.get(
+                            selector.get()
+                                    .name()
+                    );
+                    if (null != providerInfo) {
+                        newInfos = newInfos.replace(
+                                providerInfo,
+                                providerInfo.setName(aliasName)
+                        );
+                    }
+                }
+            }
+
+            for (final I aliasInfo : aliasesInfos) {
+                final N name = aliasInfo.name();
+                final I providerInfo = nameToProviderInfo.get(name);
+                if (null != providerInfo) {
+                    newInfos = newInfos.replace(
+                            providerInfo,
+                            aliasInfo
+                    );
+                } else {
+                    newInfos = newInfos.concat(
+                            aliasInfo
+                    );
+                }
+            }
+        }
+
+        if (false == unknownNames.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Unknown " +
+                            this.helper.label() +
+                            ": " +
+                            CharacterConstant.COMMA.toSeparatedString(
+                                    unknownNames,
+                                    N::toString
+                            )
+            );
+        }
+
+        return newInfos;
+    }
+
     // HasText..........................................................................................................
 
     @Override
