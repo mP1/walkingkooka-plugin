@@ -111,6 +111,11 @@ final class TestPluginHelper implements PluginHelper<StringName, TestPluginInfo,
     }
 
     @Override
+    public String label() {
+        return StringName.class.getSimpleName();
+    }
+
+    @Override
     public String toString() {
         return this.getClass().getSimpleName() + " " + this.caseSensitivity;
     }
