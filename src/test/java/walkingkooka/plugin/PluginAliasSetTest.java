@@ -865,7 +865,7 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
         );
 
         this.checkEquals(
-                "Unknown StringName: unknown222",
+                "Unknown StringName(s): unknown222",
                 thrown.getMessage(),
                 "message"
         );
@@ -882,7 +882,7 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
         );
 
         this.checkEquals(
-                "Unknown StringName: unknown222,unknown333",
+                "Unknown StringName(s): unknown222,unknown333",
                 thrown.getMessage(),
                 "message"
         );
@@ -899,7 +899,7 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
         );
 
         this.checkEquals(
-                "Unknown StringName: plugin222",
+                "Unknown StringName(s): plugin222",
                 thrown.getMessage(),
                 "message"
         );
