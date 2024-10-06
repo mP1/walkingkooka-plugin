@@ -453,7 +453,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
             throw new IllegalArgumentException(
                     "Unknown " +
                             this.helper.label() +
-                            ": " +
+                            "(s): " +
                             CharacterConstant.COMMA.toSeparatedString(
                                     unknownNames,
                                     N::toString
