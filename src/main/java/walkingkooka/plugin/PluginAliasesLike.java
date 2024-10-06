@@ -52,4 +52,9 @@ public interface PluginAliasesLike<N extends Name & Comparable<N>, I extends Plu
      * Returns all {@link PluginInfoSetLike} including those belonging to new aliases definitions.
      */
     IS infos();
+
+    /**
+     * Returns a {@link PluginInfoSetLike} that applies alies/names to the given {@link PluginInfoSetLike provider infos}.
+     */
+    IS merge(final IS providerInfo);
 }
