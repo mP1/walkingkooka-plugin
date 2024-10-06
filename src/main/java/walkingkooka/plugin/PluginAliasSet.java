@@ -404,7 +404,8 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
         // verify all aliases -> name and names exist
         final Set<N> providerNames = providerInfos.names();
 
-        final Set<N> unknownNames = SortedSets.tree();
+        final Comparator<N> nameComparator = this.helper.nameComparator();;
+        final Set<N> unknownNames = SortedSets.tree(nameComparator);
 
         final Set<N> names = this.names;
         names.stream()
@@ -439,7 +440,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
         // remove unmentioned provider.infos
 
         if (aliasesWithoutInfos.size() + aliasesInfos.size() > 0) {
-            final Map<N, I> nameToProviderInfo = Maps.sorted();
+            final Map<N, I> nameToProviderInfo = Maps.sorted(nameComparator);
 
             for (final I providerInfo : providerInfos) {
                 nameToProviderInfo.put(
