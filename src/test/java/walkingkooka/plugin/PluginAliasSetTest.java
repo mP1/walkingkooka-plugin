@@ -623,7 +623,7 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
                               final Optional<StringName> expected) {
         this.checkEquals(
                 expected,
-                PluginAliases.parse(
+                PluginAliasSet.parse(
                         text,
                         new TestPluginHelper(caseSensitivity)
                 ).name(name),
@@ -728,7 +728,7 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
                                final Optional<TestPluginSelector> expected) {
         this.checkEquals(
                 expected,
-                PluginAliases.parse(
+                PluginAliasSet.parse(
                         text,
                         new TestPluginHelper(caseSensitivity)
                 ).alias(alias),
