@@ -126,6 +126,15 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
 
     @Override
     public String text() {
+        return this.buildText("");
+    }
+
+    // @see PluginAliasSet#text
+    String textAndSpace() {
+        return this.buildText(" ");
+    }
+
+    private String buildText(final String afterUrl) {
         final StringBuilder b = new StringBuilder();
         b.append(this.name);
 
@@ -142,6 +151,7 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
             if (url.isPresent()) {
                 b.append(' ');
                 b.append(url.get());
+                b.append(afterUrl);
             }
         }
 
