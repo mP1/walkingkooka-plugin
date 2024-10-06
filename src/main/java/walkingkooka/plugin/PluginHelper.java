@@ -78,4 +78,9 @@ public interface PluginHelper<N extends Name & Comparable<N>, I extends PluginIn
      * Parses the given text into a {@link PluginSelectorLike}.
      */
     S parseSelector(final String text);
+
+    /**
+     * A label which may be used in messages.
+     */
+    String label();
 }
