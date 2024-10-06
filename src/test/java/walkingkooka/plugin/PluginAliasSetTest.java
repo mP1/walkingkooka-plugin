@@ -843,6 +843,142 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
         );
     }
 
+    // merge............................................................................................................
+
+    @Test
+    public void testMergeWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createSet()
+                        .merge(null)
+        );
+    }
+
+    @Test
+    public void testMergeWithUnknownNameFails() {
+        final IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> this.parseString("unknown222")
+                        .merge(
+                                TestPluginInfoSet.parse("https://example.com/111 plugin111")
+                        )
+        );
+
+        this.checkEquals(
+                "Unknown StringName: unknown222",
+                thrown.getMessage(),
+                "message"
+        );
+    }
+
+    @Test
+    public void testMergeWithUnknownNameFails2() {
+        final IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> this.parseString("unknown222, unknown333, plugin444")
+                        .merge(
+                                TestPluginInfoSet.parse("https://example.com/111 plugin111, https://example.com/444 plugin444")
+                        )
+        );
+
+        this.checkEquals(
+                "Unknown StringName: unknown222,unknown333",
+                thrown.getMessage(),
+                "message"
+        );
+    }
+
+    @Test
+    public void testMergeWithUnknownAliasFails() {
+        final IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> this.parseString("unknown222 plugin222")
+                        .merge(
+                                TestPluginInfoSet.parse("https://example.com/111 plugin111")
+                        )
+        );
+
+        this.checkEquals(
+                "Unknown StringName: plugin222",
+                thrown.getMessage(),
+                "message"
+        );
+    }
+
+    @Test
+    public void testMergeWithOnlyNames() {
+        this.mergeAndCheck(
+                "plugin111",
+                "https://example.com/111 plugin111, https://example.com/222 plugin222",
+                "https://example.com/111 plugin111, https://example.com/222 plugin222"
+        );
+    }
+
+    @Test
+    public void testMergeWithOnlyNames2() {
+        this.mergeAndCheck(
+                "plugin111, plugin222",
+                "https://example.com/111 plugin111, https://example.com/222 plugin222",
+                "https://example.com/111 plugin111, https://example.com/222 plugin222"
+        );
+    }
+
+    @Test
+    public void testMergeWithNamesAndAliases() {
+        this.mergeAndCheck(
+                "plugin111, alias222 plugin222",
+                "https://example.com/111 plugin111, https://example.com/222 plugin222, https://example.com/333 plugin333",
+                "https://example.com/111 plugin111, https://example.com/222 alias222, https://example.com/333 plugin333"
+        );
+    }
+
+    @Test
+    public void testMergeWithNamesAndAliases2() {
+        this.mergeAndCheck(
+                "plugin111, alias222 plugin222",
+                "https://example.com/111 plugin111, https://example.com/222 plugin222",
+                "https://example.com/111 plugin111, https://example.com/222 alias222"
+        );
+    }
+
+    @Test
+    public void testMergeWithNamesAndAliasesWithIntroducedUrl() {
+        this.mergeAndCheck(
+                "alias999 plugin111 https://example.com/999",
+                "https://example.com/111 plugin111, https://example.com/222 plugin222",
+                "https://example.com/111 plugin111, https://example.com/222 plugin222, https://example.com/999 alias999"
+        );
+    }
+
+    @Test
+    public void testMergeWithNamesAndAliasesWithIntroducedUrl2() {
+        this.mergeAndCheck(
+                "alias999 plugin111 https://example.com/999 , plugin222, alias333 plugin333",
+                "https://example.com/111 plugin111, https://example.com/222 plugin222, https://example.com/333 plugin333",
+                "https://example.com/111 plugin111, https://example.com/222 plugin222, https://example.com/333 alias333, https://example.com/999 alias999"
+        );
+    }
+
+    private void mergeAndCheck(final String alias,
+                               final String infos,
+                               final String expected) {
+        this.mergeAndCheck(
+                this.parseString(alias),
+                TestPluginInfoSet.parse(infos),
+                TestPluginInfoSet.parse(expected)
+        );
+    }
+
+    private void mergeAndCheck(final PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector> alias,
+                               final TestPluginInfoSet infos,
+                               final TestPluginInfoSet expected) {
+        this.checkEquals(
+                expected,
+                alias.merge(infos),
+                () -> alias + " merge " + infos
+        );
+    }
+
     // ImmutableSet.....................................................................................................
 
     @Test
