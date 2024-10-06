@@ -224,8 +224,9 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
 
         final Comparator<N> nameComparator = helper.nameComparator();
 
-        final Map<N, S> nameToAlias = Maps.sorted(nameComparator);
+        final Map<N, S> aliasToName = Maps.sorted(nameComparator);
         final Map<N, N> nameToName = Maps.sorted(nameComparator);
+        final Map<N, N> nameToAlias = Maps.sorted(nameComparator);
 
         final SortedSet<N> aliasesWithoutInfos = SortedSets.tree(nameComparator);
         final SortedSet<N> names = SortedSets.tree(nameComparator);
@@ -237,7 +238,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
 
             duplicateCheck(
                     nameOrAlias,
-                    nameToAlias,
+                    aliasToName,
                     nameToName
             );
 
@@ -254,6 +255,11 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
             } else {
                 final S selector = maybeSelector.get();
                 final N alias = nameOrAlias;
+                duplicateCheck(
+                        alias,
+                        aliasToName,
+                        nameToName
+                );
 
                 final Optional<AbsoluteUrl> maybeUrl = pluginAlias.url();
 
@@ -271,24 +277,41 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
                             )
                     );
                 } else {
-                    aliasesWithoutInfos.add(alias);
+                    if(false == aliasesWithoutInfos.add(alias)) {
+                        throw new IllegalArgumentException("Duplicate alias: " + alias);
+                    }
+                    final N duplicate = nameToAlias.put(
+                            selector.name(),
+                            alias
+                    );
+                    if(null != duplicate) {
+                        throw new IllegalArgumentException("Duplicate alias: " + duplicate + " and " + alias);
+                    }
                 }
 
-                duplicateCheck(
-                        alias,
-                        nameToAlias,
-                        nameToName
-                );
-                nameToAlias.put(
+                aliasToName.put(
                         alias,
                         selector
                 );
             }
         }
 
+
+        // both alias to a name and the name cannot both exist if the alias does not have a different info
+        final String duplicateNamesAliases = aliasesWithoutInfos.stream()
+                .filter(a -> {
+                    final N aliasName = a;
+                    final S selector = aliasToName.get(aliasName);
+                    return null != selector && names.contains(selector.name());
+                }).map(Name::toString)
+                .collect(Collectors.joining(", "));
+        if(false == duplicateNamesAliases.isEmpty()) {
+            throw new IllegalArgumentException("Duplicate name/aliases: " + duplicateNamesAliases);
+        }
+
         return new PluginAliasSet<>(
                 aliases,
-                nameToAlias,
+                aliasToName,
                 aliasesWithoutInfos,
                 nameToName,
                 names,
@@ -298,9 +321,9 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
     }
 
     private static <N extends Name & Comparable<N>, S extends PluginSelectorLike<N>> void duplicateCheck(final N name,
-                                                                                                         final Map<N, S> aliases,
-                                                                                                         final Map<N, N> names) {
-        if (aliases.containsKey(name) || names.containsKey(name)) {
+                                                                                                         final Map<N, S> aliasToName,
+                                                                                                         final Map<N, N> nameToName) {
+        if (aliasToName.containsKey(name) || nameToName.containsKey(name)) {
             throw new IllegalArgumentException("Duplicate name: " + CharSequences.quoteAndEscape(name.value()));
         }
     }
@@ -399,7 +422,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
         // Fix all INFOs for each alias
         IS newInfos = providerInfos;
 
-        final Set<N> aliasNames = this.aliasesWithoutInfos;
+        final Set<N> aliasesWithoutInfos = this.aliasesWithoutInfos;
 
         // remove $newInfos which are not referenced by name or alias
         final Set<I> unreferencedProviderInfos = Sets.hash();
@@ -416,7 +439,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
 
         // remove unmentioned provider.infos
 
-        if (aliasNames.size() + aliasesInfos.size() > 0) {
+        if (aliasesWithoutInfos.size() + aliasesInfos.size() > 0) {
             final Map<N, I> nameToProviderInfo = Maps.sorted();
 
             for (final I providerInfo : providerInfos) {
@@ -426,7 +449,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
                 );
             }
 
-            for (final N aliasName : aliasNames) {
+            for (final N aliasName : aliasesWithoutInfos) {
                 final Optional<S> selector = this.alias(aliasName);
                 if (selector.isPresent()) {
                     final I providerInfo = nameToProviderInfo.get(

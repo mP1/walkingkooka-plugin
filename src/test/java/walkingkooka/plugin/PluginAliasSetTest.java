@@ -507,6 +507,92 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
         );
     }
 
+    @Test
+    public void testParseWithAliasWithoutInfoAndNameFails() {
+        this.parseStringFails(
+                "alias111 plugin111, plugin111",
+                new IllegalArgumentException("Duplicate name/aliases: alias111")
+        );
+    }
+
+    @Test
+    public void testParseWithDuplicateAliasFails() {
+        this.parseStringFails(
+                "alias111 plugin111, alias111 plugin333",
+                new IllegalArgumentException("Duplicate name: \"alias111\"")
+        );
+    }
+
+    @Test
+    public void testParseWithDuplicateAliasFails2() {
+        this.parseStringFails(
+                "alias111 plugin111, plugin222, alias111 plugin333",
+                new IllegalArgumentException("Duplicate name: \"alias111\"")
+        );
+    }
+
+    @Test
+    public void testParseWithDuplicateNameMappingFails() {
+        this.parseStringFails(
+                "alias111 plugin111, alias222 plugin111",
+                new IllegalArgumentException("Duplicate alias: alias111 and alias222")
+        );
+    }
+
+    @Test
+    public void testParseWithDuplicateNameMappingFails2() {
+        this.parseStringFails(
+                "alias111 plugin111, alias222 plugin111, plugin222",
+                new IllegalArgumentException("Duplicate alias: alias111 and alias222")
+        );
+    }
+
+    @Test
+    public void testParseMultipleAliases() {
+        this.parseStringAndCheck(
+                "alias111 plugin111 https://www.example.com/alias111 , alias222 plugin111 https://www.example.com/alias222",
+                new PluginAliasSet<>(
+                        SortedSets.of(
+                                PluginAlias.with(
+                                        NAME1_ALIAS,
+                                        Optional.of(
+                                                SELECTOR1
+                                        ),
+                                        Optional.of(
+                                                Url.parseAbsolute("https://www.example.com/alias111")
+                                        )
+                                ),
+                                PluginAlias.with(
+                                        NAME2_ALIAS,
+                                        Optional.of(
+                                                SELECTOR1
+                                        ),
+                                        Optional.of(
+                                                Url.parseAbsolute("https://www.example.com/alias222")
+                                        )
+                                )
+                        ), // aliases
+                        Maps.of(
+                                NAME1_ALIAS,
+                                SELECTOR1,
+                                NAME2_ALIAS,
+                                SELECTOR2
+                        ), // alias -> selector
+                        Sets.of(
+                                NAME1_ALIAS,
+                                NAME2_ALIAS
+                        ), // alias selectors
+                        Maps.empty(), // name -> name
+                        Sets.of(
+                                NAME1,
+                                NAME2
+                        ), // names
+                        TestPluginInfoSet.EMPTY, // infos
+                        TestPluginHelper.INSTANCE
+                )
+        );
+    }
+
     @Override
     public PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector> parseString(final String text) {
         return PluginAliasSet.parse(
