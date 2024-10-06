@@ -458,11 +458,17 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
 
     @Override
     public String text() {
-        return this.sortedSet.stream()
-                .map(PluginAlias::textAndSpace)
-                .collect(Collectors.joining(SEPARATOR_SPACE))
-                .trim();
+        if (null == this.text) {
+            this.text = this.sortedSet.stream()
+                    .map(PluginAlias::textAndSpace)
+                    .collect(Collectors.joining(SEPARATOR_SPACE))
+                    .trim();
+        }
+
+        return this.text;
     }
+
+    private String text;
 
     private final static String SEPARATOR_SPACE = SEPARATOR + " ";
 
