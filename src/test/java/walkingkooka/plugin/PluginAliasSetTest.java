@@ -558,7 +558,7 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
         this.checkEquals(
                 expected,
                 this.parseString(text)
-                        .names(),
+                        .names,
                 () -> "names in " + text
         );
     }
@@ -663,8 +663,8 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
         this.checkEquals(
                 expected,
                 this.parseString(text)
-                        .aliasesWithoutInfos(),
-                () -> "aliases in " + text
+                        .aliasesWithoutInfos,
+                () -> "aliasesWithoutInfos in " + text
         );
     }
 

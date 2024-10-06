@@ -32,25 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public interface PluginAliasesLikeTesting<L extends PluginAliasesLike<N, I, IS, S>, N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> extends ClassTesting2<L>,
         TreePrintableTesting {
 
-    // names............................................................................................................
-
-    default void namesAndCheck(final L pluginNames,
-                               final N... expected) {
-        this.namesAndCheck(
-                pluginNames,
-                Sets.of(expected)
-        );
-    }
-
-    default void namesAndCheck(final L pluginNames,
-                               final Set<N> expected) {
-        this.checkEquals(
-                expected,
-                pluginNames.names(),
-                () -> pluginNames + " names"
-        );
-    }
-
     // name.............................................................................................................
 
     @Test
@@ -90,25 +71,6 @@ public interface PluginAliasesLikeTesting<L extends PluginAliasesLike<N, I, IS, 
         );
     }
 
-    // aliases..........................................................................................................
-
-    default void aliasesAndCheck(final L pluginAliases,
-                                 final N... expected) {
-        this.aliasesAndCheck(
-                pluginAliases,
-                Sets.of(expected)
-        );
-    }
-
-    default void aliasesAndCheck(final L pluginAliases,
-                                 final Set<N> expected) {
-        this.checkEquals(
-                expected,
-                pluginAliases.aliases(),
-                () -> pluginAliases + " aliases"
-        );
-    }
-
     // alias............................................................................................................
 
     @Test
@@ -145,25 +107,6 @@ public interface PluginAliasesLikeTesting<L extends PluginAliasesLike<N, I, IS, 
                 expected,
                 pluginAliases.alias(alias),
                 () -> "alias " + alias
-        );
-    }
-
-    // infos............................................................................................................
-
-    default void infosAndCheck(final L pluginInfos,
-                               final I... expected) {
-        this.infosAndCheck(
-                pluginInfos,
-                Sets.of(expected)
-        );
-    }
-
-    default void infosAndCheck(final L pluginInfos,
-                               final Set<I> expected) {
-        this.checkEquals(
-                pluginInfos.infos(),
-                expected,
-                "infos"
         );
     }
 

@@ -342,13 +342,10 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
     private final Map<N, S> nameToAliases;
 
     /**
-     * Getter that returns all alias {@link Name} for aliases without a {@link PluginInfoLike}.
+     * Contains all alias {@link Name} for aliases without a {@link PluginInfoLike}.
      */
-    public Set<N> aliasesWithoutInfos() {
-        return this.aliasesWithoutInfos;
-    }
-
-    private final Set<N> aliasesWithoutInfos;
+    // @VisibleForTesting
+    final Set<N> aliasesWithoutInfos;
 
     /**
      * Queries the target name applying any aliases, or returning the name if no alias was present.
@@ -368,22 +365,16 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
     private final Map<N, N> nameToName;
 
     /**
-     * Returns all {@link Name} mappings which will also including the target for any alias, but not the alias itself.
+     * Contains all {@link Name} mappings which will also including the target for any alias, but not the alias itself.
      */
-    public Set<N> names() {
-        return this.names;
-    }
-
-    private final Set<N> names;
+    // @VisibleForTesting
+    final Set<N> names;
 
     /**
-     * Returns all {@link PluginInfoSetLike} including those belonging to new aliases definitions.
+     * Contains all {@link PluginInfoSetLike} including those belonging to new aliases definitions.
      */
-    public IS infos() {
-        return this.infos;
-    }
-
-    private final IS infos;
+    // @VisibleForTesting
+    final IS infos;
 
     /**
      * Accepts some {@link PluginInfoSetLike} and uses the aliases mappings within to produce a final {@link PluginInfoSetLike}
@@ -396,16 +387,15 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
 
         final Set<N> unknownNames = SortedSets.tree();
 
-        this.names()
-                .stream()
+        this.names.stream()
                 .filter(n -> false == providerNames.contains(n))
                 .forEach(unknownNames::add);
 
         // Fix all INFOs for each alias
         IS newInfos = providerInfos;
 
-        final Set<N> aliasNames = this.aliasesWithoutInfos();
-        final IS aliasesInfos = this.infos();
+        final Set<N> aliasNames = this.aliasesWithoutInfos;
+        final IS aliasesInfos = this.infos;
 
         if (aliasNames.size() + aliasesInfos.size() > 0) {
             final Map<N, I> nameToProviderInfo = Maps.sorted();
