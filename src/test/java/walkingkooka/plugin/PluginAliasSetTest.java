@@ -782,6 +782,13 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
     }
 
     @Test
+    public void testTextWithAliasNameUrl2() {
+        this.parseAndTextCheck(
+                "alias111 name111 https://example.com/name111 , alias222 name222 https://example.com/name222"
+        );
+    }
+
+    @Test
     public void testTextWithAliasNameExtraSpacesUrl() {
         this.parseAndTextCheck(
                 "alias111 name111  https://example.com/name111",
