@@ -100,8 +100,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
 
                 if (false == maybeSelector.isPresent()) {
                     // name END
-                    final N name = nameOrAlias.get();
-
                     pluginAlias = PluginAlias.with(
                             nameOrAlias.get(),
                             Optional.empty(), // no selector
