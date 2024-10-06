@@ -537,11 +537,10 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
     }
 
     @Test
-    public void testNamesIncludesAliases() {
+    public void testNamesDoesntIncludeAliases() {
         this.namesAndCheck(
                 "name1, alias2 name2",
-                Names.string("name1"),
-                Names.string("name2")
+                Names.string("name1")
         );
     }
 
@@ -909,8 +908,8 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
     public void testMergeWithOnlyNames() {
         this.mergeAndCheck(
                 "plugin111",
-                "https://example.com/111 plugin111, https://example.com/222 plugin222",
-                "https://example.com/111 plugin111, https://example.com/222 plugin222"
+                "https://example.com/111 plugin111, https://example.com/222 plugin222", // plugin222 not mentioned should NOT appear in INFO
+                "https://example.com/111 plugin111"
         );
     }
 
@@ -928,7 +927,7 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
         this.mergeAndCheck(
                 "plugin111, alias222 plugin222",
                 "https://example.com/111 plugin111, https://example.com/222 plugin222, https://example.com/333 plugin333",
-                "https://example.com/111 plugin111, https://example.com/222 alias222, https://example.com/333 plugin333"
+                "https://example.com/111 plugin111, https://example.com/222 alias222"
         );
     }
 
@@ -944,9 +943,9 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
     @Test
     public void testMergeWithNamesAndAliasesWithIntroducedUrl() {
         this.mergeAndCheck(
-                "alias999 plugin111 https://example.com/999",
+                "plugin111, alias999 plugin111 https://example.com/999",
                 "https://example.com/111 plugin111, https://example.com/222 plugin222",
-                "https://example.com/111 plugin111, https://example.com/222 plugin222, https://example.com/999 alias999"
+                "https://example.com/111 plugin111, https://example.com/999 alias999"
         );
     }
 
@@ -955,7 +954,7 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
         this.mergeAndCheck(
                 "alias999 plugin111 https://example.com/999 , plugin222, alias333 plugin333",
                 "https://example.com/111 plugin111, https://example.com/222 plugin222, https://example.com/333 plugin333",
-                "https://example.com/111 plugin111, https://example.com/222 plugin222, https://example.com/333 alias333, https://example.com/999 alias999"
+                "https://example.com/222 plugin222, https://example.com/333 alias333, https://example.com/999 alias999"
         );
     }
 

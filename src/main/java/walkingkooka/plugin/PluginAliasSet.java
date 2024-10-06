@@ -283,9 +283,9 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
                         alias,
                         selector
                 );
-                names.add(
-                        selector.name()
-                );
+//                names.add(
+//                        selector.name()
+//                );
             }
         }
 
@@ -387,15 +387,37 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
 
         final Set<N> unknownNames = SortedSets.tree();
 
-        this.names.stream()
+        final Set<N> names = this.names;
+        names.stream()
                 .filter(n -> false == providerNames.contains(n))
                 .forEach(unknownNames::add);
+
+        this.nameToAliases.values()
+                .stream()
+                .map(s -> s.name())
+                .filter(n -> false == providerNames.contains(n))
+                .forEach(unknownNames::add);
+
 
         // Fix all INFOs for each alias
         IS newInfos = providerInfos;
 
         final Set<N> aliasNames = this.aliasesWithoutInfos;
+
+        // remove $newInfos which are not referenced by name or alias
+        final Set<I> unreferencedProviderInfos = Sets.hash();
+
+        for(final I providerInfo : providerInfos) {
+            if(false == names.contains(providerInfo.name())) {
+                unreferencedProviderInfos.add(providerInfo);
+            }
+        }
+
+        newInfos = newInfos.deleteAll(unreferencedProviderInfos);
+
         final IS aliasesInfos = this.infos;
+
+        // remove unmentioned provider.infos
 
         if (aliasNames.size() + aliasesInfos.size() > 0) {
             final Map<N, I> nameToProviderInfo = Maps.sorted();
