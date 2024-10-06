@@ -25,7 +25,6 @@ import walkingkooka.collect.set.Sets;
 import walkingkooka.collect.set.SortedSets;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
-import walkingkooka.text.CharSequences;
 import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.HasText;
 import walkingkooka.text.cursor.TextCursorSavePoint;
@@ -306,7 +305,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
                 }).map(Name::toString)
                 .collect(Collectors.joining(", "));
         if(false == duplicateNamesAliases.isEmpty()) {
-            throw new IllegalArgumentException("Duplicate name/aliases: " + duplicateNamesAliases);
+            throw new IllegalArgumentException("Duplicate name/alias: " + duplicateNamesAliases);
         }
 
         return new PluginAliasSet<>(
@@ -324,7 +323,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>, I extends Plug
                                                                                                          final Map<N, S> aliasToName,
                                                                                                          final Map<N, N> nameToName) {
         if (aliasToName.containsKey(name) || nameToName.containsKey(name)) {
-            throw new IllegalArgumentException("Duplicate name: " + CharSequences.quoteAndEscape(name.value()));
+            throw new IllegalArgumentException("Duplicate name/alias: " + name);
         }
     }
 

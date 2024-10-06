@@ -461,7 +461,7 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
     public void testParseWithAliasCommaDuplicateAlias() {
         this.parseStringFails(
                 "alias111 plugin111(\"Hello111\"), alias111 plugin222(\"Hello222\")",
-                new IllegalArgumentException("Duplicate name: \"alias111\"")
+                new IllegalArgumentException("Duplicate name/alias: alias111")
         );
     }
 
@@ -511,7 +511,7 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
     public void testParseWithAliasWithoutInfoAndNameFails() {
         this.parseStringFails(
                 "alias111 plugin111, plugin111",
-                new IllegalArgumentException("Duplicate name/aliases: alias111")
+                new IllegalArgumentException("Duplicate name/alias: alias111")
         );
     }
 
@@ -519,7 +519,7 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
     public void testParseWithDuplicateAliasFails() {
         this.parseStringFails(
                 "alias111 plugin111, alias111 plugin333",
-                new IllegalArgumentException("Duplicate name: \"alias111\"")
+                new IllegalArgumentException("Duplicate name/alias: alias111")
         );
     }
 
@@ -527,7 +527,7 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
     public void testParseWithDuplicateAliasFails2() {
         this.parseStringFails(
                 "alias111 plugin111, plugin222, alias111 plugin333",
-                new IllegalArgumentException("Duplicate name: \"alias111\"")
+                new IllegalArgumentException("Duplicate name/alias: alias111")
         );
     }
 
@@ -1085,7 +1085,7 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
         );
 
         this.checkEquals(
-                "Duplicate name: \"alias1\"",
+                "Duplicate name/alias: alias1",
                 thrown.getMessage(),
                 "message"
         );
