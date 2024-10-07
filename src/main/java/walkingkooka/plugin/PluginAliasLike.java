@@ -25,8 +25,11 @@ import walkingkooka.text.printer.TreePrintable;
 /**
  * Defines the public methods for a plugin alias.
  */
-public interface PluginAliasLike<N extends Name & Comparable<N>, S extends PluginSelectorLike<N>, L extends PluginAliasLike<N, S, L>> extends Comparable<L>,
-        HasName<N>,
-        HasText,
-        TreePrintable {
+public interface PluginAliasLike<N extends Name & Comparable<N>,
+        S extends PluginSelectorLike<N>,
+        L extends PluginAliasLike<N, S, L>>
+        extends Comparable<L>,
+            HasName<N>,
+            HasText,
+            TreePrintable {
 }
