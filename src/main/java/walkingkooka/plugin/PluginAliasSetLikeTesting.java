@@ -24,8 +24,13 @@ import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 
-public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>, E extends PluginAliasLike<N, S, E>, AS extends PluginAliasSetLike<N, I, IS, S, E>>
-extends ImmutableSortedSetTesting<AS, E>,
+public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
+        I extends PluginInfoLike<I, N>,
+        IS extends PluginInfoSetLike<IS, I, N>,
+        S extends PluginSelectorLike<N>,
+        A extends PluginAliasLike<N, S, A>,
+        AS extends PluginAliasSetLike<N, I, IS, S, A>>
+    extends ImmutableSortedSetTesting<AS, A>,
         HasTextTesting,
         TreePrintableTesting,
         ParseStringTesting<AS>,
