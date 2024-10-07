@@ -25,7 +25,12 @@ import walkingkooka.text.printer.TreePrintable;
 /**
  * A {@link ImmutableSortedSet} holding {@link PluginAliasLike} entries.
  */
-public interface PluginAliasSetLike<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>, E extends PluginAliasLike<N, S, E>> extends ImmutableSortedSet<E>,
-        HasText,
-        TreePrintable {
+public interface PluginAliasSetLike<N extends Name & Comparable<N>,
+        I extends PluginInfoLike<I, N>,
+        IS extends PluginInfoSetLike<IS, I, N>,
+        S extends PluginSelectorLike<N>,
+        A extends PluginAliasLike<N, S, A>>
+        extends ImmutableSortedSet<A>,
+            HasText,
+            TreePrintable {
 }
