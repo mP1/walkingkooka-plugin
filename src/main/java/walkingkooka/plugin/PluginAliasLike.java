@@ -27,8 +27,8 @@ import walkingkooka.text.printer.TreePrintable;
  */
 public interface PluginAliasLike<N extends Name & Comparable<N>,
         S extends PluginSelectorLike<N>,
-        L extends PluginAliasLike<N, S, L>>
-        extends Comparable<L>,
+        A extends PluginAliasLike<N, S, A>>
+        extends Comparable<A>,
             HasName<N>,
             HasText,
             TreePrintable {
