@@ -20,27 +20,25 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.collect.map.Maps;
-import walkingkooka.collect.set.ImmutableSortedSetTesting;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.collect.set.SortedSets;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.net.Url;
-import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.CaseSensitivity;
-import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.cursor.parser.ParserException;
-import walkingkooka.text.printer.TreePrintableTesting;
 
 import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class PluginAliasSetTest implements ImmutableSortedSetTesting<PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>, PluginAlias<StringName, TestPluginSelector>>,
-        ParseStringTesting<PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>>,
-        HasTextTesting,
-        TreePrintableTesting {
+public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<StringName,
+        TestPluginInfo,
+        TestPluginInfoSet,
+        TestPluginSelector,
+        PluginAlias<StringName, TestPluginSelector>,
+        PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>> {
 
     // parse............................................................................................................
 
@@ -599,16 +597,6 @@ public final class PluginAliasSetTest implements ImmutableSortedSetTesting<Plugi
                 text,
                 TestPluginHelper.INSTANCE
         );
-    }
-
-    @Override
-    public Class<? extends RuntimeException> parseStringFailedExpected(Class<? extends RuntimeException> thrown) {
-        return thrown;
-    }
-
-    @Override
-    public RuntimeException parseStringFailedExpected(final RuntimeException thrown) {
-        return thrown;
     }
 
     // names............................................................................................................
