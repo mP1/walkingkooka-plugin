@@ -33,15 +33,15 @@ import java.util.function.Function;
  * The final {@link #infos()} will contain infos from both the renamingInfo and providerInfos, where renamingInfos overwrites providerInfos.
  */
 public final class MergedProviderMapper<N extends Name & Comparable<N>,
-        S extends PluginSelectorLike<N>,
         I extends PluginInfoLike<I, N>,
-        IS extends PluginInfoSetLike<IS, I, N>> {
+        IS extends PluginInfoSetLike<IS, I, N>,
+        S extends PluginSelectorLike<N>> {
 
     public static <N extends Name & Comparable<N>,
-            S extends PluginSelectorLike<N>,
             I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<IS, I, N>>
-    MergedProviderMapper<N, S, I, IS> with(final IS renamingInfos,
+            IS extends PluginInfoSetLike<IS, I, N>,
+            S extends PluginSelectorLike<N>>
+    MergedProviderMapper<N, I, IS, S> with(final IS renamingInfos,
                                            final IS providerInfos,
                                            final PluginHelper<N, I, IS, S> helper) {
         return new MergedProviderMapper<>(
