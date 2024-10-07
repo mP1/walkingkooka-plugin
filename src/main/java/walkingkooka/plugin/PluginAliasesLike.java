@@ -24,7 +24,10 @@ import java.util.Optional;
 /**
  * Defines several methods that are common for alias and name definitions for a plugin.
  */
-public interface PluginAliasesLike<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> {
+public interface PluginAliasesLike<N extends Name & Comparable<N>,
+        I extends PluginInfoLike<I, N>,
+        IS extends PluginInfoSetLike<IS, I, N>,
+        S extends PluginSelectorLike<N>> {
 
     /**
      * A mapping function that returns the {@link PluginSelectorLike selector} for the given {@link Name} which is probably an alias.
