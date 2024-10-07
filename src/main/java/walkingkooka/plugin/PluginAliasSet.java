@@ -19,17 +19,14 @@ package walkingkooka.plugin;
 
 import walkingkooka.Cast;
 import walkingkooka.collect.map.Maps;
-import walkingkooka.collect.set.ImmutableSortedSet;
 import walkingkooka.collect.set.ImmutableSortedSetDefaults;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.collect.set.SortedSets;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.text.CharacterConstant;
-import walkingkooka.text.HasText;
 import walkingkooka.text.cursor.TextCursorSavePoint;
 import walkingkooka.text.printer.IndentingPrinter;
-import walkingkooka.text.printer.TreePrintable;
 
 import java.util.AbstractSet;
 import java.util.Comparator;
@@ -45,10 +42,8 @@ import java.util.stream.Collectors;
  * A {@link Set} containing unique alias/name mappings. Instances of this class should be wrapped.
  */
 public final class PluginAliasSet<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> extends AbstractSet<PluginAlias<N, S>>
-        implements ImmutableSortedSet<PluginAlias<N, S>>,
-        ImmutableSortedSetDefaults<PluginAliasSet<N, I, IS, S>, PluginAlias<N, S>>,
-        HasText,
-        TreePrintable {
+        implements PluginAliasSetLike<N, I, IS, S, PluginAlias<N, S>>,
+        ImmutableSortedSetDefaults<PluginAliasSet<N, I, IS, S>, PluginAlias<N, S>> {
 
     /**
      * The separator character between name/alias declarations.
