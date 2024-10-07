@@ -19,26 +19,17 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
-import walkingkooka.ToStringTesting;
-import walkingkooka.compare.ComparableTesting2;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.Url;
-import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
-import walkingkooka.text.HasTextTesting;
-import walkingkooka.text.printer.TreePrintableTesting;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class PluginAliasTest implements TreePrintableTesting,
-        HasTextTesting,
-        ComparableTesting2<PluginAlias<StringName, TestPluginSelector>>,
-        ToStringTesting<PluginAlias<StringName, TestPluginSelector>>,
-        ClassTesting<PluginAlias<StringName, TestPluginSelector>> {
+public final class PluginAliasTest implements PluginAliasLikeTesting<StringName, TestPluginSelector, PluginAlias<StringName, TestPluginSelector>> {
 
     private final static StringName NAME = Names.string("Name123");
 
