@@ -19,12 +19,9 @@ package walkingkooka.plugin;
 
 import walkingkooka.Cast;
 import walkingkooka.compare.Comparators;
-import walkingkooka.naming.HasName;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
-import walkingkooka.text.HasText;
 import walkingkooka.text.printer.IndentingPrinter;
-import walkingkooka.text.printer.TreePrintable;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -32,10 +29,7 @@ import java.util.Optional;
 /**
  * An individual declaration of a name or alias.
  */
-public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginSelectorLike<N>> implements Comparable<PluginAlias<N, S>>,
-        HasName<N>,
-        HasText,
-        TreePrintable {
+public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginSelectorLike<N>> implements PluginAliasLike<N, S, PluginAlias<N, S>> {
 
     public static <N extends Name & Comparable<N>, S extends PluginSelectorLike<N>> PluginAlias<N, S> with(final N name,
                                                                                                            final Optional<S> selector,
