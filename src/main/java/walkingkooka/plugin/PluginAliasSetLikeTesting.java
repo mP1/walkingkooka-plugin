@@ -212,6 +212,11 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
     // ParseString......................................................................................................
 
     @Override
+    default void testParseStringEmptyFails() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     default Class<? extends RuntimeException> parseStringFailedExpected(final Class<? extends RuntimeException> thrown) {
         return thrown;
     }
@@ -221,10 +226,10 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         return thrown;
     }
 
-    // ImmutableSortedSet...............................................................................................
-    
+    // class............................................................................................................
+
     @Override
-    default AS createSet() {
-        return null;
+    default void testTypeNaming() {
+        throw new UnsupportedOperationException();
     }
 }
