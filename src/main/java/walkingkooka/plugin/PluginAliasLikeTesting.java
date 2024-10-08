@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin;
 
+import org.junit.jupiter.api.Test;
 import walkingkooka.ToStringTesting;
 import walkingkooka.compare.ComparableTesting2;
 import walkingkooka.naming.HasNameTesting;
@@ -31,4 +32,13 @@ public interface PluginAliasLikeTesting<N extends Name & Comparable<N>, S extend
         TreePrintableTesting,
         ToStringTesting<A>,
         ClassTesting<A> {
+
+    @Test
+    default void testToString() {
+        final A alias = this.createObject();
+        this.toStringAndCheck(
+                alias,
+                alias.text()
+        );
+    }
 }
