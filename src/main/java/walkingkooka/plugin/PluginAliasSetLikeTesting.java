@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin;
 
+import org.junit.jupiter.api.Test;
 import walkingkooka.ToStringTesting;
 import walkingkooka.collect.set.ImmutableSortedSetTesting;
 import walkingkooka.naming.Name;
@@ -25,6 +26,8 @@ import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         I extends PluginInfoLike<I, N>,
@@ -39,6 +42,14 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         ToStringTesting<AS> {
 
     // name.............................................................................................................
+
+    @Test
+    default void testNameWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createSet().name(null)
+        );
+    }
 
     private void nameAndCheck(final String text,
                               final N name) {
@@ -99,6 +110,14 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
     }
 
     // alias............................................................................................................
+
+    @Test
+    default void testAliasWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createSet().alias(null)
+        );
+    }
 
     private void aliasAndCheck(final String text,
                                final N alias) {
