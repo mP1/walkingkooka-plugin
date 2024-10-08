@@ -53,7 +53,7 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         );
     }
 
-    private void nameAndCheck(final String text,
+    default void nameAndCheck(final String text,
                               final N name) {
         this.nameAndCheck(
                 text,
@@ -62,7 +62,7 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         );
     }
 
-    private void nameAndCheck(final String text,
+    default void nameAndCheck(final String text,
                               final N name,
                               final N expected) {
         this.nameAndCheck(
@@ -72,7 +72,7 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         );
     }
 
-    private void nameAndCheck(final String text,
+    default void nameAndCheck(final String text,
                               final N name,
                               final Optional<N> expected) {
         this.nameAndCheck(
@@ -82,7 +82,7 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         );
     }
 
-    private void nameAndCheck(final AS aliases,
+    default void nameAndCheck(final AS aliases,
                               final N name) {
         this.nameAndCheck(
                 aliases,
@@ -91,7 +91,7 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         );
     }
 
-    private void nameAndCheck(final AS aliases,
+    default void nameAndCheck(final AS aliases,
                               final N name,
                               final N expected) {
         this.nameAndCheck(
@@ -101,7 +101,7 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         );
     }
 
-    private void nameAndCheck(final AS aliases,
+    default void nameAndCheck(final AS aliases,
                               final N name,
                               final Optional<N> expected) {
         this.checkEquals(
@@ -121,7 +121,7 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         );
     }
 
-    private void aliasAndCheck(final String text,
+    default void aliasAndCheck(final String text,
                                final N alias) {
         this.aliasAndCheck(
                 this.parseString(text),
@@ -130,7 +130,7 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         );
     }
 
-    private void aliasAndCheck(final String text,
+    default void aliasAndCheck(final String text,
                                final N alias,
                                final S expected) {
         this.aliasAndCheck(
@@ -140,7 +140,7 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         );
     }
 
-    private void aliasAndCheck(final String text,
+    default void aliasAndCheck(final String text,
                                final N alias,
                                final Optional<S> expected) {
         this.aliasAndCheck(
@@ -150,7 +150,7 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         );
     }
 
-    private void aliasAndCheck(final AS aliases,
+    default void aliasAndCheck(final AS aliases,
                                final N alias) {
         this.aliasAndCheck(
                 aliases,
@@ -159,7 +159,7 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         );
     }
 
-    private void aliasAndCheck(final AS aliases,
+    default void aliasAndCheck(final AS aliases,
                                final N alias,
                                final S expected) {
         this.aliasAndCheck(
@@ -169,7 +169,7 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         );
     }
 
-    private void aliasAndCheck(final AS aliases,
+    default void aliasAndCheck(final AS aliases,
                                final N alias,
                                final Optional<S> expected) {
         this.checkEquals(
@@ -219,5 +219,12 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
     @Override
     default RuntimeException parseStringFailedExpected(final RuntimeException thrown) {
         return thrown;
+    }
+
+    // ImmutableSortedSet...............................................................................................
+    
+    @Override
+    default AS createSet() {
+        return null;
     }
 }
