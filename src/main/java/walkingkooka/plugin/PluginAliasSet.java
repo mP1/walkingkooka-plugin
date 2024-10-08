@@ -388,18 +388,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     private final Map<N, N> nameToName;
 
     /**
-     * Contains all {@link Name} mappings which will also including the target for any alias, but not the alias itself.
-     */
-    // @VisibleForTesting
-    final Set<N> names;
-
-    /**
-     * Contains all {@link PluginInfoSetLike} including those belonging to new aliases definitions.
-     */
-    // @VisibleForTesting
-    final IS infos;
-
-    /**
      * Accepts some {@link PluginInfoSetLike} and uses the aliases mappings within to produce a final {@link PluginInfoSetLike}
      */
     @Override
@@ -500,6 +488,18 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
         return newInfos;
     }
+
+    /**
+     * Contains all {@link Name} mappings which will also including the target for any alias, but not the alias itself.
+     */
+    // @VisibleForTesting
+    final Set<N> names;
+
+    /**
+     * Contains all {@link PluginInfoSetLike} including those belonging to new aliases definitions.
+     */
+    // @VisibleForTesting
+    final IS infos;
 
     // HasText..........................................................................................................
 
