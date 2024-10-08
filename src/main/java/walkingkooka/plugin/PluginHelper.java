@@ -30,7 +30,10 @@ import java.util.function.Function;
 /**
  * A helper that includes methods to create or parse strings into Plugin classes.
  */
-public interface PluginHelper<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> {
+public interface PluginHelper<N extends Name & Comparable<N>,
+        I extends PluginInfoLike<I, N>,
+        IS extends PluginInfoSetLike<IS, I, N>,
+        S extends PluginSelectorLike<N>> {
 
     /**
      * Factory that creates a {@link Name} with the given text.
