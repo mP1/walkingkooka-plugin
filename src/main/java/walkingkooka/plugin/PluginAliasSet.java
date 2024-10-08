@@ -54,8 +54,12 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
      */
     public final static CharacterConstant SEPARATOR = CharacterConstant.with(PluginExpressionParser.PARAMETER_SEPARATOR_CHARACTER);
 
-    public static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> PluginAliasSet<N, I, IS, S> parse(final String text,
-                                                                                                                                                                                              final PluginHelper<N, I, IS, S> helper) {
+    public static <N extends Name & Comparable<N>,
+            I extends PluginInfoLike<I, N>,
+            IS extends PluginInfoSetLike<IS, I, N>,
+            S extends PluginSelectorLike<N>>
+        PluginAliasSet<N, I, IS, S> parse(final String text,
+                                          final PluginHelper<N, I, IS, S> helper) {
         Objects.requireNonNull(text, "text");
         Objects.requireNonNull(helper, "helper");
 
@@ -70,8 +74,12 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     }
 
 
-    private static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<IS, I, N>, S extends PluginSelectorLike<N>> PluginAliasSet<N, I, IS, S> parse0(final PluginExpressionParser<N> parser,
-                                                                                                                                                                                                final PluginHelper<N, I, IS, S> helper) {
+    private static <N extends Name & Comparable<N>,
+            I extends PluginInfoLike<I, N>,
+            IS extends PluginInfoSetLike<IS, I, N>,
+            S extends PluginSelectorLike<N>>
+        PluginAliasSet<N, I, IS, S> parse0(final PluginExpressionParser<N> parser,
+                                           final PluginHelper<N, I, IS, S> helper) {
 
         final SortedSet<PluginAlias<N, S>> aliases = SortedSets.tree();
 
