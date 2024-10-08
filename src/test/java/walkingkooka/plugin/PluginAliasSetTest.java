@@ -105,6 +105,38 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     }
 
     @Test
+    public void testParseWithInvalidInitialCharacterFails() {
+        this.parseStringInvalidCharacterFails(
+                "[abs",
+                '['
+        );
+    }
+
+    @Test
+    public void testParseWithTrailingSeparatorFails() {
+        this.parseStringInvalidCharacterFails(
+                "plugin111, ",
+                ' '
+        );
+    }
+
+    @Test
+    public void testParseWithSpaces() {
+        this.parseStringAndCheck(
+                " ",
+                new PluginAliasSet<>(
+                        SortedSets.empty(), // aliases
+                        Maps.empty(), // alias -> selector
+                        Sets.empty(), // alias selectors
+                        Maps.empty(), // name -> name
+                        Sets.empty(), // names
+                        TestPluginInfoSet.EMPTY, // infos
+                        TestPluginHelper.INSTANCE
+                )
+        );
+    }
+
+    @Test
     public void testParseWithName() {
         this.parseStringAndCheck(
                 "plugin111",
