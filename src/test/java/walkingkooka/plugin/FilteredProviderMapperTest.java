@@ -32,8 +32,8 @@ import walkingkooka.text.printer.TreePrintableTesting;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class FilteredProviderMapperTest implements TreePrintableTesting,
-        ClassTesting2<FilteredProviderMapper<StringName, TestPluginSelector, TestPluginInfo, TestPluginInfoSet>>,
-        ToStringTesting<FilteredProviderMapper<StringName, TestPluginSelector, TestPluginInfo, TestPluginInfoSet>> {
+        ClassTesting2<FilteredProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>>,
+        ToStringTesting<FilteredProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>> {
 
     private final static StringName RENAMED_RENAME_NAME = Names.string("RenamedRenameName1");
 
@@ -96,7 +96,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
 
     private final static TestPluginHelper HELPER = TestPluginHelper.INSTANCE;
 
-    private final static FilteredProviderMapper<StringName, TestPluginSelector, TestPluginInfo, TestPluginInfoSet> MAPPER = FilteredProviderMapper.with(
+    private final static FilteredProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector> MAPPER = FilteredProviderMapper.with(
             FILTERED_INFOS,
             PROVIDER_INFOS,
             HELPER
@@ -262,7 +262,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     // class............................................................................................................
 
     @Override
-    public Class<FilteredProviderMapper<StringName, TestPluginSelector, TestPluginInfo, TestPluginInfoSet>> type() {
+    public Class<FilteredProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>> type() {
         return Cast.to(FilteredProviderMapper.class);
     }
 

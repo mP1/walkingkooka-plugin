@@ -35,15 +35,15 @@ import java.util.function.Function;
  * infos with some names updated if they are present in the mapping with a different name.
  */
 public final class FilteredProviderMapper<N extends Name & Comparable<N>,
-        S extends PluginSelectorLike<N>,
         I extends PluginInfoLike<I, N>,
-        IS extends PluginInfoSetLike<IS, I, N>> {
+        IS extends PluginInfoSetLike<IS, I, N>,
+        S extends PluginSelectorLike<N>> {
 
     public static <N extends Name & Comparable<N>,
-            S extends PluginSelectorLike<N>,
             I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<IS, I, N>>
-    FilteredProviderMapper<N, S, I, IS> with(final IS mappingInfos,
+            IS extends PluginInfoSetLike<IS, I, N>,
+            S extends PluginSelectorLike<N>>
+    FilteredProviderMapper<N, I, IS, S> with(final IS mappingInfos,
                                              final IS providerInfos,
                                              final PluginHelper<N, I, IS, S> helper) {
         return new FilteredProviderMapper<>(
