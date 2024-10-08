@@ -21,7 +21,6 @@ import walkingkooka.collect.set.ImmutableSet;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.StringName;
 import walkingkooka.net.AbsoluteUrl;
-import walkingkooka.net.UrlFragment;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
@@ -60,11 +59,6 @@ final class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements Plu
     @Override
     public Set<AbsoluteUrl> url() {
         return this.pluginInfoSet.url();
-    }
-
-    @Override
-    public UrlFragment urlFragment() {
-        return this.pluginInfoSet.urlFragment();
     }
 
     @Override

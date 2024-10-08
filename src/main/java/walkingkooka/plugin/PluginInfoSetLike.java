@@ -21,6 +21,7 @@ import walkingkooka.collect.set.ImmutableSet;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.HasUrlFragment;
+import walkingkooka.net.UrlFragment;
 import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.HasText;
 import walkingkooka.text.printer.TreePrintable;
@@ -81,4 +82,14 @@ public interface PluginInfoSetLike<S extends PluginInfoSetLike<S, I, N>, I exten
 
     @Override
     S setElements(final Set<I> newElements);
+
+    // HasUrlFragment...................................................................................................
+
+    /**
+     * Returns a {@link UrlFragment} holding the {@link #text()}.
+     */
+    @Override
+    default UrlFragment urlFragment() {
+        return UrlFragment.with(this.text());
+    }
 }
