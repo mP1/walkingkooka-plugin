@@ -72,6 +72,7 @@ public interface PluginInfoSetLike<S extends PluginInfoSetLike<S, I, N>, I exten
     @Override
     S delete(final I info);
 
+    @Override
     S deleteAll(final Collection<I> infos);
 
     @Override
