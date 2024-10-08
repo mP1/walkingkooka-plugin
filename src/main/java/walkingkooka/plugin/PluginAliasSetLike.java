@@ -19,6 +19,8 @@ package walkingkooka.plugin;
 
 import walkingkooka.collect.set.ImmutableSortedSet;
 import walkingkooka.naming.Name;
+import walkingkooka.net.HasUrlFragment;
+import walkingkooka.net.UrlFragment;
 import walkingkooka.text.HasText;
 import walkingkooka.text.printer.TreePrintable;
 
@@ -34,6 +36,7 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
         A extends PluginAliasLike<N, S, A>>
         extends ImmutableSortedSet<A>,
             HasText,
+            HasUrlFragment,
             TreePrintable {
 
     /**
@@ -51,4 +54,14 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
      * Returns a {@link PluginInfoSetLike} that applies alies/names to the given {@link PluginInfoSetLike provider infos}.
      */
     IS merge(final IS providerInfo);
+
+    // HasUrlFragment...................................................................................................
+
+    /**
+     * Returns a {@link UrlFragment} holding the {@link #text()}.
+     */
+    @Override
+    default UrlFragment urlFragment() {
+        return UrlFragment.with(this.text());
+    }
 }
