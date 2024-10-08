@@ -46,9 +46,9 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         IS extends PluginInfoSetLike<IS, I, N>,
         S extends PluginSelectorLike<N>,
         A extends PluginAliasLike<N, S, A>>
-        extends AbstractSet<PluginAlias<N, S>>
-        implements PluginAliasSetLike<N, I, IS, S, PluginAlias<N, S>>,
-            ImmutableSortedSetDefaults<PluginAliasSet<N, I, IS, S, PluginAlias<N, S>>, PluginAlias<N, S>> {
+        extends AbstractSet<A>
+        implements PluginAliasSetLike<N, I, IS, S, A>,
+            ImmutableSortedSetDefaults<PluginAliasSet<N, I, IS, S, A>, A> {
 
     /**
      * The separator character between name/alias declarations.
@@ -84,7 +84,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         PluginAliasSet<N, I, IS, S, A> parse0(final PluginExpressionParser<N> parser,
                                               final PluginHelper<N, I, IS, S, A> helper) {
 
-        final SortedSet<PluginAlias<N, S>> aliases = SortedSets.tree();
+        final SortedSet<A> aliases = SortedSets.tree();
 
         boolean requireSeparator = false;
 
@@ -103,7 +103,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
             if (nameOrAlias.isPresent()) {
                 parser.spaces();
 
-                final PluginAlias<N, S> pluginAlias;
+                final A pluginAlias;
 
                 final Optional<S> maybeSelector = tryParseSelector(
                         parser,
@@ -112,7 +112,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
                 if (false == maybeSelector.isPresent()) {
                     // name END
-                    pluginAlias = PluginAlias.with(
+                    pluginAlias = helper.alias(
                             nameOrAlias.get(),
                             Optional.empty(), // no selector
                             Optional.empty() // no url
@@ -125,7 +125,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                     final S selector = maybeSelector.get();
                     final N alias = nameOrAlias.get();
 
-                    pluginAlias = PluginAlias.with(
+                    pluginAlias = helper.alias(
                             alias,
                             Optional.of(selector), // selector
                             parser.url() // url
@@ -151,7 +151,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
             IS extends PluginInfoSetLike<IS, I, N>,
             S extends PluginSelectorLike<N>,
-            A extends PluginAliasLike<N, S, A>> 
+            A extends PluginAliasLike<N, S, A>>
         Optional<S> tryParseSelector(final PluginExpressionParser<N> parser,
                                      final PluginHelper<N, I, IS, S, A> helper) {
         final TextCursorSavePoint start = parser.cursor.save();
@@ -216,7 +216,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
             IS extends PluginInfoSetLike<IS, I, N>,
             S extends PluginSelectorLike<N>,
             A extends PluginAliasLike<N, S, A>>
-        PluginAliasSet<N, I, IS, S, A> with(final SortedSet<PluginAlias<N, S>> aliases,
+        PluginAliasSet<N, I, IS, S, A> with(final SortedSet<A> aliases,
                                             final PluginHelper<N, I, IS, S, A> helper) {
         Objects.requireNonNull(aliases, "aliases");
         Objects.requireNonNull(helper, "helper");
@@ -234,7 +234,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
             IS extends PluginInfoSetLike<IS, I, N>,
             S extends PluginSelectorLike<N>,
             A extends PluginAliasLike<N, S, A>>
-        PluginAliasSet<N, I, IS, S, A> withoutCopying(final SortedSet<PluginAlias<N, S>> aliases,
+        PluginAliasSet<N, I, IS, S, A> withoutCopying(final SortedSet<A> aliases,
                                                       final PluginHelper<N, I, IS, S, A> helper) {
         Objects.requireNonNull(aliases, "aliases");
 
@@ -251,7 +251,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
         final Set<I> infos = SortedSets.tree();
 
-        for(final PluginAlias<N, S> pluginAlias : aliases) {
+        for(final A pluginAlias : aliases) {
             final N nameOrAlias = pluginAlias.name();
 
             duplicateCheck(
@@ -347,7 +347,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     }
 
     // @VisibleForTesting
-    PluginAliasSet(final SortedSet<PluginAlias<N, S>> sortedSet,
+    PluginAliasSet(final SortedSet<A> sortedSet,
                    final Map<N, S> nameToAliases,
                    final Set<N> aliasesWithoutInfos,
                    final Map<N, N> nameToName,
@@ -524,12 +524,20 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     public String text() {
         if (null == this.text) {
             this.text = this.sortedSet.stream()
-                    .map(PluginAlias::textAndSpace)
+                    .map(this::aliasText)
                     .collect(Collectors.joining(SEPARATOR_SPACE))
                     .trim();
         }
 
         return this.text;
+    }
+
+    private String aliasText(final A alias) {
+        final String text = alias.text();
+        return alias.url()
+                .isPresent() ?
+                text.concat(" ") :
+                text;
     }
 
     private String text;
@@ -539,7 +547,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     // ImmutableSortedSet...............................................................................................
 
     @Override
-    public Iterator<PluginAlias<N, S>> iterator() {
+    public Iterator<A> iterator() {
         return this.sortedSet.iterator();
     }
 
@@ -549,13 +557,13 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     }
 
     @Override
-    public Comparator<? super PluginAlias<N, S>> comparator() {
+    public Comparator<? super A> comparator() {
         return this.sortedSet.comparator();
     }
 
     @Override
-    public PluginAliasSet<N, I, IS, S, A> subSet(final PluginAlias<N, S> from,
-                                              final PluginAlias<N, S> to) {
+    public PluginAliasSet<N, I, IS, S, A> subSet(final A from,
+                                              final A to) {
         return withoutCopying(
                 this.sortedSet.subSet(
                         from,
@@ -566,7 +574,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     }
 
     @Override
-    public PluginAliasSet<N, I, IS, S, A> headSet(final PluginAlias<N, S> alias) {
+    public PluginAliasSet<N, I, IS, S, A> headSet(final A alias) {
         return withoutCopying(
                 this.sortedSet.headSet(alias),
                 this.helper
@@ -574,7 +582,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     }
 
     @Override
-    public PluginAliasSet<N, I, IS, S, A> tailSet(final PluginAlias<N, S> alias) {
+    public PluginAliasSet<N, I, IS, S, A> tailSet(final A alias) {
         return withoutCopying(
                 this.sortedSet.tailSet(alias),
                 this.helper
@@ -582,24 +590,24 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     }
 
     @Override
-    public PluginAlias<N, S> first() {
+    public A first() {
         return this.sortedSet.first();
     }
 
     @Override
-    public PluginAlias<N, S> last() {
+    public A last() {
         return this.sortedSet.last();
     }
 
     @Override
-    public SortedSet<PluginAlias<N, S>> toSet() {
-        final SortedSet<PluginAlias<N, S>> sortedSet = SortedSets.tree(this.comparator());
+    public SortedSet<A> toSet() {
+        final SortedSet<A> sortedSet = SortedSets.tree(this.comparator());
         sortedSet.addAll(this.sortedSet);
         return sortedSet;
     }
 
     @Override
-    public PluginAliasSet<N, I, IS, S, A> setElements(final SortedSet<PluginAlias<N, S>> sortedSet) {
+    public PluginAliasSet<N, I, IS, S, A> setElements(final SortedSet<A> sortedSet) {
         final PluginAliasSet<N, I, IS, S, A> copy = with(
                 sortedSet,
                 this.helper
@@ -614,12 +622,12 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
     @Override
     public void printTree(final IndentingPrinter printer) {
-        for(final PluginAlias<N, S> pluginAlias : this.sortedSet) {
+        for(final A pluginAlias : this.sortedSet) {
             pluginAlias.printTree(printer);
         }
     }
 
-    private final SortedSet<PluginAlias<N, S>> sortedSet;
+    private final SortedSet<A> sortedSet;
 
     private final PluginHelper<N, I, IS, S, A> helper;
 }

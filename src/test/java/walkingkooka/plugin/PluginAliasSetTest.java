@@ -37,7 +37,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         TestPluginInfo,
         TestPluginInfoSet,
         TestPluginSelector,
-        PluginAlias<StringName, TestPluginSelector>,
+        TestPluginAlias,
         PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias>> {
 
     // parse............................................................................................................
@@ -110,7 +110,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 "plugin111",
                 new PluginAliasSet<>(
                         SortedSets.of(
-                                PluginAlias.with(
+                                TestPluginAlias.with(
                                         Names.string("plugin111"),
                                         Optional.empty(), // selector
                                         Optional.empty() // url
@@ -135,7 +135,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 "plugin111 ",
                 new PluginAliasSet<>(
                         SortedSets.of(
-                                PluginAlias.with(
+                                TestPluginAlias.with(
                                         Names.string("plugin111"),
                                         Optional.empty(), // selector
                                         Optional.empty() // url
@@ -160,7 +160,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 "alias111 plugin111 https://example.com/alias111",
                 new PluginAliasSet<>(
                         SortedSets.of(
-                                PluginAlias.with(
+                                TestPluginAlias.with(
                                         Names.string("alias111"),
                                         Optional.of(
                                                 TestPluginSelector.parse("plugin111")
@@ -211,7 +211,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 "alias111 plugin111() https://example.com/plugin111",
                 new PluginAliasSet<>(
                         SortedSets.of(
-                                PluginAlias.with(
+                                TestPluginAlias.with(
                                         Names.string("alias111"),
                                         Optional.of(
                                                 TestPluginSelector.parse("plugin111()")
@@ -246,7 +246,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 "alias111 plugin111( ) https://example.com/plugin111",
                 new PluginAliasSet<>(
                         SortedSets.of(
-                                PluginAlias.with(
+                                TestPluginAlias.with(
                                         Names.string("alias111"),
                                         Optional.of(
                                                 TestPluginSelector.parse("plugin111( )")
@@ -281,7 +281,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 "alias111 plugin111(999) https://example.com/plugin111",
                 new PluginAliasSet<>(
                         SortedSets.of(
-                                PluginAlias.with(
+                                TestPluginAlias.with(
                                         Names.string("alias111"),
                                         Optional.of(
                                                 TestPluginSelector.parse("plugin111(999)")
@@ -316,7 +316,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 "alias111 plugin111(\"Hello\") https://example.com/plugin111",
                 new PluginAliasSet<>(
                         SortedSets.of(
-                                PluginAlias.with(
+                                TestPluginAlias.with(
                                         Names.string("alias111"),
                                         Optional.of(
                                                 TestPluginSelector.parse("plugin111(\"Hello\")")
@@ -351,7 +351,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 "alias111 plugin111(888,$Magic,\"Hello\") https://example.com/plugin111",
                 new PluginAliasSet<>(
                         SortedSets.of(
-                                PluginAlias.with(
+                                TestPluginAlias.with(
                                         Names.string("alias111"),
                                         Optional.of(
                                                 TestPluginSelector.parse("plugin111(888,$Magic,\"Hello\")")
@@ -386,12 +386,12 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 "plugin111, plugin222",
                 new PluginAliasSet<>(
                         SortedSets.of(
-                                PluginAlias.with(
+                                TestPluginAlias.with(
                                         Names.string("plugin111"),
                                         Optional.empty(),
                                         Optional.empty()
                                 ),
-                                PluginAlias.with(
+                                TestPluginAlias.with(
                                         Names.string("plugin222"),
                                         Optional.empty(),
                                         Optional.empty()
@@ -421,14 +421,14 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 "alias111 plugin111, plugin222",
                 new PluginAliasSet<>(
                         SortedSets.of(
-                                PluginAlias.with(
+                                TestPluginAlias.with(
                                         Names.string("alias111"),
                                         Optional.of(
                                                 TestPluginSelector.parse("plugin111")
                                         ),
                                         Optional.empty()
                                 ),
-                                PluginAlias.with(
+                                TestPluginAlias.with(
                                         Names.string("plugin222"),
                                         Optional.empty(),
                                         Optional.empty()
@@ -469,14 +469,14 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 "alias111 plugin111(\"Hello111\"), alias222 plugin222(\"Hello222\")",
                 new PluginAliasSet<>(
                         SortedSets.of(
-                                PluginAlias.with(
+                                TestPluginAlias.with(
                                         Names.string("alias111"),
                                         Optional.of(
                                                 TestPluginSelector.parse("plugin111(\"Hello111\")")
                                         ),
                                         Optional.empty()
                                 ),
-                                PluginAlias.with(
+                                TestPluginAlias.with(
                                         Names.string("alias222"),
                                         Optional.of(
                                                 TestPluginSelector.parse("plugin222(\"Hello222\")")
@@ -551,7 +551,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 "alias111 plugin111 https://www.example.com/alias111 , alias222 plugin111 https://www.example.com/alias222",
                 new PluginAliasSet<>(
                         SortedSets.of(
-                                PluginAlias.with(
+                                TestPluginAlias.with(
                                         NAME1_ALIAS,
                                         Optional.of(
                                                 SELECTOR1
@@ -560,7 +560,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                                 Url.parseAbsolute("https://www.example.com/alias111")
                                         )
                                 ),
-                                PluginAlias.with(
+                                TestPluginAlias.with(
                                         NAME2_ALIAS,
                                         Optional.of(
                                                 SELECTOR1
@@ -1041,7 +1041,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 IllegalArgumentException.class,
                 () -> this.createSet()
                         .concat(
-                                PluginAlias.with(
+                                TestPluginAlias.with(
                                         Names.string("alias1"),
                                         Optional.of(
                                                 TestPluginSelector.parse("name999")
@@ -1066,7 +1066,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 IllegalArgumentException.class,
                 () -> this.createSet()
                         .concat(
-                                PluginAlias.with(
+                                TestPluginAlias.with(
                                         Names.string("alias999"),
                                         Optional.of(
                                                 TestPluginSelector.parse("name999")
@@ -1085,7 +1085,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         );
     }
 
-    private final static PluginAlias<StringName, TestPluginSelector> ALIAS1 = PluginAlias.with(
+    private final static TestPluginAlias ALIAS1 = TestPluginAlias.with(
             Names.string("alias1"),
             Optional.of(
                     TestPluginSelector.parse("name1")
@@ -1095,7 +1095,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
             )
     );
 
-    private final static PluginAlias<StringName, TestPluginSelector> ALIAS2 = PluginAlias.with(
+    private final static TestPluginAlias ALIAS2 = TestPluginAlias.with(
             Names.string("alias2"),
             Optional.of(
                     TestPluginSelector.parse("name2")
