@@ -20,12 +20,14 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.ToStringTesting;
 import walkingkooka.collect.set.ImmutableSortedSetTesting;
+import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Name;
 import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -176,7 +178,37 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                 () -> "alias  " + alias + " in " + aliases
         );
     }
-    
+
+    // merge............................................................................................................
+
+    @Test
+    default void testMergeWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createSet().merge(null)
+        );
+    }
+
+    default void mergeAndCheck(final AS aliases,
+                               final IS providerInfos,
+                               final I... expected) {
+        this.mergeAndCheck(
+                aliases,
+                providerInfos,
+                Sets.of(expected)
+        );
+    }
+
+    default void mergeAndCheck(final AS aliases,
+                               final IS providerInfos,
+                               final Set<I> expected) {
+        this.checkEquals(
+                aliases.merge(providerInfos),
+                expected,
+                "merge"
+        );
+    }
+
     // ParseString......................................................................................................
 
     @Override
