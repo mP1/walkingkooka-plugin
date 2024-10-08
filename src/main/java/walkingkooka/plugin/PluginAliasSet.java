@@ -81,8 +81,8 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
             IS extends PluginInfoSetLike<IS, I, N>,
             S extends PluginSelectorLike<N>,
             A extends PluginAliasLike<N, S, A>>
-        PluginAliasSet<N, I, IS, S, A> parse0(final PluginExpressionParser<N> parser,
-                                              final PluginHelper<N, I, IS, S, A> helper) {
+    PluginAliasSet<N, I, IS, S, A> parse0(final PluginExpressionParser<N> parser,
+                                          final PluginHelper<N, I, IS, S, A> helper) {
 
         final SortedSet<A> aliases = SortedSets.tree();
 
@@ -90,6 +90,9 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
         while (false == parser.isEmpty()) {
             parser.spaces();
+            if (parser.isEmpty()) {
+                break;
+            }
 
             if (requireSeparator) {
                 if (false == parser.parameterSeparator()) {
@@ -135,6 +138,8 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                 }
 
                 aliases.add(pluginAlias);
+            } else {
+                throw parser.invalidCharacter();
             }
         }
 
