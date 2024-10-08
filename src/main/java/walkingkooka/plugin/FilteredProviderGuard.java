@@ -31,9 +31,10 @@ public final class FilteredProviderGuard<N extends Name & Comparable<N>, S exten
     public static <N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
             IS extends PluginInfoSetLike<IS, I, N>,
-            S extends PluginSelectorLike<N>>
+            S extends PluginSelectorLike<N>,
+            A extends PluginAliasLike<N, S, A>>
     FilteredProviderGuard<N, S> with(final Set<N> names,
-                                     final PluginHelper<N, I, IS, S> helper) {
+                                     final PluginHelper<N, I, IS, S, A> helper) {
         Objects.requireNonNull(helper, "helper");
 
         return new FilteredProviderGuard<>(
