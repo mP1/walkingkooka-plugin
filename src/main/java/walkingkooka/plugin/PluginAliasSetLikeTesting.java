@@ -24,6 +24,8 @@ import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 
+import java.util.Optional;
+
 public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         I extends PluginInfoLike<I, N>,
         IS extends PluginInfoSetLike<IS, I, N>,
@@ -36,6 +38,126 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         ParseStringTesting<AS>,
         ToStringTesting<AS> {
 
+    // name.............................................................................................................
+
+    private void nameAndCheck(final String text,
+                              final N name) {
+        this.nameAndCheck(
+                text,
+                name,
+                Optional.empty()
+        );
+    }
+
+    private void nameAndCheck(final String text,
+                              final N name,
+                              final N expected) {
+        this.nameAndCheck(
+                text,
+                name,
+                Optional.of(expected)
+        );
+    }
+
+    private void nameAndCheck(final String text,
+                              final N name,
+                              final Optional<N> expected) {
+        this.nameAndCheck(
+                this.parseString(text),
+                name,
+                expected
+        );
+    }
+
+    private void nameAndCheck(final AS aliases,
+                              final N name) {
+        this.nameAndCheck(
+                aliases,
+                name,
+                Optional.empty()
+        );
+    }
+
+    private void nameAndCheck(final AS aliases,
+                              final N name,
+                              final N expected) {
+        this.nameAndCheck(
+                aliases,
+                name,
+                Optional.of(expected)
+        );
+    }
+
+    private void nameAndCheck(final AS aliases,
+                              final N name,
+                              final Optional<N> expected) {
+        this.checkEquals(
+                expected,
+                aliases.name(name),
+                () -> "name  " + name + " in " + aliases
+        );
+    }
+
+    // alias............................................................................................................
+
+    private void aliasAndCheck(final String text,
+                               final N alias) {
+        this.aliasAndCheck(
+                this.parseString(text),
+                alias,
+                Optional.empty()
+        );
+    }
+
+    private void aliasAndCheck(final String text,
+                               final N alias,
+                               final S expected) {
+        this.aliasAndCheck(
+                this.parseString(text),
+                alias,
+                Optional.of(expected)
+        );
+    }
+
+    private void aliasAndCheck(final String text,
+                               final N alias,
+                               final Optional<S> expected) {
+        this.aliasAndCheck(
+                this.parseString(text),
+                alias,
+                expected
+        );
+    }
+
+    private void aliasAndCheck(final AS aliases,
+                               final N alias) {
+        this.aliasAndCheck(
+                aliases,
+                alias,
+                Optional.empty()
+        );
+    }
+
+    private void aliasAndCheck(final AS aliases,
+                               final N alias,
+                               final S expected) {
+        this.aliasAndCheck(
+                aliases,
+                alias,
+                Optional.of(expected)
+        );
+    }
+
+    private void aliasAndCheck(final AS aliases,
+                               final N alias,
+                               final Optional<S> expected) {
+        this.checkEquals(
+                expected,
+                aliases.alias(alias),
+                () -> "alias  " + alias + " in " + aliases
+        );
+    }
+    
     // ParseString......................................................................................................
 
     @Override
