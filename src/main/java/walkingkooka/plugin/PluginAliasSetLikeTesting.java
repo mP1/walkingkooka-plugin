@@ -22,6 +22,7 @@ import walkingkooka.ToStringTesting;
 import walkingkooka.collect.set.ImmutableSortedSetTesting;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Name;
+import walkingkooka.net.HasUrlFragmentTesting;
 import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
@@ -41,7 +42,8 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         HasTextTesting,
         TreePrintableTesting,
         ParseStringTesting<AS>,
-        ToStringTesting<AS> {
+        ToStringTesting<AS>,
+        HasUrlFragmentTesting {
 
     // name.............................................................................................................
 
@@ -224,6 +226,18 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
     @Override
     default RuntimeException parseStringFailedExpected(final RuntimeException thrown) {
         return thrown;
+    }
+
+    // UrlFragment......................................................................................................
+
+    @Test
+    default void testUrlFragment() {
+        final AS aliases = this.createSet();
+
+        this.urlFragmentAndCheck(
+                aliases,
+                aliases.text()
+        );
     }
 
     // class............................................................................................................
