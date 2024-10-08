@@ -19,8 +19,11 @@ package walkingkooka.plugin;
 
 import walkingkooka.naming.HasName;
 import walkingkooka.naming.Name;
+import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.text.HasText;
 import walkingkooka.text.printer.TreePrintable;
+
+import java.util.Optional;
 
 /**
  * Defines the public methods for a plugin alias.
@@ -32,4 +35,14 @@ public interface PluginAliasLike<N extends Name & Comparable<N>,
             HasName<N>,
             HasText,
             TreePrintable {
+
+    /**
+     * Getter that returns a {@link PluginSelectorLike} if one was present.
+     */
+    Optional<S> selector();
+
+    /**
+     * Getter that returns a {@link AbsoluteUrl} if one was present.
+     */
+    Optional<AbsoluteUrl> url();
 }

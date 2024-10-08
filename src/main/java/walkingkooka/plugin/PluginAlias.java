@@ -63,12 +63,14 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
 
     private final N name;
 
+    @Override
     public Optional<S> selector() {
         return this.selector;
     }
 
     private final Optional<S> selector;
 
+    @Override
     public Optional<AbsoluteUrl> url() {
         return this.url;
     }
