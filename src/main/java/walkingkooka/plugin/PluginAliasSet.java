@@ -352,6 +352,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     /**
      * Returns the selector if one is present for the given {@link Name alias}.
      */
+    @Override
     public Optional<S> alias(final N name) {
         Objects.requireNonNull(name, "name");
 
@@ -372,6 +373,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
      * Queries the target name applying any aliases, or returning the name if no alias was present.
      * Note any aliases will not be returned and should be queried first.
      */
+    @Override
     public Optional<N> name(final N name) {
         Objects.requireNonNull(name, "name");
 
@@ -400,6 +402,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     /**
      * Accepts some {@link PluginInfoSetLike} and uses the aliases mappings within to produce a final {@link PluginInfoSetLike}
      */
+    @Override
     public IS merge(final IS providerInfos) {
         Objects.requireNonNull(providerInfos, "providerInfos");
 

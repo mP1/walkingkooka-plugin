@@ -22,6 +22,8 @@ import walkingkooka.naming.Name;
 import walkingkooka.text.HasText;
 import walkingkooka.text.printer.TreePrintable;
 
+import java.util.Optional;
+
 /**
  * A {@link ImmutableSortedSet} holding {@link PluginAliasLike} entries.
  */
@@ -33,4 +35,20 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
         extends ImmutableSortedSet<A>,
             HasText,
             TreePrintable {
+
+    /**
+     * A mapping function that returns the {@link PluginSelectorLike selector} for the given {@link Name} which is probably an alias.
+     */
+    Optional<S> alias(final N name);
+
+    /**
+     * Queries the target name applying any aliases, or returning the name if no alias was present.
+     * Note any aliases will not be returned and should be queried first.
+     */
+    Optional<N> name(final N name);
+
+    /**
+     * Returns a {@link PluginInfoSetLike} that applies alies/names to the given {@link PluginInfoSetLike provider infos}.
+     */
+    IS merge(final IS providerInfo);
 }
