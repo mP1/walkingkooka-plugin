@@ -37,15 +37,17 @@ import java.util.function.Function;
 public final class FilteredProviderMapper<N extends Name & Comparable<N>,
         I extends PluginInfoLike<I, N>,
         IS extends PluginInfoSetLike<IS, I, N>,
-        S extends PluginSelectorLike<N>> {
+        S extends PluginSelectorLike<N>,
+        A extends PluginAliasLike<N, S, A>> {
 
     public static <N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
             IS extends PluginInfoSetLike<IS, I, N>,
-            S extends PluginSelectorLike<N>>
-    FilteredProviderMapper<N, I, IS, S> with(final IS mappingInfos,
-                                             final IS providerInfos,
-                                             final PluginHelper<N, I, IS, S> helper) {
+            S extends PluginSelectorLike<N>,
+            A extends PluginAliasLike<N, S, A>>
+    FilteredProviderMapper<N, I, IS, S, A> with(final IS mappingInfos,
+                                                final IS providerInfos,
+                                                final PluginHelper<N, I, IS, S, A> helper) {
         return new FilteredProviderMapper<>(
                 Objects.requireNonNull(mappingInfos, "mappingInfos"),
                 Objects.requireNonNull(providerInfos, "providerInfos"),
@@ -55,7 +57,7 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
 
     private FilteredProviderMapper(final IS mappingInfos,
                                    final IS providerInfos,
-                                   final PluginHelper<N, I, IS, S> helper) {
+                                   final PluginHelper<N, I, IS, S, A> helper) {
         final Map<AbsoluteUrl, I> urlToMappingInfos = this.urlToInfo(mappingInfos);
         final Map<AbsoluteUrl, I> urlToProviderInfos = this.urlToInfo(providerInfos);
 

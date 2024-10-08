@@ -33,7 +33,8 @@ import java.util.function.Function;
 public interface PluginHelper<N extends Name & Comparable<N>,
         I extends PluginInfoLike<I, N>,
         IS extends PluginInfoSetLike<IS, I, N>,
-        S extends PluginSelectorLike<N>> {
+        S extends PluginSelectorLike<N>,
+        A extends PluginAliasLike<N, S, A>> {
 
     /**
      * Factory that creates a {@link Name} with the given text.
@@ -81,6 +82,13 @@ public interface PluginHelper<N extends Name & Comparable<N>,
      * Parses the given text into a {@link PluginSelectorLike}.
      */
     S parseSelector(final String text);
+
+    /**
+     * Factory that creates an {@link PluginAliasLike}.
+     */
+    A alias(final N name,
+            final Optional<S> selector,
+            final Optional<AbsoluteUrl> url);
 
     /**
      * A label which may be used in messages.

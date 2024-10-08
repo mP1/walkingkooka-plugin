@@ -32,8 +32,8 @@ import walkingkooka.text.printer.TreePrintableTesting;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class MergedProviderMapperTest implements TreePrintableTesting,
-        ClassTesting2<MergedProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>>,
-        ToStringTesting<MergedProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>> {
+        ClassTesting2<MergedProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias>>,
+        ToStringTesting<MergedProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias>> {
 
     private final static StringName NAME_RENAME = Names.string("RenameName");
 
@@ -98,7 +98,7 @@ public final class MergedProviderMapperTest implements TreePrintableTesting,
 
     private final static TestPluginHelper HELPER = TestPluginHelper.INSTANCE;
 
-    private final static MergedProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector> MAPPER = MergedProviderMapper.with(
+    private final static MergedProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias> MAPPER = MergedProviderMapper.with(
             INFOS_RENAME,
             INFOS_PROVIDER,
             HELPER
@@ -280,7 +280,7 @@ public final class MergedProviderMapperTest implements TreePrintableTesting,
     // class............................................................................................................
 
     @Override
-    public Class<MergedProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>> type() {
+    public Class<MergedProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias>> type() {
         return Cast.to(MergedProviderMapper.class);
     }
 

@@ -35,7 +35,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-final class TestPluginHelper implements PluginHelper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector> {
+final class TestPluginHelper implements PluginHelper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias> {
 
     final static TestPluginHelper INSTANCE = new TestPluginHelper(CaseSensitivity.INSENSITIVE);
 
@@ -108,6 +108,17 @@ final class TestPluginHelper implements PluginHelper<StringName, TestPluginInfo,
     @Override
     public TestPluginSelector parseSelector(final String text) {
         return TestPluginSelector.parse(text);
+    }
+
+    @Override
+    public TestPluginAlias alias(final StringName name,
+                                 final Optional<TestPluginSelector> selector,
+                                 final Optional<AbsoluteUrl> url) {
+        return TestPluginAlias.with(
+                name,
+                selector,
+                url
+        );
     }
 
     @Override

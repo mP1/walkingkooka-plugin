@@ -27,7 +27,7 @@ import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.cursor.TextCursors;
 import walkingkooka.text.cursor.parser.ParserContexts;
 
-public final class PluginHelperTestingTest implements PluginHelperTesting<TestPluginHelper, StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector> {
+public final class PluginHelperTestingTest implements PluginHelperTesting<TestPluginHelper, StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias> {
 
     @Override
     public void testTestNaming() {
@@ -111,6 +111,11 @@ public final class PluginHelperTestingTest implements PluginHelperTesting<TestPl
     @Override
     public TestPluginHelper createPluginHelper() {
         return TestPluginHelper.INSTANCE;
+    }
+
+    @Override
+    public StringName createName() {
+        return Names.string("Hello");
     }
 
     // class............................................................................................................

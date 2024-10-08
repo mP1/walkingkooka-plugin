@@ -38,7 +38,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         TestPluginInfoSet,
         TestPluginSelector,
         PluginAlias<StringName, TestPluginSelector>,
-        PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>> {
+        PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias>> {
 
     // parse............................................................................................................
 
@@ -592,7 +592,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     }
 
     @Override
-    public PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector> parseString(final String text) {
+    public PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias> parseString(final String text) {
         return PluginAliasSet.parse(
                 text,
                 TestPluginHelper.INSTANCE
@@ -1106,7 +1106,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     );
 
     @Override
-    public PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector> createSet() {
+    public PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias> createSet() {
         return new PluginAliasSet<>(
                 SortedSets.of(
                         ALIAS1,
@@ -1156,7 +1156,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     // class............................................................................................................
 
     @Override
-    public Class<PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector>> type() {
+    public Class<PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias>> type() {
         return Cast.to(PluginAliasSet.class);
     }
 }

@@ -35,15 +35,17 @@ import java.util.function.Function;
 public final class MergedProviderMapper<N extends Name & Comparable<N>,
         I extends PluginInfoLike<I, N>,
         IS extends PluginInfoSetLike<IS, I, N>,
-        S extends PluginSelectorLike<N>> {
+        S extends PluginSelectorLike<N>,
+        A extends PluginAliasLike<N, S, A>> {
 
     public static <N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
             IS extends PluginInfoSetLike<IS, I, N>,
-            S extends PluginSelectorLike<N>>
-    MergedProviderMapper<N, I, IS, S> with(final IS renamingInfos,
-                                           final IS providerInfos,
-                                           final PluginHelper<N, I, IS, S> helper) {
+            S extends PluginSelectorLike<N>,
+            A extends PluginAliasLike<N, S, A>>
+    MergedProviderMapper<N, I, IS, S, A> with(final IS renamingInfos,
+                                              final IS providerInfos,
+                                              final PluginHelper<N, I, IS, S, A> helper) {
         return new MergedProviderMapper<>(
                 Objects.requireNonNull(renamingInfos, "renamingInfos"),
                 Objects.requireNonNull(providerInfos, "providerInfos"),
@@ -53,7 +55,7 @@ public final class MergedProviderMapper<N extends Name & Comparable<N>,
 
     private MergedProviderMapper(final IS renamingInfos,
                                  final IS providerInfos,
-                                 final PluginHelper<N, I, IS, S> helper) {
+                                 final PluginHelper<N, I, IS, S, A> helper) {
         final Map<AbsoluteUrl, I> urlToRenamingInfos = this.urlToInfo(renamingInfos);
         final Map<AbsoluteUrl, I> urlToProviderInfos = this.urlToInfo(providerInfos);
 

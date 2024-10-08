@@ -30,11 +30,13 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S>,
+public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A>,
         N extends Name & Comparable<N>,
         I extends PluginInfoLike<I, N>,
         IS extends PluginInfoSetLike<IS, I, N>,
-        S extends PluginSelectorLike<N>> extends ClassTesting<H> {
+        S extends PluginSelectorLike<N>,
+        A extends PluginAliasLike<N, S, A>>
+            extends ClassTesting<H> {
 
     // name.............................................................................................................
 
@@ -271,5 +273,49 @@ public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S>,
         );
     }
 
+    // alias............................................................................................................
+
+    @Test
+    default void testAliasWithNullNameFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createPluginHelper()
+                        .alias(
+                                null,
+                                Optional.empty(),
+                                Optional.empty()
+                        )
+        );
+    }
+
+    @Test
+    default void testAliasWithNullSelectorFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createPluginHelper()
+                        .alias(
+                                this.createName(),
+                                null,
+                                Optional.empty()
+                        )
+        );
+    }
+
+    @Test
+    default void testAliasWithNullUrlFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createPluginHelper()
+                        .alias(
+                                this.createName(),
+                                Optional.empty(),
+                                null
+                        )
+        );
+    }
+
     H createPluginHelper();
+
+
+    N createName();
 }
