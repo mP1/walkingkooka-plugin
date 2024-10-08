@@ -919,15 +919,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     // merge............................................................................................................
 
     @Test
-    public void testMergeWithNullFails() {
-        assertThrows(
-                NullPointerException.class,
-                () -> this.createSet()
-                        .merge(null)
-        );
-    }
-
-    @Test
     public void testMergeWithUnknownNameFails() {
         final IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
@@ -1039,16 +1030,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 this.parseString(alias),
                 TestPluginInfoSet.parse(infos),
                 TestPluginInfoSet.parse(expected)
-        );
-    }
-
-    private void mergeAndCheck(final PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector> alias,
-                               final TestPluginInfoSet infos,
-                               final TestPluginInfoSet expected) {
-        this.checkEquals(
-                expected,
-                alias.merge(infos),
-                () -> alias + " merge " + infos
         );
     }
 
