@@ -410,29 +410,14 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     private final Map<N, N> nameToName;
 
     /**
-     * Accepts some {@link PluginInfoSetLike} and uses the aliases mappings within to produce a final {@link PluginInfoSetLike}
+     * Accepts some {@link PluginInfoSetLike} and uses the aliases mappings within to produce a final {@link PluginInfoSetLike}.
+     * Note aliases/name mappings not present in the provider {@link PluginInfoSetLike} will be silently removed.
      */
     @Override
     public IS merge(final IS providerInfos) {
         Objects.requireNonNull(providerInfos, "providerInfos");
 
-        // verify all aliases -> name and names exist
-        final Set<N> providerNames = providerInfos.names();
-
-        final Comparator<N> nameComparator = this.helper.nameComparator();;
-        final Set<N> unknownNames = SortedSets.tree(nameComparator);
-
-        final Set<N> names = this.names;
-        names.stream()
-                .filter(n -> false == providerNames.contains(n))
-                .forEach(unknownNames::add);
-
-        this.nameToAliases.values()
-                .stream()
-                .map(s -> s.name())
-                .filter(n -> false == providerNames.contains(n))
-                .forEach(unknownNames::add);
-
+        final Comparator<N> nameComparator = this.helper.nameComparator();
 
         // Fix all INFOs for each alias
         IS newInfos = providerInfos;
@@ -441,6 +426,8 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
         // remove $newInfos which are not referenced by name or alias
         final Set<I> unreferencedProviderInfos = Sets.hash();
+
+        final Set<N> names = this.names;
 
         for(final I providerInfo : providerInfos) {
             if(false == names.contains(providerInfo.name())) {
@@ -480,32 +467,29 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                 }
             }
 
+            final Set<N> providerName = providerInfos.names();
+
             for (final I aliasInfo : aliasesInfos) {
-                final N name = aliasInfo.name();
-                final I providerInfo = nameToProviderInfo.get(name);
-                if (null != providerInfo) {
-                    newInfos = newInfos.replace(
-                            providerInfo,
-                            aliasInfo
-                    );
-                } else {
-                    newInfos = newInfos.concat(
-                            aliasInfo
-                    );
+                // get name for alias and verify name is present in providerInfo.names
+                final N alias = aliasInfo.name();
+                final Optional<S> selector = this.alias(alias);
+                if (selector.isPresent()) {
+                    if (providerName.contains(selector.get().name())) {
+
+                        final I providerInfo = nameToProviderInfo.get(alias);
+                        if (null != providerInfo) {
+                            newInfos = newInfos.replace(
+                                    providerInfo,
+                                    aliasInfo
+                            );
+                        } else {
+                            newInfos = newInfos.concat(
+                                    aliasInfo
+                            );
+                        }
+                    }
                 }
             }
-        }
-
-        if (false == unknownNames.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "Unknown " +
-                            this.helper.label() +
-                            "(s): " +
-                            CharacterConstant.COMMA.toSeparatedString(
-                                    unknownNames,
-                                    N::toString
-                            )
-            );
         }
 
         return newInfos;
