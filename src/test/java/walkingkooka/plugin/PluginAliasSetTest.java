@@ -951,57 +951,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     // merge............................................................................................................
 
     @Test
-    public void testMergeWithUnknownNameFails() {
-        final IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
-                () -> this.parseString("unknown222")
-                        .merge(
-                                TestPluginInfoSet.parse("https://example.com/111 plugin111")
-                        )
-        );
-
-        this.checkEquals(
-                "Unknown StringName(s): unknown222",
-                thrown.getMessage(),
-                "message"
-        );
-    }
-
-    @Test
-    public void testMergeWithUnknownNameFails2() {
-        final IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
-                () -> this.parseString("unknown222, unknown333, plugin444")
-                        .merge(
-                                TestPluginInfoSet.parse("https://example.com/111 plugin111, https://example.com/444 plugin444")
-                        )
-        );
-
-        this.checkEquals(
-                "Unknown StringName(s): unknown222,unknown333",
-                thrown.getMessage(),
-                "message"
-        );
-    }
-
-    @Test
-    public void testMergeWithUnknownAliasFails() {
-        final IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
-                () -> this.parseString("unknown222 plugin222")
-                        .merge(
-                                TestPluginInfoSet.parse("https://example.com/111 plugin111")
-                        )
-        );
-
-        this.checkEquals(
-                "Unknown StringName(s): plugin222",
-                thrown.getMessage(),
-                "message"
-        );
-    }
-
-    @Test
     public void testMergeWithOnlyNames() {
         this.mergeAndCheck(
                 "plugin111",
@@ -1016,6 +965,24 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 "plugin111, plugin222",
                 "https://example.com/111 plugin111, https://example.com/222 plugin222",
                 "https://example.com/111 plugin111, https://example.com/222 plugin222"
+        );
+    }
+
+    @Test
+    public void testMergeWithUnknownNameRemoved() {
+        this.mergeAndCheck(
+                "unknownplugin111",
+                "https://example.com/111 plugin111", // plugin111 not mentioned in aliases so should be removed
+                ""
+        );
+    }
+
+    @Test
+    public void testMergeWithUnknownNameRemoved2() {
+        this.mergeAndCheck(
+                "plugin111, unknownplugin404", // 404 not mentioned should be removed
+                "https://example.com/111 plugin111, https://example.com/222 plugin222", // plugin222 not mentioned should NOT appear in INFO
+                "https://example.com/111 plugin111"
         );
     }
 
@@ -1038,6 +1005,15 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     }
 
     @Test
+    public void testMergeWithNamesAndAliasesAndUnknownAliasRemoved() {
+        this.mergeAndCheck(
+                "plugin111, alias222 plugin222, alias333 unknownplugin444",
+                "https://example.com/111 plugin111, https://example.com/222 plugin222, https://example.com/333 plugin333",
+                "https://example.com/111 plugin111, https://example.com/222 alias222"
+        );
+    }
+
+    @Test
     public void testMergeWithNamesAndAliasesWithIntroducedUrl() {
         this.mergeAndCheck(
                 "plugin111, alias999 plugin111 https://example.com/999",
@@ -1052,6 +1028,24 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 "alias999 plugin111 https://example.com/999 , plugin222, alias333 plugin333",
                 "https://example.com/111 plugin111, https://example.com/222 plugin222, https://example.com/333 plugin333",
                 "https://example.com/222 plugin222, https://example.com/333 alias333, https://example.com/999 alias999"
+        );
+    }
+
+    @Test
+    public void testMergeWithUnknownAliasWithIntroducedUrl() {
+        this.mergeAndCheck(
+                "alias404 plugin404 https://example.com/404",
+                "https://example.com/111 plugin111, https://example.com/222 plugin222",
+                ""
+        );
+    }
+
+    @Test
+    public void testMergeWithNamesAndAliasesAndUnknownAliasWithIntroducedUrl() {
+        this.mergeAndCheck(
+                "plugin111, alias999 plugin111 https://example.com/999 , alias404 plugin404 https://example.com/404",
+                "https://example.com/111 plugin111, https://example.com/222 plugin222",
+                "https://example.com/111 plugin111, https://example.com/999 alias999"
         );
     }
 
