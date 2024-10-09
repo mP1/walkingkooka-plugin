@@ -205,8 +205,8 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                final IS providerInfos,
                                final Set<I> expected) {
         this.checkEquals(
-                aliases.merge(providerInfos),
                 expected,
+                aliases.merge(providerInfos),
                 "merge"
         );
     }
