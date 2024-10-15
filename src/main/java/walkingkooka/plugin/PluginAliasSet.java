@@ -557,6 +557,43 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
      */
     private Map<N, A> nameToPluginAliasLike;
 
+    /**
+     * If the {@link PluginAliasLike} name exists then replace the alias with the same {@link Name} or concat because it
+     * is new.
+     */
+    public PluginAliasSet<N, I, IS, S, A> concatOrReplace(final A alias) {
+        Objects.requireNonNull(alias, "alias");
+
+        PluginAliasSet<N, I, IS, S, A> pluginAliasSet = null;
+
+        A pluginAliasWithName = this.pluginAliasLikeByName(alias.name());
+        if (null != pluginAliasWithName) {
+            pluginAliasSet = this.replace(
+                    pluginAliasWithName,
+                    alias
+            );
+        } else {
+            final S selector = alias.selector()
+                    .orElse(null);
+            if (null != selector) {
+                pluginAliasWithName = this.pluginAliasLikeByName(selector.name());
+
+                if (null != pluginAliasWithName) {
+                    pluginAliasSet = this.replace(
+                            pluginAliasWithName,
+                            alias
+                    );
+                }
+            }
+
+            if (null == pluginAliasSet) {
+                pluginAliasSet = this.concat(alias);
+            }
+        }
+
+        return pluginAliasSet;
+    }
+
     // HasText..........................................................................................................
 
     @Override
