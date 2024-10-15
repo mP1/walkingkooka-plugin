@@ -25,8 +25,10 @@ import walkingkooka.collect.set.SortedSets;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.text.CharacterConstant;
+import walkingkooka.text.HasText;
 import walkingkooka.text.cursor.TextCursorSavePoint;
 import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.TreePrintable;
 
 import java.util.AbstractSet;
 import java.util.Comparator;
@@ -47,8 +49,9 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         S extends PluginSelectorLike<N>,
         A extends PluginAliasLike<N, S, A>>
         extends AbstractSet<A>
-        implements PluginAliasSetLike<N, I, IS, S, A>,
-            ImmutableSortedSetDefaults<PluginAliasSet<N, I, IS, S, A>, A> {
+        implements ImmutableSortedSetDefaults<PluginAliasSet<N, I, IS, S, A>, A>,
+        HasText,
+        TreePrintable {
 
     /**
      * The separator character between name/alias declarations.
@@ -374,7 +377,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     /**
      * Returns the selector if one is present for the given {@link Name alias}.
      */
-    @Override
     public Optional<S> alias(final N name) {
         Objects.requireNonNull(name, "name");
 
@@ -395,7 +397,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
      * Queries the target name applying any aliases, or returning the name if no alias was present.
      * Note any aliases will not be returned and should be queried first.
      */
-    @Override
     public Optional<N> name(final N name) {
         Objects.requireNonNull(name, "name");
 
@@ -413,7 +414,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
      * Accepts some {@link PluginInfoSetLike} and uses the aliases mappings within to produce a final {@link PluginInfoSetLike}.
      * Note aliases/name mappings not present in the provider {@link PluginInfoSetLike} will be silently removed.
      */
-    @Override
     public IS merge(final IS providerInfos) {
         Objects.requireNonNull(providerInfos, "providerInfos");
 
