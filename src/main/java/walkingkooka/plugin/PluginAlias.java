@@ -111,7 +111,9 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
                 }
             } else {
                 result = null == selector ?
-                        Comparators.LESS :
+                        null == otherSelector ?
+                                Comparators.EQUAL :
+                                Comparators.LESS :
                         Comparators.MORE;
             }
         }
