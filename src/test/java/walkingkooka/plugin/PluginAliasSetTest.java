@@ -1059,6 +1059,120 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         );
     }
 
+    // PluginAlias......................................................................................................
+
+    @Test
+    public void testContainsNameWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createSet().containsName(null)
+        );
+    }
+
+    @Test
+    public void testContainsNameWhereNamePresent() {
+        this.containsNameAndCheck(
+            NAME1.text(),
+                PluginAlias.with(
+                        NAME1,
+                        Optional.empty(), // no alias
+                        Optional.empty() // no url
+                ),
+                true
+        );
+    }
+
+    @Test
+    public void testContainsNameWhereNamePresent2() {
+        this.containsNameAndCheck(
+                NAME1.text() + " " + NAME2,
+                PluginAlias.with(
+                        NAME1,
+                        Optional.empty(), // no alias
+                        Optional.empty() // no url
+                ),
+                true
+        );
+    }
+
+    @Test
+    public void testContainsNameWhereNameAndAliasIgnored() {
+        this.containsNameAndCheck(
+                NAME1_ALIAS + " " + NAME1,
+                PluginAlias.with(
+                        NAME1,
+                        Optional.of(
+                                TestPluginSelector.parse("" + NAME1_ALIAS)
+                        ), // alias
+                        Optional.empty() // no url
+                ),
+                false
+        );
+    }
+
+    @Test
+    public void testContainsNameWhereNameAndAliasIgnored2() {
+        this.containsNameAndCheck(
+                NAME1_ALIAS + " " + NAME1 + ", " + NAME2,
+                PluginAlias.with(
+                        NAME1,
+                        Optional.of(
+                                TestPluginSelector.parse("" + NAME1_ALIAS)
+                        ), // alias
+                        Optional.empty() // no url
+                ),
+                false
+        );
+    }
+
+    @Test
+    public void testContainsNameWhereNameAbsent() {
+        this.containsNameAndCheck(
+                NAME2.text(),
+                PluginAlias.with(
+                        NAME1,
+                        Optional.empty(), // no alias
+                        Optional.empty() // no url
+                ),
+                false
+        );
+    }
+
+    @Test
+    public void testContainsNameWhereAliasPresentNameAbsent() {
+        this.containsNameAndCheck(
+                NAME1_ALIAS + " name-missing",
+                PluginAlias.with(
+                        NAME1,
+                        Optional.of(
+                                TestPluginSelector.parse("" + ALIAS1)
+                        ), // no alias
+                        Optional.empty() // no url
+                ),
+                false
+        );
+    }
+
+    private void containsNameAndCheck(final String pluginAliasSet,
+                                      final PluginAlias<StringName, TestPluginSelector> pluginAlias,
+                                      final boolean expected) {
+        this.containsNameAndCheck(
+                PluginAliasSet.parse(pluginAliasSet, TestPluginHelper.INSTANCE),
+                pluginAlias,
+                expected
+        );
+    }
+
+    private void containsNameAndCheck(final PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias> pluginAliasSet,
+                                      final PluginAlias<StringName, TestPluginSelector> pluginAlias,
+                                      final boolean expected) {
+        this.checkEquals(
+                expected,
+                pluginAliasSet.containsName(pluginAlias),
+                () -> pluginAliasSet.text() + " containsName " + pluginAlias
+        );
+    }
+
     // ImmutableSet.....................................................................................................
 
     @Test
