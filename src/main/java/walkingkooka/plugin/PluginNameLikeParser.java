@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.CanBeEmpty;
 import walkingkooka.InvalidCharacterException;
 import walkingkooka.naming.Name;
 import walkingkooka.predicate.character.CharPredicates;
@@ -33,7 +34,7 @@ import java.util.function.Function;
 /**
  * A parser that may be used to parse a CSV of names with optional surrounding {@link Name names}.
  */
-final class PluginNameLikeParser<N extends Name & Comparable<N>> {
+final class PluginNameLikeParser<N extends Name & Comparable<N>> implements CanBeEmpty {
 
     static <N extends Name & Comparable<N>> PluginNameLikeParser<N> with(final String text,
                                                                          final Function<String, N> nameParser) {
@@ -107,7 +108,8 @@ final class PluginNameLikeParser<N extends Name & Comparable<N>> {
             )
     );
 
-    boolean isEmpty() {
+    @Override
+    public boolean isEmpty() {
         return this.cursor.isEmpty();
     }
 

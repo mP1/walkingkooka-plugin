@@ -73,7 +73,7 @@ public interface PluginNameLike<N extends Name & Comparable<N>> extends Name, Co
 
         parser.spaces();
 
-        if (false == parser.isEmpty()) {
+        if (parser.isNotEmpty()) {
             for (; ; ) {
                 parser.spaces();
 

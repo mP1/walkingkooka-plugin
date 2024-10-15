@@ -70,7 +70,7 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
 
         parser.spaces();
 
-        if (false == parser.isEmpty()) {
+        if (parser.isNotEmpty()) {
             for (; ; ) {
                 parser.spaces();
 

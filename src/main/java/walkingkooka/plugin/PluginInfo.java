@@ -64,7 +64,7 @@ public final class PluginInfo<N extends Name & Comparable<N>> implements HasName
 
         parser.spaces();
 
-        if(false == parser.isEmpty()) {
+        if(parser.isNotEmpty()) {
             parser.invalidCharacterException();
         }
 
