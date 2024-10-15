@@ -1186,6 +1186,195 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         );
     }
 
+    // concatOrReplace..................................................................................................
+
+    @Test
+    public void testConcatOrReplaceWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createSet().concatOrReplace(null)
+        );
+    }
+
+    @Test
+    public void testConcatOrReplaceWithNewName() {
+        this.concatOrReplaceAndCheck(
+                "name1",
+                TestPluginAlias.with(
+                        Names.string("newname2"),
+                        Optional.empty(), // alias
+                        Optional.empty() // url
+                ),
+                "name1, newname2"
+        );
+    }
+
+    @Test
+    public void testConcatOrReplaceWithNewName2() {
+        this.concatOrReplaceAndCheck(
+                "name1, name2",
+                TestPluginAlias.with(
+                        Names.string("newname2"),
+                        Optional.empty(), // alias
+                        Optional.empty() // url
+                ),
+                "name1, name2, newname2"
+        );
+    }
+
+    @Test
+    public void testConcatOrReplaceWithExistingName() {
+        this.concatOrReplaceAndCheck(
+                "name1",
+                TestPluginAlias.with(
+                        Names.string("name1"),
+                        Optional.empty(), // alias
+                        Optional.empty() // url
+                ),
+                "name1"
+        );
+    }
+
+    @Test
+    public void testConcatOrReplaceWithExistingName2() {
+        this.concatOrReplaceAndCheck(
+                "name1, name2",
+                TestPluginAlias.with(
+                        Names.string("name1"),
+                        Optional.empty(), // alias
+                        Optional.empty() // url
+                ),
+                "name1, name2"
+        );
+    }
+
+    @Test
+    public void testConcatOrReplaceWithExistingName3() {
+        this.concatOrReplaceAndCheck(
+                "name1",
+                TestPluginAlias.with(
+                        Names.string("alias1"),
+                        Optional.of(
+                                TestPluginSelector.parse("name1")
+                        ), // alias
+                        Optional.empty() // url
+                ),
+                "alias1 name1"
+        );
+    }
+
+    @Test
+    public void testConcatOrReplaceWithExistingName4() {
+        this.concatOrReplaceAndCheck(
+                "name1",
+                TestPluginAlias.with(
+                        Names.string("alias1"),
+                        Optional.of(
+                                TestPluginSelector.parse("name1")
+                        ), // alias
+                        Optional.of(
+                                Url.parseAbsolute("https://example.com/name1")
+                        ) // url
+                ),
+                "alias1 name1 https://example.com/name1"
+        );
+    }
+
+    @Test
+    public void testConcatOrReplaceWithExistingName5() {
+        this.concatOrReplaceAndCheck(
+                "name1, name2",
+                TestPluginAlias.with(
+                        Names.string("alias1"),
+                        Optional.of(
+                                TestPluginSelector.parse("name1")
+                        ), // alias
+                        Optional.of(
+                                Url.parseAbsolute("https://example.com/name1")
+                        ) // url
+                ),
+                "alias1 name1 https://example.com/name1 , name2"
+        );
+    }
+
+    @Test
+    public void testConcatOrReplaceWithExistingNameIgnoresAlias() {
+        this.concatOrReplaceAndCheck(
+                "alias1 name1",
+                TestPluginAlias.with(
+                        Names.string("name1"),
+                        Optional.empty(), // alias
+                        Optional.empty() // url
+                ),
+                "name1"
+        );
+    }
+
+    @Test
+    public void testConcatOrReplaceWithExistingNameIgnoresAlias2() {
+        this.concatOrReplaceAndCheck(
+                "alias1 name1, name2",
+                TestPluginAlias.with(
+                        Names.string("name1"),
+                        Optional.empty(), // alias lost
+                        Optional.empty() // url
+                ),
+                "name1, name2"
+        );
+    }
+
+    @Test
+    public void testConcatOrReplaceWithExistingNameIgnoresAlias3() {
+        this.concatOrReplaceAndCheck(
+                "alias-ignored-1 name1",
+                TestPluginAlias.with(
+                        Names.string("alias1"),
+                        Optional.of(
+                                TestPluginSelector.parse("name1")
+                        ), // alias
+                        Optional.empty() // url
+                ),
+                "alias1 name1"
+        );
+    }
+
+    @Test
+    public void testConcatOrReplaceWithExistingNameIgnoresAlias4() {
+        this.concatOrReplaceAndCheck(
+                "alias-ignored-1 name1",
+                TestPluginAlias.with(
+                        Names.string("alias1"),
+                        Optional.of(
+                                TestPluginSelector.parse("name1")
+                        ), // alias
+                        Optional.of(
+                                Url.parseAbsolute("https://example.com")
+                        ) // url
+                ),
+                "alias1 name1 https://example.com"
+        );
+    }
+
+    private void concatOrReplaceAndCheck(final String aliases,
+                                         final TestPluginAlias alias,
+                                         final String expected) {
+        this.concatOrReplaceAndCheck(
+                TestPluginAliasSet.parse(aliases),
+                alias,
+                TestPluginAliasSet.parse(expected)
+        );
+    }
+
+    private void concatOrReplaceAndCheck(final TestPluginAliasSet aliases,
+                                         final TestPluginAlias alias,
+                                         final TestPluginAliasSet expected) {
+        this.checkEquals(
+                expected,
+                aliases.concatOrReplace(alias),
+                () -> aliases.text() + " concatOrReplace " + alias
+        );
+    }
+
     // ImmutableSet.....................................................................................................
 
     @Test

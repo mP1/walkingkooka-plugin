@@ -64,6 +64,12 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
      */
     boolean containsNameOrAlias(final N name);
 
+    /**
+     * If the {@link PluginAliasLike} name exists then replace the alias with the same {@link Name} or concat because it
+     * is new.
+     */
+    AS concatOrReplace(final A alias);
+
     // HasUrlFragment...................................................................................................
 
     /**
