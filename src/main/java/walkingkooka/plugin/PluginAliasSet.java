@@ -507,6 +507,29 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     // @VisibleForTesting
     final IS infos;
 
+    /**
+     * Tests if the given {@link PluginAlias} will replace an existing {@link PluginAlias}, using the {@link PluginAlias#name()}.
+     */
+    public boolean containsName(final PluginAlias<N, S> alias) {
+        Objects.requireNonNull(alias, "alias");
+
+        if (null == this.pluginAliasNames) {
+            this.pluginAliasNames = this.sortedSet.stream()
+                    .map(pa -> pa.name())
+                    .collect(
+                            Collectors.toCollection(
+                                    () -> SortedSets.tree(
+                                            this.helper.nameComparator()
+                                    )
+                            )
+                    );
+        }
+
+        return this.pluginAliasNames.contains(alias.name());
+    }
+
+    private Set<N> pluginAliasNames;
+
     // HasText..........................................................................................................
 
     @Override
