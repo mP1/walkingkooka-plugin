@@ -459,10 +459,18 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                                     .name()
                     );
                     if (null != providerInfo) {
-                        newInfos = newInfos.replace(
-                                providerInfo,
-                                providerInfo.setName(aliasName)
-                        );
+
+                        if (newInfos.contains(providerInfo)) {
+                            newInfos = newInfos.replace(
+                                    providerInfo,
+                                    providerInfo.setName(aliasName)
+                            );
+
+                        } else {
+                            newInfos = newInfos.concat(
+                                    providerInfo.setName(aliasName)
+                            );
+                        }
                     }
                 }
             }
