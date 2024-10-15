@@ -254,6 +254,22 @@ public final class PluginAliasTest implements PluginAliasLikeTesting<StringName,
     }
 
     @Test
+    public void testCompareToWhenUrlMissing() {
+        this.compareToAndCheckEquals(
+                PluginAlias.with(
+                        NAME,
+                        SELECTOR,
+                        Optional.empty()
+                ),
+                PluginAlias.with(
+                        NAME,
+                        SELECTOR,
+                        Optional.empty()
+                )
+        );
+    }
+
+    @Test
     public void testCompareToWhenUrlDifferentOneMissing() {
         this.compareToAndCheckLess(
                 PluginAlias.with(

@@ -103,10 +103,11 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
                             result = url.compareTo(otherUrl);
                         } else {
                             result = null == url ?
-                                    Comparators.LESS :
+                                    null == otherUrl ?
+                                            Comparators.EQUAL :
+                                            Comparators.LESS :
                                     Comparators.MORE;
                         }
-
                     }
                 }
             } else {
