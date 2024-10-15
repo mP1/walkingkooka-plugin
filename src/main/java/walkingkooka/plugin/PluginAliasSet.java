@@ -91,7 +91,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
         boolean requireSeparator = false;
 
-        while (false == parser.isEmpty()) {
+        while (parser.isNotEmpty()) {
             parser.spaces();
             if (parser.isEmpty()) {
                 break;

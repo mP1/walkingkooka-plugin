@@ -278,7 +278,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
 
         parser.spaces();
 
-        if (false == parser.isEmpty()) {
+        if (parser.isNotEmpty()) {
             this.invalidCharacter(parser);
         }
 

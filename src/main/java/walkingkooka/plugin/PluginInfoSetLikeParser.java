@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.CanBeEmpty;
 import walkingkooka.InvalidCharacterException;
 import walkingkooka.naming.Name;
 import walkingkooka.predicate.character.CharPredicates;
@@ -30,7 +31,7 @@ import walkingkooka.text.cursor.parser.Parsers;
 
 import java.util.function.Function;
 
-final class PluginInfoSetLikeParser<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>> {
+final class PluginInfoSetLikeParser<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>> implements CanBeEmpty {
 
     static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>> PluginInfoSetLikeParser<N, I> with(final String text,
                                                                                                                final Function<String, I> infoParser) {
@@ -124,7 +125,8 @@ final class PluginInfoSetLikeParser<N extends Name & Comparable<N>, I extends Pl
             )
     );
 
-    boolean isEmpty() {
+    @Override
+    public boolean isEmpty() {
         return this.cursor.isEmpty();
     }
 

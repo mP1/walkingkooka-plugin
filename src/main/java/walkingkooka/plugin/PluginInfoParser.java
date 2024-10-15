@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.CanBeEmpty;
 import walkingkooka.InvalidCharacterException;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
@@ -33,7 +34,7 @@ import walkingkooka.text.cursor.parser.Parsers;
 import java.util.Objects;
 import java.util.function.Function;
 
-final class PluginInfoParser<N extends Name & Comparable<N>> {
+final class PluginInfoParser<N extends Name & Comparable<N>> implements CanBeEmpty {
 
     static <N extends Name & Comparable<N>> PluginInfoParser<N> with(final String text,
                                                                      final Function<String, N> name) {
@@ -115,7 +116,8 @@ final class PluginInfoParser<N extends Name & Comparable<N>> {
             Character.MAX_VALUE
     );
 
-    boolean isEmpty() {
+    @Override
+    public boolean isEmpty() {
         return this.cursor.isEmpty();
     }
 
