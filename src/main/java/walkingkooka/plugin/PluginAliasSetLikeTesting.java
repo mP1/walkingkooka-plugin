@@ -37,7 +37,7 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         IS extends PluginInfoSetLike<IS, I, N>,
         S extends PluginSelectorLike<N>,
         A extends PluginAliasLike<N, S, A>,
-        AS extends PluginAliasSetLike<N, I, IS, S, A>>
+        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
     extends ImmutableSortedSetTesting<AS, A>,
         HasTextTesting,
         TreePrintableTesting,

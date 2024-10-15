@@ -38,7 +38,12 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         TestPluginInfoSet,
         TestPluginSelector,
         TestPluginAlias,
-        PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias>> {
+        TestPluginAliasSet> {
+
+    @Override
+    public void testSetElementsSame() {
+        throw new UnsupportedOperationException();
+    }
 
     // parse............................................................................................................
 
@@ -92,14 +97,16 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     public void testParseWithEmpty() {
         this.parseStringAndCheck(
                 "",
-                new PluginAliasSet<>(
-                        SortedSets.empty(), // aliases
-                        Maps.empty(), // alias -> selector
-                        Sets.empty(), // alias selectors
-                        Maps.empty(), // name -> name
-                        Sets.empty(), // names
-                        TestPluginInfoSet.EMPTY, // infos
-                        TestPluginHelper.INSTANCE
+                new TestPluginAliasSet(
+                        new PluginAliasSet<>(
+                                SortedSets.empty(), // aliases
+                                Maps.empty(), // alias -> selector
+                                Sets.empty(), // alias selectors
+                                Maps.empty(), // name -> name
+                                Sets.empty(), // names
+                                TestPluginInfoSet.EMPTY, // infos
+                                TestPluginHelper.INSTANCE
+                        )
                 )
         );
     }
@@ -124,14 +131,16 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     public void testParseWithSpaces() {
         this.parseStringAndCheck(
                 " ",
-                new PluginAliasSet<>(
-                        SortedSets.empty(), // aliases
-                        Maps.empty(), // alias -> selector
-                        Sets.empty(), // alias selectors
-                        Maps.empty(), // name -> name
-                        Sets.empty(), // names
-                        TestPluginInfoSet.EMPTY, // infos
-                        TestPluginHelper.INSTANCE
+                new TestPluginAliasSet(
+                        new PluginAliasSet<>(
+                                SortedSets.empty(), // aliases
+                                Maps.empty(), // alias -> selector
+                                Sets.empty(), // alias selectors
+                                Maps.empty(), // name -> name
+                                Sets.empty(), // names
+                                TestPluginInfoSet.EMPTY, // infos
+                                TestPluginHelper.INSTANCE
+                        )
                 )
         );
     }
@@ -140,23 +149,25 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     public void testParseWithName() {
         this.parseStringAndCheck(
                 "plugin111",
-                new PluginAliasSet<>(
-                        SortedSets.of(
-                                TestPluginAlias.with(
-                                        Names.string("plugin111"),
-                                        Optional.empty(), // selector
-                                        Optional.empty() // url
-                                )
-                        ), // aliases
-                        Maps.empty(), // alias -> selector
-                        Sets.empty(), // alias selectors
-                        Maps.of(
-                                NAME1,
-                                NAME1
-                        ), // name -> name
-                        Sets.of(NAME1), // names
-                        TestPluginInfoSet.EMPTY, // infos
-                        TestPluginHelper.INSTANCE
+                new TestPluginAliasSet(
+                        new PluginAliasSet<>(
+                                SortedSets.of(
+                                        TestPluginAlias.with(
+                                                Names.string("plugin111"),
+                                                Optional.empty(), // selector
+                                                Optional.empty() // url
+                                        )
+                                ), // aliases
+                                Maps.empty(), // alias -> selector
+                                Sets.empty(), // alias selectors
+                                Maps.of(
+                                        NAME1,
+                                        NAME1
+                                ), // name -> name
+                                Sets.of(NAME1), // names
+                                TestPluginInfoSet.EMPTY, // infos
+                                TestPluginHelper.INSTANCE
+                        )
                 )
         );
     }
@@ -165,23 +176,25 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     public void testParseWithNameSpace() {
         this.parseStringAndCheck(
                 "plugin111 ",
-                new PluginAliasSet<>(
-                        SortedSets.of(
-                                TestPluginAlias.with(
-                                        Names.string("plugin111"),
-                                        Optional.empty(), // selector
-                                        Optional.empty() // url
-                                )
-                        ), // aliases
-                        Maps.empty(), // alias -> selector
-                        Sets.empty(), // alias selectors
-                        Maps.of(
-                                NAME1,
-                                NAME1
-                        ), // name -> name
-                        Sets.of(NAME1), // names
-                        TestPluginInfoSet.EMPTY, // infos
-                        TestPluginHelper.INSTANCE
+                new TestPluginAliasSet(
+                        new PluginAliasSet<>(
+                                SortedSets.of(
+                                        TestPluginAlias.with(
+                                                Names.string("plugin111"),
+                                                Optional.empty(), // selector
+                                                Optional.empty() // url
+                                        )
+                                ), // aliases
+                                Maps.empty(), // alias -> selector
+                                Sets.empty(), // alias selectors
+                                Maps.of(
+                                        NAME1,
+                                        NAME1
+                                ), // name -> name
+                                Sets.of(NAME1), // names
+                                TestPluginInfoSet.EMPTY, // infos
+                                TestPluginHelper.INSTANCE
+                        )
                 )
         );
     }
@@ -190,33 +203,35 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     public void testParseWithAliasSpaceSelectorSpaceUrl() {
         this.parseStringAndCheck(
                 "alias111 plugin111 https://example.com/alias111",
-                new PluginAliasSet<>(
-                        SortedSets.of(
-                                TestPluginAlias.with(
-                                        Names.string("alias111"),
-                                        Optional.of(
-                                                TestPluginSelector.parse("plugin111")
-                                        ), // selector
-                                        Optional.of(
-                                                Url.parseAbsolute("https://example.com/alias111")
-                                        ) // url
-                                )
-                        ), // aliases
-                        Maps.of(
-                                NAME1_ALIAS,
-                                SELECTOR1
-                        ), // alias -> selector
-                        Sets.of(
-                                NAME1_ALIAS
-                        ), // alias selectors
-                        Maps.empty(), // name -> name
-                        Sets.of(NAME1), // names
-                        new TestPluginInfoSet(
+                new TestPluginAliasSet(
+                        new PluginAliasSet<>(
+                                SortedSets.of(
+                                        TestPluginAlias.with(
+                                                Names.string("alias111"),
+                                                Optional.of(
+                                                        TestPluginSelector.parse("plugin111")
+                                                ), // selector
+                                                Optional.of(
+                                                        Url.parseAbsolute("https://example.com/alias111")
+                                                ) // url
+                                        )
+                                ), // aliases
+                                Maps.of(
+                                        NAME1_ALIAS,
+                                        SELECTOR1
+                                ), // alias -> selector
                                 Sets.of(
-                                        TestPluginInfo.parse("https://example.com/alias111 alias111")
-                                )
-                        ), // infos
-                        TestPluginHelper.INSTANCE
+                                        NAME1_ALIAS
+                                ), // alias selectors
+                                Maps.empty(), // name -> name
+                                Sets.of(NAME1), // names
+                                new TestPluginInfoSet(
+                                        Sets.of(
+                                                TestPluginInfo.parse("https://example.com/alias111 alias111")
+                                        )
+                                ), // infos
+                                TestPluginHelper.INSTANCE
+                        )
                 )
         );
     }
@@ -241,33 +256,35 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     public void testParseWithAliasSpaceSelectorOpenCloseSpaceUrl() {
         this.parseStringAndCheck(
                 "alias111 plugin111() https://example.com/plugin111",
-                new PluginAliasSet<>(
-                        SortedSets.of(
-                                TestPluginAlias.with(
-                                        Names.string("alias111"),
-                                        Optional.of(
-                                                TestPluginSelector.parse("plugin111()")
-                                        ), // selector
-                                        Optional.of(
-                                                Url.parseAbsolute("https://example.com/plugin111")
-                                        ) // url
-                                )
-                        ), // aliases
-                        Maps.of(
-                                NAME1_ALIAS,
-                                SELECTOR1.setText("()")
-                        ), // alias -> selector
-                        Sets.of(
-                                NAME1_ALIAS
-                        ), // alias selectors
-                        Maps.empty(), // name -> name
-                        Sets.of(NAME1), // names
-                        new TestPluginInfoSet(
+                new TestPluginAliasSet(
+                        new PluginAliasSet<>(
+                                SortedSets.of(
+                                        TestPluginAlias.with(
+                                                Names.string("alias111"),
+                                                Optional.of(
+                                                        TestPluginSelector.parse("plugin111()")
+                                                ), // selector
+                                                Optional.of(
+                                                        Url.parseAbsolute("https://example.com/plugin111")
+                                                ) // url
+                                        )
+                                ), // aliases
+                                Maps.of(
+                                        NAME1_ALIAS,
+                                        SELECTOR1.setText("()")
+                                ), // alias -> selector
                                 Sets.of(
-                                        TestPluginInfo.parse("https://example.com/plugin111 alias111")
-                                )
-                        ), // infos
-                        TestPluginHelper.INSTANCE
+                                        NAME1_ALIAS
+                                ), // alias selectors
+                                Maps.empty(), // name -> name
+                                Sets.of(NAME1), // names
+                                new TestPluginInfoSet(
+                                        Sets.of(
+                                                TestPluginInfo.parse("https://example.com/plugin111 alias111")
+                                        )
+                                ), // infos
+                                TestPluginHelper.INSTANCE
+                        )
                 )
         );
     }
@@ -276,33 +293,35 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     public void testParseWithAliasSpaceSelectorOpenSpaceCloseSpaceUrl() {
         this.parseStringAndCheck(
                 "alias111 plugin111( ) https://example.com/plugin111",
-                new PluginAliasSet<>(
-                        SortedSets.of(
-                                TestPluginAlias.with(
-                                        Names.string("alias111"),
-                                        Optional.of(
-                                                TestPluginSelector.parse("plugin111( )")
-                                        ), // selector
-                                        Optional.of(
-                                                Url.parseAbsolute("https://example.com/plugin111")
-                                        ) // url
-                                )
-                        ), // aliases
-                        Maps.of(
-                                NAME1_ALIAS,
-                                SELECTOR1.setText("( )")
-                        ), // alias -> selector
-                        Sets.of(
-                                NAME1_ALIAS
-                        ), // alias selectors
-                        Maps.empty(), // name -> name
-                        Sets.of(NAME1), // names
-                        new TestPluginInfoSet(
+                new TestPluginAliasSet(
+                        new PluginAliasSet<>(
+                                SortedSets.of(
+                                        TestPluginAlias.with(
+                                                Names.string("alias111"),
+                                                Optional.of(
+                                                        TestPluginSelector.parse("plugin111( )")
+                                                ), // selector
+                                                Optional.of(
+                                                        Url.parseAbsolute("https://example.com/plugin111")
+                                                ) // url
+                                        )
+                                ), // aliases
+                                Maps.of(
+                                        NAME1_ALIAS,
+                                        SELECTOR1.setText("( )")
+                                ), // alias -> selector
                                 Sets.of(
-                                        TestPluginInfo.parse("https://example.com/plugin111 alias111")
-                                )
-                        ), // infos
-                        TestPluginHelper.INSTANCE
+                                        NAME1_ALIAS
+                                ), // alias selectors
+                                Maps.empty(), // name -> name
+                                Sets.of(NAME1), // names
+                                new TestPluginInfoSet(
+                                        Sets.of(
+                                                TestPluginInfo.parse("https://example.com/plugin111 alias111")
+                                        )
+                                ), // infos
+                                TestPluginHelper.INSTANCE
+                        )
                 )
         );
     }
@@ -311,33 +330,35 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     public void testParseWithAliasSpaceSelectorOpenNumberCloseSpaceUrl() {
         this.parseStringAndCheck(
                 "alias111 plugin111(999) https://example.com/plugin111",
-                new PluginAliasSet<>(
-                        SortedSets.of(
-                                TestPluginAlias.with(
-                                        Names.string("alias111"),
-                                        Optional.of(
-                                                TestPluginSelector.parse("plugin111(999)")
-                                        ), // selector
-                                        Optional.of(
-                                                Url.parseAbsolute("https://example.com/plugin111")
-                                        ) // url
-                                )
-                        ), // aliases
-                        Maps.of(
-                                NAME1_ALIAS,
-                                SELECTOR1.setText("(999)")
-                        ), // alias -> selector
-                        Sets.of(
-                                NAME1_ALIAS
-                        ), // alias selectors
-                        Maps.empty(), // name -> name
-                        Sets.of(NAME1), // names
-                        new TestPluginInfoSet(
+                new TestPluginAliasSet(
+                        new PluginAliasSet<>(
+                                SortedSets.of(
+                                        TestPluginAlias.with(
+                                                Names.string("alias111"),
+                                                Optional.of(
+                                                        TestPluginSelector.parse("plugin111(999)")
+                                                ), // selector
+                                                Optional.of(
+                                                        Url.parseAbsolute("https://example.com/plugin111")
+                                                ) // url
+                                        )
+                                ), // aliases
+                                Maps.of(
+                                        NAME1_ALIAS,
+                                        SELECTOR1.setText("(999)")
+                                ), // alias -> selector
                                 Sets.of(
-                                        TestPluginInfo.parse("https://example.com/plugin111 alias111")
-                                )
-                        ), // infos
-                        TestPluginHelper.INSTANCE
+                                        NAME1_ALIAS
+                                ), // alias selectors
+                                Maps.empty(), // name -> name
+                                Sets.of(NAME1), // names
+                                new TestPluginInfoSet(
+                                        Sets.of(
+                                                TestPluginInfo.parse("https://example.com/plugin111 alias111")
+                                        )
+                                ), // infos
+                                TestPluginHelper.INSTANCE
+                        )
                 )
         );
     }
@@ -346,33 +367,35 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     public void testParseWithAliasSpaceSelectorOpenQuotedStringCloseSpaceUrl() {
         this.parseStringAndCheck(
                 "alias111 plugin111(\"Hello\") https://example.com/plugin111",
-                new PluginAliasSet<>(
-                        SortedSets.of(
-                                TestPluginAlias.with(
-                                        Names.string("alias111"),
-                                        Optional.of(
-                                                TestPluginSelector.parse("plugin111(\"Hello\")")
-                                        ), // selector
-                                        Optional.of(
-                                                Url.parseAbsolute("https://example.com/plugin111")
-                                        ) // url
-                                )
-                        ), // aliases
-                        Maps.of(
-                                NAME1_ALIAS,
-                                SELECTOR1.setText("(\"Hello\")")
-                        ), // alias -> selector
-                        Sets.of(
-                                NAME1_ALIAS
-                        ), // alias selectors
-                        Maps.empty(), // name -> name
-                        Sets.of(NAME1), // names
-                        new TestPluginInfoSet(
+                new TestPluginAliasSet(
+                        new PluginAliasSet<>(
+                                SortedSets.of(
+                                        TestPluginAlias.with(
+                                                Names.string("alias111"),
+                                                Optional.of(
+                                                        TestPluginSelector.parse("plugin111(\"Hello\")")
+                                                ), // selector
+                                                Optional.of(
+                                                        Url.parseAbsolute("https://example.com/plugin111")
+                                                ) // url
+                                        )
+                                ), // aliases
+                                Maps.of(
+                                        NAME1_ALIAS,
+                                        SELECTOR1.setText("(\"Hello\")")
+                                ), // alias -> selector
                                 Sets.of(
-                                        TestPluginInfo.parse("https://example.com/plugin111 alias111")
-                                )
-                        ), // infos
-                        TestPluginHelper.INSTANCE
+                                        NAME1_ALIAS
+                                ), // alias selectors
+                                Maps.empty(), // name -> name
+                                Sets.of(NAME1), // names
+                                new TestPluginInfoSet(
+                                        Sets.of(
+                                                TestPluginInfo.parse("https://example.com/plugin111 alias111")
+                                        )
+                                ), // infos
+                                TestPluginHelper.INSTANCE
+                        )
                 )
         );
     }
@@ -381,33 +404,35 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     public void testParseWithAliasSpaceSelectorOpenNumberCommaEnvironmentalValueCommaQuotedStringCloseSpaceUrl() {
         this.parseStringAndCheck(
                 "alias111 plugin111(888,$Magic,\"Hello\") https://example.com/plugin111",
-                new PluginAliasSet<>(
-                        SortedSets.of(
-                                TestPluginAlias.with(
-                                        Names.string("alias111"),
-                                        Optional.of(
-                                                TestPluginSelector.parse("plugin111(888,$Magic,\"Hello\")")
-                                        ), // selector
-                                        Optional.of(
-                                                Url.parseAbsolute("https://example.com/plugin111")
-                                        ) // url
-                                )
-                        ), // aliases
-                        Maps.of(
-                                NAME1_ALIAS,
-                                SELECTOR1.setText("(888,$Magic,\"Hello\")")
-                        ), // alias -> selector
-                        Sets.of(
-                                NAME1_ALIAS
-                        ), // alias selectors
-                        Maps.empty(), // name -> name
-                        Sets.of(NAME1), // names
-                        new TestPluginInfoSet(
+                new TestPluginAliasSet(
+                        new PluginAliasSet<>(
+                                SortedSets.of(
+                                        TestPluginAlias.with(
+                                                Names.string("alias111"),
+                                                Optional.of(
+                                                        TestPluginSelector.parse("plugin111(888,$Magic,\"Hello\")")
+                                                ), // selector
+                                                Optional.of(
+                                                        Url.parseAbsolute("https://example.com/plugin111")
+                                                ) // url
+                                        )
+                                ), // aliases
+                                Maps.of(
+                                        NAME1_ALIAS,
+                                        SELECTOR1.setText("(888,$Magic,\"Hello\")")
+                                ), // alias -> selector
                                 Sets.of(
-                                        TestPluginInfo.parse("https://example.com/plugin111 alias111")
-                                )
-                        ), // infos
-                        TestPluginHelper.INSTANCE
+                                        NAME1_ALIAS
+                                ), // alias selectors
+                                Maps.empty(), // name -> name
+                                Sets.of(NAME1), // names
+                                new TestPluginInfoSet(
+                                        Sets.of(
+                                                TestPluginInfo.parse("https://example.com/plugin111 alias111")
+                                        )
+                                ), // infos
+                                TestPluginHelper.INSTANCE
+                        )
                 )
         );
     }
@@ -416,33 +441,35 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     public void testParseWithNameCommaName() {
         this.parseStringAndCheck(
                 "plugin111, plugin222",
-                new PluginAliasSet<>(
-                        SortedSets.of(
-                                TestPluginAlias.with(
-                                        Names.string("plugin111"),
-                                        Optional.empty(),
-                                        Optional.empty()
-                                ),
-                                TestPluginAlias.with(
-                                        Names.string("plugin222"),
-                                        Optional.empty(),
-                                        Optional.empty()
-                                )
-                        ), // aliases
-                        Maps.empty(), // alias -> selector
-                        Sets.empty(), // alias selectors
-                        Maps.of(
-                                NAME1,
-                                NAME1,
-                                NAME2,
-                                NAME2
-                        ), // name -> name
-                        Sets.of(
-                                NAME1,
-                                NAME2
-                        ), // names
-                        TestPluginInfoSet.EMPTY, // infos
-                        TestPluginHelper.INSTANCE
+                new TestPluginAliasSet(
+                        new PluginAliasSet<>(
+                                SortedSets.of(
+                                        TestPluginAlias.with(
+                                                Names.string("plugin111"),
+                                                Optional.empty(),
+                                                Optional.empty()
+                                        ),
+                                        TestPluginAlias.with(
+                                                Names.string("plugin222"),
+                                                Optional.empty(),
+                                                Optional.empty()
+                                        )
+                                ), // aliases
+                                Maps.empty(), // alias -> selector
+                                Sets.empty(), // alias selectors
+                                Maps.of(
+                                        NAME1,
+                                        NAME1,
+                                        NAME2,
+                                        NAME2
+                                ), // name -> name
+                                Sets.of(
+                                        NAME1,
+                                        NAME2
+                                ), // names
+                                TestPluginInfoSet.EMPTY, // infos
+                                TestPluginHelper.INSTANCE
+                        )
                 )
         );
     }
@@ -451,38 +478,40 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     public void testParseWithAliasCommaName() {
         this.parseStringAndCheck(
                 "alias111 plugin111, plugin222",
-                new PluginAliasSet<>(
-                        SortedSets.of(
-                                TestPluginAlias.with(
-                                        Names.string("alias111"),
-                                        Optional.of(
-                                                TestPluginSelector.parse("plugin111")
+                new TestPluginAliasSet(
+                        new PluginAliasSet<>(
+                                SortedSets.of(
+                                        TestPluginAlias.with(
+                                                Names.string("alias111"),
+                                                Optional.of(
+                                                        TestPluginSelector.parse("plugin111")
+                                                ),
+                                                Optional.empty()
                                         ),
-                                        Optional.empty()
-                                ),
-                                TestPluginAlias.with(
-                                        Names.string("plugin222"),
-                                        Optional.empty(),
-                                        Optional.empty()
-                                )
-                        ), // aliases
-                        Maps.of(
-                                NAME1_ALIAS,
-                                SELECTOR1
-                        ), // alias -> selector
-                        Sets.of(
-                                NAME1_ALIAS
-                        ), // alias selectors
-                        Maps.of(
-                                NAME2,
-                                NAME2
-                        ), // name -> name
-                        Sets.of(
-                                NAME1,
-                                NAME2
-                        ), // names
-                        TestPluginInfoSet.EMPTY, // infos
-                        TestPluginHelper.INSTANCE
+                                        TestPluginAlias.with(
+                                                Names.string("plugin222"),
+                                                Optional.empty(),
+                                                Optional.empty()
+                                        )
+                                ), // aliases
+                                Maps.of(
+                                        NAME1_ALIAS,
+                                        SELECTOR1
+                                ), // alias -> selector
+                                Sets.of(
+                                        NAME1_ALIAS
+                                ), // alias selectors
+                                Maps.of(
+                                        NAME2,
+                                        NAME2
+                                ), // name -> name
+                                Sets.of(
+                                        NAME1,
+                                        NAME2
+                                ), // names
+                                TestPluginInfoSet.EMPTY, // infos
+                                TestPluginHelper.INSTANCE
+                        )
                 )
         );
     }
@@ -499,40 +528,42 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     public void testParseWithAliasSelectorCommaAliasSelector() {
         this.parseStringAndCheck(
                 "alias111 plugin111(\"Hello111\"), alias222 plugin222(\"Hello222\")",
-                new PluginAliasSet<>(
-                        SortedSets.of(
-                                TestPluginAlias.with(
-                                        Names.string("alias111"),
-                                        Optional.of(
-                                                TestPluginSelector.parse("plugin111(\"Hello111\")")
+                new TestPluginAliasSet(
+                        new PluginAliasSet<>(
+                                SortedSets.of(
+                                        TestPluginAlias.with(
+                                                Names.string("alias111"),
+                                                Optional.of(
+                                                        TestPluginSelector.parse("plugin111(\"Hello111\")")
+                                                ),
+                                                Optional.empty()
                                         ),
-                                        Optional.empty()
-                                ),
-                                TestPluginAlias.with(
-                                        Names.string("alias222"),
-                                        Optional.of(
-                                                TestPluginSelector.parse("plugin222(\"Hello222\")")
-                                        ),
-                                        Optional.empty()
-                                )
-                        ), // aliases
-                        Maps.of(
-                                NAME1_ALIAS,
-                                SELECTOR1.setText("(\"Hello111\")"),
-                                NAME2_ALIAS,
-                                SELECTOR2.setText("(\"Hello222\")")
-                        ), // alias -> selector
-                        Sets.of(
-                                NAME1_ALIAS,
-                                NAME2_ALIAS
-                        ), // alias selectors
-                        Maps.empty(), // name -> name
-                        Sets.of(
-                                NAME1,
-                                NAME2
-                        ), // names
-                        TestPluginInfoSet.EMPTY, // infos
-                        TestPluginHelper.INSTANCE
+                                        TestPluginAlias.with(
+                                                Names.string("alias222"),
+                                                Optional.of(
+                                                        TestPluginSelector.parse("plugin222(\"Hello222\")")
+                                                ),
+                                                Optional.empty()
+                                        )
+                                ), // aliases
+                                Maps.of(
+                                        NAME1_ALIAS,
+                                        SELECTOR1.setText("(\"Hello111\")"),
+                                        NAME2_ALIAS,
+                                        SELECTOR2.setText("(\"Hello222\")")
+                                ), // alias -> selector
+                                Sets.of(
+                                        NAME1_ALIAS,
+                                        NAME2_ALIAS
+                                ), // alias selectors
+                                Maps.empty(), // name -> name
+                                Sets.of(
+                                        NAME1,
+                                        NAME2
+                                ), // names
+                                TestPluginInfoSet.EMPTY, // infos
+                                TestPluginHelper.INSTANCE
+                        )
                 )
         );
     }
@@ -581,53 +612,54 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     public void testParseMultipleAliases() {
         this.parseStringAndCheck(
                 "alias111 plugin111 https://www.example.com/alias111 , alias222 plugin111 https://www.example.com/alias222",
-                new PluginAliasSet<>(
-                        SortedSets.of(
-                                TestPluginAlias.with(
+                new TestPluginAliasSet(
+                        new PluginAliasSet<>(
+                                SortedSets.of(
+                                        TestPluginAlias.with(
+                                                NAME1_ALIAS,
+                                                Optional.of(
+                                                        SELECTOR1
+                                                ),
+                                                Optional.of(
+                                                        Url.parseAbsolute("https://www.example.com/alias111")
+                                                )
+                                        ),
+                                        TestPluginAlias.with(
+                                                NAME2_ALIAS,
+                                                Optional.of(
+                                                        SELECTOR1
+                                                ),
+                                                Optional.of(
+                                                        Url.parseAbsolute("https://www.example.com/alias222")
+                                                )
+                                        )
+                                ), // aliases
+                                Maps.of(
                                         NAME1_ALIAS,
-                                        Optional.of(
-                                                SELECTOR1
-                                        ),
-                                        Optional.of(
-                                                Url.parseAbsolute("https://www.example.com/alias111")
-                                        )
-                                ),
-                                TestPluginAlias.with(
+                                        SELECTOR1,
                                         NAME2_ALIAS,
-                                        Optional.of(
-                                                SELECTOR1
-                                        ),
-                                        Optional.of(
-                                                Url.parseAbsolute("https://www.example.com/alias222")
-                                        )
-                                )
-                        ), // aliases
-                        Maps.of(
-                                NAME1_ALIAS,
-                                SELECTOR1,
-                                NAME2_ALIAS,
-                                SELECTOR2
-                        ), // alias -> selector
-                        Sets.of(
-                                NAME1_ALIAS,
-                                NAME2_ALIAS
-                        ), // alias selectors
-                        Maps.empty(), // name -> name
-                        Sets.of(
-                                NAME1,
-                                NAME2
-                        ), // names
-                        TestPluginInfoSet.EMPTY, // infos
-                        TestPluginHelper.INSTANCE
+                                        SELECTOR2
+                                ), // alias -> selector
+                                Sets.of(
+                                        NAME1_ALIAS,
+                                        NAME2_ALIAS
+                                ), // alias selectors
+                                Maps.empty(), // name -> name
+                                Sets.of(
+                                        NAME1,
+                                        NAME2
+                                ), // names
+                                TestPluginInfoSet.EMPTY, // infos
+                                TestPluginHelper.INSTANCE
+                        )
                 )
         );
     }
 
     @Override
-    public PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias> parseString(final String text) {
-        return PluginAliasSet.parse(
-                text,
-                TestPluginHelper.INSTANCE
+    public TestPluginAliasSet parseString(final String text) {
+        return TestPluginAliasSet.parse(
+                text
         );
     }
 
@@ -663,6 +695,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         this.checkEquals(
                 expected,
                 this.parseString(text)
+                        .pluginAliasSet
                         .names,
                 () -> "names in " + text
         );
@@ -768,6 +801,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         this.checkEquals(
                 expected,
                 this.parseString(text)
+                        .pluginAliasSet
                         .aliasesWithoutInfos,
                 () -> "aliasesWithoutInfos in " + text
         );
@@ -1123,17 +1157,17 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         );
     }
 
-    private void containsNameAndCheck(final String pluginAliasSet,
+    private void containsNameAndCheck(final String text,
                                       final StringName name,
                                       final boolean expected) {
         this.containsNameAndCheck(
-                PluginAliasSet.parse(pluginAliasSet, TestPluginHelper.INSTANCE),
+                TestPluginAliasSet.parse(text),
                 name,
                 expected
         );
     }
 
-    private void containsNameAndCheck(final PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias> pluginAliasSet,
+    private void containsNameAndCheck(final TestPluginAliasSet pluginAliasSet,
                                       final StringName name,
                                       final boolean expected) {
         this.checkEquals(
@@ -1216,18 +1250,20 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     );
 
     @Override
-    public PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias> createSet() {
-        return new PluginAliasSet<>(
-                SortedSets.of(
-                        ALIAS1,
-                        ALIAS2
-                ),
-                Maps.empty(), // alias -> selector
-                Sets.empty(), // alias selectors
-                Maps.empty(), // name -> name
-                Sets.empty(), // names
-                TestPluginInfoSet.EMPTY, // infos
-                TestPluginHelper.INSTANCE
+    public TestPluginAliasSet createSet() {
+        return new TestPluginAliasSet(
+                new PluginAliasSet<>(
+                        SortedSets.of(
+                                ALIAS1,
+                                ALIAS2
+                        ),
+                        Maps.empty(), // alias -> selector
+                        Sets.empty(), // alias selectors
+                        Maps.empty(), // name -> name
+                        Sets.empty(), // names
+                        TestPluginInfoSet.EMPTY, // infos
+                        TestPluginHelper.INSTANCE
+                )
         );
     }
 
@@ -1266,7 +1302,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     // class............................................................................................................
 
     @Override
-    public Class<PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias>> type() {
+    public Class<TestPluginAliasSet> type() {
         return Cast.to(PluginAliasSet.class);
     }
 }
