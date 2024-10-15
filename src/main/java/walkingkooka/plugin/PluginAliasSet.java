@@ -516,27 +516,46 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     final IS infos;
 
     /**
-     * Tests if the given {@link Name name} and not alias will replace an existing {@link PluginAlias}, using the {@link PluginAlias#name()}.
+     * Tests if the given {@link Name name} or alias will replace an existing {@link PluginAlias}, using the {@link PluginAlias#name()}.
      */
-    public boolean containsName(final N name) {
-        Objects.requireNonNull(name, "name");
-
-        if (null == this.pluginAliasNames) {
-            this.pluginAliasNames = this.sortedSet.stream()
-                    .map(pa -> pa.name())
-                    .collect(
-                            Collectors.toCollection(
-                                    () -> SortedSets.tree(
-                                            this.helper.nameComparator()
-                                    )
-                            )
-                    );
-        }
-
-        return this.pluginAliasNames.contains(name);
+    public boolean containsNameOrAlias(final N nameOrAlias) {
+        return null != this.pluginAliasLikeByName(nameOrAlias);
     }
 
-    private Set<N> pluginAliasNames;
+    private A pluginAliasLikeByName(final N nameOrAlias) {
+        Objects.requireNonNull(nameOrAlias, "nameOrAlias");
+
+        if (null == this.nameToPluginAliasLike) {
+            final Map<N, A> nameToPluginAliasLike = Maps.sorted(this.helper.nameComparator());
+
+            for(final A alias : this.sortedSet) {
+                nameToPluginAliasLike.put(
+                        alias.name(),
+                        alias
+                );
+
+                final N selectorName = alias.selector()
+                        .map(PluginSelectorLike::name)
+                        .orElse(null);
+
+                if(null != selectorName) {
+                    nameToPluginAliasLike.put(
+                            selectorName,
+                            alias
+                    );
+                }
+            }
+
+            this.nameToPluginAliasLike = nameToPluginAliasLike;
+        }
+
+        return this.nameToPluginAliasLike.get(nameOrAlias);
+    }
+
+    /**
+     * A {@link Map} where the {@link Name} maybe the name or alias taken from any {@link PluginAlias}.
+     */
+    private Map<N, A> nameToPluginAliasLike;
 
     // HasText..........................................................................................................
 

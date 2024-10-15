@@ -1096,16 +1096,16 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     // PluginAlias......................................................................................................
 
     @Test
-    public void testContainsNameWithNullFails() {
+    public void testContainsNameOrAliasWithNullFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> this.createSet().containsName(null)
+                () -> this.createSet().containsNameOrAlias(null)
         );
     }
 
     @Test
-    public void testContainsNameWhereNamePresent() {
-        this.containsNameAndCheck(
+    public void testContainsNameOrAliasWhereNamePresent() {
+        this.containsNameOrAliasAndCheck(
                 NAME1.text(),
                 NAME1,
                 true
@@ -1113,8 +1113,8 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     }
 
     @Test
-    public void testContainsNameWhereNamePresent2() {
-        this.containsNameAndCheck(
+    public void testContainsNameOrAliasWhereNamePresent2() {
+        this.containsNameOrAliasAndCheck(
                 NAME1.text() + " " + NAME2,
                 NAME1,
                 true
@@ -1122,26 +1122,35 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     }
 
     @Test
-    public void testContainsNameWhereNameAndAliasIgnored() {
-        this.containsNameAndCheck(
+    public void testContainsNameOrAliasWhereAliasMatched() {
+        this.containsNameOrAliasAndCheck(
                 NAME1_ALIAS + " " + NAME1,
                 NAME1,
-                false
+                true
         );
     }
 
     @Test
-    public void testContainsNameWhereNameAndAliasIgnored2() {
-        this.containsNameAndCheck(
+    public void testContainsNameOrAliasWhereAliasMatched2() {
+        this.containsNameOrAliasAndCheck(
                 NAME1_ALIAS + " " + NAME1 + ", " + NAME2,
                 NAME1,
+                true
+        );
+    }
+
+    @Test
+    public void testContainsNameOrAliasWhereNeitherNameOrAliasMatch() {
+        this.containsNameOrAliasAndCheck(
+                NAME1_ALIAS + " " + NAME1,
+                Names.string("neither-alias-or-name-matched"),
                 false
         );
     }
 
     @Test
-    public void testContainsNameWhereNameAbsent() {
-        this.containsNameAndCheck(
+    public void testContainsNameOrAliasWhereNameAbsent() {
+        this.containsNameOrAliasAndCheck(
                 NAME2.text(),
                 NAME1,
                 false
@@ -1149,31 +1158,31 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     }
 
     @Test
-    public void testContainsNameWhereAliasPresentNameAbsent() {
-        this.containsNameAndCheck(
+    public void testContainsNameOrAliasWhereAliasPresentNameAbsent() {
+        this.containsNameOrAliasAndCheck(
                 NAME1_ALIAS + " name-missing",
                 NAME1,
                 false
         );
     }
 
-    private void containsNameAndCheck(final String text,
-                                      final StringName name,
-                                      final boolean expected) {
-        this.containsNameAndCheck(
+    private void containsNameOrAliasAndCheck(final String text,
+                                             final StringName name,
+                                             final boolean expected) {
+        this.containsNameOrAliasAndCheck(
                 TestPluginAliasSet.parse(text),
                 name,
                 expected
         );
     }
 
-    private void containsNameAndCheck(final TestPluginAliasSet pluginAliasSet,
-                                      final StringName name,
-                                      final boolean expected) {
+    private void containsNameOrAliasAndCheck(final TestPluginAliasSet pluginAliasSet,
+                                             final StringName name,
+                                             final boolean expected) {
         this.checkEquals(
                 expected,
-                pluginAliasSet.containsName(name),
-                () -> pluginAliasSet.text() + " containsName " + name
+                pluginAliasSet.containsNameOrAlias(name),
+                () -> pluginAliasSet.text() + " containsNameOrAlias " + name
         );
     }
 

@@ -60,9 +60,9 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
     IS merge(final IS providerInfo);
 
     /**
-     * Tests if an alias with the {@link Name} is present. Note aliases are ignored.
+     * Tests if an {@link PluginAliasLike} with the {@link Name name} or alias is present. Note aliases included.
      */
-    boolean containsName(final N name);
+    boolean containsNameOrAlias(final N name);
 
     // HasUrlFragment...................................................................................................
 
