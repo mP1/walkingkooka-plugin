@@ -228,10 +228,10 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         return thrown;
     }
 
-    // containsName.....................................................................................................
+    // containsNameOrAlias.....................................................................................................
 
     @Test
-    default void testContainsNameWithNullFails() {
+    default void testContainsNameOrAliasWithNullFails() {
         assertThrows(
                 NullPointerException.class,
                 () -> this.createSet()
@@ -240,22 +240,22 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
     }
 
     private void containsNameAndCheck(final String aliases,
-                                      final N name,
+                                      final N nameOrAlias,
                                       final boolean expected) {
-        this.containsNameAndCheck(
+        this.containsNameOrAliasAndCheck(
                 this.parseString(aliases),
-                name,
+                nameOrAlias,
                 expected
         );
     }
 
-    private void containsNameAndCheck(final AS aliases,
-                                      final N name,
-                                      final boolean expected) {
+    private void containsNameOrAliasAndCheck(final AS aliases,
+                                             final N nameOrAlias,
+                                             final boolean expected) {
         this.checkEquals(
                 expected,
-                aliases.containsName(name),
-                () -> aliases.text() + " containsName " + name
+                aliases.containsNameOrAlias(nameOrAlias),
+                () -> aliases.text() + " containsNameOrAlias " + nameOrAlias
         );
     }
 
