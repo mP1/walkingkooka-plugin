@@ -25,6 +25,7 @@ import walkingkooka.text.cursor.parser.ParserContext;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.function.Function;
 
 /**
@@ -34,7 +35,8 @@ public interface PluginHelper<N extends Name & Comparable<N>,
         I extends PluginInfoLike<I, N>,
         IS extends PluginInfoSetLike<N, I, IS>,
         S extends PluginSelectorLike<N>,
-        A extends PluginAliasLike<N, S, A>> {
+        A extends PluginAliasLike<N, S, A>,
+        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>> {
 
     /**
      * Factory that creates a {@link Name} with the given text.
@@ -89,6 +91,11 @@ public interface PluginHelper<N extends Name & Comparable<N>,
     A alias(final N name,
             final Optional<S> selector,
             final Optional<AbsoluteUrl> url);
+
+    /**
+     * Factory that creates an {@link PluginAliasSetLike} with the {@link SortedSet} of {@link PluginAliasLike}.
+     */
+    AS aliasSet(final SortedSet<A> aliases);
 
     /**
      * A label which may be used in messages.

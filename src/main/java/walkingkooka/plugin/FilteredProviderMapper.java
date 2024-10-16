@@ -38,16 +38,18 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
         I extends PluginInfoLike<I, N>,
         IS extends PluginInfoSetLike<N, I, IS>,
         S extends PluginSelectorLike<N>,
-        A extends PluginAliasLike<N, S, A>> {
+        A extends PluginAliasLike<N, S, A>,
+        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>> {
 
     public static <N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
             IS extends PluginInfoSetLike<N, I, IS>,
             S extends PluginSelectorLike<N>,
-            A extends PluginAliasLike<N, S, A>>
-    FilteredProviderMapper<N, I, IS, S, A> with(final IS mappingInfos,
+            A extends PluginAliasLike<N, S, A>,
+            AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+    FilteredProviderMapper<N, I, IS, S, A, AS> with(final IS mappingInfos,
                                                 final IS providerInfos,
-                                                final PluginHelper<N, I, IS, S, A> helper) {
+                                                final PluginHelper<N, I, IS, S, A, AS> helper) {
         return new FilteredProviderMapper<>(
                 Objects.requireNonNull(mappingInfos, "mappingInfos"),
                 Objects.requireNonNull(providerInfos, "providerInfos"),
@@ -57,7 +59,7 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
 
     private FilteredProviderMapper(final IS mappingInfos,
                                    final IS providerInfos,
-                                   final PluginHelper<N, I, IS, S, A> helper) {
+                                   final PluginHelper<N, I, IS, S, A, AS> helper) {
         final Map<AbsoluteUrl, I> urlToMappingInfos = this.urlToInfo(mappingInfos);
         final Map<AbsoluteUrl, I> urlToProviderInfos = this.urlToInfo(providerInfos);
 
