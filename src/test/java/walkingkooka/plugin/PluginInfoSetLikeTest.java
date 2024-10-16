@@ -28,11 +28,11 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<TestPluginInfoSet, TestPluginInfo, StringName> {
+public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<StringName, TestPluginInfo, TestPluginInfoSet> {
 
     // filter............................................................................................................
 
-    static <S extends PluginInfoSetLike<S, I, N>, I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> S delete(final S s,
+    static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, S extends PluginInfoSetLike<N, I, S>> S delete(final S s,
                                                                                                                            final I i) {
         return s.delete(
                 i

@@ -30,7 +30,7 @@ public final class FilteredProviderGuard<N extends Name & Comparable<N>, S exten
 
     public static <N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<IS, I, N>,
+            IS extends PluginInfoSetLike<N, I, IS>,
             S extends PluginSelectorLike<N>,
             A extends PluginAliasLike<N, S, A>>
     FilteredProviderGuard<N, S> with(final Set<N> names,

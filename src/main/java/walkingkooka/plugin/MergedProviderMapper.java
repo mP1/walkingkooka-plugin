@@ -34,13 +34,13 @@ import java.util.function.Function;
  */
 public final class MergedProviderMapper<N extends Name & Comparable<N>,
         I extends PluginInfoLike<I, N>,
-        IS extends PluginInfoSetLike<IS, I, N>,
+        IS extends PluginInfoSetLike<N, I, IS>,
         S extends PluginSelectorLike<N>,
         A extends PluginAliasLike<N, S, A>> {
 
     public static <N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<IS, I, N>,
+            IS extends PluginInfoSetLike<N, I, IS>,
             S extends PluginSelectorLike<N>,
             A extends PluginAliasLike<N, S, A>>
     MergedProviderMapper<N, I, IS, S, A> with(final IS renamingInfos,

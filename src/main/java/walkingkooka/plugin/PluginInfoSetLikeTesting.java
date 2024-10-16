@@ -25,9 +25,9 @@ import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.HasTextTesting;
 
-public interface PluginInfoSetLikeTesting<S extends PluginInfoSetLike<S, I, N>, I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends ImmutableSetTesting<S, I>,
-        HateosResourceSetTesting<S, I, N>,
-        ParseStringTesting<S>,
+public interface PluginInfoSetLikeTesting<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<N, I, IS>> extends ImmutableSetTesting<IS, I>,
+        HateosResourceSetTesting<IS, I, N>,
+        ParseStringTesting<IS>,
         HasTextTesting {
 
     // empty............................................................................................................
@@ -35,7 +35,7 @@ public interface PluginInfoSetLikeTesting<S extends PluginInfoSetLike<S, I, N>, 
     @Test
     default void testEmpty() throws Exception {
         this.textAndCheck(
-                (S) this.type()
+                (IS) this.type()
                         .getField("EMPTY")
                         .get(null),
                 ""
@@ -44,7 +44,7 @@ public interface PluginInfoSetLikeTesting<S extends PluginInfoSetLike<S, I, N>, 
 
     @Test
     default void testEmptyConcatText() throws Exception {
-        final S set = (S) this.type()
+        final IS set = (IS) this.type()
                 .getField("EMPTY")
                 .get(null);
 
@@ -75,7 +75,7 @@ public interface PluginInfoSetLikeTesting<S extends PluginInfoSetLike<S, I, N>, 
     // json.............................................................................................................
 
     @Override
-    default S createJsonNodeMarshallingValue() {
+    default IS createJsonNodeMarshallingValue() {
         return this.createSet();
     }
 
@@ -83,7 +83,7 @@ public interface PluginInfoSetLikeTesting<S extends PluginInfoSetLike<S, I, N>, 
 
     @Test
     default void testText() {
-        final S set = this.createSet();
+        final IS set = this.createSet();
 
         this.textAndCheck(
                 set,

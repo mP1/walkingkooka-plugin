@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A>,
         N extends Name & Comparable<N>,
         I extends PluginInfoLike<I, N>,
-        IS extends PluginInfoSetLike<IS, I, N>,
+        IS extends PluginInfoSetLike<N, I, IS>,
         S extends PluginSelectorLike<N>,
         A extends PluginAliasLike<N, S, A>>
             extends ClassTesting<H> {
