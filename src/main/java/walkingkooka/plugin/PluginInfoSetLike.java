@@ -32,10 +32,13 @@ import java.util.Set;
 /**
  * A {@link Set} that holds {@link PluginInfoLike} and a few related helpers.
  */
-public interface PluginInfoSetLike<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<N, I, IS>> extends ImmutableSet<I>,
-        HasText,
-        HasUrlFragment,
-        TreePrintable {
+public interface PluginInfoSetLike<N extends Name & Comparable<N>,
+        I extends PluginInfoLike<I, N>,
+        IS extends PluginInfoSetLike<N, I, IS>>
+        extends ImmutableSet<I>,
+            HasText,
+            HasUrlFragment,
+            TreePrintable {
 
     /**
      * The character that separates multiple {@link PluginInfoLike}.
