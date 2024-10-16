@@ -32,7 +32,7 @@ import java.util.Set;
 /**
  * A {@link Set} that holds {@link PluginInfoLike} and a few related helpers.
  */
-public interface PluginInfoSetLike<S extends PluginInfoSetLike<S, I, N>, I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends ImmutableSet<I>,
+public interface PluginInfoSetLike<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<N, I, IS>> extends ImmutableSet<I>,
         HasText,
         HasUrlFragment,
         TreePrintable {
@@ -47,14 +47,14 @@ public interface PluginInfoSetLike<S extends PluginInfoSetLike<S, I, N>, I exten
     /**
      * Returns a filtered {@link PluginInfoSetLike} only keeping {@link PluginInfoLike} that exist in the provider with the same {@link AbsoluteUrl}.
      */
-    S filter(final S infos);
+    IS filter(final IS infos);
 
     // renameIfPresent..................................................................................................
 
     /**
      * Renames any infos if another {@link PluginNameLike} is present, that is another info with the same {@link AbsoluteUrl}.
      */
-    S renameIfPresent(final S renameInfos);
+    IS renameIfPresent(final IS renameInfos);
 
     /**
      * Returns all the names in this set.
@@ -68,20 +68,20 @@ public interface PluginInfoSetLike<S extends PluginInfoSetLike<S, I, N>, I exten
 
     // ImmutableSet.....................................................................................................
     @Override
-    S concat(final I info);
+    IS concat(final I info);
 
     @Override
-    S delete(final I info);
+    IS delete(final I info);
 
     @Override
-    S deleteAll(final Collection<I> infos);
+    IS deleteAll(final Collection<I> infos);
 
     @Override
-    S replace(final I newInfo,
+    IS replace(final I newInfo,
               final I oldInfo);
 
     @Override
-    S setElements(final Set<I> newElements);
+    IS setElements(final Set<I> newElements);
 
     // HasUrlFragment...................................................................................................
 

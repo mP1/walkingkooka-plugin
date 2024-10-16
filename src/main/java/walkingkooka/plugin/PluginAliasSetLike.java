@@ -34,7 +34,7 @@ import java.util.SortedSet;
  */
 public interface PluginAliasSetLike<N extends Name & Comparable<N>,
         I extends PluginInfoLike<I, N>,
-        IS extends PluginInfoSetLike<IS, I, N>,
+        IS extends PluginInfoSetLike<N, I, IS>,
         S extends PluginSelectorLike<N>,
         A extends PluginAliasLike<N, S, A>,
         AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>

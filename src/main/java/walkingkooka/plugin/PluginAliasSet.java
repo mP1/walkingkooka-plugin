@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
  */
 public final class PluginAliasSet<N extends Name & Comparable<N>,
         I extends PluginInfoLike<I, N>,
-        IS extends PluginInfoSetLike<IS, I, N>,
+        IS extends PluginInfoSetLike<N, I, IS>,
         S extends PluginSelectorLike<N>,
         A extends PluginAliasLike<N, S, A>>
         extends AbstractSet<A>
@@ -60,7 +60,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
     public static <N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<IS, I, N>,
+            IS extends PluginInfoSetLike<N, I, IS>,
             S extends PluginSelectorLike<N>,
             A extends PluginAliasLike<N, S, A>>
         PluginAliasSet<N, I, IS, S, A> parse(final String text,
@@ -81,7 +81,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
     private static <N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<IS, I, N>,
+            IS extends PluginInfoSetLike<N, I, IS>,
             S extends PluginSelectorLike<N>,
             A extends PluginAliasLike<N, S, A>>
     PluginAliasSet<N, I, IS, S, A> parse0(final PluginExpressionParser<N> parser,
@@ -157,7 +157,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
      */
     private static <N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<IS, I, N>,
+            IS extends PluginInfoSetLike<N, I, IS>,
             S extends PluginSelectorLike<N>,
             A extends PluginAliasLike<N, S, A>>
         Optional<S> tryParseSelector(final PluginExpressionParser<N> parser,
@@ -221,7 +221,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
     public static <N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<IS, I, N>,
+            IS extends PluginInfoSetLike<N, I, IS>,
             S extends PluginSelectorLike<N>,
             A extends PluginAliasLike<N, S, A>>
         PluginAliasSet<N, I, IS, S, A> with(final SortedSet<A> aliases,
@@ -239,7 +239,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
     private static <N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<IS, I, N>,
+            IS extends PluginInfoSetLike<N, I, IS>,
             S extends PluginSelectorLike<N>,
             A extends PluginAliasLike<N, S, A>>
         PluginAliasSet<N, I, IS, S, A> withoutCopying(final SortedSet<A> aliases,
