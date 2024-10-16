@@ -36,16 +36,18 @@ public final class MergedProviderMapper<N extends Name & Comparable<N>,
         I extends PluginInfoLike<I, N>,
         IS extends PluginInfoSetLike<N, I, IS>,
         S extends PluginSelectorLike<N>,
-        A extends PluginAliasLike<N, S, A>> {
+        A extends PluginAliasLike<N, S, A>,
+        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>> {
 
     public static <N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
             IS extends PluginInfoSetLike<N, I, IS>,
             S extends PluginSelectorLike<N>,
-            A extends PluginAliasLike<N, S, A>>
-    MergedProviderMapper<N, I, IS, S, A> with(final IS renamingInfos,
-                                              final IS providerInfos,
-                                              final PluginHelper<N, I, IS, S, A> helper) {
+            A extends PluginAliasLike<N, S, A>,
+            AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+    MergedProviderMapper<N, I, IS, S, A, AS> with(final IS renamingInfos,
+                                                  final IS providerInfos,
+                                                  final PluginHelper<N, I, IS, S, A, AS> helper) {
         return new MergedProviderMapper<>(
                 Objects.requireNonNull(renamingInfos, "renamingInfos"),
                 Objects.requireNonNull(providerInfos, "providerInfos"),
@@ -55,7 +57,7 @@ public final class MergedProviderMapper<N extends Name & Comparable<N>,
 
     private MergedProviderMapper(final IS renamingInfos,
                                  final IS providerInfos,
-                                 final PluginHelper<N, I, IS, S, A> helper) {
+                                 final PluginHelper<N, I, IS, S, A, AS> helper) {
         final Map<AbsoluteUrl, I> urlToRenamingInfos = this.urlToInfo(renamingInfos);
         final Map<AbsoluteUrl, I> urlToProviderInfos = this.urlToInfo(providerInfos);
 

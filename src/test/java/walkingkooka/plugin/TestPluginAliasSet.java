@@ -42,7 +42,13 @@ final class TestPluginAliasSet extends AbstractSet<TestPluginAlias>
         );
     }
 
-    public TestPluginAliasSet(final PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias> pluginAliasSet) {
+    public static TestPluginAliasSet with(final SortedSet<TestPluginAlias> aliases) {
+        return new TestPluginAliasSet(
+                PluginAliasSet.with(aliases, TestPluginHelper.INSTANCE)
+        );
+    }
+
+    public TestPluginAliasSet(final PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias, TestPluginAliasSet> pluginAliasSet) {
         this.pluginAliasSet =
                 Objects.requireNonNull(pluginAliasSet, "pluginAliasSet");
     }
@@ -192,5 +198,5 @@ final class TestPluginAliasSet extends AbstractSet<TestPluginAlias>
     }
 
     // @VisibleForTesting
-    final PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias> pluginAliasSet;
+    final PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias, TestPluginAliasSet> pluginAliasSet;
 }

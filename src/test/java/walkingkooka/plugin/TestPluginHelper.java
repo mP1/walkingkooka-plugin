@@ -33,9 +33,10 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.function.Function;
 
-final class TestPluginHelper implements PluginHelper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias> {
+final class TestPluginHelper implements PluginHelper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias, TestPluginAliasSet> {
 
     final static TestPluginHelper INSTANCE = new TestPluginHelper(CaseSensitivity.INSENSITIVE);
 
@@ -119,6 +120,11 @@ final class TestPluginHelper implements PluginHelper<StringName, TestPluginInfo,
                 selector,
                 url
         );
+    }
+
+    @Override
+    public TestPluginAliasSet aliasSet(final SortedSet<TestPluginAlias> aliases) {
+        return TestPluginAliasSet.with(aliases);
     }
 
     @Override

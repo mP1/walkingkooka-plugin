@@ -32,8 +32,8 @@ import walkingkooka.text.printer.TreePrintableTesting;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class FilteredProviderMapperTest implements TreePrintableTesting,
-        ClassTesting2<FilteredProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias>>,
-        ToStringTesting<FilteredProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias>> {
+        ClassTesting2<FilteredProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias, TestPluginAliasSet>>,
+        ToStringTesting<FilteredProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias, TestPluginAliasSet>> {
 
     private final static StringName RENAMED_RENAME_NAME = Names.string("RenamedRenameName1");
 
@@ -96,7 +96,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
 
     private final static TestPluginHelper HELPER = TestPluginHelper.INSTANCE;
 
-    private final static FilteredProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias> MAPPER = FilteredProviderMapper.with(
+    private final static FilteredProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias, TestPluginAliasSet> MAPPER = FilteredProviderMapper.with(
             FILTERED_INFOS,
             PROVIDER_INFOS,
             HELPER
@@ -262,7 +262,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     // class............................................................................................................
 
     @Override
-    public Class<FilteredProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias>> type() {
+    public Class<FilteredProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias, TestPluginAliasSet>> type() {
         return Cast.to(FilteredProviderMapper.class);
     }
 
