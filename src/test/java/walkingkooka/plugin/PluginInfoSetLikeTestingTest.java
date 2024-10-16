@@ -23,7 +23,7 @@ import walkingkooka.naming.StringName;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
-public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTesting<StringName, TestPluginInfo, TestPluginInfoSet> {
+public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTesting<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias, TestPluginAliasSet> {
 
     // parse............................................................................................................
 

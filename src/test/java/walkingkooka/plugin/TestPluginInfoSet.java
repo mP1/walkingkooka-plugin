@@ -32,7 +32,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-final class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements PluginInfoSetLike<StringName, TestPluginInfo, TestPluginInfoSet> {
+final class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements PluginInfoSetLike<StringName,
+        TestPluginInfo,
+        TestPluginInfoSet,
+        TestPluginSelector,
+        TestPluginAlias,
+        TestPluginAliasSet> {
 
     public final static TestPluginInfoSet EMPTY = new TestPluginInfoSet(Sets.empty());
 

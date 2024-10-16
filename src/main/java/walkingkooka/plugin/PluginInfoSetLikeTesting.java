@@ -25,10 +25,16 @@ import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.HasTextTesting;
 
-public interface PluginInfoSetLikeTesting<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, IS extends PluginInfoSetLike<N, I, IS>> extends ImmutableSetTesting<IS, I>,
-        HateosResourceSetTesting<IS, I, N>,
-        ParseStringTesting<IS>,
-        HasTextTesting {
+public interface PluginInfoSetLikeTesting<N extends Name & Comparable<N>,
+        I extends PluginInfoLike<I, N>,
+        IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+        S extends PluginSelectorLike<N>,
+        A extends PluginAliasLike<N, S, A>,
+        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+        extends ImmutableSetTesting<IS, I>,
+            HateosResourceSetTesting<IS, I, N>,
+            ParseStringTesting<IS>,
+            HasTextTesting {
 
     // empty............................................................................................................
 

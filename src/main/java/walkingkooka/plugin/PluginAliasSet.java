@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
  */
 public final class PluginAliasSet<N extends Name & Comparable<N>,
         I extends PluginInfoLike<I, N>,
-        IS extends PluginInfoSetLike<N, I, IS>,
+        IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
         S extends PluginSelectorLike<N>,
         A extends PluginAliasLike<N, S, A>,
         AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
@@ -61,7 +61,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
     public static <N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<N, I, IS>,
+            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
             S extends PluginSelectorLike<N>,
             A extends PluginAliasLike<N, S, A>,
             AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
@@ -83,7 +83,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
     private static <N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<N, I, IS>,
+            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
             S extends PluginSelectorLike<N>,
             A extends PluginAliasLike<N, S, A>,
             AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
@@ -160,7 +160,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
      */
     private static <N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<N, I, IS>,
+            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
             S extends PluginSelectorLike<N>,
             A extends PluginAliasLike<N, S, A>,
             AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
@@ -225,7 +225,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
     public static <N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<N, I, IS>,
+            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
             S extends PluginSelectorLike<N>,
             A extends PluginAliasLike<N, S, A>,
             AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
@@ -244,7 +244,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
     private static <N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<N, I, IS>,
+            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
             S extends PluginSelectorLike<N>,
             A extends PluginAliasLike<N, S, A>,
             AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
