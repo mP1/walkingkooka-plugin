@@ -128,11 +128,6 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
         return this.buildText("");
     }
 
-    // @see PluginAliasSet#text
-    String textAndSpace() {
-        return this.buildText(" ");
-    }
-
     private String buildText(final String afterUrl) {
         final StringBuilder b = new StringBuilder();
         b.append(this.name);
