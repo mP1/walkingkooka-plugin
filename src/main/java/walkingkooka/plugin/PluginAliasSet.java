@@ -525,10 +525,10 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
      * Tests if the given {@link Name name} or alias will replace an existing {@link PluginAlias}, using the {@link PluginAlias#name()}.
      */
     public boolean containsNameOrAlias(final N nameOrAlias) {
-        return null != this.pluginAliasLikeByName(nameOrAlias);
+        return null != this.findPluginAliasLikeWithNameOrAlias(nameOrAlias);
     }
 
-    private A pluginAliasLikeByName(final N nameOrAlias) {
+    private A findPluginAliasLikeWithNameOrAlias(final N nameOrAlias) {
         Objects.requireNonNull(nameOrAlias, "nameOrAlias");
 
         if (null == this.nameToPluginAliasLike) {
@@ -572,7 +572,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
         PluginAliasSet<N, I, IS, S, A, AS> pluginAliasSet = null;
 
-        A pluginAliasWithName = this.pluginAliasLikeByName(alias.name());
+        A pluginAliasWithName = this.findPluginAliasLikeWithNameOrAlias(alias.name());
         if (null != pluginAliasWithName) {
             pluginAliasSet = this.replace(
                     pluginAliasWithName,
@@ -582,7 +582,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
             final S selector = alias.selector()
                     .orElse(null);
             if (null != selector) {
-                pluginAliasWithName = this.pluginAliasLikeByName(selector.name());
+                pluginAliasWithName = this.findPluginAliasLikeWithNameOrAlias(selector.name());
 
                 if (null != pluginAliasWithName) {
                     pluginAliasSet = this.replace(
