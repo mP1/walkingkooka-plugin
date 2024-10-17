@@ -130,9 +130,12 @@ final class TestPluginAliasSet extends AbstractSet<TestPluginAlias>
 
     @Override
     public TestPluginAliasSet setElements(final SortedSet<TestPluginAlias> aliases) {
-        return new TestPluginAliasSet(
-                this.pluginAliasSet.setElements(aliases)
-        );
+        // no need to take a defensive copy before testing for equality
+        return aliases.equals(this) ?
+                this :
+                new TestPluginAliasSet(
+                        this.pluginAliasSet.setElements(aliases)
+                );
     }
 
     @Override
