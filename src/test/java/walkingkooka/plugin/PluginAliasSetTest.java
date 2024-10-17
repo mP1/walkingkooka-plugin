@@ -1395,10 +1395,47 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     }
 
     @Test
-    public void testDeleteNameOrAliasWithRenamed() {
+    public void testDeleteNameOrAliasWithAlias() {
         this.deleteNameOrAlias(
                 TestPluginAliasSet.parse("alias1 name1"),
-                Names.string("name1")
+                Names.string("alias1"),
+                TestPluginAliasSet.parse("")
+        );
+    }
+
+    @Test
+    public void testDeleteNameOrAliasWithAlias2() {
+        this.deleteNameOrAlias(
+                TestPluginAliasSet.parse("alias1 name1, name2"),
+                Names.string("alias1"),
+                TestPluginAliasSet.parse("name2")
+        );
+    }
+
+    @Test
+    public void testDeleteNameOrAliasWithNameNotAlias() {
+        this.deleteNameOrAlias(
+                TestPluginAliasSet.parse("alias1 name1"),
+                Names.string("name1"),
+                TestPluginAliasSet.parse("")
+        );
+    }
+
+    @Test
+    public void testDeleteNameOrAliasWithNameNotAlias2() {
+        this.deleteNameOrAlias(
+                TestPluginAliasSet.parse("alias1 name1, name2"),
+                Names.string("name1"),
+                TestPluginAliasSet.parse("name2")
+        );
+    }
+
+    @Test
+    public void testDeleteNameOrAliasWithNameNotAlias3() {
+        this.deleteNameOrAlias(
+                TestPluginAliasSet.parse("alias1 name1, alias2 name2"),
+                Names.string("name1"),
+                TestPluginAliasSet.parse("alias2 name2")
         );
     }
 

@@ -85,8 +85,13 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
                         .stream()
                         .filter(
                                 p -> false ==
-                                        (p.name()
-                                                .equals(nameOrAlias)
+                                        (
+                                                nameOrAlias.equals(p.name()) ||
+                                                        nameOrAlias.equals(
+                                                                p.selector()
+                                                                        .map(PluginSelectorLike::name)
+                                                                        .orElse(null)
+                                                        )
                                         )
                         ).collect(Collectors.toCollection(SortedSets::tree))
         );
