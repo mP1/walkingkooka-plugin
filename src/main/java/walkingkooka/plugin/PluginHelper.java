@@ -17,16 +17,19 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.collect.set.SortedSets;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.text.cursor.TextCursor;
 import walkingkooka.text.cursor.parser.ParserContext;
 
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * A helper that includes methods to create or parse strings into Plugin classes.
@@ -96,6 +99,27 @@ public interface PluginHelper<N extends Name & Comparable<N>,
      * Factory that creates an {@link PluginAliasSetLike} with the {@link SortedSet} of {@link PluginAliasLike}.
      */
     AS aliasSet(final SortedSet<A> aliases);
+
+    /**
+     * Builds a {@link PluginAliasSetLike} from the given {@link PluginInfoSetLike}.
+     */
+    default AS toAliasSet(final IS infos) {
+        Objects.requireNonNull(infos, "infos");
+
+        return this.aliasSet(
+                infos.stream()
+                        .map(this::toAlias)
+                        .collect(Collectors.toCollection(SortedSets::tree))
+        );
+    }
+
+    private A toAlias(final I info) {
+        return this.alias(
+                info.name(),
+                Optional.empty(), // selector
+                Optional.empty() // url
+        );
+    }
 
     /**
      * A label which may be used in messages.

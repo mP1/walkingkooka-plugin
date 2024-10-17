@@ -468,6 +468,16 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
         );
     }
 
+    // aliasSet.........................................................................................................
+
+    @Test
+    public void testAliasSet() {
+        this.aliasSetAndCheck(
+                TestPluginInfoSet.parse("https://example.com/name1 name1, https://example.com/name2 name2, https://example.com/name3 name3"),
+                TestPluginAliasSet.parse("name1, name2, name3")
+        );
+    }
+
     // misc.............................................................................................................
 
     @Test

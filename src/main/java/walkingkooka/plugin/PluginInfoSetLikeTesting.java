@@ -66,6 +66,17 @@ public interface PluginInfoSetLikeTesting<N extends Name & Comparable<N>,
 
     I info();
 
+    // aliasSet.........................................................................................................
+
+    default void aliasSetAndCheck(final IS infos,
+                                  final AS aliases) {
+        this.checkEquals(
+                aliases,
+                infos.aliasSet(),
+                infos::text
+        );
+    }
+
     // parseString......................................................................................................
 
     @Override
