@@ -85,6 +85,11 @@ final class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements Plu
     }
 
     @Override
+    public TestPluginAliasSet aliasSet() {
+        return TestPluginHelper.INSTANCE.toAliasSet(this);
+    }
+
+    @Override
     public TestPluginInfoSet concat(final TestPluginInfo info) {
         return this.setElements(
                 this.pluginInfoSet.concat(info)

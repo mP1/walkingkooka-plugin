@@ -72,6 +72,11 @@ public interface PluginInfoSetLike<N extends Name & Comparable<N>,
      */
     Set<AbsoluteUrl> url();
 
+    /**
+     * Returns an {@link PluginAliasSetLike} with {@link PluginAliasLike} or each {@link PluginInfoLike}.
+     */
+    AS aliasSet();
+
     // ImmutableSet.....................................................................................................
     @Override
     IS concat(final I info);
