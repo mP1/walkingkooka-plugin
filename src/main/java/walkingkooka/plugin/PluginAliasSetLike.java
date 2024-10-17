@@ -18,6 +18,7 @@
 package walkingkooka.plugin;
 
 import walkingkooka.collect.set.ImmutableSortedSet;
+import walkingkooka.collect.set.SortedSets;
 import walkingkooka.naming.Name;
 import walkingkooka.net.HasUrlFragment;
 import walkingkooka.net.UrlFragment;
@@ -25,9 +26,11 @@ import walkingkooka.text.HasText;
 import walkingkooka.text.printer.TreePrintable;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.stream.Collectors;
 
 /**
  * A {@link ImmutableSortedSet} holding {@link PluginAliasLike} entries.
@@ -69,6 +72,25 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
      * is new.
      */
     AS concatOrReplace(final A alias);
+
+    /**
+     * Removes any {@link PluginAliasLike} with the given {@link Name name or alias}.
+     */
+    default AS deleteNameOrAlias(final N nameOrAlias) {
+        Objects.requireNonNull(nameOrAlias, "nameOrAlias");
+
+        // filter keep all other entries that do not have the name or alias.
+        return this.setElements(
+                this.toSet()
+                        .stream()
+                        .filter(
+                                p -> false ==
+                                        (p.name()
+                                                .equals(nameOrAlias)
+                                        )
+                        ).collect(Collectors.toCollection(SortedSets::tree))
+        );
+    }
 
     // HasUrlFragment...................................................................................................
 

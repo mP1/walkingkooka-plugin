@@ -31,6 +31,7 @@ import walkingkooka.text.cursor.parser.ParserException;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<StringName,
@@ -1372,6 +1373,67 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 expected,
                 aliases.concatOrReplace(alias),
                 () -> aliases.text() + " concatOrReplace " + alias
+        );
+    }
+
+    // deleteNameOrAlias................................................................................................
+
+    @Test
+    public void testDeleteNameOrAliasWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createSet().deleteNameOrAlias(null)
+        );
+    }
+
+    @Test
+    public void testDeleteNameOrAliasWithUnknown() {
+        this.deleteNameOrAlias(
+                this.createSet(),
+                Names.string("unknown")
+        );
+    }
+
+    @Test
+    public void testDeleteNameOrAliasWithRenamed() {
+        this.deleteNameOrAlias(
+                TestPluginAliasSet.parse("alias1 name1"),
+                Names.string("name1")
+        );
+    }
+
+    private void deleteNameOrAlias(final TestPluginAliasSet aliases,
+                                   final StringName nameOrAlias) {
+        assertSame(
+                aliases,
+                aliases.deleteNameOrAlias(nameOrAlias)
+        );
+    }
+
+    @Test
+    public void testDeleteNameOrAlias() {
+        this.deleteNameOrAlias(
+                TestPluginAliasSet.parse("name1"),
+                Names.string("name1"),
+                TestPluginAliasSet.parse("")
+        );
+    }
+
+    @Test
+    public void testDeleteNameOrAlias2() {
+        this.deleteNameOrAlias(
+                TestPluginAliasSet.parse("name1, name2, name3"),
+                Names.string("name3"),
+                TestPluginAliasSet.parse("name1, name2")
+        );
+    }
+
+    private void deleteNameOrAlias(final TestPluginAliasSet aliases,
+                                   final StringName nameOrAlias,
+                                   final TestPluginAliasSet expected) {
+        this.checkEquals(
+                expected,
+                aliases.deleteNameOrAlias(nameOrAlias)
         );
     }
 
