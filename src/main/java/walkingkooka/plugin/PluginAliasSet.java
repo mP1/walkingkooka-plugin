@@ -614,6 +614,13 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         return this.text;
     }
 
+    /**
+     * Includes extra logic to insert a SPACE after a {@link PluginAliasLike#text()}, if the alias includes a {@link AbsoluteUrl}.
+     * <br>
+     * This is necessary because a URL can include a COMMA but not a SPACE.
+     * <br>
+     * alias1 name1 https://example.com/name1 ,alias2 name2 https://example.com/name2
+     */
     private String aliasText(final A alias) {
         final String text = alias.text();
         return alias.url()
