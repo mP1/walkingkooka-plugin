@@ -63,7 +63,6 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
     private PluginExpressionParser(final String text,
                                    final BiFunction<TextCursor, ParserContext, Optional<N>> nameParser,
                                    final ProviderContext context) {
-        this.text = text;
         this.cursor = TextCursors.charSequence(text);
         this.nameParser = nameParser;
         this.context = context;
@@ -266,8 +265,6 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
                 pos
         );
     }
-
-    private final String text;
 
     @Override
     public boolean isEmpty() {
