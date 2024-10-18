@@ -26,7 +26,6 @@ import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.HasText;
-import walkingkooka.text.cursor.TextCursorSavePoint;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 
@@ -79,7 +78,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         );
     }
 
-
     private static <N extends Name & Comparable<N>,
             I extends PluginInfoLike<I, N>,
             IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
@@ -106,122 +104,22 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                 parser.spaces();
             }
 
-            // name
-            final Optional<N> nameOrAlias = parser.name();
-            if (nameOrAlias.isPresent()) {
-                parser.spaces();
-
-                final A pluginAlias;
-
-                final Optional<S> maybeSelector = tryParseSelector(
-                        parser,
-                        helper
-                );
-
-                if (false == maybeSelector.isPresent()) {
-                    // name END
-                    pluginAlias = helper.alias(
-                            nameOrAlias.get(),
-                            Optional.empty(), // no selector
-                            Optional.empty() // no url
-                    );
-
-                    requireSeparator = true;
-                } else {
-                    parser.spaces();
-
-                    final S selector = maybeSelector.get();
-                    final N alias = nameOrAlias.get();
-
-                    pluginAlias = helper.alias(
-                            alias,
-                            Optional.of(selector), // selector
-                            parser.url() // url
-                    );
-
-                    requireSeparator = true;
-                }
-
-                aliases.add(pluginAlias);
-            } else {
-                throw parser.invalidCharacter();
-            }
+            aliases.add(
+                helper.alias(
+                        PluginAlias.parse0(
+                                parser,
+                                helper,
+                                PluginAliasesProviderContext.INSTANCE
+                        )
+                )
+            );
+            requireSeparator = true;
         }
 
         return withoutCopying(
                 aliases,
                 helper
         );
-    }
-
-    /**
-     * Tries to parse a selector expression returning a {@link PluginSelectorLike}.
-     */
-    private static <N extends Name & Comparable<N>,
-            I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-            S extends PluginSelectorLike<N>,
-            A extends PluginAliasLike<N, S, A>,
-            AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
-    Optional<S> tryParseSelector(final PluginExpressionParser<N> parser,
-                                 final PluginHelper<N, I, IS, S, A, AS> helper) {
-        final TextCursorSavePoint start = parser.cursor.save();
-        TextCursorSavePoint end = null;
-
-        S selector = null;
-        final Optional<N> selectorName = parser.name();
-        if (selectorName.isPresent()) {
-            end = parser.cursor.save();
-
-            parser.spaces();
-
-            if (parser.parametersBegin()) {
-                boolean requireComma = false;
-
-                for (; ; ) {
-                    parser.spaces();
-
-                    if (parser.parametersEnd()) {
-                        break;
-                    }
-
-                    if (requireComma) {
-                        if (false == parser.parameterSeparator()) {
-                            throw parser.invalidCharacter();
-                        }
-                    }
-
-                    for (; ; ) {
-                        if (parser.environmentValue(
-                                PluginAliasesProviderContext.INSTANCE // this context never returns nothing for a variable.
-                        ).isPresent()) {
-                            break;
-                        }
-
-                        if (parser.doubleQuotedString().isPresent()) {
-                            break;
-                        }
-
-                        if (parser.number().isPresent()) {
-                            break;
-                        }
-
-                        throw parser.invalidCharacter();
-                    }
-
-                    requireComma = true;
-                }
-            } else {
-                end.restore(); // reset cursor back to any space after name
-            }
-
-            selector = helper.parseSelector(
-                    start.textBetween()
-                            .toString()
-            );
-        }
-
-        return Optional.ofNullable(selector);
     }
 
     public static <N extends Name & Comparable<N>,

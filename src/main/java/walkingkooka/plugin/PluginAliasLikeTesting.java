@@ -23,15 +23,31 @@ import walkingkooka.compare.ComparableTesting2;
 import walkingkooka.naming.HasNameTesting;
 import walkingkooka.naming.Name;
 import walkingkooka.reflect.ClassTesting;
+import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 public interface PluginAliasLikeTesting<N extends Name & Comparable<N>, S extends PluginSelectorLike<N>, A extends PluginAliasLike<N, S, A>> extends ComparableTesting2<A>,
         HasNameTesting<N>,
+        ParseStringTesting<PluginAlias<N, S>>,
         HasTextTesting,
         TreePrintableTesting,
         ToStringTesting<A>,
         ClassTesting<A> {
+
+    // parseString......................................................................................................
+
+    @Override
+    default Class<? extends RuntimeException> parseStringFailedExpected(final Class<? extends RuntimeException> thrown) {
+        return thrown;
+    }
+
+    @Override
+    default RuntimeException parseStringFailedExpected(final RuntimeException thrown) {
+        return thrown;
+    }
+
+    // toString.........................................................................................................
 
     @Test
     default void testToString() {

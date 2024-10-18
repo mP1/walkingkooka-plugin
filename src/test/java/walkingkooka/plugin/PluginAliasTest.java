@@ -108,6 +108,222 @@ public final class PluginAliasTest implements PluginAliasLikeTesting<StringName,
         this.checkEquals(URL, alias.url(), "url");
     }
 
+    // parse............................................................................................................
+
+    @Test
+    public void testParseName() {
+        this.parseStringAndCheck(
+                "name1",
+                PluginAlias.with(
+                        Names.string("name1"),
+                        Optional.empty(),
+                        Optional.empty()
+                )
+        );
+    }
+
+    @Test
+    public void testParseNameSpace() {
+        this.parseStringAndCheck(
+                "name1 ",
+                PluginAlias.with(
+                        Names.string("name1"),
+                        Optional.empty(),
+                        Optional.empty()
+                )
+        );
+    }
+
+    @Test
+    public void testParseSpaceName() {
+        this.parseStringAndCheck(
+                " name1",
+                PluginAlias.with(
+                        Names.string("name1"),
+                        Optional.empty(),
+                        Optional.empty()
+                )
+        );
+    }
+
+    @Test
+    public void testParseAliasInvalidSelectorFails() {
+        this.parseStringInvalidCharacterFails(
+                "alias1 !",
+                '!'
+        );
+    }
+
+    @Test
+    public void testParseAliasAndName() {
+        this.parseStringAndCheck(
+                "alias1 name1",
+                PluginAlias.with(
+                        Names.string("alias1"),
+                        Optional.of(
+                                TestPluginSelector.parse("name1")
+                        ),
+                        Optional.empty()
+                )
+        );
+    }
+
+    @Test
+    public void testParseAliasSpacesName() {
+        this.parseStringAndCheck(
+                "alias1  name1",
+                PluginAlias.with(
+                        Names.string("alias1"),
+                        Optional.of(
+                                TestPluginSelector.parse("name1")
+                        ),
+                        Optional.empty()
+                )
+        );
+    }
+
+    @Test
+    public void testParseAliasAndNameSpace() {
+        this.parseStringAndCheck(
+                "alias1 name1 ",
+                PluginAlias.with(
+                        Names.string("alias1"),
+                        Optional.of(
+                                TestPluginSelector.parse("name1")
+                        ),
+                        Optional.empty()
+                )
+        );
+    }
+
+    @Test
+    public void testParseAliasAndNameWithQuoteString() {
+        final String selector = "name1(\"abc\")";
+
+        this.parseStringAndCheck(
+                "alias1 " + selector,
+                PluginAlias.with(
+                        Names.string("alias1"),
+                        Optional.of(
+                                TestPluginSelector.parse(selector)
+                        ),
+                        Optional.empty()
+                )
+        );
+    }
+
+    @Test
+    public void testParseAliasAndNameWithNumberLiteral() {
+        final String selector = "name1(1)";
+
+        this.parseStringAndCheck(
+                "alias1 " + selector,
+                PluginAlias.with(
+                        Names.string("alias1"),
+                        Optional.of(
+                                TestPluginSelector.parse(selector)
+                        ),
+                        Optional.empty()
+                )
+        );
+    }
+
+    @Test
+    public void testParseAliasAndNameWithEnvironmentalValue() {
+        final String selector = "name1($environmental-value)";
+
+        this.parseStringAndCheck(
+                "alias1 " + selector,
+                PluginAlias.with(
+                        Names.string("alias1"),
+                        Optional.of(
+                                TestPluginSelector.parse(selector)
+                        ),
+                        Optional.empty()
+                )
+        );
+    }
+
+    @Test
+    public void testParseAliasAndNameWithValues() {
+        final String selector = "name1(\"abc\", 1, $environmental-value)";
+
+        this.parseStringAndCheck(
+                "alias1 " + selector,
+                PluginAlias.with(
+                        Names.string("alias1"),
+                        Optional.of(
+                                TestPluginSelector.parse(selector)
+                        ),
+                        Optional.empty()
+                )
+        );
+    }
+
+    @Test
+    public void testParseAliasNameUrl() {
+        this.parseStringAndCheck(
+                "alias1 name1 https://example.com",
+                PluginAlias.with(
+                        Names.string("alias1"),
+                        Optional.of(
+                                TestPluginSelector.parse("name1")
+                        ),
+                        Optional.of(
+                                Url.parseAbsolute("https://example.com")
+                        )
+                )
+        );
+    }
+
+    @Test
+    public void testParseAliasNameSpacesUrl() {
+        this.parseStringAndCheck(
+                "alias1 name1  https://example.com",
+                PluginAlias.with(
+                        Names.string("alias1"),
+                        Optional.of(
+                                TestPluginSelector.parse("name1")
+                        ),
+                        Optional.of(
+                                Url.parseAbsolute("https://example.com")
+                        )
+                )
+        );
+    }
+
+    @Test
+    public void testParseAliasNameSpaceUrlSpace() {
+        this.parseStringAndCheck(
+                "alias1 name1  https://example.com ",
+                PluginAlias.with(
+                        Names.string("alias1"),
+                        Optional.of(
+                                TestPluginSelector.parse("name1")
+                        ),
+                        Optional.of(
+                                Url.parseAbsolute("https://example.com")
+                        )
+                )
+        );
+    }
+
+    @Test
+    public void testParseAliasSelectorUrlInvalidCharacterFails() {
+        this.parseStringInvalidCharacterFails(
+                "alias1 name https://example.com !",
+                '!'
+        );
+    }
+
+    @Override
+    public PluginAlias<StringName, TestPluginSelector> parseString(final String text) {
+        return PluginAlias.parse(
+                text,
+                TestPluginHelper.INSTANCE
+        );
+    }
+
     // HasText..........................................................................................................
 
     @Test

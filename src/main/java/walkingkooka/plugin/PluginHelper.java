@@ -96,6 +96,11 @@ public interface PluginHelper<N extends Name & Comparable<N>,
             final Optional<AbsoluteUrl> url);
 
     /**
+     * Factory that wraps the given {@link PluginAlias}.
+     */
+    A alias(final PluginAlias<N, S> pluginAlias);
+
+    /**
      * Factory that creates an {@link PluginAliasSetLike} with the {@link SortedSet} of {@link PluginAliasLike}.
      */
     AS aliasSet(final SortedSet<A> aliases);
