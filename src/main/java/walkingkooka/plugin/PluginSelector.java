@@ -253,8 +253,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
                 .value();
         final PluginExpressionParser<N> nameParser = PluginExpressionParser.with(
                 nameText,
-                nameParserAndFactory,
-                context
+                nameParserAndFactory
         );
 
         final Optional<N> name = nameParser.name();
@@ -267,13 +266,13 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
 
         final PluginExpressionParser<N> parser = PluginExpressionParser.with(
                 this.text(),
-                nameParserAndFactory,
-                context
+                nameParserAndFactory
         );
 
         final List<?> parameters = parseParameters(
                 parser,
-                provider
+                provider,
+                context
         );
 
         parser.spaces();
@@ -293,7 +292,8 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
      * Attempts to parse an optional plugin including its parameters which must be within parens.
      */
     private <N extends Name & Comparable<N>, T> Optional<T> parseNameAndParameters(final PluginExpressionParser<N> parser,
-                                                                                   final PluginSelectorEvaluateTextProvider<N, T> provider) {
+                                                                                   final PluginSelectorEvaluateTextProvider<N, T> provider,
+                                                                                   final ProviderContext context) {
         final Optional<N> name = parser.name();
 
         final T plugin;
@@ -302,9 +302,10 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
                     name.get(),
                     parseParameters(
                             parser,
-                            provider
+                            provider,
+                            context
                     ),
-                    parser.context
+                    context
             );
         } else {
             plugin = null;
@@ -320,7 +321,8 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
      * </pre>
      */
     private <N extends Name & Comparable<N>, T> List<Object> parseParameters(final PluginExpressionParser<N> parser,
-                                                                             final PluginSelectorEvaluateTextProvider<N, T> provider) {
+                                                                             final PluginSelectorEvaluateTextProvider<N, T> provider,
+                                                                             final ProviderContext context) {
         parser.spaces();
 
         final List<Object> parameters = Lists.array();
@@ -330,7 +332,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
                 parser.spaces();
 
                 {
-                    final Optional<?> environmentValue = parser.environmentValue();
+                    final Optional<?> environmentValue = parser.environmentValue(context);
                     if (environmentValue.isPresent()) {
                         parameters.add(environmentValue.get());
                         continue;
@@ -341,7 +343,8 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
                 {
                     final Optional<T> plugin = parseNameAndParameters(
                             parser,
-                            provider
+                            provider,
+                            context
                     );
                     if (plugin.isPresent()) {
                         parameters.add(plugin.get());

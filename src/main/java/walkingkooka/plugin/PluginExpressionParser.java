@@ -51,21 +51,17 @@ import java.util.function.Function;
 final class PluginExpressionParser<N extends Name & Comparable<N>> implements CanBeEmpty {
 
     static <N extends Name & Comparable<N>> PluginExpressionParser<N> with(final String text,
-                                                                           final BiFunction<TextCursor, ParserContext, Optional<N>> nameParser,
-                                                                           final ProviderContext context) {
+                                                                           final BiFunction<TextCursor, ParserContext, Optional<N>> nameParser) {
         return new PluginExpressionParser<>(
                 Objects.requireNonNull(text, "text"),
-                Objects.requireNonNull(nameParser, "parseName"),
-                Objects.requireNonNull(context, "context")
+                Objects.requireNonNull(nameParser, "parseName")
         );
     }
 
     private PluginExpressionParser(final String text,
-                                   final BiFunction<TextCursor, ParserContext, Optional<N>> nameParser,
-                                   final ProviderContext context) {
+                                   final BiFunction<TextCursor, ParserContext, Optional<N>> nameParser) {
         this.cursor = TextCursors.charSequence(text);
         this.nameParser = nameParser;
-        this.context = context;
     }
 
     /**
@@ -199,10 +195,10 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
     /**
      * Tries to parse an environmental variable returning its actual value from the {@link ProviderContext}.
      */
-    Optional<Object> environmentValue() {
+    Optional<Object> environmentValue(final ProviderContext context) {
         return this.token(
                 ENVIRONMENT_VALUE_NAME,
-                s -> this.context.environmentValueOrFail(
+                s -> context.environmentValueOrFail(
                         EnvironmentValueName.with(
                                 s.text()
                                         .substring(1) // skip leading DOLLAR-SIGN
@@ -272,8 +268,6 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
     }
 
     final TextCursor cursor;
-
-    ProviderContext context;
 
     @Override
     public String toString() {
