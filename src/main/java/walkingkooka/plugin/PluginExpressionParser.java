@@ -250,14 +250,16 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
      */
     InvalidCharacterException invalidCharacter() {
         final TextCursorLineInfo lineInfo = this.cursor.lineInfo();
-        final int pos = Math.max(
-                lineInfo.textOffset() - 1,
-                0
-        );
+
+        final String text = lineInfo.text()
+                .toString();
+        int pos = lineInfo.textOffset();
+        if(pos >= text.length()) {
+            pos--;
+        }
 
         return new InvalidCharacterException(
-                lineInfo.text()
-                        .toString(),
+                text,
                 pos
         );
     }
