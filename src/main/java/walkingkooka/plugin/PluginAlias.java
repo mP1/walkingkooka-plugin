@@ -21,6 +21,7 @@ import walkingkooka.Cast;
 import walkingkooka.compare.Comparators;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
+import walkingkooka.text.cursor.TextCursorSavePoint;
 import walkingkooka.text.printer.IndentingPrinter;
 
 import java.util.Objects;
@@ -31,6 +32,158 @@ import java.util.Optional;
  */
 public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginSelectorLike<N>> implements PluginAliasLike<N, S, PluginAlias<N, S>> {
 
+    /**
+     * Parses the text holding a {@link PluginAlias} using the given {@link PluginHelper}.
+     */
+    public static <N extends Name & Comparable<N>,
+            I extends PluginInfoLike<I, N>,
+            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+            S extends PluginSelectorLike<N>,
+            A extends PluginAliasLike<N, S, A>,
+            AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+    PluginAlias<N, S> parse(final String text,
+                            final PluginHelper<N, I, IS, S, A, AS> helper) {
+        final PluginExpressionParser parser = PluginExpressionParser.with(
+                text,
+                helper::parseName
+        );
+        final PluginAlias<N, S> alias = parse0(
+                parser,
+                helper,
+                PluginAliasesProviderContext.INSTANCE
+        );
+
+        if (false == parser.cursor.isEmpty()) {
+            throw parser.invalidCharacter();
+        }
+
+        return alias;
+    }
+
+    static <N extends Name & Comparable<N>,
+            I extends PluginInfoLike<I, N>,
+            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+            S extends PluginSelectorLike<N>,
+            A extends PluginAliasLike<N, S, A>,
+            AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+    PluginAlias<N, S> parse0(final PluginExpressionParser<N> parser,
+                             final PluginHelper<N, I, IS, S, A, AS> helper,
+                             final ProviderContext context) {
+        parser.spaces();
+
+        // name
+        final Optional<N> nameOrAlias = parser.name();
+        if (nameOrAlias.isPresent()) {
+            parser.spaces();
+
+            final Optional<S> maybeSelector = tryParseSelector(
+                    parser,
+                    helper,
+                    context
+            );
+
+            final PluginAlias<N, S> pluginAlias;
+
+            if (false == maybeSelector.isPresent()) {
+                // name END
+                pluginAlias = PluginAlias.with(
+                        nameOrAlias.get(),
+                        maybeSelector, // no selector
+                        Optional.empty() // no url
+                );
+
+            } else {
+                parser.spaces();
+                pluginAlias = PluginAlias.with(
+                        nameOrAlias.get(),
+                        maybeSelector, // selector
+                        parser.url() // url
+                );
+
+                // there could be spaces after the url
+                parser.spaces();
+            }
+            return pluginAlias;
+        }
+        throw parser.invalidCharacter();
+    }
+
+    /**
+     * Tries to parse a selector expression returning a {@link PluginSelectorLike}.
+     */
+    private static <N extends Name & Comparable<N>,
+            I extends PluginInfoLike<I, N>,
+            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+            S extends PluginSelectorLike<N>,
+            A extends PluginAliasLike<N, S, A>,
+            AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+    Optional<S> tryParseSelector(final PluginExpressionParser<N> parser,
+                                 final PluginHelper<N, I, IS, S, A, AS> helper,
+                                 final ProviderContext context) {
+        final TextCursorSavePoint start = parser.cursor.save();
+        TextCursorSavePoint end;
+
+        S selector = null;
+        final Optional<N> selectorName = parser.name();
+        if (selectorName.isPresent()) {
+            end = parser.cursor.save();
+
+            parser.spaces();
+
+            if (parser.parametersBegin()) {
+                boolean requireComma = false;
+
+                for (; ; ) {
+                    parser.spaces();
+
+                    if (parser.parametersEnd()) {
+                        break;
+                    }
+
+                    if (requireComma) {
+                        if (false == parser.parameterSeparator()) {
+                            throw parser.invalidCharacter();
+                        }
+
+                        parser.spaces();
+                    }
+
+                    for (; ; ) {
+                        if (parser.environmentValue(
+                                context
+                        ).isPresent()) {
+                            break;
+                        }
+
+                        if (parser.doubleQuotedString().isPresent()) {
+                            break;
+                        }
+
+                        if (parser.number().isPresent()) {
+                            break;
+                        }
+
+                        throw parser.invalidCharacter();
+                    }
+
+                    requireComma = true;
+                }
+            } else {
+                end.restore(); // reset cursor back to any space after name
+            }
+
+            selector = helper.parseSelector(
+                    start.textBetween()
+                            .toString()
+            );
+        }
+
+        return Optional.ofNullable(selector);
+    }
+
+    /**
+     * Factory that creates a new {@link PluginAlias} with the given values.
+     */
     public static <N extends Name & Comparable<N>, S extends PluginSelectorLike<N>> PluginAlias<N, S> with(final N name,
                                                                                                            final Optional<S> selector,
                                                                                                            final Optional<AbsoluteUrl> url) {

@@ -28,13 +28,17 @@ public final class TestPluginAlias implements PluginAliasLike<StringName, TestPl
     static TestPluginAlias with(final StringName name,
                                 final Optional<TestPluginSelector> selector,
                                 final Optional<AbsoluteUrl> url) {
-        return new TestPluginAlias(
+        return with(
                 PluginAlias.with(
                         name,
                         selector,
                         url
                 )
         );
+    }
+
+    static TestPluginAlias with(final PluginAlias<StringName, TestPluginSelector> pluginAlias) {
+        return new TestPluginAlias(pluginAlias);
     }
 
     private TestPluginAlias(final PluginAlias<StringName, TestPluginSelector> pluginAlias) {

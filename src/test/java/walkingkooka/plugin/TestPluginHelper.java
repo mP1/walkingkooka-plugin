@@ -122,6 +122,10 @@ final class TestPluginHelper implements PluginHelper<StringName, TestPluginInfo,
         );
     }
 
+    public TestPluginAlias alias(final PluginAlias<StringName, TestPluginSelector> pluginAlias) {
+        return TestPluginAlias.with(pluginAlias);
+    }
+
     @Override
     public TestPluginAliasSet aliasSet(final SortedSet<TestPluginAlias> aliases) {
         return TestPluginAliasSet.with(aliases);
