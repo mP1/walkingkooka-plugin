@@ -73,8 +73,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         return parse0(
                 PluginExpressionParser.with(
                         text,
-                        helper::parseName,
-                        PluginAliasesProviderContext.INSTANCE
+                        helper::parseName
                 ),
                 helper
         );
@@ -193,7 +192,9 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                     }
 
                     for (; ; ) {
-                        if (parser.environmentValue().isPresent()) {
+                        if (parser.environmentValue(
+                                PluginAliasesProviderContext.INSTANCE // this context never returns nothing for a variable.
+                        ).isPresent()) {
                             break;
                         }
 
