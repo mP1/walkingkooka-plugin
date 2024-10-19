@@ -113,71 +113,71 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         );
     }
 
-    // alias............................................................................................................
+    // aliasSelector....................................................................................................
 
     @Test
-    default void testAliasWithNullFails() {
+    default void testAliasSelectorWithNullFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> this.createSet().alias(null)
+                () -> this.createSet().aliasSelector(null)
         );
     }
 
-    default void aliasAndCheck(final String text,
-                               final N alias) {
-        this.aliasAndCheck(
+    default void aliasSelectorAndCheck(final String text,
+                                       final N alias) {
+        this.aliasSelectorAndCheck(
                 this.parseString(text),
                 alias,
                 Optional.empty()
         );
     }
 
-    default void aliasAndCheck(final String text,
-                               final N alias,
-                               final S expected) {
-        this.aliasAndCheck(
+    default void aliasSelectorAndCheck(final String text,
+                                       final N alias,
+                                       final S expected) {
+        this.aliasSelectorAndCheck(
                 this.parseString(text),
                 alias,
                 Optional.of(expected)
         );
     }
 
-    default void aliasAndCheck(final String text,
-                               final N alias,
-                               final Optional<S> expected) {
-        this.aliasAndCheck(
+    default void aliasSelectorAndCheck(final String text,
+                                       final N alias,
+                                       final Optional<S> expected) {
+        this.aliasSelectorAndCheck(
                 this.parseString(text),
                 alias,
                 expected
         );
     }
 
-    default void aliasAndCheck(final AS aliases,
-                               final N alias) {
-        this.aliasAndCheck(
+    default void aliasSelectorAndCheck(final AS aliases,
+                                       final N alias) {
+        this.aliasSelectorAndCheck(
                 aliases,
                 alias,
                 Optional.empty()
         );
     }
 
-    default void aliasAndCheck(final AS aliases,
-                               final N alias,
-                               final S expected) {
-        this.aliasAndCheck(
+    default void aliasSelectorAndCheck(final AS aliases,
+                                       final N alias,
+                                       final S expected) {
+        this.aliasSelectorAndCheck(
                 aliases,
                 alias,
                 Optional.of(expected)
         );
     }
 
-    default void aliasAndCheck(final AS aliases,
-                               final N alias,
-                               final Optional<S> expected) {
+    default void aliasSelectorAndCheck(final AS aliases,
+                                       final N alias,
+                                       final Optional<S> expected) {
         this.checkEquals(
                 expected,
-                aliases.alias(alias),
-                () -> "alias  " + alias + " in " + aliases
+                aliases.aliasSelector(alias),
+                () -> "aliasSelector  " + alias + " in " + aliases
         );
     }
 
