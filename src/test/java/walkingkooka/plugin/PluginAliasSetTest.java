@@ -733,11 +733,11 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         );
     }
 
-    // name.............................................................................................................
+    // aliasOrName......................................................................................................
 
     @Test
-    public void testNameCaseSensitive() {
-        this.nameAndCheck(
+    public void testAliasOrNameCaseSensitive() {
+        this.aliasOrNameAndCheck(
                 "name1, name2",
                 CaseSensitivity.SENSITIVE,
                 Names.string("name1"),
@@ -746,8 +746,8 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     }
 
     @Test
-    public void testNameDifferentCaseImportant() {
-        this.nameAndCheck(
+    public void testAliasOrNameDifferentCaseImportant() {
+        this.aliasOrNameAndCheck(
                 "name1, name2",
                 CaseSensitivity.SENSITIVE,
                 Names.string("NAME1")
@@ -755,8 +755,8 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     }
 
     @Test
-    public void testNameDifferentCaseUnimportant() {
-        this.nameAndCheck(
+    public void testAliasOrNameDifferentCaseUnimportant() {
+        this.aliasOrNameAndCheck(
                 "name1, name2",
                 CaseSensitivity.INSENSITIVE,
                 Names.string("NAME1"),
@@ -764,40 +764,40 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         );
     }
 
-    private void nameAndCheck(final String text,
-                              final CaseSensitivity caseSensitivity,
-                              final StringName name) {
-        this.nameAndCheck(
+    private void aliasOrNameAndCheck(final String text,
+                                     final CaseSensitivity caseSensitivity,
+                                     final StringName aliasOrName) {
+        this.aliasOrNameAndCheck(
                 text,
                 caseSensitivity,
-                name,
+                aliasOrName,
                 Optional.empty()
         );
     }
 
-    private void nameAndCheck(final String text,
-                              final CaseSensitivity caseSensitivity,
-                              final StringName name,
-                              final StringName expected) {
-        this.nameAndCheck(
+    private void aliasOrNameAndCheck(final String text,
+                                     final CaseSensitivity caseSensitivity,
+                                     final StringName aliasOrName,
+                                     final StringName expected) {
+        this.aliasOrNameAndCheck(
                 text,
                 caseSensitivity,
-                name,
+                aliasOrName,
                 Optional.of(expected)
         );
     }
 
-    private void nameAndCheck(final String text,
-                              final CaseSensitivity caseSensitivity,
-                              final StringName name,
-                              final Optional<StringName> expected) {
+    private void aliasOrNameAndCheck(final String text,
+                                     final CaseSensitivity caseSensitivity,
+                                     final StringName aliasOrName,
+                                     final Optional<StringName> expected) {
         this.checkEquals(
                 expected,
                 PluginAliasSet.parse(
                         text,
                         new TestPluginHelper(caseSensitivity)
-                ).name(name),
-                () -> "name  " + name + " in " + text
+                ).aliasOrName(aliasOrName),
+                () -> "aliasOrName  " + aliasOrName + " in " + text
         );
     }
 
