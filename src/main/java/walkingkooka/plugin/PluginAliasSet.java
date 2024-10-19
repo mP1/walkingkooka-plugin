@@ -238,7 +238,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         return new PluginAliasSet<>(
                 aliases,
                 aliasToSelector,
-                aliasesWithoutInfos,
                 aliasOrNameToName,
                 namesNotAliases,
                 helper
@@ -256,14 +255,12 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     // @VisibleForTesting
     PluginAliasSet(final SortedSet<A> pluginAliasLikes,
                    final Map<N, S> aliasToSelector,
-                   final Set<N> aliasesWithoutInfos,
                    final Map<N, N> aliasOrNameToName,
                    final Set<N> namesNotAliases,
                    final PluginHelper<N, I, IS, S, A, AS> helper) {
         this.pluginAliasLikes = pluginAliasLikes;
 
         this.aliasToSelector = aliasToSelector;
-        this.aliasesWithoutInfos = aliasesWithoutInfos;
 
         this.aliasOrNameToName = aliasOrNameToName;
         this.namesNotAliases = namesNotAliases;
@@ -313,7 +310,10 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         // Fix all INFOs for each alias
         IS newInfos = providerInfos;
 
-        final Set<N> aliasesWithoutInfos = this.aliasesWithoutInfos;
+        final Set<N> aliasesWithoutInfos = this.pluginAliasLikes.stream()
+                .filter(pal -> pal.selector().isPresent() && false == pal.url().isPresent())
+                .map(pal -> pal.name())
+                .collect(Collectors.toSet());
 
         // remove $newInfos which are not referenced by name or alias
         final Set<I> unreferencedProviderInfos = Sets.hash();
@@ -408,12 +408,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
      */
     // @VisibleForTesting
     final Set<N> namesNotAliases;
-
-    /**
-     * Contains all alias {@link Name} for aliases without a {@link PluginInfoLike}.
-     */
-    // @VisibleForTesting
-    final Set<N> aliasesWithoutInfos;
 
     /**
      * Tests if the given {@link Name name} or alias will replace an existing {@link PluginAlias}, using the {@link PluginAlias#name()}.
