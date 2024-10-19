@@ -164,8 +164,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         final SortedSet<N> aliasesWithoutInfos = SortedSets.tree(nameComparator);
         final SortedSet<N> namesNotAliases = SortedSets.tree(nameComparator);
 
-        final Set<I> infos = SortedSets.tree();
-
         for (final A pluginAlias : aliases) {
             final N nameOrAlias = pluginAlias.name();
 
@@ -204,13 +202,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                     if (false == infoUrls.add(url)) {
                         throw new IllegalArgumentException("Duplicate url " + url);
                     }
-
-                    infos.add(
-                            helper.info(
-                                    url,
-                                    alias
-                            )
-                    );
                 } else {
                     if (false == aliasesWithoutInfos.add(alias)) {
                         throw new IllegalArgumentException("Duplicate alias: " + alias);
@@ -250,7 +241,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                 aliasesWithoutInfos,
                 aliasOrNameToName,
                 namesNotAliases,
-                helper.infoSet(infos),
                 helper
         );
     }
@@ -269,7 +259,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                    final Set<N> aliasesWithoutInfos,
                    final Map<N, N> aliasOrNameToName,
                    final Set<N> namesNotAliases,
-                   final IS infos,
                    final PluginHelper<N, I, IS, S, A, AS> helper) {
         this.pluginAliasLikes = pluginAliasLikes;
 
@@ -278,8 +267,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
         this.aliasOrNameToName = aliasOrNameToName;
         this.namesNotAliases = namesNotAliases;
-
-        this.infos = infos;
 
         this.helper = helper;
     }
@@ -320,7 +307,8 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     public IS merge(final IS providerInfos) {
         Objects.requireNonNull(providerInfos, "providerInfos");
 
-        final Comparator<N> nameComparator = this.helper.nameComparator();
+        final PluginHelper<N, I, IS, S, A, AS> helper = this.helper;
+        final Comparator<N> nameComparator = helper.nameComparator();
 
         // Fix all INFOs for each alias
         IS newInfos = providerInfos;
@@ -340,7 +328,16 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
         newInfos = newInfos.deleteAll(unreferencedProviderInfos);
 
-        final IS aliasesInfos = this.infos;
+        final IS aliasesInfos = helper.infoSet(
+                this.pluginAliasLikes.stream()
+                        .filter(pal -> pal.url().isPresent())
+                        .map(pal -> helper.info(
+                                        pal.url()
+                                                .get(),
+                                        pal.name()
+                                )
+                        ).collect(Collectors.toCollection(SortedSets::tree))
+        );
 
         // remove unmentioned provider.infos
 
@@ -417,12 +414,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
      */
     // @VisibleForTesting
     final Set<N> aliasesWithoutInfos;
-
-    /**
-     * Contains all {@link PluginInfoSetLike} including those belonging to new aliases definitions.
-     */
-    // @VisibleForTesting
-    final IS infos;
 
     /**
      * Tests if the given {@link Name name} or alias will replace an existing {@link PluginAlias}, using the {@link PluginAlias#name()}.

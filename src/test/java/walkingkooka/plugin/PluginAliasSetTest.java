@@ -107,7 +107,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                 Sets.empty(), // alias selectors
                                 Maps.empty(), // name -> name
                                 Sets.empty(), // names
-                                TestPluginInfoSet.EMPTY, // infos
                                 TestPluginHelper.INSTANCE
                         )
                 )
@@ -141,7 +140,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                 Sets.empty(), // alias selectors
                                 Maps.empty(), // name -> name
                                 Sets.empty(), // names
-                                TestPluginInfoSet.EMPTY, // infos
                                 TestPluginHelper.INSTANCE
                         )
                 )
@@ -168,7 +166,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                         NAME1
                                 ), // name -> name
                                 Sets.of(NAME1), // names
-                                TestPluginInfoSet.EMPTY, // infos
                                 TestPluginHelper.INSTANCE
                         )
                 )
@@ -195,7 +192,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                         NAME1
                                 ), // name -> name
                                 Sets.of(NAME1), // names
-                                TestPluginInfoSet.EMPTY, // infos
                                 TestPluginHelper.INSTANCE
                         )
                 )
@@ -228,11 +224,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                 ), // alias selectors
                                 Maps.empty(), // name -> name
                                 Sets.of(NAME1), // names
-                                new TestPluginInfoSet(
-                                        Sets.of(
-                                                TestPluginInfo.parse("https://example.com/alias111 alias111")
-                                        )
-                                ), // infos
                                 TestPluginHelper.INSTANCE
                         )
                 )
@@ -281,11 +272,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                 ), // alias selectors
                                 Maps.empty(), // name -> name
                                 Sets.of(NAME1), // names
-                                new TestPluginInfoSet(
-                                        Sets.of(
-                                                TestPluginInfo.parse("https://example.com/plugin111 alias111")
-                                        )
-                                ), // infos
                                 TestPluginHelper.INSTANCE
                         )
                 )
@@ -318,11 +304,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                 ), // alias selectors
                                 Maps.empty(), // name -> name
                                 Sets.of(NAME1), // names
-                                new TestPluginInfoSet(
-                                        Sets.of(
-                                                TestPluginInfo.parse("https://example.com/plugin111 alias111")
-                                        )
-                                ), // infos
                                 TestPluginHelper.INSTANCE
                         )
                 )
@@ -355,11 +336,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                 ), // alias selectors
                                 Maps.empty(), // name -> name
                                 Sets.of(NAME1), // names
-                                new TestPluginInfoSet(
-                                        Sets.of(
-                                                TestPluginInfo.parse("https://example.com/plugin111 alias111")
-                                        )
-                                ), // infos
                                 TestPluginHelper.INSTANCE
                         )
                 )
@@ -392,11 +368,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                 ), // alias selectors
                                 Maps.empty(), // name -> name
                                 Sets.of(NAME1), // names
-                                new TestPluginInfoSet(
-                                        Sets.of(
-                                                TestPluginInfo.parse("https://example.com/plugin111 alias111")
-                                        )
-                                ), // infos
                                 TestPluginHelper.INSTANCE
                         )
                 )
@@ -429,11 +400,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                 ), // alias selectors
                                 Maps.empty(), // name -> name
                                 Sets.of(NAME1), // names
-                                new TestPluginInfoSet(
-                                        Sets.of(
-                                                TestPluginInfo.parse("https://example.com/plugin111 alias111")
-                                        )
-                                ), // infos
                                 TestPluginHelper.INSTANCE
                         )
                 )
@@ -470,7 +436,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                         NAME1,
                                         NAME2
                                 ), // names
-                                TestPluginInfoSet.EMPTY, // infos
                                 TestPluginHelper.INSTANCE
                         )
                 )
@@ -512,7 +477,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                         NAME1,
                                         NAME2
                                 ), // names
-                                TestPluginInfoSet.EMPTY, // infos
                                 TestPluginHelper.INSTANCE
                         )
                 )
@@ -564,7 +528,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                         NAME1,
                                         NAME2
                                 ), // names
-                                TestPluginInfoSet.EMPTY, // infos
                                 TestPluginHelper.INSTANCE
                         )
                 )
@@ -660,7 +623,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                         NAME1,
                                         NAME2
                                 ), // names
-                                TestPluginInfoSet.EMPTY, // infos
                                 TestPluginHelper.INSTANCE
                         )
                 )
@@ -1597,7 +1559,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                         Sets.empty(), // alias selectors
                         Maps.empty(), // name -> name
                         Sets.empty(), // names
-                        TestPluginInfoSet.EMPTY, // infos
                         TestPluginHelper.INSTANCE
                 )
         );
