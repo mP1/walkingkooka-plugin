@@ -160,7 +160,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         final Map<N, N> nameToAlias = Maps.sorted(nameComparator);
 
         final SortedSet<N> aliasesWithoutInfos = SortedSets.tree(nameComparator);
-        final SortedSet<N> names = SortedSets.tree(nameComparator);
+        final SortedSet<N> namesNotAliases = SortedSets.tree(nameComparator);
 
         final Set<I> infos = SortedSets.tree();
 
@@ -182,7 +182,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                         name
                 );
 
-                names.add(name);
+                namesNotAliases.add(name);
             } else {
                 final S selector = maybeSelector.get();
                 final N alias = nameOrAlias;
@@ -233,7 +233,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                 .filter(a -> {
                     final N aliasName = a;
                     final S selector = aliasToName.get(aliasName);
-                    return null != selector && names.contains(selector.name());
+                    return null != selector && namesNotAliases.contains(selector.name());
                 }).map(Name::toString)
                 .collect(Collectors.joining(", "));
         if (false == duplicateNamesAliases.isEmpty()) {
@@ -245,7 +245,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                 aliasToName,
                 aliasesWithoutInfos,
                 aliasOrNameToName,
-                names,
+                namesNotAliases,
                 helper.infoSet(infos),
                 helper
         );
