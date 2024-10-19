@@ -235,7 +235,7 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         assertThrows(
                 NullPointerException.class,
                 () -> this.createSet()
-                        .name(null)
+                        .containsNameOrAlias(null)
         );
     }
 
