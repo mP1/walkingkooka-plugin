@@ -715,7 +715,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     }
 
     private void namesNotAliasesAndCheck(final String text,
-                               final StringName... expected) {
+                                         final StringName... expected) {
         this.namesNotAliasesAndCheck(
                 text,
                 Sets.of(expected)
@@ -842,8 +842,8 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     // alias............................................................................................................
 
     @Test
-    public void testAliasCaseSensitive() {
-        this.aliasAndCheck(
+    public void testAliasSelectorCaseSensitive() {
+        this.aliasSelectorAndCheck(
                 "alias1 name1, alias2 name2",
                 CaseSensitivity.SENSITIVE,
                 Names.string("alias1"),
@@ -852,8 +852,8 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     }
 
     @Test
-    public void testAliasDifferentCaseImportant() {
-        this.aliasAndCheck(
+    public void testAliasSelectorDifferentCaseImportant() {
+        this.aliasSelectorAndCheck(
                 "alias1 name1, alias2 name2",
                 CaseSensitivity.SENSITIVE,
                 Names.string("ALIAS1")
@@ -861,8 +861,8 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     }
 
     @Test
-    public void testAliasDifferentCaseUnimportant() {
-        this.aliasAndCheck(
+    public void testAliasSelectorDifferentCaseUnimportant() {
+        this.aliasSelectorAndCheck(
                 "alias1 name1, alias2 name2",
                 CaseSensitivity.INSENSITIVE,
                 Names.string("ALIAS1"),
@@ -870,10 +870,10 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         );
     }
 
-    private void aliasAndCheck(final String text,
-                               final CaseSensitivity caseSensitivity,
-                               final StringName alias) {
-        this.aliasAndCheck(
+    private void aliasSelectorAndCheck(final String text,
+                                       final CaseSensitivity caseSensitivity,
+                                       final StringName alias) {
+        this.aliasSelectorAndCheck(
                 text,
                 caseSensitivity,
                 alias,
@@ -881,11 +881,11 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         );
     }
 
-    private void aliasAndCheck(final String text,
-                               final CaseSensitivity caseSensitivity,
-                               final StringName alias,
-                               final TestPluginSelector expected) {
-        this.aliasAndCheck(
+    private void aliasSelectorAndCheck(final String text,
+                                       final CaseSensitivity caseSensitivity,
+                                       final StringName alias,
+                                       final TestPluginSelector expected) {
+        this.aliasSelectorAndCheck(
                 text,
                 caseSensitivity,
                 alias,
@@ -893,17 +893,17 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         );
     }
 
-    private void aliasAndCheck(final String text,
-                               final CaseSensitivity caseSensitivity,
-                               final StringName alias,
-                               final Optional<TestPluginSelector> expected) {
+    private void aliasSelectorAndCheck(final String text,
+                                       final CaseSensitivity caseSensitivity,
+                                       final StringName alias,
+                                       final Optional<TestPluginSelector> expected) {
         this.checkEquals(
                 expected,
                 PluginAliasSet.parse(
                         text,
                         new TestPluginHelper(caseSensitivity)
-                ).alias(alias),
-                () -> "alias  " + alias + " in " + text
+                ).aliasSelector(alias),
+                () -> "aliasSelector  " + alias + " in " + text
         );
     }
 
