@@ -598,13 +598,21 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     @Test
     public void testParseWithDuplicateNameMappingFails() {
         this.parseStringFails(
+                "plugin111, plugin111",
+                new IllegalArgumentException("Duplicate plugin111")
+        );
+    }
+
+    @Test
+    public void testParseWithDuplicateNameMappingFails2() {
+        this.parseStringFails(
                 "alias111 plugin111, alias222 plugin111",
                 new IllegalArgumentException("Duplicate alias: alias111 and alias222")
         );
     }
 
     @Test
-    public void testParseWithDuplicateNameMappingFails2() {
+    public void testParseWithDuplicateNameMappingFails3() {
         this.parseStringFails(
                 "alias111 plugin111, alias222 plugin111, plugin222",
                 new IllegalArgumentException("Duplicate alias: alias111 and alias222")
