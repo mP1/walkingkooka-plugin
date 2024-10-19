@@ -268,7 +268,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                    final IS infos,
                    final PluginHelper<N, I, IS, S, A, AS> helper) {
         this.pluginAliasLikes = pluginAliasLikes;
-        this.helper = helper;
 
         this.aliasToSelector = aliasToSelector;
         this.aliasesWithoutInfos = aliasesWithoutInfos;
@@ -277,6 +276,8 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         this.namesNotAliases = namesNotAliases;
 
         this.infos = infos;
+
+        this.helper = helper;
     }
 
     /**
