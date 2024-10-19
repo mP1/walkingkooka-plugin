@@ -264,7 +264,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                    final Map<N, S> nameToAliases,
                    final Set<N> aliasesWithoutInfos,
                    final Map<N, N> nameToName,
-                   final Set<N> names,
+                   final Set<N> namesNotAliases,
                    final IS infos,
                    final PluginHelper<N, I, IS, S, A, AS> helper) {
         this.pluginAliasLikes = pluginAliasLikes;
@@ -274,7 +274,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         this.aliasesWithoutInfos = aliasesWithoutInfos;
 
         this.nameToName = nameToName;
-        this.names = names;
+        this.namesNotAliases = namesNotAliases;
 
         this.infos = infos;
     }
@@ -291,12 +291,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     }
 
     private final Map<N, S> nameToAliases;
-
-    /**
-     * Contains all alias {@link Name} for aliases without a {@link PluginInfoLike}.
-     */
-    // @VisibleForTesting
-    final Set<N> aliasesWithoutInfos;
 
     /**
      * Queries the target name applying any aliases, or returning the name if no alias was present.
@@ -332,10 +326,10 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         // remove $newInfos which are not referenced by name or alias
         final Set<I> unreferencedProviderInfos = Sets.hash();
 
-        final Set<N> names = this.names;
+        final Set<N> namesNotAliases = this.namesNotAliases;
 
         for (final I providerInfo : providerInfos) {
-            if (false == names.contains(providerInfo.name())) {
+            if (false == namesNotAliases.contains(providerInfo.name())) {
                 unreferencedProviderInfos.add(providerInfo);
             }
         }
@@ -412,7 +406,13 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
      * Contains all {@link Name} mappings which will also including the target for any alias, but not the alias itself.
      */
     // @VisibleForTesting
-    final Set<N> names;
+    final Set<N> namesNotAliases;
+
+    /**
+     * Contains all alias {@link Name} for aliases without a {@link PluginInfoLike}.
+     */
+    // @VisibleForTesting
+    final Set<N> aliasesWithoutInfos;
 
     /**
      * Contains all {@link PluginInfoSetLike} including those belonging to new aliases definitions.

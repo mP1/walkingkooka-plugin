@@ -698,8 +698,8 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     // names............................................................................................................
 
     @Test
-    public void testNames() {
-        this.namesAndCheck(
+    public void testNamesNotAliases() {
+        this.namesNotAliasesAndCheck(
                 "name1, name2",
                 Names.string("name1"),
                 Names.string("name2")
@@ -708,28 +708,28 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
 
     @Test
     public void testNamesDoesntIncludeAliases() {
-        this.namesAndCheck(
+        this.namesNotAliasesAndCheck(
                 "name1, alias2 name2",
                 Names.string("name1")
         );
     }
 
-    private void namesAndCheck(final String text,
+    private void namesNotAliasesAndCheck(final String text,
                                final StringName... expected) {
-        this.namesAndCheck(
+        this.namesNotAliasesAndCheck(
                 text,
                 Sets.of(expected)
         );
     }
 
-    private void namesAndCheck(final String text,
-                               final Set<StringName> expected) {
+    private void namesNotAliasesAndCheck(final String text,
+                                         final Set<StringName> expected) {
         this.checkEquals(
                 expected,
                 this.parseString(text)
                         .pluginAliasSet
-                        .names,
-                () -> "names in " + text
+                        .namesNotAliases,
+                () -> "namesNotAliases in " + text
         );
     }
 
