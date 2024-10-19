@@ -104,7 +104,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                         new PluginAliasSet<>(
                                 SortedSets.empty(), // aliases
                                 Maps.empty(), // alias -> selector
-                                Sets.empty(), // alias selectors
                                 Maps.empty(), // name -> name
                                 Sets.empty(), // names
                                 TestPluginHelper.INSTANCE
@@ -137,7 +136,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                         new PluginAliasSet<>(
                                 SortedSets.empty(), // aliases
                                 Maps.empty(), // alias -> selector
-                                Sets.empty(), // alias selectors
                                 Maps.empty(), // name -> name
                                 Sets.empty(), // names
                                 TestPluginHelper.INSTANCE
@@ -160,7 +158,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                         )
                                 ), // aliases
                                 Maps.empty(), // alias -> selector
-                                Sets.empty(), // alias selectors
                                 Maps.of(
                                         NAME1,
                                         NAME1
@@ -186,7 +183,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                         )
                                 ), // aliases
                                 Maps.empty(), // alias -> selector
-                                Sets.empty(), // alias selectors
                                 Maps.of(
                                         NAME1,
                                         NAME1
@@ -219,9 +215,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                         NAME1_ALIAS,
                                         SELECTOR1
                                 ), // alias -> selector
-                                Sets.of(
-                                        NAME1_ALIAS
-                                ), // alias selectors
                                 Maps.empty(), // name -> name
                                 Sets.of(NAME1), // names
                                 TestPluginHelper.INSTANCE
@@ -267,9 +260,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                         NAME1_ALIAS,
                                         SELECTOR1.setText("()")
                                 ), // alias -> selector
-                                Sets.of(
-                                        NAME1_ALIAS
-                                ), // alias selectors
                                 Maps.empty(), // name -> name
                                 Sets.of(NAME1), // names
                                 TestPluginHelper.INSTANCE
@@ -299,9 +289,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                         NAME1_ALIAS,
                                         SELECTOR1.setText("( )")
                                 ), // alias -> selector
-                                Sets.of(
-                                        NAME1_ALIAS
-                                ), // alias selectors
                                 Maps.empty(), // name -> name
                                 Sets.of(NAME1), // names
                                 TestPluginHelper.INSTANCE
@@ -331,9 +318,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                         NAME1_ALIAS,
                                         SELECTOR1.setText("(999)")
                                 ), // alias -> selector
-                                Sets.of(
-                                        NAME1_ALIAS
-                                ), // alias selectors
                                 Maps.empty(), // name -> name
                                 Sets.of(NAME1), // names
                                 TestPluginHelper.INSTANCE
@@ -363,9 +347,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                         NAME1_ALIAS,
                                         SELECTOR1.setText("(\"Hello\")")
                                 ), // alias -> selector
-                                Sets.of(
-                                        NAME1_ALIAS
-                                ), // alias selectors
                                 Maps.empty(), // name -> name
                                 Sets.of(NAME1), // names
                                 TestPluginHelper.INSTANCE
@@ -395,9 +376,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                         NAME1_ALIAS,
                                         SELECTOR1.setText("(888,$Magic,\"Hello\")")
                                 ), // alias -> selector
-                                Sets.of(
-                                        NAME1_ALIAS
-                                ), // alias selectors
                                 Maps.empty(), // name -> name
                                 Sets.of(NAME1), // names
                                 TestPluginHelper.INSTANCE
@@ -425,7 +403,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                         )
                                 ), // aliases
                                 Maps.empty(), // alias -> selector
-                                Sets.empty(), // alias selectors
                                 Maps.of(
                                         NAME1,
                                         NAME1,
@@ -466,9 +443,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                         NAME1_ALIAS,
                                         SELECTOR1
                                 ), // alias -> selector
-                                Sets.of(
-                                        NAME1_ALIAS
-                                ), // alias selectors
                                 Maps.of(
                                         NAME2,
                                         NAME2
@@ -519,10 +493,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                         NAME2_ALIAS,
                                         SELECTOR2.setText("(\"Hello222\")")
                                 ), // alias -> selector
-                                Sets.of(
-                                        NAME1_ALIAS,
-                                        NAME2_ALIAS
-                                ), // alias selectors
                                 Maps.empty(), // name -> name
                                 Sets.of(
                                         NAME1,
@@ -614,10 +584,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                         NAME2_ALIAS,
                                         SELECTOR2
                                 ), // alias -> selector
-                                Sets.of(
-                                        NAME1_ALIAS,
-                                        NAME2_ALIAS
-                                ), // alias selectors
                                 Maps.empty(), // name -> name
                                 Sets.of(
                                         NAME1,
@@ -768,44 +734,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                         new TestPluginHelper(caseSensitivity)
                 ).aliasOrName(aliasOrName),
                 () -> "aliasOrName  " + aliasOrName + " in " + text
-        );
-    }
-
-    // aliasesWithoutInfos..............................................................................................
-
-    @Test
-    public void testAliasesWithoutInfos() {
-        this.aliasesWithoutInfosAndCheck(
-                "alias1 name1, alias2 name2, name3",
-                Names.string("alias1"),
-                Names.string("alias2")
-        );
-    }
-
-    @Test
-    public void testAliasesWIthoutInfosIgnoresAliasWithInfo() {
-        this.aliasesWithoutInfosAndCheck(
-                "alias1 name1, alias2 name2 https://example.com , name3",
-                Names.string("alias1")
-        );
-    }
-
-    private void aliasesWithoutInfosAndCheck(final String text,
-                                             final StringName... expected) {
-        this.aliasesWithoutInfosAndCheck(
-                text,
-                Sets.of(expected)
-        );
-    }
-
-    private void aliasesWithoutInfosAndCheck(final String text,
-                                             final Set<StringName> expected) {
-        this.checkEquals(
-                expected,
-                this.parseString(text)
-                        .pluginAliasSet
-                        .aliasesWithoutInfos,
-                () -> "aliasesWithoutInfos in " + text
         );
     }
 
@@ -1556,7 +1484,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                 ALIAS2
                         ),
                         Maps.empty(), // alias -> selector
-                        Sets.empty(), // alias selectors
                         Maps.empty(), // name -> name
                         Sets.empty(), // names
                         TestPluginHelper.INSTANCE
