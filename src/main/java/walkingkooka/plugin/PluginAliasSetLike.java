@@ -75,8 +75,8 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
     /**
      * Removes any {@link PluginAliasLike} with the given {@link Name name or alias}.
      */
-    default AS deleteNameOrAlias(final N nameOrAlias) {
-        Objects.requireNonNull(nameOrAlias, "nameOrAlias");
+    default AS deleteAliasOrName(final N aliasOrName) {
+        Objects.requireNonNull(aliasOrName, "aliasOrName");
 
         // filter keep all other entries that do not have the name or alias.
         return this.setElements(
@@ -85,8 +85,8 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
                         .filter(
                                 p -> false ==
                                         (
-                                                nameOrAlias.equals(p.name()) ||
-                                                        nameOrAlias.equals(
+                                                aliasOrName.equals(p.name()) ||
+                                                        aliasOrName.equals(
                                                                 p.selector()
                                                                         .map(PluginSelectorLike::name)
                                                                         .orElse(null)
