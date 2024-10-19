@@ -79,8 +79,8 @@ final class TestPluginAliasSet extends AbstractSet<TestPluginAlias>
     }
 
     @Override
-    public boolean containsNameOrAlias(final StringName nameOrAlias) {
-        return this.pluginAliasSet.containsNameOrAlias(nameOrAlias);
+    public boolean containsAliasOrName(final StringName nameOrAlias) {
+        return this.pluginAliasSet.containsAliasOrName(nameOrAlias);
     }
 
     public TestPluginAliasSet concatOrReplace(final TestPluginAlias alias) {
