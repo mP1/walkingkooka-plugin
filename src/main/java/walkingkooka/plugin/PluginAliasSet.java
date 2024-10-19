@@ -118,7 +118,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
             requireSeparator = true;
         }
 
-        return withoutCopying(
+        return prepare(
                 aliases,
                 helper
         );
@@ -137,7 +137,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
         return aliases instanceof PluginAliasSet ?
                 Cast.to(aliases) :
-                withoutCopying(
+                prepare(
                         SortedSets.immutable(aliases),
                         helper
                 );
@@ -149,8 +149,8 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
             S extends PluginSelectorLike<N>,
             A extends PluginAliasLike<N, S, A>,
             AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
-    PluginAliasSet<N, I, IS, S, A, AS> withoutCopying(final SortedSet<A> aliases,
-                                                      final PluginHelper<N, I, IS, S, A, AS> helper) {
+    PluginAliasSet<N, I, IS, S, A, AS> prepare(final SortedSet<A> aliases,
+                                               final PluginHelper<N, I, IS, S, A, AS> helper) {
         Objects.requireNonNull(aliases, "aliases");
 
         final Set<AbsoluteUrl> infoUrls = Sets.hash();
@@ -547,7 +547,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     @Override
     public PluginAliasSet<N, I, IS, S, A, AS> subSet(final A from,
                                                      final A to) {
-        return withoutCopying(
+        return prepare(
                 this.pluginAliasLikes.subSet(
                         from,
                         to
@@ -558,7 +558,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
     @Override
     public PluginAliasSet<N, I, IS, S, A, AS> headSet(final A alias) {
-        return withoutCopying(
+        return prepare(
                 this.pluginAliasLikes.headSet(alias),
                 this.helper
         );
@@ -566,7 +566,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
     @Override
     public PluginAliasSet<N, I, IS, S, A, AS> tailSet(final A alias) {
-        return withoutCopying(
+        return prepare(
                 this.pluginAliasLikes.tailSet(alias),
                 this.helper
         );
