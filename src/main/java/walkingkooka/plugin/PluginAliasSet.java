@@ -156,7 +156,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         final Comparator<N> nameComparator = helper.nameComparator();
 
         final Map<N, S> aliasToName = Maps.sorted(nameComparator);
-        final Map<N, N> nameToName = Maps.sorted(nameComparator);
+        final Map<N, N> aliasOrNameToName = Maps.sorted(nameComparator);
         final Map<N, N> nameToAlias = Maps.sorted(nameComparator);
 
         final SortedSet<N> aliasesWithoutInfos = SortedSets.tree(nameComparator);
@@ -170,14 +170,14 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
             duplicateCheck(
                     nameOrAlias,
                     aliasToName,
-                    nameToName
+                    aliasOrNameToName
             );
 
             final Optional<S> maybeSelector = pluginAlias.selector();
             if (false == maybeSelector.isPresent()) {
                 final N name = nameOrAlias;
 
-                nameToName.put(
+                aliasOrNameToName.put(
                         name,
                         name
                 );
@@ -189,7 +189,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                 duplicateCheck(
                         alias,
                         aliasToName,
-                        nameToName
+                        aliasOrNameToName
                 );
 
                 final Optional<AbsoluteUrl> maybeUrl = pluginAlias.url();
@@ -244,7 +244,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                 aliases,
                 aliasToName,
                 aliasesWithoutInfos,
-                nameToName,
+                aliasOrNameToName,
                 names,
                 helper.infoSet(infos),
                 helper
@@ -253,8 +253,8 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
     private static <N extends Name & Comparable<N>, S extends PluginSelectorLike<N>> void duplicateCheck(final N name,
                                                                                                          final Map<N, S> aliasToName,
-                                                                                                         final Map<N, N> nameToName) {
-        if (aliasToName.containsKey(name) || nameToName.containsKey(name)) {
+                                                                                                         final Map<N, N> aliasOrNameToName) {
+        if (aliasToName.containsKey(name) || aliasOrNameToName.containsKey(name)) {
             throw new IllegalArgumentException("Duplicate name/alias: " + name);
         }
     }
@@ -263,7 +263,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     PluginAliasSet(final SortedSet<A> pluginAliasLikes,
                    final Map<N, S> nameToAliases,
                    final Set<N> aliasesWithoutInfos,
-                   final Map<N, N> nameToName,
+                   final Map<N, N> aliasOrNameToName,
                    final Set<N> namesNotAliases,
                    final IS infos,
                    final PluginHelper<N, I, IS, S, A, AS> helper) {
@@ -273,7 +273,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         this.nameToAliases = nameToAliases;
         this.aliasesWithoutInfos = aliasesWithoutInfos;
 
-        this.nameToName = nameToName;
+        this.aliasOrNameToName = aliasOrNameToName;
         this.namesNotAliases = namesNotAliases;
 
         this.infos = infos;
@@ -293,21 +293,20 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     private final Map<N, S> nameToAliases;
 
     /**
-     * Queries the target name applying any aliases, or returning the name if no alias was present.
-     * Note any aliases will not be returned and should be queried first.
+     * Returns the target name resolving any alias if necessary
      */
-    public Optional<N> name(final N name) {
+    public Optional<N> aliasOrName(final N name) {
         Objects.requireNonNull(name, "name");
 
         return Optional.ofNullable(
-                this.nameToName.get(name)
+                this.aliasOrNameToName.get(name)
         );
     }
 
     /**
      * Maps a {@link Name} to its target name, including name changes or aliases.
      */
-    private final Map<N, N> nameToName;
+    private final Map<N, N> aliasOrNameToName;
 
     /**
      * Accepts some {@link PluginInfoSetLike} and uses the aliases mappings within to produce a final {@link PluginInfoSetLike}.

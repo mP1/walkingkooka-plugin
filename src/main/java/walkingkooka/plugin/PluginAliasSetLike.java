@@ -52,10 +52,9 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
     Optional<S> alias(final N name);
 
     /**
-     * Queries the target name applying any aliases, or returning the name if no alias was present.
-     * Note any aliases will not be returned and should be queried first.
+     * Returns the target name resolving any alias if necessary
      */
-    Optional<N> name(final N name);
+    Optional<N> aliasOrName(final N name);
 
     /**
      * Returns a {@link PluginInfoSetLike} that applies alies/names to the given {@link PluginInfoSetLike provider infos}.

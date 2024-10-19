@@ -38,7 +38,7 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         S extends PluginSelectorLike<N>,
         A extends PluginAliasLike<N, S, A>,
         AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
-    extends ImmutableSortedSetTesting<AS, A>,
+        extends ImmutableSortedSetTesting<AS, A>,
         HasTextTesting,
         TreePrintableTesting,
         ParseStringTesting<AS>,
@@ -48,68 +48,68 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
     // name.............................................................................................................
 
     @Test
-    default void testNameWithNullFails() {
+    default void testAliasOrNameWithNullFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> this.createSet().name(null)
+                () -> this.createSet().aliasOrName(null)
         );
     }
 
-    default void nameAndCheck(final String text,
-                              final N name) {
-        this.nameAndCheck(
+    default void aliasOrNameAndCheck(final String text,
+                                     final N aliasOrName) {
+        this.aliasOrNameAndCheck(
                 text,
-                name,
+                aliasOrName,
                 Optional.empty()
         );
     }
 
-    default void nameAndCheck(final String text,
-                              final N name,
-                              final N expected) {
-        this.nameAndCheck(
+    default void aliasOrNameAndCheck(final String text,
+                                     final N aliasOrName,
+                                     final N expected) {
+        this.aliasOrNameAndCheck(
                 text,
-                name,
+                aliasOrName,
                 Optional.of(expected)
         );
     }
 
-    default void nameAndCheck(final String text,
-                              final N name,
-                              final Optional<N> expected) {
-        this.nameAndCheck(
+    default void aliasOrNameAndCheck(final String text,
+                                     final N aliasOrName,
+                                     final Optional<N> expected) {
+        this.aliasOrNameAndCheck(
                 this.parseString(text),
-                name,
+                aliasOrName,
                 expected
         );
     }
 
-    default void nameAndCheck(final AS aliases,
-                              final N name) {
-        this.nameAndCheck(
+    default void aliasOrNameAndCheck(final AS aliases,
+                                     final N aliasOrName) {
+        this.aliasOrNameAndCheck(
                 aliases,
-                name,
+                aliasOrName,
                 Optional.empty()
         );
     }
 
-    default void nameAndCheck(final AS aliases,
-                              final N name,
-                              final N expected) {
-        this.nameAndCheck(
+    default void aliasOrNameAndCheck(final AS aliases,
+                                     final N aliasOrName,
+                                     final N expected) {
+        this.aliasOrNameAndCheck(
                 aliases,
-                name,
+                aliasOrName,
                 Optional.of(expected)
         );
     }
 
-    default void nameAndCheck(final AS aliases,
-                              final N name,
-                              final Optional<N> expected) {
+    default void aliasOrNameAndCheck(final AS aliases,
+                                     final N aliasOrName,
+                                     final Optional<N> expected) {
         this.checkEquals(
                 expected,
-                aliases.name(name),
-                () -> "name  " + name + " in " + aliases
+                aliases.aliasOrName(aliasOrName),
+                () -> "aliasOrName  " + aliasOrName + " in " + aliases
         );
     }
 
