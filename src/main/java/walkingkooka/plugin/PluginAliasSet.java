@@ -295,11 +295,11 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     /**
      * Returns the target name resolving any alias if necessary
      */
-    public Optional<N> aliasOrName(final N name) {
-        Objects.requireNonNull(name, "name");
+    public Optional<N> aliasOrName(final N aliasOrName) {
+        Objects.requireNonNull(aliasOrName, "aliasOrName");
 
         return Optional.ofNullable(
-                this.aliasOrNameToName.get(name)
+                this.aliasOrNameToName.get(aliasOrName)
         );
     }
 
