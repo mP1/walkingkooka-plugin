@@ -104,15 +104,17 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                 parser.spaces();
             }
 
-            aliases.add(
-                helper.alias(
-                        PluginAlias.parse0(
-                                parser,
-                                helper,
-                                PluginAliasesProviderContext.INSTANCE
-                        )
-                )
+            final A pluginAliasLike = helper.alias(
+                    PluginAlias.parse0(
+                            parser,
+                            helper,
+                            PluginAliasesProviderContext.INSTANCE
+                    )
             );
+
+            if(false == aliases.add(pluginAliasLike)) {
+                throw new IllegalArgumentException("Duplicate " + pluginAliasLike);
+            }
             requireSeparator = true;
         }
 
@@ -177,10 +179,12 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
             if (false == maybeSelector.isPresent()) {
                 final N name = nameOrAlias;
 
-                aliasOrNameToName.put(
+                if(null != aliasOrNameToName.put(
                         name,
                         name
-                );
+                )) {
+                    throw new IllegalArgumentException("Duplicate name: " + name);
+                };
 
                 namesNotAliases.add(name);
             } else {
