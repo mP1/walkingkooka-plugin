@@ -422,8 +422,8 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     /**
      * Tests if the given {@link Name name} or alias will replace an existing {@link PluginAlias}, using the {@link PluginAlias#name()}.
      */
-    public boolean containsNameOrAlias(final N nameOrAlias) {
-        return null != this.findPluginAliasLikeWithNameOrAlias(nameOrAlias);
+    public boolean containsAliasOrName(final N aliasOrName) {
+        return null != this.findPluginAliasLikeWithNameOrAlias(aliasOrName);
     }
 
     private A findPluginAliasLikeWithNameOrAlias(final N nameOrAlias) {

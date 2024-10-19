@@ -64,7 +64,7 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
     /**
      * Tests if an {@link PluginAliasLike} with the {@link Name name} or alias is present. Note aliases included.
      */
-    boolean containsNameOrAlias(final N name);
+    boolean containsAliasOrName(final N aliasOrName);
 
     /**
      * If the {@link PluginAliasLike} name exists then replace the alias with the same {@link Name} or concat because it

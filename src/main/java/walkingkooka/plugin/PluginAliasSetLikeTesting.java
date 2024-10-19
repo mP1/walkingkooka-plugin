@@ -228,34 +228,34 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         return thrown;
     }
 
-    // containsNameOrAlias.....................................................................................................
+    // containsAliasOrName..............................................................................................
 
     @Test
-    default void testContainsNameOrAliasWithNullFails() {
+    default void testContainsAliasOrNameWithNullFails() {
         assertThrows(
                 NullPointerException.class,
                 () -> this.createSet()
-                        .containsNameOrAlias(null)
+                        .containsAliasOrName(null)
         );
     }
 
-    private void containsNameAndCheck(final String aliases,
-                                      final N nameOrAlias,
-                                      final boolean expected) {
-        this.containsNameOrAliasAndCheck(
+    private void containsAliasOrNameAndCheck(final String aliases, 
+                                             final N aliasOrName, 
+                                             final boolean expected) {
+        this.containsAliasOrNameAndCheck(
                 this.parseString(aliases),
-                nameOrAlias,
+                aliasOrName,
                 expected
         );
     }
 
-    private void containsNameOrAliasAndCheck(final AS aliases,
-                                             final N nameOrAlias,
+    private void containsAliasOrNameAndCheck(final AS aliases,
+                                             final N aliasOrName,
                                              final boolean expected) {
         this.checkEquals(
                 expected,
-                aliases.containsNameOrAlias(nameOrAlias),
-                () -> aliases.text() + " containsNameOrAlias " + nameOrAlias
+                aliases.containsAliasOrName(aliasOrName),
+                () -> aliases.text() + " containsAliasOrName " + aliasOrName
         );
     }
 
