@@ -1407,18 +1407,18 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         );
     }
 
-    // deleteNameOrAlias................................................................................................
+    // deleteAliasOrName................................................................................................
 
     @Test
-    public void testDeleteNameOrAliasWithNullFails() {
+    public void testDeleteAliasOrNameWithNullFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> this.createSet().deleteNameOrAlias(null)
+                () -> this.createSet().deleteAliasOrName(null)
         );
     }
 
     @Test
-    public void testDeleteNameOrAliasWithUnknown() {
+    public void testDeleteAliasOrNameWithUnknown() {
         this.deleteNameOrAlias(
                 this.createSet(),
                 Names.string("unknown")
@@ -1426,7 +1426,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     }
 
     @Test
-    public void testDeleteNameOrAliasWithAlias() {
+    public void testDeleteAliasOrNameWithAlias() {
         this.deleteNameOrAlias(
                 TestPluginAliasSet.parse("alias1 name1"),
                 Names.string("alias1"),
@@ -1435,7 +1435,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     }
 
     @Test
-    public void testDeleteNameOrAliasWithAlias2() {
+    public void testDeleteAliasOrNameWithAlias2() {
         this.deleteNameOrAlias(
                 TestPluginAliasSet.parse("alias1 name1, name2"),
                 Names.string("alias1"),
@@ -1444,7 +1444,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     }
 
     @Test
-    public void testDeleteNameOrAliasWithNameNotAlias() {
+    public void testDeleteAliasOrNameWithNameNotAlias() {
         this.deleteNameOrAlias(
                 TestPluginAliasSet.parse("alias1 name1"),
                 Names.string("name1"),
@@ -1453,7 +1453,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     }
 
     @Test
-    public void testDeleteNameOrAliasWithNameNotAlias2() {
+    public void testDeleteAliasOrNameWithNameNotAlias2() {
         this.deleteNameOrAlias(
                 TestPluginAliasSet.parse("alias1 name1, name2"),
                 Names.string("name1"),
@@ -1462,7 +1462,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     }
 
     @Test
-    public void testDeleteNameOrAliasWithNameNotAlias3() {
+    public void testDeleteAliasOrNameWithNameNotAlias3() {
         this.deleteNameOrAlias(
                 TestPluginAliasSet.parse("alias1 name1, alias2 name2"),
                 Names.string("name1"),
@@ -1474,12 +1474,12 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                    final StringName nameOrAlias) {
         assertSame(
                 aliases,
-                aliases.deleteNameOrAlias(nameOrAlias)
+                aliases.deleteAliasOrName(nameOrAlias)
         );
     }
 
     @Test
-    public void testDeleteNameOrAlias() {
+    public void testDeleteAliasOrName() {
         this.deleteNameOrAlias(
                 TestPluginAliasSet.parse("name1"),
                 Names.string("name1"),
@@ -1488,7 +1488,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     }
 
     @Test
-    public void testDeleteNameOrAlias2() {
+    public void testDeleteAliasOrName2() {
         this.deleteNameOrAlias(
                 TestPluginAliasSet.parse("name1, name2, name3"),
                 Names.string("name3"),
@@ -1501,7 +1501,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                    final TestPluginAliasSet expected) {
         this.checkEquals(
                 expected,
-                aliases.deleteNameOrAlias(nameOrAlias)
+                aliases.deleteAliasOrName(nameOrAlias)
         );
     }
 
