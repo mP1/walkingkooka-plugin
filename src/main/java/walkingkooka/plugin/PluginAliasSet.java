@@ -153,7 +153,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                                                       final PluginHelper<N, I, IS, S, A, AS> helper) {
         Objects.requireNonNull(aliases, "aliases");
 
-        final Set<AbsoluteUrl> urls = Sets.hash();
+        final Set<AbsoluteUrl> infoUrls = Sets.hash();
 
         final Comparator<N> nameComparator = helper.nameComparator();
 
@@ -201,7 +201,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                 if (maybeUrl.isPresent()) {
                     // url present add a new INFO
                     final AbsoluteUrl url = maybeUrl.get();
-                    if (false == urls.add(url)) {
+                    if (false == infoUrls.add(url)) {
                         throw new IllegalArgumentException("Duplicate url " + url);
                     }
 
