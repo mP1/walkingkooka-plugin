@@ -200,7 +200,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                     // url present add a new INFO
                     final AbsoluteUrl url = maybeUrl.get();
                     if (false == infoUrls.add(url)) {
-                        throw new IllegalArgumentException("Duplicate url " + url);
+                        throw new IllegalArgumentException("Duplicate url: " + url);
                     }
                 } else {
                     if (false == aliasesWithoutInfos.add(alias)) {

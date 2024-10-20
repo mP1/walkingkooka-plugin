@@ -1449,7 +1449,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         );
 
         this.checkEquals(
-                "Duplicate url https://example.com/1",
+                "Duplicate url: https://example.com/1",
                 thrown.getMessage(),
                 "message"
         );
