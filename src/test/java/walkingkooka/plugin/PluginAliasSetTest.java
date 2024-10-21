@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
+import walkingkooka.collect.list.Lists;
 import walkingkooka.collect.map.Maps;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.collect.set.SortedSets;
@@ -813,6 +814,88 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 ),
                 alias,
                 expected
+        );
+    }
+
+    // deleteAliasOrNameAll.............................................................................................
+
+    @Test
+    public void testDeleteAliasOrNameAllWithName() {
+        this.deleteAliasOrNameAllAndCheck(
+                "name1, name2",
+                Lists.of(
+                        Names.string("name1")
+                ),
+                "name2"
+        );
+    }
+
+    @Test
+    public void testDeleteAliasOrNameAllWithName2() {
+        this.deleteAliasOrNameAllAndCheck(
+                "name1, name2, name3",
+                Lists.of(
+                        Names.string("name1")
+                ),
+                "name2, name3"
+        );
+    }
+
+    @Test
+    public void testDeleteAliasOrNameAllWithNames() {
+        this.deleteAliasOrNameAllAndCheck(
+                "name1, name2, name3",
+                Lists.of(
+                        Names.string("name1"),
+                        Names.string("name2")
+                ),
+                "name3"
+        );
+    }
+
+    @Test
+    public void testDeleteAliasOrNameAllWithAlias() {
+        this.deleteAliasOrNameAllAndCheck(
+                "alias1 name1, name2",
+                Lists.of(
+                        Names.string("alias1")
+                ),
+                "name2"
+        );
+    }
+
+    @Test
+    public void testDeleteAliasOrNameAllWithAlias2() {
+        this.deleteAliasOrNameAllAndCheck(
+                "alias1 name1, name2, name3",
+                Lists.of(
+                        Names.string("alias1")
+                ),
+                "name2, name3"
+        );
+    }
+
+    @Test
+    public void testDeleteAliasOrNameAllWithAliases() {
+        this.deleteAliasOrNameAllAndCheck(
+                "alias1 name1, alias2 name2, name3",
+                Lists.of(
+                        Names.string("alias1"),
+                        Names.string("alias2")
+                ),
+                "name3"
+        );
+    }
+
+    @Test
+    public void testDeleteAliasOrNameAllWithAliasesAndNames() {
+        this.deleteAliasOrNameAllAndCheck(
+                "alias1 name1, name2, name3",
+                Lists.of(
+                        Names.string("alias1"),
+                        Names.string("name2")
+                ),
+                "name3"
         );
     }
 
