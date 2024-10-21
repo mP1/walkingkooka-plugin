@@ -27,6 +27,7 @@ import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 
@@ -296,6 +297,37 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                 expected,
                 aliases.containsAliasOrName(aliasOrName),
                 () -> aliases.text() + " containsAliasOrName " + aliasOrName
+        );
+    }
+
+    // deleteAliasOrNameAll.............................................................................................
+
+    @Test
+    default void testDeleteAliasOrNameAllWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createSet()
+                        .deleteAliasOrNameAll(null)
+        );
+    }
+
+    default void deleteAliasOrNameAllAndCheck(final String aliases,
+                                              final Collection<N> aliasOrName,
+                                              final String expected) {
+        this.deleteAliasOrNameAllAndCheck(
+                this.parseString(aliases),
+                aliasOrName,
+                this.parseString(expected)
+        );
+    }
+
+    default void deleteAliasOrNameAllAndCheck(final AS aliases,
+                                              final Collection<N> aliasOrNames,
+                                              final AS expected) {
+        this.checkEquals(
+                expected,
+                aliases.deleteAliasOrNameAll(aliasOrNames),
+                () -> aliases.text() + " deleteAliasOrNameAll " + aliasOrNames
         );
     }
 

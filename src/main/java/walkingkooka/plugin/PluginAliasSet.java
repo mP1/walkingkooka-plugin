@@ -30,6 +30,7 @@ import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 
 import java.util.AbstractSet;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
@@ -486,6 +487,17 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         }
 
         return pluginAliasSet;
+    }
+
+    public PluginAliasSet<N, I, IS, S, A, AS> deleteAliasOrNameAll(final Collection<N> aliasOrNames) {
+        Objects.requireNonNull(aliasOrNames, "aliasOrNames");
+
+        return prepare(
+                this.stream()
+                        .filter(aon -> false == aliasOrNames.contains(aon.name()))
+                        .collect(Collectors.toCollection(SortedSets::tree)),
+                this.helper
+        );
     }
 
     // HasText..........................................................................................................

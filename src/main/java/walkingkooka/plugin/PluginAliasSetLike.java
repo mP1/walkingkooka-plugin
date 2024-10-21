@@ -96,6 +96,11 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
         );
     }
 
+    /**
+     * Returns a {@link PluginAliasSetLike} after removing any with the {@link Name alias or name}.
+     */
+    AS deleteAliasOrNameAll(final Collection<N> aliasOrNames);
+
     // HasUrlFragment...................................................................................................
 
     /**

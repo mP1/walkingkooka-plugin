@@ -118,6 +118,13 @@ final class TestPluginAliasSet extends AbstractSet<TestPluginAlias>
     }
 
     @Override
+    public TestPluginAliasSet deleteAliasOrNameAll(final Collection<StringName> aliasOrNames) {
+        return this.setElements(
+                this.pluginAliasSet.deleteAliasOrNameAll(aliasOrNames)
+        );
+    }
+
+    @Override
     public TestPluginAliasSet replace(final TestPluginAlias oldAlias,
                                       final TestPluginAlias newAlias) {
         return this.setElements(
