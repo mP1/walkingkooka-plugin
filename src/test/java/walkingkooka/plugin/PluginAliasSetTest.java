@@ -899,6 +899,31 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         );
     }
 
+    @Test
+    public void testDeleteAliasOrNameAllIgnoresSelectorName() {
+        this.deleteAliasOrNameAllAndCheck(
+                "alias1 name1 https://example.com , name2, name3",
+                Lists.of(
+                        Names.string("name1"), // unsuccessful delete
+                        Names.string("name2")
+                ),
+                "alias1 name1 https://example.com , name3"
+        );
+    }
+
+    @Test
+    public void testDeleteAliasOrNameAllIgnoresSelectorName2() {
+        this.deleteAliasOrNameAllAndCheck(
+                "alias1 name1 https://example.com , name2, name3",
+                Lists.of(
+                        Names.string("alias1"),
+                        Names.string("name1"), // unsuccessful
+                        Names.string("name2")
+                ),
+                "name3"
+        );
+    }
+
     // keepAliasOrNameAll...............................................................................................
 
     @Test
