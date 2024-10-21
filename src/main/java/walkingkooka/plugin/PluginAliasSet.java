@@ -178,7 +178,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                 )) {
                     throw duplicateAliasOrName(name);
                 }
-                ;
 
                 namesNotAliases.add(nameOrAlias);
             } else {
@@ -192,7 +191,6 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                 )) {
                     throw duplicateAliasOrName(alias);
                 }
-                ;
 
                 duplicateCheck(
                         alias,
