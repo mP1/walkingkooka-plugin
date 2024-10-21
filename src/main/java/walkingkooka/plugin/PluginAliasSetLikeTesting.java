@@ -30,7 +30,9 @@ import walkingkooka.text.printer.TreePrintableTesting;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
@@ -328,6 +330,51 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                 expected,
                 aliases.deleteAliasOrNameAll(aliasOrNames),
                 () -> aliases.text() + " deleteAliasOrNameAll " + aliasOrNames
+        );
+    }
+
+    // keepAliasOrNameAll...............................................................................................
+
+    @Test
+    default void testKeepAliasOrNameAllWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createSet()
+                        .keepAliasOrNameAll(null)
+        );
+    }
+
+    @Test
+    default void testKeepAliasOrNameWithSelf() {
+        final AS aliases = this.createSet();
+
+        assertSame(
+                aliases.keepAliasOrNameAll(
+                        aliases.stream()
+                                .map(PluginAliasLike::name)
+                                .collect(Collectors.toList())
+                ),
+                aliases
+        );
+    }
+
+    default void keepAliasOrNameAllAndCheck(final String aliases,
+                                            final Collection<N> aliasOrName,
+                                            final String expected) {
+        this.keepAliasOrNameAllAndCheck(
+                this.parseString(aliases),
+                aliasOrName,
+                this.parseString(expected)
+        );
+    }
+
+    default void keepAliasOrNameAllAndCheck(final AS aliases,
+                                            final Collection<N> aliasOrNames,
+                                            final AS expected) {
+        this.checkEquals(
+                expected,
+                aliases.keepAliasOrNameAll(aliasOrNames),
+                () -> aliases.text() + " keepAliasOrNameAll " + aliasOrNames
         );
     }
 

@@ -500,6 +500,17 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         );
     }
 
+    public PluginAliasSet<N, I, IS, S, A, AS> keepAliasOrNameAll(final Collection<N> aliasOrNames) {
+        Objects.requireNonNull(aliasOrNames, "aliasOrNames");
+
+        return prepare(
+                this.stream()
+                        .filter(aon -> aliasOrNames.contains(aon.name()))
+                        .collect(Collectors.toCollection(SortedSets::tree)),
+                this.helper
+        );
+    }
+
     // HasText..........................................................................................................
 
     @Override

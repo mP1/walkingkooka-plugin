@@ -899,6 +899,125 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         );
     }
 
+    // keepAliasOrNameAll...............................................................................................
+
+    @Test
+    public void testKeepAliasOrNameAllWithName() {
+        this.keepAliasOrNameAllAndCheck(
+                "name1, name2",
+                Lists.of(
+                        Names.string("name1")
+                ),
+                "name1"
+        );
+    }
+
+    @Test
+    public void testKeepAliasOrNameAllWithName2() {
+        this.keepAliasOrNameAllAndCheck(
+                "name1, name2, name3",
+                Lists.of(
+                        Names.string("name1")
+                ),
+                "name1"
+        );
+    }
+
+    @Test
+    public void testKeepAliasOrNameAllWithNames() {
+        this.keepAliasOrNameAllAndCheck(
+                "name1, name2, name3",
+                Lists.of(
+                        Names.string("name1"),
+                        Names.string("name2")
+                ),
+                "name1, name2"
+        );
+    }
+
+    @Test
+    public void testKeepAliasOrNameAllWithAlias() {
+        this.keepAliasOrNameAllAndCheck(
+                "alias1 name1, name2",
+                Lists.of(
+                        Names.string("alias1")
+                ),
+                "alias1 name1"
+        );
+    }
+
+    @Test
+    public void testKeepAliasOrNameAllWithAlias2() {
+        this.keepAliasOrNameAllAndCheck(
+                "alias1 name1, name2, name3",
+                Lists.of(
+                        Names.string("alias1")
+                ),
+                "alias1 name1"
+        );
+    }
+
+    @Test
+    public void testKeepAliasOrNameAllWithAliases() {
+        this.keepAliasOrNameAllAndCheck(
+                "alias1 name1, alias2 name2, name3",
+                Lists.of(
+                        Names.string("alias1"),
+                        Names.string("alias2")
+                ),
+                "alias1 name1, alias2 name2"
+        );
+    }
+
+    @Test
+    public void testKeepAliasOrNameAllWithAliasesAndNames() {
+        this.keepAliasOrNameAllAndCheck(
+                "alias1 name1, name2, name3",
+                Lists.of(
+                        Names.string("alias1"),
+                        Names.string("name2")
+                ),
+                "alias1 name1, name2"
+        );
+    }
+
+    @Test
+    public void testKeepAliasOrNameAllWithAliasesAndNames2() {
+        this.keepAliasOrNameAllAndCheck(
+                "alias1 name1 https://example.com , name2, name3",
+                Lists.of(
+                        Names.string("alias1"),
+                        Names.string("name2")
+                ),
+                "alias1 name1 https://example.com , name2"
+        );
+    }
+
+    @Test
+    public void testKeepAliasOrNameAllIgnoresSelectorName() {
+        this.keepAliasOrNameAllAndCheck(
+                "alias1 name1 https://example.com , name2, name3",
+                Lists.of(
+                        Names.string("name1"),
+                        Names.string("name2")
+                ),
+                "name2"
+        );
+    }
+
+    @Test
+    public void testKeepAliasOrNameAllIgnoresSelectorName2() {
+        this.keepAliasOrNameAllAndCheck(
+                "alias1 name1 https://example.com , name2, name3",
+                Lists.of(
+                        Names.string("alias1"),
+                        Names.string("name1"),
+                        Names.string("name2")
+                ),
+                "alias1 name1 https://example.com , name2"
+        );
+    }
+
     // text.............................................................................................................
 
     @Test
