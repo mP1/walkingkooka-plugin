@@ -1328,7 +1328,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
 
     @Test
     public void testDeleteAliasOrNameWithUnknown() {
-        this.deleteNameOrAlias(
+        this.deleteAliasOrNameAndCheck(
                 this.createSet(),
                 Names.string("unknown")
         );
@@ -1336,7 +1336,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
 
     @Test
     public void testDeleteAliasOrNameWithAlias() {
-        this.deleteNameOrAlias(
+        this.deleteAliasOrNameAndCheck(
                 TestPluginAliasSet.parse("alias1 name1"),
                 Names.string("alias1"),
                 TestPluginAliasSet.parse("")
@@ -1345,7 +1345,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
 
     @Test
     public void testDeleteAliasOrNameWithAlias2() {
-        this.deleteNameOrAlias(
+        this.deleteAliasOrNameAndCheck(
                 TestPluginAliasSet.parse("alias1 name1, name2"),
                 Names.string("alias1"),
                 TestPluginAliasSet.parse("name2")
@@ -1354,7 +1354,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
 
     @Test
     public void testDeleteAliasOrNameWithNameNotAlias() {
-        this.deleteNameOrAlias(
+        this.deleteAliasOrNameAndCheck(
                 TestPluginAliasSet.parse("alias1 name1"),
                 Names.string("name1"),
                 TestPluginAliasSet.parse("")
@@ -1363,7 +1363,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
 
     @Test
     public void testDeleteAliasOrNameWithNameNotAlias2() {
-        this.deleteNameOrAlias(
+        this.deleteAliasOrNameAndCheck(
                 TestPluginAliasSet.parse("alias1 name1, name2"),
                 Names.string("name1"),
                 TestPluginAliasSet.parse("name2")
@@ -1372,15 +1372,15 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
 
     @Test
     public void testDeleteAliasOrNameWithNameNotAlias3() {
-        this.deleteNameOrAlias(
+        this.deleteAliasOrNameAndCheck(
                 TestPluginAliasSet.parse("alias1 name1, alias2 name2"),
                 Names.string("name1"),
                 TestPluginAliasSet.parse("alias2 name2")
         );
     }
 
-    private void deleteNameOrAlias(final TestPluginAliasSet aliases,
-                                   final StringName nameOrAlias) {
+    private void deleteAliasOrNameAndCheck(final TestPluginAliasSet aliases,
+                                           final StringName nameOrAlias) {
         assertSame(
                 aliases,
                 aliases.deleteAliasOrName(nameOrAlias)
@@ -1389,7 +1389,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
 
     @Test
     public void testDeleteAliasOrName() {
-        this.deleteNameOrAlias(
+        this.deleteAliasOrNameAndCheck(
                 TestPluginAliasSet.parse("name1"),
                 Names.string("name1"),
                 TestPluginAliasSet.parse("")
@@ -1398,16 +1398,16 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
 
     @Test
     public void testDeleteAliasOrName2() {
-        this.deleteNameOrAlias(
+        this.deleteAliasOrNameAndCheck(
                 TestPluginAliasSet.parse("name1, name2, name3"),
                 Names.string("name3"),
                 TestPluginAliasSet.parse("name1, name2")
         );
     }
 
-    private void deleteNameOrAlias(final TestPluginAliasSet aliases,
-                                   final StringName nameOrAlias,
-                                   final TestPluginAliasSet expected) {
+    private void deleteAliasOrNameAndCheck(final TestPluginAliasSet aliases,
+                                           final StringName nameOrAlias,
+                                           final TestPluginAliasSet expected) {
         this.checkEquals(
                 expected,
                 aliases.deleteAliasOrName(nameOrAlias)
