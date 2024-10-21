@@ -168,31 +168,35 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         for (final A pluginAlias : aliases) {
             final N nameOrAlias = pluginAlias.name();
 
-            duplicateCheck(
-                    nameOrAlias,
-                    aliasToSelector,
-                    aliasOrNameToName
-            );
-
             final Optional<S> maybeSelector = pluginAlias.selector();
             if (false == maybeSelector.isPresent()) {
                 final N name = nameOrAlias;
 
-                if(null != aliasOrNameToName.put(
+                if (null != aliasOrNameToName.put(
                         name,
                         name
                 )) {
-                    throw new IllegalArgumentException("Duplicate name: " + name);
-                };
+                    throw duplicateAliasOrName(name);
+                }
+                ;
 
-                namesNotAliases.add(name);
+                namesNotAliases.add(nameOrAlias);
             } else {
                 final S selector = maybeSelector.get();
+                final N selectorName = selector.name();
                 final N alias = nameOrAlias;
+
+                if (null != aliasOrNameToName.put(
+                        alias,
+                        selectorName
+                )) {
+                    throw duplicateAliasOrName(alias);
+                }
+                ;
+
                 duplicateCheck(
                         alias,
-                        aliasToSelector,
-                        aliasOrNameToName
+                        aliasToSelector
                 );
 
                 final Optional<AbsoluteUrl> maybeUrl = pluginAlias.url();
@@ -208,7 +212,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                         throw new IllegalArgumentException("Duplicate alias: " + alias);
                     }
                     final N duplicate = nameToAlias.put(
-                            selector.name(),
+                            selectorName,
                             alias
                     );
                     if (null != duplicate) {
@@ -246,11 +250,14 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     }
 
     private static <N extends Name & Comparable<N>, S extends PluginSelectorLike<N>> void duplicateCheck(final N name,
-                                                                                                         final Map<N, S> aliasToSelector,
-                                                                                                         final Map<N, N> aliasOrNameToName) {
-        if (aliasToSelector.containsKey(name) || aliasOrNameToName.containsKey(name)) {
-            throw new IllegalArgumentException("Duplicate name/alias: " + name);
+                                                                                                         final Map<N, S> aliasToSelector) {
+        if (aliasToSelector.containsKey(name)) {
+            throw duplicateAliasOrName(name);
         }
+    }
+
+    private static IllegalArgumentException duplicateAliasOrName(final Name name) {
+        return new IllegalArgumentException("Duplicate name/alias: " + name);
     }
 
     // @VisibleForTesting

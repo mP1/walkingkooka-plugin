@@ -719,6 +719,36 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         );
     }
 
+    @Test
+    public void testAliasOrNameWithAliasUnknown() {
+        this.aliasOrNameAndCheck(
+                "alias1 name1",
+                CaseSensitivity.SENSITIVE,
+                Names.string("unknown1")
+        );
+    }
+
+    @Test
+    public void testAliasOrNameWithAliasCaseSensitive() {
+        this.aliasOrNameAndCheck(
+                "alias1 name1",
+                CaseSensitivity.SENSITIVE,
+                Names.string("alias1"),
+                Names.string("name1")
+        );
+    }
+
+    @Test
+    public void testAliasOrNameWithAliasCaseInsensitive() {
+        this.aliasOrNameAndCheck(
+                "alias1 name1",
+                CaseSensitivity.INSENSITIVE,
+                Names.string("ALIAS1"),
+                Names.string("name1")
+        );
+    }
+
+
     private void aliasOrNameAndCheck(final String text,
                                      final CaseSensitivity caseSensitivity,
                                      final StringName aliasOrName) {
