@@ -803,6 +803,17 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                 ).aliasSelector(alias),
                 () -> "aliasSelector  " + alias + " in " + text
         );
+
+        this.aliasSelectorAndCheck(
+                new TestPluginAliasSet(
+                        PluginAliasSet.parse(
+                                text,
+                                new TestPluginHelper(caseSensitivity)
+                        )
+                ),
+                alias,
+                expected
+        );
     }
 
     // text.............................................................................................................

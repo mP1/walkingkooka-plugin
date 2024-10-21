@@ -211,6 +211,46 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         );
     }
 
+    // deleteAliasOrName................................................................................................
+
+    @Test
+    default void testDeleteAliasOrNameWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createSet().deleteAliasOrName(null)
+        );
+    }
+
+    default void deleteAliasAndCheck(final String text,
+                                     final N aliasOrName,
+                                     final A... expected) {
+        this.deleteAliasAndCheck(
+                this.parseString(text),
+                aliasOrName,
+                expected
+        );
+    }
+
+    default void deleteAliasAndCheck(final AS aliases,
+                                     final N aliasOrName,
+                                     final A... expected) {
+        this.deleteAliasAndCheck(
+                aliases,
+                aliasOrName,
+                Sets.of(expected)
+        );
+    }
+
+    default void deleteAliasAndCheck(final AS aliases,
+                                     final N aliasOrName,
+                                     final Set<A> expected) {
+        this.deleteAliasAndCheck(
+                aliases,
+                aliasOrName,
+                expected
+        );
+    }
+
     // ParseString......................................................................................................
 
     @Override
