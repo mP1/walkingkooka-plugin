@@ -1370,6 +1370,24 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         );
     }
 
+    @Test
+    public void testContainsAliasOrNameWithSelectorName() {
+        this.containsAliasOrNameAndCheck(
+                "alias1 name1",
+                NAME1,
+                false
+        );
+    }
+
+    @Test
+    public void testContainsAliasOrNameWithSelectorName2() {
+        this.containsAliasOrNameAndCheck(
+                "alias1 name1, alias2, name2",
+                NAME1,
+                false
+        );
+    }
+
     private void containsAliasOrNameAndCheck(final String text,
                                              final StringName aliasOrName,
                                              final boolean expected) {
