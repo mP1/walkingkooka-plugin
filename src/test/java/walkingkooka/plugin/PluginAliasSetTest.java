@@ -632,6 +632,114 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         );
     }
 
+    // selector.........................................................................................................
+
+    @Test
+    public void testSelectorName() {
+        this.selectorAndCheck(
+                "name1",
+                TestPluginSelector.parse("name1"),
+                TestPluginSelector.parse("name1")
+        );
+    }
+
+    @Test
+    public void testSelectorName2() {
+        this.selectorAndCheck(
+                "name1, name2",
+                TestPluginSelector.parse("name1"),
+                TestPluginSelector.parse("name1")
+        );
+    }
+
+    @Test
+    public void testSelectorNameWithParameters() {
+        this.selectorAndCheck(
+                "name1",
+                TestPluginSelector.parse("name1(999)")
+        );
+    }
+
+    @Test
+    public void testSelectorNameWithParameters2() {
+        this.selectorAndCheck(
+                "name1, name2",
+                TestPluginSelector.parse("name1(999)")
+        );
+    }
+
+    @Test
+    public void testSelectorAlias() {
+        this.selectorAndCheck(
+                "alias1 name1",
+                TestPluginSelector.parse("alias1"),
+                TestPluginSelector.parse("name1")
+        );
+    }
+
+    @Test
+    public void testSelectorAlias2() {
+        this.selectorAndCheck(
+                "alias1 name1, alias2 name2",
+                TestPluginSelector.parse("alias1"),
+                TestPluginSelector.parse("name1")
+        );
+    }
+
+    @Test
+    public void testSelectorAliasWithParameters() {
+        this.selectorAndCheck(
+                "alias1 name1(999)",
+                TestPluginSelector.parse("alias1"),
+                TestPluginSelector.parse("name1(999)")
+        );
+    }
+
+    @Test
+    public void testSelectorAliasWithParameters2() {
+        this.selectorAndCheck(
+                "alias1 name1(999), alias2 name2",
+                TestPluginSelector.parse("alias1"),
+                TestPluginSelector.parse("name1(999)")
+        );
+    }
+
+    @Test
+    public void testSelectorAliasUnknown() {
+        this.selectorAndCheck(
+                "alias1 name1",
+                TestPluginSelector.parse("unknown404"),
+                TestPluginSelector.parse("unknown404")
+        );
+    }
+
+    @Test
+    public void testSelectorAliasUnknown2() {
+        this.selectorAndCheck(
+                "alias1 name1, alias2 name2",
+                TestPluginSelector.parse("unknown404"),
+                TestPluginSelector.parse("unknown404")
+        );
+    }
+
+    @Test
+    public void testSelectorAliasWithAliasWithParametersFails() {
+        this.selectorFails(
+                "alias1 name1",
+                TestPluginSelector.parse("alias1(999)"),
+                "Got alias1(999) expected alias1"
+        );
+    }
+
+    @Test
+    public void testSelectorAliasWithAliasWithParametersFails2() {
+        this.selectorFails(
+                "alias1 name1, name2",
+                TestPluginSelector.parse("alias1(999)"),
+                "Got alias1(999) expected alias1"
+        );
+    }
+
     // names............................................................................................................
 
     @Test

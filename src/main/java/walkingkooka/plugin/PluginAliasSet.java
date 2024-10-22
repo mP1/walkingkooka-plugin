@@ -275,6 +275,33 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     }
 
     /**
+     * Returns a {@link PluginSelectorLike} replacing the {@link Name} if it was an alias.
+     */
+    public S selector(final S selector) {
+        Objects.requireNonNull(selector, "selector");
+
+        final S result;
+
+        final N aliasOrName = selector.name();
+        final Optional<S> maybeSelectorOut = this.aliasSelector(aliasOrName);
+        if (maybeSelectorOut.isPresent()) {
+            final String text = selector.text();
+            if (false == text.trim().isEmpty()) {
+                throw new IllegalArgumentException("Got " + selector + " expected " + aliasOrName);
+            }
+
+            result = maybeSelectorOut.get();
+        } else {
+            // if alias/name is unknown return and let call to provider handle error reporting...
+            result = (S) this.aliasOrName(aliasOrName)
+                    .map(selector::setName)
+                    .orElse(selector);
+        }
+
+        return result;
+    }
+
+    /**
      * Returns the selector if one is present for the given {@link Name alias}.
      */
     public Optional<S> aliasSelector(final N alias) {
