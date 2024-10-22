@@ -120,7 +120,7 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         );
     }
 
-    // name.............................................................................................................
+    // aliasOrName......................................................................................................
 
     @Test
     default void testAliasOrNameWithNullFails() {
