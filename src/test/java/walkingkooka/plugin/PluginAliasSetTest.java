@@ -740,7 +740,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
         );
     }
 
-    // names............................................................................................................
+    // namesNotAliases..................................................................................................
 
     @Test
     public void testNamesNotAliases() {
