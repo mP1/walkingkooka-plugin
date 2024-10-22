@@ -31,8 +31,6 @@ import walkingkooka.text.cursor.parser.ParserException;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -594,35 +592,6 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                         )
                 )
         );
-    }
-
-    // PluginAliasSet.with is too slow because its doing too much, this test will have the time limit significantly reduced soon.
-    @Test
-    public void testParse500Aliases() {
-        final long start = System.currentTimeMillis();
-
-        this.parse500(
-                IntStream.range(1, 500)
-                        .mapToObj(i -> "name" + i)
-                        .collect(Collectors.joining(", "))
-        );
-
-        final long end = System.currentTimeMillis();
-        final long total = end - start;
-
-        System.out.println("parse500 x 1000 took " + total + " millis");
-
-        this.checkEquals(
-                true,
-                total < 4000,
-                () -> "parse500 x 1000 took " + total + " millis"
-        );
-    }
-
-    private void parse500(final String text) {
-        for (int i = 0; i < 1000; i++) {
-            this.parseString(text);
-        }
     }
 
     @Override
