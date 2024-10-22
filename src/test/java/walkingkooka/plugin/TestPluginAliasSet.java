@@ -64,6 +64,11 @@ final class TestPluginAliasSet extends AbstractSet<TestPluginAlias>
     }
 
     @Override
+    public TestPluginSelector selector(final TestPluginSelector selector) {
+        return this.pluginAliasSet.selector(selector);
+    }
+
+    @Override
     public Optional<TestPluginSelector> aliasSelector(final StringName alias) {
         return this.pluginAliasSet.aliasSelector(alias);
     }

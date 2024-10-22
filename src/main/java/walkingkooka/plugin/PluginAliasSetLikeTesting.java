@@ -48,6 +48,78 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         ToStringTesting<AS>,
         HasUrlFragmentTesting {
 
+    // selector.........................................................................................................
+
+    @Test
+    default void testSelectorWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> this.createSet().selector(null)
+        );
+    }
+
+    default void selectorAndCheck(final String aliases,
+                                  final S selector) {
+        this.selectorAndCheck(
+                aliases,
+                selector,
+                selector
+        );
+    }
+
+    default void selectorAndCheck(final String aliases,
+                                  final S selector,
+                                  final S expected) {
+        this.selectorAndCheck(
+                this.parseString(aliases),
+                selector,
+                expected
+        );
+    }
+
+    default void selectorAndCheck(final AS aliases,
+                                  final S selector) {
+        this.selectorAndCheck(
+                aliases,
+                selector,
+                selector
+        );
+    }
+
+    default void selectorAndCheck(final AS aliases,
+                                  final S selector,
+                                  final S expected) {
+        this.checkEquals(
+                expected,
+                aliases.selector(selector),
+                () -> aliases + " selector " + selector
+        );
+    }
+
+    default void selectorFails(final String aliases,
+                               final S selector,
+                               final String expected) {
+        this.selectorFails(
+                this.parseString(aliases),
+                selector,
+                expected
+        );
+    }
+
+    default void selectorFails(final AS aliases,
+                               final S selector,
+                               final String expected) {
+        final IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> aliases.selector(selector)
+        );
+
+        this.checkEquals(
+                expected,
+                thrown.getMessage()
+        );
+    }
+
     // name.............................................................................................................
 
     @Test

@@ -47,6 +47,11 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
             TreePrintable {
 
     /**
+     * Returns a {@link PluginSelectorLike} replacing the {@link Name} if it was an alias.
+     */
+    S selector(final S selector);
+
+    /**
      * Returns the {@link PluginSelectorLike} for the given {@link Name alias} if one exists.
      */
     Optional<S> aliasSelector(final N alias);
