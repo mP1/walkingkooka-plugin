@@ -131,6 +131,7 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
                    final List<?> values,
                    final ProviderContext context) {
         Objects.requireNonNull(name, "name");
+        Objects.requireNonNull(values, "values");
         Objects.requireNonNull(context, "context");
 
         return this.providerGetter.get(
