@@ -285,7 +285,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         final N aliasOrName = selector.name();
         final Optional<S> maybeSelectorOut = this.aliasSelector(aliasOrName);
         if (maybeSelectorOut.isPresent()) {
-            final String text = selector.text();
+            final String text = selector.valueText();
             if (false == text.trim().isEmpty()) {
                 throw new IllegalArgumentException("Got " + selector + " expected " + aliasOrName);
             }

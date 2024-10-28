@@ -39,9 +39,14 @@ public interface PluginSelectorLike<N extends Name & Comparable<N>> extends HasN
     PluginSelectorLike<N> setName(final N name);
 
     /**
+     * Returns the values or parameters for this selector as text.
+     */
+    String valueText();
+
+    /**
      * Would be setter that returns a selector with the given text.
      */
-    PluginSelectorLike<N> setText(final String text);
+    PluginSelectorLike<N> setValueText(final String text);
 
 
     /**

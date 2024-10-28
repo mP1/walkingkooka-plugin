@@ -54,11 +54,11 @@ final class TestPluginSelector implements PluginSelectorLike<StringName> {
     }
 
     TestPluginSelector(final StringName name,
-                       final String text) {
+                       final String valueText) {
         this(
                 PluginSelector.with(
                         name,
-                        text
+                        valueText
                 )
         );
     }
@@ -81,15 +81,13 @@ final class TestPluginSelector implements PluginSelectorLike<StringName> {
                 new TestPluginSelector(this.pluginSelector.setName(name));
     }
 
-    @Override
-    public String text() {
-        return this.pluginSelector.text();
+    public String valueText() {
+        return this.pluginSelector.valueText();
     }
 
-    @Override
-    public TestPluginSelector setText(final String text) {
+    public TestPluginSelector setValueText(final String valueText) {
         return new TestPluginSelector(
-                this.pluginSelector.setText(text)
+                this.pluginSelector.setValueText(valueText)
         );
     }
 
@@ -99,6 +97,15 @@ final class TestPluginSelector implements PluginSelectorLike<StringName> {
     }
 
     private final PluginSelector<StringName> pluginSelector;
+
+    // HasText..........................................................................................................
+
+    @Override
+    public String text() {
+        return this.toString();
+    }
+
+    // TreePrintable....................................................................................................
 
     @Override
     public void printTree(final IndentingPrinter printer) {

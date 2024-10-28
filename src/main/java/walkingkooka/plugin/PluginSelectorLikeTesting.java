@@ -80,7 +80,7 @@ public interface PluginSelectorLikeTesting<S extends PluginSelectorLike<N>, N ex
         );
 
         this.nameAndCheck(selector, name);
-        this.textAndCheck(
+        this.valueTextAndCheck(
                 selector,
                 TEXT
         );
@@ -130,39 +130,39 @@ public interface PluginSelectorLikeTesting<S extends PluginSelectorLike<N>, N ex
                 different.name(),
                 "name"
         );
-        this.textAndCheck(
+        this.valueTextAndCheck(
                 selector,
                 TEXT
         );
     }
 
-    // setText..........................................................................................................
+    // setValueText.....................................................................................................
 
     @Test
-    default void testSetTextWithNullFails() {
+    default void testSetValueTextWithNullFails() {
         assertThrows(
                 NullPointerException.class,
                 () -> this.createPluginSelectorLike(
                         this.createName("name"),
                         TEXT
-                ).setText(null)
+                ).setValueText(null)
         );
     }
 
     @Test
-    default void testSetTextWithSame() {
+    default void testSetValueTextWithSame() {
         final S selector = this.createPluginSelectorLike(
                 this.createName("name"),
                 TEXT
         );
         assertSame(
                 selector,
-                selector.setText(TEXT)
+                selector.setValueText(TEXT)
         );
     }
 
     @Test
-    default void testSetTextWithSame2() {
+    default void testSetValueTextWithSame2() {
         final String text = "(\"Hello\")";
 
         final S selector = this.createPluginSelectorLike(
@@ -171,19 +171,19 @@ public interface PluginSelectorLikeTesting<S extends PluginSelectorLike<N>, N ex
         );
         assertSame(
                 selector,
-                selector.setText(text)
+                selector.setValueText(text)
         );
     }
 
     @Test
-    default void testSetTextWithDifferentText() {
+    default void testSetValueTextWithDifferentText() {
         final N name = this.createName("name");
         final S selector = this.createPluginSelectorLike(
                 name,
                 TEXT
         );
         final String differentText = "(\"Different\")";
-        final S different = (S) selector.setText(differentText);
+        final S different = (S) selector.setValueText(differentText);
 
         assertNotSame(
                 different,
@@ -193,13 +193,22 @@ public interface PluginSelectorLikeTesting<S extends PluginSelectorLike<N>, N ex
                 different,
                 name
         );
-        this.textAndCheck(
+        this.valueTextAndCheck(
                 different,
                 differentText
         );
-        this.textAndCheck(
+        this.valueTextAndCheck(
                 selector,
                 TEXT
+        );
+    }
+
+    default void valueTextAndCheck(final S selector,
+                                   final String expected) {
+        this.checkEquals(
+                expected,
+                selector.valueText(),
+                selector::toString
         );
     }
 
@@ -244,7 +253,7 @@ public interface PluginSelectorLikeTesting<S extends PluginSelectorLike<N>, N ex
                         )
                 )
         );
-        this.textAndCheck(
+        this.valueTextAndCheck(
                 different,
                 "(\"Hello1\", 1, nested2(\"Hello2\", 2))"
         );
@@ -341,7 +350,7 @@ public interface PluginSelectorLikeTesting<S extends PluginSelectorLike<N>, N ex
     // TreePrintable....................................................................................................
 
     @Test
-    default void testTreePrintWithoutText() {
+    default void testTreePrintWithoutValues() {
         this.treePrintAndCheck(
                 this.createPluginSelectorLike(
                         this.createName("abc123"),
@@ -352,7 +361,7 @@ public interface PluginSelectorLikeTesting<S extends PluginSelectorLike<N>, N ex
     }
 
     @Test
-    default void testTreePrintWithText() {
+    default void testTreePrintWithValues() {
         this.treePrintAndCheck(
                 this.createPluginSelectorLike(
                         this.createName("abc123"),
@@ -364,7 +373,7 @@ public interface PluginSelectorLikeTesting<S extends PluginSelectorLike<N>, N ex
     }
 
     S createPluginSelectorLike(final N name,
-                               final String text);
+                               final String valueText);
 
     N createName(final String name);
 
