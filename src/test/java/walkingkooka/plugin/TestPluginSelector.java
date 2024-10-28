@@ -81,10 +81,12 @@ final class TestPluginSelector implements PluginSelectorLike<StringName> {
                 new TestPluginSelector(this.pluginSelector.setName(name));
     }
 
+    @Override
     public String valueText() {
         return this.pluginSelector.valueText();
     }
 
+    @Override
     public TestPluginSelector setValueText(final String valueText) {
         return new TestPluginSelector(
                 this.pluginSelector.setValueText(valueText)
