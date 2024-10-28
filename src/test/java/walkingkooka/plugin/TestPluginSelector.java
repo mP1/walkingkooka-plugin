@@ -98,13 +98,6 @@ final class TestPluginSelector implements PluginSelectorLike<StringName> {
 
     private final PluginSelector<StringName> pluginSelector;
 
-    // HasText..........................................................................................................
-
-    @Override
-    public String text() {
-        return this.toString();
-    }
-
     // TreePrintable....................................................................................................
 
     @Override
