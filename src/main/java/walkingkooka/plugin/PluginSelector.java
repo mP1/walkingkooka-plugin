@@ -423,7 +423,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
             result = this.text.compareTo(other.text);
         }
 
-        return 0;
+        return result;
     }
 
     // Object...........................................................................................................

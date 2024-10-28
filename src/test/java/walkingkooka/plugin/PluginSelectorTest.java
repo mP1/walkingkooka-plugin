@@ -805,6 +805,50 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         );
     }
 
+    @Test
+    public void testCompareToDifferentName() {
+        final String text = "\"Hello\"";
+
+        this.compareToAndCheckLess(
+                PluginSelector.with(
+                        Names.string("a1"),
+                        text
+                ),
+                PluginSelector.with(
+                        Names.string("b2"),
+                        text
+                )
+        );
+    }
+
+    @Test
+    public void testCompareToDifferentValue() {
+        this.compareToAndCheckLess(
+                PluginSelector.with(
+                        NAME,
+                        "a1"
+                ),
+                PluginSelector.with(
+                        NAME,
+                        "b2"
+                )
+        );
+    }
+
+    @Test
+    public void testCompareToDifferentValueCaseImportant() {
+        this.compareToAndCheckLess(
+                PluginSelector.with(
+                        NAME,
+                        "A1"
+                ),
+                PluginSelector.with(
+                        NAME,
+                        "a"
+                )
+        );
+    }
+
     @Override
     public PluginSelector<StringName> createComparable() {
         return PluginSelector.with(
