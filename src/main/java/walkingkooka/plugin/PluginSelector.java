@@ -122,9 +122,9 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
     }
 
     private PluginSelector(final N name,
-                           final String text) {
+                           final String valueText) {
         this.name = name;
-        this.text = text;
+        this.valueText = valueText;
     }
 
     @Override
@@ -139,26 +139,26 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
                 this :
                 new PluginSelector<>(
                         name,
-                        text
+                        this.valueText
                 );
     }
 
     private final N name;
 
     /**
-     * Returns the text with no escaping.
+     * Returns the value as text with no escaping.
      */
-    @Override
-    public String text() {
-        return this.text;
+    public String valueText() {
+        return this.valueText;
     }
 
     /**
      * Would be setter that returns a {@link PluginSelector} with the given text creating a new instance if necessary.
      */
-    public PluginSelector<N> setText(final String text) {
+    public PluginSelector<N> setValueText(final String text) {
         Objects.requireNonNull(text, "text");
-        return this.text.equals(text) ?
+
+        return this.valueText.equals(text) ?
                 this :
                 new PluginSelector<>(
                         this.name,
@@ -166,7 +166,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
                 );
     }
 
-    private final String text;
+    private final String valueText;
 
     /**
      * Serializes the given values producing text. Only String, Double and PluginSelector values are supported.
@@ -212,7 +212,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
             if (value instanceof PluginSelectorLike) {
                 final PluginSelectorLike<?> pluginSelectorLike = (PluginSelectorLike<?>) value;
                 b.append(pluginSelectorLike.name())
-                        .append(pluginSelectorLike.text());
+                        .append(pluginSelectorLike.valueText());
                 continue;
             }
 
@@ -223,13 +223,15 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
             b.append(PluginExpressionParser.PARAMETER_END);
         }
 
-        return this.setText(b.toString());
+        return this.setValueText(
+                b.toString()
+        );
     }
 
-    // evaluateText...............................................................................................
+    // evaluateValueText................................................................................................
 
     /**
-     * Parses the {@link #text()} as an expression that contains an optional parameter list which may include
+     * Parses the {@link #valueText()} as an expression that contains an optional parameter list which may include
      * <ul>
      * <li>{@link PluginNameLike}</li>
      * <li>double literals including negative or leading minus signs.</li>
@@ -242,9 +244,9 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
      * </pre>
      * The <code>provider</code> will be used to fetch <code>plugin</code>> with any parameters.
      */
-    public <N extends Name & Comparable<N>, T> T evaluateText(final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                                              final PluginSelectorEvaluateTextProvider<N, T> provider,
-                                                              final ProviderContext context) {
+    public <N extends Name & Comparable<N>, T> T evaluateValueText(final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
+                                                                   final PluginSelectorEvaluateValueTextProvider<N, T> provider,
+                                                                   final ProviderContext context) {
         Objects.requireNonNull(nameParserAndFactory, "nameParserAndFactory");
         Objects.requireNonNull(provider, "provider");
         Objects.requireNonNull(context, "context");
@@ -265,7 +267,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
         }
 
         final PluginExpressionParser<N> parser = PluginExpressionParser.with(
-                this.text(),
+                this.valueText(),
                 nameParserAndFactory
         );
 
@@ -292,7 +294,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
      * Attempts to parse an optional plugin including its parameters which must be within parens.
      */
     private <N extends Name & Comparable<N>, T> Optional<T> parseNameAndParameters(final PluginExpressionParser<N> parser,
-                                                                                   final PluginSelectorEvaluateTextProvider<N, T> provider,
+                                                                                   final PluginSelectorEvaluateValueTextProvider<N, T> provider,
                                                                                    final ProviderContext context) {
         final Optional<N> name = parser.name();
 
@@ -321,7 +323,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
      * </pre>
      */
     private <N extends Name & Comparable<N>, T> List<Object> parseParameters(final PluginExpressionParser<N> parser,
-                                                                             final PluginSelectorEvaluateTextProvider<N, T> provider,
+                                                                             final PluginSelectorEvaluateValueTextProvider<N, T> provider,
                                                                              final ProviderContext context) {
         parser.spaces();
 
@@ -420,7 +422,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
         int result = this.name.compareTo(other.name);
 
         if(Comparators.EQUAL == result) {
-            result = this.text.compareTo(other.text);
+            result = this.valueText.compareTo(other.valueText);
         }
 
         return result;
@@ -432,7 +434,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
     public int hashCode() {
         return Objects.hash(
                 this.name,
-                this.text
+                this.valueText
         );
     }
 
@@ -444,23 +446,30 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
 
     private boolean equals0(final PluginSelector<?> other) {
         return this.name.equals(other.name) &&
-                this.text.equals(other.text);
+                this.valueText.equals(other.valueText);
     }
 
     /**
-     * Note it is intentional that the {@link #text()} is in it raw form, this is to ensure that {@link #parse(String, Function)}
+     * Note it is intentional that the {@link #valueText()} is in it raw form, this is to ensure that {@link #parse(String, Function)}
      * is able to successfully parse the string returned by {@link #toString()}.
      */
     @Override
     public String toString() {
         final String name = this.name.value();
-        final String text = this.text;
+        final String valueText = this.valueText;
 
-        return text.isEmpty() ?
+        return valueText.isEmpty() ?
                 name :
-                text.startsWith("(") ?
-                        name.concat(text) :
-                        name + " " + text;
+                valueText.startsWith("(") ?
+                        name.concat(valueText) :
+                        name + " " + valueText;
+    }
+
+    // HasText..........................................................................................................
+
+    @Override
+    public String text() {
+        return this.toString();
     }
 
     // TreePrintable....................................................................................................
@@ -469,12 +478,12 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
     public void printTree(final IndentingPrinter printer) {
         printer.println(this.name.toString());
 
-        final String text = this.text;
-        if (false == text.isEmpty()) {
+        final String valueText = this.valueText;
+        if (false == valueText.isEmpty()) {
             printer.indent();
             {
                 printer.println(
-                        CharSequences.quoteAndEscape(text)
+                        CharSequences.quoteAndEscape(valueText)
                 );
             }
             printer.outdent();

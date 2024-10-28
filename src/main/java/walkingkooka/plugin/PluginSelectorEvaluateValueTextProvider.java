@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Defines a call to the provider for the given parameters by {@link PluginSelector}.
  */
-public interface PluginSelectorEvaluateTextProvider<N extends Name, T> {
+public interface PluginSelectorEvaluateValueTextProvider<N extends Name, T> {
 
     T get(final N name,
           final List<?> values,

@@ -242,9 +242,9 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
             if (null != selector && null != otherSelector) {
                 result = selector.name().compareTo(otherSelector.name());
                 if (Comparators.EQUAL == result) {
-                    result = selector.text()
+                    result = selector.valueText()
                             .compareTo(
-                                    otherSelector.text()
+                                    otherSelector.valueText()
                             );
 
                     if (Comparators.EQUAL == result) {

@@ -257,7 +257,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                 ), // aliases
                                 Maps.of(
                                         NAME1_ALIAS,
-                                        SELECTOR1.setText("()")
+                                        SELECTOR1.setValueText("()")
                                 ), // alias -> selector
                                 Maps.empty(), // name -> name
                                 Sets.of(NAME1), // names
@@ -286,7 +286,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                 ), // aliases
                                 Maps.of(
                                         NAME1_ALIAS,
-                                        SELECTOR1.setText("( )")
+                                        SELECTOR1.setValueText("( )")
                                 ), // alias -> selector
                                 Maps.empty(), // name -> name
                                 Sets.of(NAME1), // names
@@ -315,7 +315,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                 ), // aliases
                                 Maps.of(
                                         NAME1_ALIAS,
-                                        SELECTOR1.setText("(999)")
+                                        SELECTOR1.setValueText("(999)")
                                 ), // alias -> selector
                                 Maps.empty(), // name -> name
                                 Sets.of(NAME1), // names
@@ -344,7 +344,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                 ), // aliases
                                 Maps.of(
                                         NAME1_ALIAS,
-                                        SELECTOR1.setText("(\"Hello\")")
+                                        SELECTOR1.setValueText("(\"Hello\")")
                                 ), // alias -> selector
                                 Maps.empty(), // name -> name
                                 Sets.of(NAME1), // names
@@ -373,7 +373,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                 ), // aliases
                                 Maps.of(
                                         NAME1_ALIAS,
-                                        SELECTOR1.setText("(888,$Magic,\"Hello\")")
+                                        SELECTOR1.setValueText("(888,$Magic,\"Hello\")")
                                 ), // alias -> selector
                                 Maps.empty(), // name -> name
                                 Sets.of(NAME1), // names
@@ -488,9 +488,9 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
                                 ), // aliases
                                 Maps.of(
                                         NAME1_ALIAS,
-                                        SELECTOR1.setText("(\"Hello111\")"),
+                                        SELECTOR1.setValueText("(\"Hello111\")"),
                                         NAME2_ALIAS,
-                                        SELECTOR2.setText("(\"Hello222\")")
+                                        SELECTOR2.setValueText("(\"Hello222\")")
                                 ), // alias -> selector
                                 Maps.empty(), // name -> name
                                 Sets.of(
