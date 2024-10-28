@@ -54,6 +54,13 @@ public interface PluginSelectorLike<N extends Name & Comparable<N>> extends HasN
      */
     PluginSelectorLike<N> setValues(final List<?> values);
 
+    // HasText..........................................................................................................
+
+    @Override
+    default String text() {
+        return this.toString();
+    }
+
     // HasUrlFragment...................................................................................................
 
     /**
