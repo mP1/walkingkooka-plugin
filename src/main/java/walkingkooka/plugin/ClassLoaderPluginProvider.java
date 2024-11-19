@@ -46,7 +46,7 @@ final class ClassLoaderPluginProvider {
 
         final Attributes attributes = manifest.getMainAttributes();
         final String className = attributes.getValue(PluginProviders.PLUGIN_PROVIDER_FACTORY);
-        if(null == className) {
+        if (null == className) {
             throw new IllegalArgumentException("Manifest missing entry " + CharSequences.quoteAndEscape(PluginProviders.PLUGIN_PROVIDER_FACTORY));
         }
 
@@ -57,9 +57,32 @@ final class ClassLoaderPluginProvider {
                     pluginProviderFactory.getDeclaredConstructor()
                             .newInstance();
         } catch (final NoSuchMethodException missing) {
-            throw new IllegalArgumentException("PluginProviderFactory " + CharSequences.quoteAndEscape(className) + " missing no args constructor");
+            // Manifest: plugin-provider-factory-className: "x.yZ" missing no args constructor
+            throw illegalArgumentException(
+                    className,
+                    "Missing no argument constructor",
+                    missing
+            );
         } catch (final IllegalAccessException | InvocationTargetException | InstantiationException cause) {
-            throw new IllegalArgumentException("Unable to create instanceof " + CharSequences.quoteAndEscape(className), cause);
+            throw illegalArgumentException(
+                    className,
+                    "Instance creation failed",
+                    cause
+            );
         }
+    }
+
+    private static IllegalArgumentException illegalArgumentException(final String className,
+                                                                     final String content,
+                                                                     final Throwable cause) {
+        return new IllegalArgumentException(
+                "Manifest " +
+                        PluginProviders.PLUGIN_PROVIDER_FACTORY +
+                        ": " +
+                        CharSequences.quoteAndEscape(className) +
+                        " " +
+                        content,
+                cause
+        );
     }
 }
