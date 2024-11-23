@@ -77,6 +77,7 @@ public final class Plugin implements HateosResource<Long> {
         this.timestamp = timestamp;
     }
 
+    @Override
     public Optional<Long> id() {
         return this.id;
     }
