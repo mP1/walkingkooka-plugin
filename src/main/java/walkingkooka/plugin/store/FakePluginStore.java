@@ -17,24 +17,11 @@
 
 package walkingkooka.plugin.store;
 
-import walkingkooka.reflect.PublicStaticHelper;
+import walkingkooka.store.FakeStore;
 
-/**
- * Contains numerous {@link PluginStore} implementations.
- */
-public final class PluginStores implements PublicStaticHelper {
+public class FakePluginStore extends FakeStore<Long, Plugin> implements PluginStore {
 
-    /**
-     * {@see FakePluginStore}
-     */
-    public static PluginStore fake() {
-        return new FakePluginStore();
-    }
-
-    /**
-     * Stop creation
-     */
-    private PluginStores() {
-        throw new UnsupportedOperationException();
+    public FakePluginStore() {
+        super();
     }
 }
