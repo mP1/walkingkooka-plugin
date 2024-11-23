@@ -25,6 +25,9 @@ import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.ClassName;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.tree.json.JsonNode;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
@@ -33,7 +36,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
         ToStringTesting<Plugin>,
-        ClassTesting<Plugin> {
+        ClassTesting<Plugin>,
+        JsonNodeMarshallingTesting<Plugin> {
 
     private final static Long ID = 123L;
 
@@ -309,7 +313,23 @@ public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
         );
     }
 
-    // ToString.........................................................................................................
+    // json.............................................................................................................
+
+    @Override
+    public Plugin createJsonNodeMarshallingValue() {
+        return this.createObject();
+    }
+
+    @Override
+    public Plugin unmarshall(final JsonNode json,
+                             final JsonNodeUnmarshallContext context) {
+        return Plugin.unmarshall(
+                json,
+                context
+        );
+    }
+
+    // class............................................................................................................
 
     @Override
     public Class<Plugin> type() {
