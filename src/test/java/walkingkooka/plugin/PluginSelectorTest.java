@@ -28,6 +28,7 @@ import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.naming.HasNameTesting;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
+import walkingkooka.naming.StringPath;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.test.ParseStringTesting;
@@ -302,6 +303,14 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     }
 
     // parse............................................................................................................
+
+    @Test
+    public void testParseStringFails() {
+        this.parseStringInvalidCharacterFails(
+                "hello/",
+                StringPath.SEPARATOR.character()
+        );
+    }
 
     @Test
     public void testParseStringName() {

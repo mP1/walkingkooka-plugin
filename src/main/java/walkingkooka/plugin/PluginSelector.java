@@ -97,14 +97,10 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
             textAfter = text.substring(startOfText);
         }
 
-        try {
-            return new PluginSelector<>(
-                    nameFactory.apply(nameText),
-                    textAfter
-            );
-        } catch (final InvalidCharacterException cause) {
-            throw cause.appendToMessage(" in " + CharSequences.quoteAndEscape(text));
-        }
+        return new PluginSelector<>(
+                nameFactory.apply(nameText),
+                textAfter
+        );
     }
 
     /**
