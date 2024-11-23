@@ -22,6 +22,7 @@ import walkingkooka.Binary;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.ToStringTesting;
 import walkingkooka.net.email.EmailAddress;
+import walkingkooka.net.http.server.hateos.HateosResourceTesting;
 import walkingkooka.reflect.ClassName;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
@@ -31,15 +32,17 @@ import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
         ToStringTesting<Plugin>,
         ClassTesting<Plugin>,
-        JsonNodeMarshallingTesting<Plugin> {
+        JsonNodeMarshallingTesting<Plugin>,
+        HateosResourceTesting<Plugin, Long> {
 
-    private final static Long ID = 123L;
+    private final static Optional<Long> ID = Optional.of(123L);
 
     private final static ClassName CLASS_NAME = ClassName.with("example.Plugin");
 
@@ -54,8 +57,23 @@ public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
     // with.............................................................................................................
 
     @Test
-    public void testWithNullId() {
-        final Long id = null;
+    public void testWithNullIdFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> Plugin.with(
+                        null,
+                        FILENAME,
+                        ARCHIVE,
+                        CLASS_NAME,
+                        USER,
+                        TIMESTAMP
+                )
+        );
+    }
+
+    @Test
+    public void testWithEmptyId() {
+        final Optional<Long> id = Optional.empty();
 
         final Plugin plugin = Plugin.with(
                 id,
@@ -196,13 +214,19 @@ public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
         this.checkEquals(TIMESTAMP, plugin.timestamp(), "timestamp");
     }
 
+
+    @Override
+    public Plugin createHateosResource() {
+        return this.createObject();
+    }
+
     // hashCode/equals..................................................................................................
 
     @Test
     public void testEqualsDifferentId() {
         this.checkNotEquals(
                 Plugin.with(
-                        999L,
+                        Optional.of(999L),
                         FILENAME,
                         ARCHIVE,
                         CLASS_NAME,
