@@ -23,6 +23,12 @@ import walkingkooka.ToStringBuilder;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.reflect.ClassName;
 import walkingkooka.text.CharSequences;
+import walkingkooka.tree.json.JsonNode;
+import walkingkooka.tree.json.JsonObject;
+import walkingkooka.tree.json.JsonPropertyName;
+import walkingkooka.tree.json.marshall.JsonNodeContext;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -145,5 +151,158 @@ public final class Plugin {
                 .value(this.user)
                 .value(this.timestamp)
                 .build();
+    }
+
+    // json.............................................................................................................
+
+    private JsonNode marshall(final JsonNodeMarshallContext context) {
+        JsonObject object = JsonNode.object();
+
+        final Long id = this.id;
+        if (null != id) {
+            object = object.set(
+                    ID_PROPERTY,
+                    JsonNode.string(
+                            String.valueOf(id)
+                    )
+            );
+        }
+
+        return object.set(
+                FILENAME_PROPERTY,
+                JsonNode.string(this.filename)
+        ).set(
+                ARCHIVE_PROPERTY,
+                context.marshall(this.archive)
+        ).set(
+                CLASSNAME_PROPERTY,
+                context.marshall(
+                        this.className.value()
+                )
+        ).set(
+                USER_PROPERTY,
+                context.marshall(this.user)
+        ).set(
+                TIMESTAMP_PROPERTY,
+                context.marshall(this.timestamp)
+        );
+    }
+
+    static Plugin unmarshall(final JsonNode node,
+                             final JsonNodeUnmarshallContext context) {
+        Long id = null;
+        String filename = null;
+        Binary archive = null;
+        ClassName className = null;
+        EmailAddress user = null;
+        LocalDateTime timestamp = null;
+
+        for (final JsonNode child : node.objectOrFail().children()) {
+            final JsonPropertyName name = child.name();
+            switch (name.value()) {
+                case ID_PROPERTY_STRING:
+                    id = context.unmarshall(
+                            child,
+                            Long.class
+                    );
+                    break;
+                case FILENAME_PROPERTY_STRING:
+                    filename = context.unmarshall(
+                            child,
+                            String.class
+                    );
+                    break;
+                case ARCHIVE_PROPERTY_STRING:
+                    archive = context.unmarshall(
+                            child,
+                            Binary.class
+                    );
+                    break;
+                case CLASSNAME_PROPERTY_STRING:
+                    className = ClassName.with(
+                            context.unmarshall(
+                                    child,
+                                    String.class
+                            )
+                    );
+                    break;
+                case USER_PROPERTY_STRING:
+                    user = context.unmarshall(
+                            child,
+                            EmailAddress.class
+                    );
+                    break;
+                case TIMESTAMP_PROPERTY_STRING:
+                    timestamp = context.unmarshall(
+                            child,
+                            LocalDateTime.class
+                    );
+                    break;
+                default:
+                    JsonNodeUnmarshallContext.unknownPropertyPresent(
+                            name,
+                            node
+                    );
+                    break;
+            }
+        }
+
+        if (null == filename) {
+            JsonNodeUnmarshallContext.requiredPropertyMissing(FILENAME_PROPERTY, node);
+        }
+        if (null == className) {
+            JsonNodeUnmarshallContext.requiredPropertyMissing(CLASSNAME_PROPERTY, node);
+        }
+        if (null == archive) {
+            JsonNodeUnmarshallContext.requiredPropertyMissing(ARCHIVE_PROPERTY, node);
+        }
+        if (null == user) {
+            JsonNodeUnmarshallContext.requiredPropertyMissing(USER_PROPERTY, node);
+        }
+        if (null == timestamp) {
+            JsonNodeUnmarshallContext.requiredPropertyMissing(TIMESTAMP_PROPERTY, node);
+        }
+
+        return Plugin.with(
+                id,
+                filename,
+                archive,
+                className,
+                user,
+                timestamp
+        );
+    }
+
+    private final static String ID_PROPERTY_STRING = "id";
+
+    private final static String FILENAME_PROPERTY_STRING = "filename";
+
+    private final static String CLASSNAME_PROPERTY_STRING = "className";
+
+    private final static String ARCHIVE_PROPERTY_STRING = "archive";
+
+    private final static String USER_PROPERTY_STRING = "user";
+
+    private final static String TIMESTAMP_PROPERTY_STRING = "timestamp";
+
+    final static JsonPropertyName ID_PROPERTY = JsonPropertyName.with(ID_PROPERTY_STRING);
+
+    final static JsonPropertyName FILENAME_PROPERTY = JsonPropertyName.with(FILENAME_PROPERTY_STRING);
+
+    final static JsonPropertyName CLASSNAME_PROPERTY = JsonPropertyName.with(CLASSNAME_PROPERTY_STRING);
+
+    final static JsonPropertyName ARCHIVE_PROPERTY = JsonPropertyName.with(ARCHIVE_PROPERTY_STRING);
+
+    final static JsonPropertyName USER_PROPERTY = JsonPropertyName.with(USER_PROPERTY_STRING);
+
+    final static JsonPropertyName TIMESTAMP_PROPERTY = JsonPropertyName.with(TIMESTAMP_PROPERTY_STRING);
+
+    static {
+        JsonNodeContext.register(
+                JsonNodeContext.computeTypeName(Plugin.class),
+                Plugin::unmarshall,
+                Plugin::marshall,
+                Plugin.class
+        );
     }
 }
