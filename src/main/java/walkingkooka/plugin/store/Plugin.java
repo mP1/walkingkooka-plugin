@@ -21,6 +21,7 @@ import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.ToStringBuilder;
 import walkingkooka.net.email.EmailAddress;
+import walkingkooka.net.http.server.hateos.HateosResource;
 import walkingkooka.reflect.ClassName;
 import walkingkooka.text.CharSequences;
 import walkingkooka.tree.json.JsonNode;
@@ -32,19 +33,20 @@ import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A plugin including its JAR file, and audit details of the original uploader.
  */
-public final class Plugin {
-    public static Plugin with(final Long id,
+public final class Plugin implements HateosResource<Long> {
+    public static Plugin with(final Optional<Long> id,
                               final String filename,
                               final Binary archive,
                               final ClassName className,
                               final EmailAddress user,
                               final LocalDateTime timestamp) {
         return new Plugin(
-                id,
+                Objects.requireNonNull(id, "id"),
                 CharSequences.failIfNullOrEmpty(filename, "filename"),
                 checkArchive(archive),
                 Objects.requireNonNull(className, "className"),
@@ -61,7 +63,7 @@ public final class Plugin {
         return archive;
     }
 
-    private Plugin(final Long id,
+    private Plugin(final Optional<Long> id,
                    final String filename,
                    final Binary archive,
                    final ClassName className,
@@ -75,11 +77,11 @@ public final class Plugin {
         this.timestamp = timestamp;
     }
 
-    public Long id() {
+    public Optional<Long> id() {
         return this.id;
     }
 
-    private final Long id;
+    private final Optional<Long> id;
 
     public String filename() {
         return this.filename;
@@ -111,6 +113,17 @@ public final class Plugin {
 
     private final LocalDateTime timestamp;
 
+    // HateosResourceId.................................................................................................
+
+    @Override
+    public String hateosLinkId() {
+        return CharSequences.nullToEmpty(
+                this.id()
+                        .map(Object::toString)
+                        .orElse(null)
+        ).toString();
+    }
+
     // Object..........................................................................................................
 
     @Override
@@ -133,7 +146,7 @@ public final class Plugin {
     }
 
     private boolean equals0(final Plugin other) {
-        return Objects.equals(this.id, other.id()) &&
+        return this.id.equals(other.id()) &&
                 this.filename.equals(other.filename()) &&
                 this.archive.equals(other.archive) &&
                 this.className.equals(other.className()) &&
@@ -158,7 +171,7 @@ public final class Plugin {
     private JsonNode marshall(final JsonNodeMarshallContext context) {
         JsonObject object = JsonNode.object();
 
-        final Long id = this.id;
+        final Long id = this.id.orElse(null);
         if (null != id) {
             object = object.set(
                     ID_PROPERTY,
@@ -264,7 +277,7 @@ public final class Plugin {
         }
 
         return Plugin.with(
-                id,
+                Optional.ofNullable(id),
                 filename,
                 archive,
                 className,
