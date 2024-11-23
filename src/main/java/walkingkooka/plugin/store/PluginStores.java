@@ -32,6 +32,13 @@ public final class PluginStores implements PublicStaticHelper {
     }
 
     /**
+     * {@see TreeMapPluginStore}
+     */
+    public static PluginStore treeMap() {
+        return TreeMapPluginStore.empty();
+    }
+
+    /**
      * Stop creation
      */
     private PluginStores() {
