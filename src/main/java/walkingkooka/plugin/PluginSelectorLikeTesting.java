@@ -19,7 +19,6 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
-import walkingkooka.InvalidCharacterException;
 import walkingkooka.ToStringTesting;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.naming.HasNameTesting;
@@ -306,10 +305,9 @@ public interface PluginSelectorLikeTesting<S extends PluginSelectorLike<N>, N ex
 
     @Test
     default void testParseInvalidNameFails() {
-        this.parseStringFails(
+        this.parseStringInvalidCharacterFails(
                 "A!34",
-                new InvalidCharacterException("A!34", 1)
-                        .appendToMessage(" in \"A!34\"")
+                '!'
         );
     }
 
