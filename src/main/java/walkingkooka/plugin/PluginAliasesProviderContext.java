@@ -22,13 +22,11 @@ import walkingkooka.environment.EnvironmentValueName;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * A {@link ProviderContext} that always returns a dummy value for any given {@link EnvironmentValueName}.
  * This is necessary because {@link PluginInfoSetParser} will attempt to resolve environment names into values when asked to consume a selector.
- * Validating values exist for any name is not a goal of {@link PluginAliases#parse(String, BiFunction, BiFunction, PluginInfoSetLike, Function)}.
+ * Validating values exist for any name is not a goal of {@link PluginAlias#parse(String, PluginHelper)}.
  */
 final class PluginAliasesProviderContext implements ProviderContext {
 
