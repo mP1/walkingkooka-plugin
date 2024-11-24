@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.plugin.store.PluginStore;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -28,14 +29,18 @@ import java.util.Optional;
  */
 final class BasicProviderContext implements ProviderContext {
 
-    static BasicProviderContext with(final EnvironmentContext environmentContext) {
+    static BasicProviderContext with(final EnvironmentContext environmentContext,
+                                     final PluginStore pluginStore) {
         return new BasicProviderContext(
-                Objects.requireNonNull(environmentContext, "environmentContext")
+                Objects.requireNonNull(environmentContext, "environmentContext"),
+                Objects.requireNonNull(pluginStore, "pluginStore")
         );
     }
 
-    private BasicProviderContext(final EnvironmentContext environmentContext) {
+    private BasicProviderContext(final EnvironmentContext environmentContext,
+                                 final PluginStore pluginStore) {
         this.environmentContext = environmentContext;
+        this.pluginStore = pluginStore;
     }
 
     @Override
@@ -44,6 +49,13 @@ final class BasicProviderContext implements ProviderContext {
     }
 
     private final EnvironmentContext environmentContext;
+
+    @Override
+    public PluginStore pluginStore() {
+        return this.pluginStore;
+    }
+
+    private final PluginStore pluginStore;
 
     @Override
     public String toString() {

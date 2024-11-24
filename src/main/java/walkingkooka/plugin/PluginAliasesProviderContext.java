@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import walkingkooka.Cast;
 import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.plugin.store.PluginStore;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -47,6 +48,11 @@ final class PluginAliasesProviderContext implements ProviderContext {
     }
 
     private final static Optional<?> DUMMY = Optional.of("Dummy");
+
+    @Override
+    public PluginStore pluginStore() {
+        throw new UnsupportedOperationException();
+    }
 
     @Override
     public String toString() {

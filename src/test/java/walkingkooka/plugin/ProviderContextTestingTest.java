@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.plugin.ProviderContextTestingTest.TestProviderContext;
+import walkingkooka.plugin.store.PluginStore;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -45,6 +46,11 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
         public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
             Objects.requireNonNull(name, "name");
 
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public PluginStore pluginStore() {
             throw new UnsupportedOperationException();
         }
 
