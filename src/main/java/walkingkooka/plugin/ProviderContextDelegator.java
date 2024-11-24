@@ -18,6 +18,7 @@
 package walkingkooka.plugin;
 
 import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.plugin.store.PluginStore;
 
 import java.util.Optional;
 
@@ -26,6 +27,12 @@ public interface ProviderContextDelegator extends ProviderContext {
     default <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
         return this.providerContext()
                 .environmentValue(name);
+    }
+
+    @Override
+    default PluginStore pluginStore() {
+        return this.providerContext()
+                .pluginStore();
     }
 
     ProviderContext providerContext();

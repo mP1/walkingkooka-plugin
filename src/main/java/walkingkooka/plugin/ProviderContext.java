@@ -18,9 +18,15 @@
 package walkingkooka.plugin;
 
 import walkingkooka.environment.EnvironmentContext;
+import walkingkooka.plugin.store.PluginStore;
 
 /**
  * A {@link walkingkooka.Context} that should be passed to all {@link Provider} public methods.
  */
 public interface ProviderContext extends EnvironmentContext {
+
+    /**
+     * A {@link PluginStore} holding plugins.
+     */
+    PluginStore pluginStore();
 }

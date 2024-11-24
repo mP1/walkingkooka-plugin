@@ -21,6 +21,8 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.FakeEnvironmentContext;
+import walkingkooka.plugin.store.PluginStore;
+import walkingkooka.plugin.store.PluginStores;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -46,11 +48,28 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         }
     };
 
+    private final static PluginStore PLUGIN_STORE = PluginStores.fake();
+
+
     @Test
     public void testWithNullEnvironmentContextFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> BasicProviderContext.with(null)
+                () -> BasicProviderContext.with(
+                        null,
+                        PLUGIN_STORE
+                )
+        );
+    }
+
+    @Test
+    public void testWithNullPluginStoreFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> BasicProviderContext.with(
+                        ENVIRONMENT_CONTEXT,
+                        null
+                )
         );
     }
 
@@ -73,9 +92,23 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         );
     }
 
+    // pluginStore.....................................................................................................
+
+    @Test
+    public void testPluginStore() {
+        this.pluginStoreAndCheck(
+                this.createContext(),
+                PLUGIN_STORE
+        );
+    }
+
+
     @Override
     public BasicProviderContext createContext() {
-        return BasicProviderContext.with(ENVIRONMENT_CONTEXT);
+        return BasicProviderContext.with(
+                ENVIRONMENT_CONTEXT,
+                PLUGIN_STORE
+        );
     }
 
     // toString.........................................................................................................
