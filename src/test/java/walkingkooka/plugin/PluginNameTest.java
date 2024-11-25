@@ -17,10 +17,36 @@
 
 package walkingkooka.plugin;
 
+import org.junit.jupiter.api.Test;
+import walkingkooka.InvalidCharacterException;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 final public class PluginNameTest implements PluginNameTesting<PluginName> {
+
+    @Test
+    public void testWithInitialSeparatorFails() {
+        assertThrows(
+                InvalidCharacterException.class,
+                () -> PluginName.with(
+                        PluginName.SEPARATOR + "Hello"
+                )
+        );
+    }
+
+    @Test
+    public void testWithIncludesSeparatorFails() {
+        assertThrows(
+                InvalidCharacterException.class,
+                () -> PluginName.with(
+                        "Hello" + PluginName.SEPARATOR + "123"
+                )
+        );
+    }
+
+    // Name.............................................................................................................
 
     @Override
     public PluginName createName(final String name) {

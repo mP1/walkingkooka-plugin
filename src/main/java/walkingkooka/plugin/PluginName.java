@@ -21,6 +21,7 @@ import walkingkooka.Cast;
 import walkingkooka.naming.Name;
 import walkingkooka.predicate.character.CharPredicate;
 import walkingkooka.predicate.character.CharPredicates;
+import walkingkooka.text.CharacterConstant;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
@@ -30,6 +31,11 @@ import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
  * The {@link Name} of a component. Note component names are case-sensitive.
  */
 final public class PluginName implements PluginNameLike<PluginName> {
+
+    /**
+     * Separator character that is itself an illegal character within a {@link PluginName} and may be used to form a range.
+     */
+    public final static CharacterConstant SEPARATOR = CharacterConstant.with(':');
 
     public static boolean isChar(final int pos,
                                  final char c) {
