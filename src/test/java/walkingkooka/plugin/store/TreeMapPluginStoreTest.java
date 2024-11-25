@@ -19,13 +19,15 @@ package walkingkooka.plugin.store;
 
 import walkingkooka.Binary;
 import walkingkooka.net.email.EmailAddress;
+import walkingkooka.plugin.PluginName;
 import walkingkooka.reflect.ClassName;
 
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public final class TreeMapPluginStoreTest implements PluginStoreTesting<TreeMapPluginStore> {
+
+    private final static PluginName PLUGIN_NAME = PluginName.with("TestPlugin123");
 
     @Override
     public void testAddSaveWatcherAndSaveTwiceFiresOnce() {
@@ -38,14 +40,14 @@ public final class TreeMapPluginStoreTest implements PluginStoreTesting<TreeMapP
     }
 
     @Override
-    public Long id() {
-        return 1L;
+    public PluginName id() {
+        return PLUGIN_NAME;
     }
 
     @Override
     public Plugin value() {
         return Plugin.with(
-                Optional.empty(),
+                PLUGIN_NAME,
                 "example.jar",
                 Binary.with("Hello".getBytes(Charset.defaultCharset())),
                 ClassName.with("example.Plugin"),

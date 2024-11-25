@@ -20,12 +20,13 @@ package walkingkooka.plugin.store;
 import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.ToStringBuilder;
+import walkingkooka.naming.HasName;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.net.http.server.hateos.HateosResource;
+import walkingkooka.plugin.PluginName;
 import walkingkooka.reflect.ClassName;
 import walkingkooka.text.CharSequences;
 import walkingkooka.tree.json.JsonNode;
-import walkingkooka.tree.json.JsonObject;
 import walkingkooka.tree.json.JsonPropertyName;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
@@ -38,15 +39,17 @@ import java.util.Optional;
 /**
  * A plugin including its JAR file, and audit details of the original uploader.
  */
-public final class Plugin implements HateosResource<Long> {
-    public static Plugin with(final Optional<Long> id,
+public final class Plugin implements HateosResource<PluginName>,
+        HasName<PluginName> {
+
+    public static Plugin with(final PluginName name,
                               final String filename,
                               final Binary archive,
                               final ClassName className,
                               final EmailAddress user,
                               final LocalDateTime timestamp) {
         return new Plugin(
-                Objects.requireNonNull(id, "id"),
+                Objects.requireNonNull(name, "name"),
                 CharSequences.failIfNullOrEmpty(filename, "filename"),
                 checkArchive(archive),
                 Objects.requireNonNull(className, "className"),
@@ -63,26 +66,25 @@ public final class Plugin implements HateosResource<Long> {
         return archive;
     }
 
-    private Plugin(final Optional<Long> id,
+    private Plugin(final PluginName name,
                    final String filename,
                    final Binary archive,
                    final ClassName className,
                    final EmailAddress user,
                    final LocalDateTime timestamp) {
-        this.id = id;
+        this.name = name;
         this.filename = filename;
         this.archive = archive;
         this.className = className;
         this.user = user;
         this.timestamp = timestamp;
     }
-
-    @Override
-    public Optional<Long> id() {
-        return this.id;
+    
+    public PluginName name() {
+        return this.name;
     }
 
-    private final Optional<Long> id;
+    private final PluginName name;
 
     public String filename() {
         return this.filename;
@@ -117,12 +119,15 @@ public final class Plugin implements HateosResource<Long> {
     // HateosResourceId.................................................................................................
 
     @Override
+    public Optional<PluginName> id() {
+        return Optional.of(
+                this.name()
+        );
+    }
+
+    @Override
     public String hateosLinkId() {
-        return CharSequences.nullToEmpty(
-                this.id()
-                        .map(Object::toString)
-                        .orElse(null)
-        ).toString();
+        return this.name().toString();
     }
 
     // Object..........................................................................................................
@@ -130,7 +135,7 @@ public final class Plugin implements HateosResource<Long> {
     @Override
     public int hashCode() {
         return Objects.hash(
-                this.id,
+                this.name,
                 this.filename,
                 this.archive,
                 this.className,
@@ -147,7 +152,7 @@ public final class Plugin implements HateosResource<Long> {
     }
 
     private boolean equals0(final Plugin other) {
-        return this.id.equals(other.id()) &&
+        return this.name.equals(other.name()) &&
                 this.filename.equals(other.filename()) &&
                 this.archive.equals(other.archive) &&
                 this.className.equals(other.className()) &&
@@ -158,8 +163,7 @@ public final class Plugin implements HateosResource<Long> {
     @Override
     public String toString() {
         return ToStringBuilder.empty()
-                .label("id")
-                .value(this.id)
+                .value(this.name)
                 .value(this.filename)
                 .value(this.className)
                 .value(this.user)
@@ -170,19 +174,11 @@ public final class Plugin implements HateosResource<Long> {
     // json.............................................................................................................
 
     private JsonNode marshall(final JsonNodeMarshallContext context) {
-        JsonObject object = JsonNode.object();
-
-        final Long id = this.id.orElse(null);
-        if (null != id) {
-            object = object.set(
-                    ID_PROPERTY,
-                    JsonNode.string(
-                            String.valueOf(id)
-                    )
-            );
-        }
-
-        return object.set(
+        return JsonNode.object()
+                .set(
+                NAME_PROPERTY,
+                context.marshall(this.name)
+        ).set(
                 FILENAME_PROPERTY,
                 JsonNode.string(this.filename)
         ).set(
@@ -204,7 +200,7 @@ public final class Plugin implements HateosResource<Long> {
 
     static Plugin unmarshall(final JsonNode node,
                              final JsonNodeUnmarshallContext context) {
-        Long id = null;
+        PluginName pluginName = null;
         String filename = null;
         Binary archive = null;
         ClassName className = null;
@@ -214,10 +210,10 @@ public final class Plugin implements HateosResource<Long> {
         for (final JsonNode child : node.objectOrFail().children()) {
             final JsonPropertyName name = child.name();
             switch (name.value()) {
-                case ID_PROPERTY_STRING:
-                    id = context.unmarshall(
+                case NAME_PROPERTY_STRING:
+                    pluginName = context.unmarshall(
                             child,
-                            Long.class
+                            PluginName.class
                     );
                     break;
                 case FILENAME_PROPERTY_STRING:
@@ -261,6 +257,9 @@ public final class Plugin implements HateosResource<Long> {
             }
         }
 
+        if (null == pluginName) {
+            JsonNodeUnmarshallContext.requiredPropertyMissing(NAME_PROPERTY, node);
+        }
         if (null == filename) {
             JsonNodeUnmarshallContext.requiredPropertyMissing(FILENAME_PROPERTY, node);
         }
@@ -278,7 +277,7 @@ public final class Plugin implements HateosResource<Long> {
         }
 
         return Plugin.with(
-                Optional.ofNullable(id),
+                pluginName,
                 filename,
                 archive,
                 className,
@@ -287,7 +286,7 @@ public final class Plugin implements HateosResource<Long> {
         );
     }
 
-    private final static String ID_PROPERTY_STRING = "id";
+    private final static String NAME_PROPERTY_STRING = "name";
 
     private final static String FILENAME_PROPERTY_STRING = "filename";
 
@@ -299,7 +298,7 @@ public final class Plugin implements HateosResource<Long> {
 
     private final static String TIMESTAMP_PROPERTY_STRING = "timestamp";
 
-    final static JsonPropertyName ID_PROPERTY = JsonPropertyName.with(ID_PROPERTY_STRING);
+    final static JsonPropertyName NAME_PROPERTY = JsonPropertyName.with(NAME_PROPERTY_STRING);
 
     final static JsonPropertyName FILENAME_PROPERTY = JsonPropertyName.with(FILENAME_PROPERTY_STRING);
 
