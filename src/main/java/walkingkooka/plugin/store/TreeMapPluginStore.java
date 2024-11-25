@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin.store;
 
+import walkingkooka.plugin.PluginName;
 import walkingkooka.store.Store;
 import walkingkooka.store.Stores;
 
@@ -34,29 +35,18 @@ final class TreeMapPluginStore implements PluginStore {
 
     private TreeMapPluginStore() {
         this.store = Stores.treeMap(
-                Comparator.<Long>naturalOrder(),
+                Comparator.naturalOrder(),
                 TreeMapPluginStore::idSetter
         );
     }
 
-    private static Plugin idSetter(final Long id,
+    private static Plugin idSetter(final PluginName id,
                                    final Plugin plugin) {
-        return Plugin.with(
-                Optional.of(
-                        null == id ?
-                                1L :
-                                id
-                ),
-                plugin.filename(),
-                plugin.archive(),
-                plugin.className(),
-                plugin.user(),
-                plugin.timestamp()
-        );
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public Optional<Plugin> load(final Long id) {
+    public Optional<Plugin> load(final PluginName id) {
         return this.store.load(id);
     }
 
@@ -71,12 +61,12 @@ final class TreeMapPluginStore implements PluginStore {
     }
 
     @Override
-    public void delete(final Long id) {
+    public void delete(final PluginName id) {
         this.store.delete(id);
     }
 
     @Override
-    public Runnable addDeleteWatcher(final Consumer<Long> watcher) {
+    public Runnable addDeleteWatcher(final Consumer<PluginName> watcher) {
         return this.store.addDeleteWatcher(watcher);
     }
 
@@ -86,7 +76,7 @@ final class TreeMapPluginStore implements PluginStore {
     }
 
     @Override
-    public Set<Long> ids(final int from,
+    public Set<PluginName> ids(final int from,
                          final int count) {
         return this.store.ids(
                 from,
@@ -104,15 +94,15 @@ final class TreeMapPluginStore implements PluginStore {
     }
 
     @Override
-    public List<Plugin> between(final Long from,
-                                final Long to) {
+    public List<Plugin> between(final PluginName from,
+                                final PluginName to) {
         return this.store.between(
                 from,
                 to
         );
     }
 
-    private final Store<Long, Plugin> store;
+    private final Store<PluginName, Plugin> store;
 
     @Override
     public String toString() {

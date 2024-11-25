@@ -17,9 +17,10 @@
 
 package walkingkooka.plugin.store;
 
+import walkingkooka.plugin.PluginName;
 import walkingkooka.store.FakeStore;
 
-public class FakePluginStore extends FakeStore<Long, Plugin> implements PluginStore {
+public class FakePluginStore extends FakeStore<PluginName, Plugin> implements PluginStore {
 
     public FakePluginStore() {
         super();

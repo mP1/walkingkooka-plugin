@@ -17,7 +17,8 @@
 
 package walkingkooka.plugin.store;
 
+import walkingkooka.plugin.PluginName;
 import walkingkooka.store.StoreTesting;
 
-public interface PluginStoreTesting<T extends PluginStore> extends StoreTesting<T, Long, Plugin> {
+public interface PluginStoreTesting<T extends PluginStore> extends StoreTesting<T, PluginName, Plugin> {
 }
