@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.Binary;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.ToStringTesting;
+import walkingkooka.compare.ComparableTesting2;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.net.http.server.hateos.HateosResourceTesting;
 import walkingkooka.plugin.PluginName;
@@ -38,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
         ToStringTesting<Plugin>,
+        ComparableTesting2<Plugin>,
         ClassTesting<Plugin>,
         JsonNodeMarshallingTesting<Plugin>,
         HateosResourceTesting<Plugin, PluginName> {
@@ -197,6 +199,52 @@ public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
 
     @Override
     public Plugin createHateosResource() {
+        return this.createObject();
+    }
+
+    // Comparable.......................................................................................................
+
+    @Test
+    public void testCompareSort() {
+        final Plugin a1 = Plugin.with(
+                PluginName.with("A1"),
+                FILENAME,
+                ARCHIVE,
+                CLASS_NAME,
+                USER,
+                TIMESTAMP
+        );
+
+        final Plugin b2 = Plugin.with(
+                PluginName.with("B2"),
+                FILENAME,
+                ARCHIVE,
+                CLASS_NAME,
+                USER,
+                TIMESTAMP
+        );
+
+        final Plugin c3 = Plugin.with(
+                PluginName.with("C3"),
+                FILENAME,
+                ARCHIVE,
+                CLASS_NAME,
+                USER,
+                TIMESTAMP
+        );
+
+        this.compareToArraySortAndCheck(
+                c3,
+                a1,
+                b2,
+                a1,
+                b2,
+                c3
+        );
+    }
+
+    @Override
+    public Plugin createComparable() {
         return this.createObject();
     }
 

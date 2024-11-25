@@ -38,8 +38,11 @@ import java.util.Optional;
 
 /**
  * A plugin including its JAR file, and audit details of the original uploader.
+ * <br>
+ * Note {@link Comparable#compareTo(Object)} only uses the {@link #name(), ignoring all other properties.
  */
 public final class Plugin implements HateosResource<PluginName>,
+        Comparable<Plugin>,
         HasName<PluginName> {
 
     public static Plugin with(final PluginName name,
@@ -128,6 +131,13 @@ public final class Plugin implements HateosResource<PluginName>,
     @Override
     public String hateosLinkId() {
         return this.name().toString();
+    }
+
+    // Comparable.......................................................................................................
+
+    @Override
+    public int compareTo(final Plugin plugin) {
+        return this.name.compareTo(plugin.name);
     }
 
     // Object..........................................................................................................
