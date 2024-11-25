@@ -82,7 +82,8 @@ public final class Plugin implements HateosResource<PluginName>,
         this.user = user;
         this.timestamp = timestamp;
     }
-    
+
+    @Override
     public PluginName name() {
         return this.name;
     }
