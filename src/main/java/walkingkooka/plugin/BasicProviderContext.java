@@ -18,16 +18,15 @@
 package walkingkooka.plugin;
 
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.plugin.store.PluginStore;
 
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * A {@link ProviderContext} that delegates to a {@link EnvironmentContext}.
  */
-final class BasicProviderContext implements ProviderContext {
+final class BasicProviderContext implements ProviderContext, EnvironmentContextDelegator {
 
     static BasicProviderContext with(final EnvironmentContext environmentContext,
                                      final PluginStore pluginStore) {
@@ -44,8 +43,8 @@ final class BasicProviderContext implements ProviderContext {
     }
 
     @Override
-    public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
-        return this.environmentContext.environmentValue(name);
+    public EnvironmentContext environmentContext() {
+        return this.environmentContext;
     }
 
     private final EnvironmentContext environmentContext;
