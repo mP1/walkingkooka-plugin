@@ -17,16 +17,16 @@
 
 package walkingkooka.plugin;
 
-import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.environment.EnvironmentContext;
+import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.plugin.store.PluginStore;
 
-import java.util.Optional;
+public interface ProviderContextDelegator extends ProviderContext,
+        EnvironmentContextDelegator {
 
-public interface ProviderContextDelegator extends ProviderContext {
     @Override
-    default <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
-        return this.providerContext()
-                .environmentValue(name);
+    default EnvironmentContext environmentContext() {
+        return this.providerContext();
     }
 
     @Override
