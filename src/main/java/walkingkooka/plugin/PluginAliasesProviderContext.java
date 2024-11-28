@@ -21,6 +21,7 @@ import walkingkooka.Cast;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.plugin.store.PluginStore;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -48,6 +49,11 @@ final class PluginAliasesProviderContext implements ProviderContext {
     }
 
     private final static Optional<?> DUMMY = Optional.of("Dummy");
+
+    @Override
+    public LocalDateTime now() {
+        throw new UnsupportedOperationException();
+    }
 
     @Override
     public PluginStore pluginStore() {
