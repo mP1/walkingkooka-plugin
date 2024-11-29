@@ -24,6 +24,7 @@ import walkingkooka.text.CharSequences;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
@@ -34,25 +35,58 @@ import java.util.jar.Manifest;
 public final class PluginArchiveManifest {
 
     /**
+     * The path within a JAR file to the MANIFEST.MF file.
+     */
+    public final static String MANIFEST_MF_PATH = "META-INF/MANIFEST.MF";
+
+    public final static String PLUGIN_NAME = "plugin-name";
+
+    public final static String PLUGIN_PROVIDER_FACTORY_CLASSNAME = "plugin-provider-factory-className";
+
+    /**
      * Factory that creates a {@link PluginArchiveManifest}.
      */
     public static PluginArchiveManifest with(final Manifest manifest) throws IOException {
         Objects.requireNonNull(manifest, "manifest");
 
         final Attributes attributes = manifest.getMainAttributes();
-        final String className = attributes.getValue(PluginProviders.PLUGIN_PROVIDER_FACTORY);
-        if (null == className) {
-            throw new IllegalArgumentException("Manifest missing entry " + CharSequences.quoteAndEscape(PluginProviders.PLUGIN_PROVIDER_FACTORY));
-        }
 
         return new PluginArchiveManifest(
-                ClassName.with(className)
+                attribute(
+                        attributes,
+                        PLUGIN_NAME,
+                        PluginName::with
+                ),
+                attribute(
+                        attributes,
+                        PLUGIN_PROVIDER_FACTORY_CLASSNAME,
+                        ClassName::with
+                )
         );
     }
 
-    private PluginArchiveManifest(final ClassName className) {
+    private static <T> T attribute(final Attributes attributes,
+                                   final String name,
+                                   final Function<String, T> parser) {
+        final String value = attributes.getValue(name);
+        if (null == value) {
+            throw new IllegalArgumentException("Manifest missing entry " + CharSequences.quoteAndEscape(name));
+        }
+
+        return parser.apply(value);
+    }
+
+    private PluginArchiveManifest(final PluginName pluginName,
+                                  final ClassName className) {
+        this.pluginName = pluginName;
         this.className = className;
     }
+
+    public PluginName pluginName() {
+        return this.pluginName;
+    }
+
+    private final PluginName pluginName;
 
     public ClassName className() {
         return this.className;
@@ -61,11 +95,12 @@ public final class PluginArchiveManifest {
     ;
     private ClassName className;
 
-    // HashCodeEqualsDefined..........................................................................................
+    // hashCode/equals..................................................................................................
 
     @Override
     public int hashCode() {
         return Objects.hash(
+                this.pluginName,
                 this.className
         );
     }
@@ -78,11 +113,12 @@ public final class PluginArchiveManifest {
     }
 
     private boolean equals0(final PluginArchiveManifest other) {
-        return this.className.equals(other.className());
+        return this.pluginName.equals(other.pluginName) &&
+                this.className.equals(other.className());
     }
 
     @Override
     public String toString() {
-        return this.className.toString();
+        return this.pluginName + " " + this.className;
     }
 }

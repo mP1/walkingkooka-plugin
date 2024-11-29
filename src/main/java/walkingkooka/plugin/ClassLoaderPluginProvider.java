@@ -40,9 +40,9 @@ final class ClassLoaderPluginProvider {
             ClassNotFoundException {
         Objects.requireNonNull(classLoader, "classLoader");
 
-        final InputStream inputStream = classLoader.getResourceAsStream(PluginProviders.MANIFEST_MF_PATH);
+        final InputStream inputStream = classLoader.getResourceAsStream(PluginArchiveManifest.MANIFEST_MF_PATH);
         if (null == inputStream) {
-            throw new IOException("Missing " + PluginProviders.MANIFEST_MF_PATH);
+            throw new IOException("Missing " + PluginArchiveManifest.MANIFEST_MF_PATH);
         }
 
         final Manifest manifest = new Manifest();
@@ -78,7 +78,7 @@ final class ClassLoaderPluginProvider {
                                                                      final Throwable cause) {
         return new IllegalArgumentException(
                 "Manifest " +
-                        PluginProviders.PLUGIN_PROVIDER_FACTORY +
+                        PluginArchiveManifest.PLUGIN_PROVIDER_FACTORY_CLASSNAME +
                         ": " +
                         CharSequences.quoteAndEscape(className) +
                         " " +
