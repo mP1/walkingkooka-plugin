@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin;
 
+import javaemul.internal.annotations.GwtIncompatible;
 import walkingkooka.text.CharSequences;
 
 import java.io.IOException;
@@ -29,6 +30,7 @@ import java.util.jar.Manifest;
 /**
  * A factory that creates a {@link PluginProvider} from the given {@link ClassLoader} which is assumed to contain a JAR file.
  */
+@GwtIncompatible
 final class ClassLoaderPluginProvider {
 
     /**
