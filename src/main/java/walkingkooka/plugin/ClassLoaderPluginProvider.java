@@ -26,6 +26,9 @@ import java.util.Objects;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+/**
+ * A factory that creates a {@link PluginProvider} from the given {@link ClassLoader} which is assumed to contain a JAR file.
+ */
 final class ClassLoaderPluginProvider {
 
     /**
