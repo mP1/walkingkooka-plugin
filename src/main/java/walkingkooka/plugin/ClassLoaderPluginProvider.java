@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
-import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
 /**
@@ -49,12 +48,9 @@ final class ClassLoaderPluginProvider {
         final Manifest manifest = new Manifest();
         manifest.read(inputStream);
 
-        final Attributes attributes = manifest.getMainAttributes();
-        final String className = attributes.getValue(PluginProviders.PLUGIN_PROVIDER_FACTORY);
-        if (null == className) {
-            throw new IllegalArgumentException("Manifest missing entry " + CharSequences.quoteAndEscape(PluginProviders.PLUGIN_PROVIDER_FACTORY));
-        }
-
+        final PluginArchiveManifest pluginArchiveManifest = PluginArchiveManifest.with(manifest);
+        final String className = pluginArchiveManifest.className()
+                .value();
         final Class<?> pluginProviderFactory = classLoader.loadClass(className);
 
         try {
