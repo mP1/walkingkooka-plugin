@@ -39,10 +39,23 @@ public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTes
     }
 
     @Test
-    public void testWithManifestMissingPluginProviderFactoryClassNameFails() {
+    public void testWithManifestMissingPluginNameFails() {
         final IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
                 () -> this.createPluginArchiveManifest("")
+        );
+
+        this.checkEquals(
+                "Manifest missing entry \"plugin-name\"",
+                thrown.getMessage()
+        );
+    }
+
+    @Test
+    public void testWithManifestMissingPluginProviderFactoryClassNameFails() {
+        final IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> this.createPluginArchiveManifest("plugin-name: TestPlugin123\n")
         );
 
         this.checkEquals(
@@ -64,13 +77,19 @@ public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTes
     @Test
     public void testEqualsDifferentClassName() {
         this.checkNotEquals(
-                this.createPluginArchiveManifest("plugin-provider-factory-className: example.DifferentPluginProvider\n")
+                this.createPluginArchiveManifest(
+                        "plugin-name: TestPlugin123\n" +
+                                "plugin-provider-factory-className: example.DifferentPluginProvider\n"
+                )
         );
     }
 
     @Override
     public PluginArchiveManifest createObject() {
-        return this.createPluginArchiveManifest("plugin-provider-factory-className: example.TestPluginProvider123\n");
+        return this.createPluginArchiveManifest(
+                "plugin-name: TestPlugin123\n" +
+                        "plugin-provider-factory-className: example.TestPluginProvider123\n"
+        );
     }
 
     private PluginArchiveManifest createPluginArchiveManifest(final String content) {

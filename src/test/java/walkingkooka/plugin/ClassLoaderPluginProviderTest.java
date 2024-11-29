@@ -103,9 +103,11 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
                             testPluginProviderClass,
                             testPluginImplClassName,
                             testPluginImplClass,
-                            PluginProviders.MANIFEST_MF_PATH,
-                            ("plugin-provider-factory-className: walkingkooka.plugin.ClassLoaderPluginProviderTest$TestPluginProviderImpl\n")
-                                    .getBytes(StandardCharsets.UTF_8)
+                            PluginArchiveManifest.MANIFEST_MF_PATH,
+                            (
+                                    "plugin-name: TestPlugin123\n" +
+                                    "plugin-provider-factory-className: walkingkooka.plugin.ClassLoaderPluginProviderTest$TestPluginProviderImpl\n"
+                            ).getBytes(StandardCharsets.UTF_8)
                     )
             );
 
