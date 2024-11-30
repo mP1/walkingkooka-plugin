@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin.store;
 
+import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.plugin.ProviderContext;
 import walkingkooka.plugin.ProviderContextDelegator;
@@ -48,7 +49,8 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
         public ProviderContext providerContext() {
             return ProviderContexts.basic(
                     EnvironmentContexts.empty(
-                            LocalDateTime::now
+                            LocalDateTime::now,
+                            EnvironmentContext.ANONYMOUS
                     ),
                     PluginStores.treeMap()
             );
