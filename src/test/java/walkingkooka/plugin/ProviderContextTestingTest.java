@@ -17,9 +17,12 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.ProviderContextTestingTest.TestProviderContext;
 import walkingkooka.plugin.store.PluginStore;
+import walkingkooka.plugin.store.PluginStores;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -52,12 +55,17 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
 
         @Override
         public LocalDateTime now() {
-            throw new UnsupportedOperationException();
+            return LocalDateTime.now();
+        }
+
+        @Override
+        public Optional<EmailAddress> user() {
+            return EnvironmentContext.ANONYMOUS;
         }
 
         @Override
         public PluginStore pluginStore() {
-            throw new UnsupportedOperationException();
+            return PluginStores.fake();
         }
 
         @Override

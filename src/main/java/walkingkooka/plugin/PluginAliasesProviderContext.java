@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import walkingkooka.Cast;
 import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
 
 import java.time.LocalDateTime;
@@ -57,6 +58,11 @@ final class PluginAliasesProviderContext implements ProviderContext {
 
     @Override
     public PluginStore pluginStore() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Optional<EmailAddress> user() {
         throw new UnsupportedOperationException();
     }
 
