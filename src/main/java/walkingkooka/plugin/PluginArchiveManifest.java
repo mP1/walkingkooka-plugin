@@ -17,7 +17,6 @@
 
 package walkingkooka.plugin;
 
-import javaemul.internal.annotations.GwtIncompatible;
 import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.reflect.ClassName;
@@ -32,7 +31,6 @@ import java.util.jar.Manifest;
 /**
  * Abstraction around a plugin {@link Manifest} verifying it is complete, complaining about missing required entries.
  */
-@GwtIncompatible
 public final class PluginArchiveManifest {
 
     /**
