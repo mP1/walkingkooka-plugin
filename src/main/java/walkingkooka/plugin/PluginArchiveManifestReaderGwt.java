@@ -17,13 +17,11 @@
 
 package walkingkooka.plugin;
 
-import javaemul.internal.annotations.GwtIncompatible;
 import walkingkooka.Binary;
 import walkingkooka.reflect.StaticHelper;
 
 abstract class PluginArchiveManifestReaderGwt implements StaticHelper {
 
-    @GwtIncompatible
     static PluginArchiveManifest fromArchive(final Binary archive) {
         throw new UnsupportedOperationException();
     }
