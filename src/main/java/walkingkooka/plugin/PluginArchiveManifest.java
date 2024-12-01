@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin;
 
+import javaemul.internal.annotations.GwtIncompatible;
 import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.reflect.ClassName;
@@ -49,6 +50,7 @@ public final class PluginArchiveManifest {
     /**
      * Factory that creates a {@link PluginArchiveManifest}.
      */
+    @GwtIncompatible
     public static PluginArchiveManifest fromManifest(final Manifest manifest) throws IOException {
         Objects.requireNonNull(manifest, "manifest");
 
@@ -68,6 +70,7 @@ public final class PluginArchiveManifest {
         );
     }
 
+    @GwtIncompatible
     private static <T> T attribute(final Attributes attributes,
                                    final String name,
                                    final Function<String, T> parser) {
