@@ -20,9 +20,16 @@ package walkingkooka.plugin;
 import walkingkooka.Binary;
 import walkingkooka.reflect.StaticHelper;
 
+import java.io.IOException;
+import java.util.jar.Manifest;
+
 abstract class PluginArchiveManifestReaderGwt implements StaticHelper {
 
     static PluginArchiveManifest fromArchive(final Binary archive) {
+        throw new UnsupportedOperationException();
+    }
+
+    static PluginArchiveManifest fromManifest(final Manifest manifest) throws IOException {
         throw new UnsupportedOperationException();
     }
 
