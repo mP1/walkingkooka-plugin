@@ -19,11 +19,14 @@ package walkingkooka.plugin;
 
 import javaemul.internal.annotations.GwtIncompatible;
 import walkingkooka.Binary;
+import walkingkooka.reflect.ClassName;
 import walkingkooka.text.CharSequences;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 
@@ -45,11 +48,42 @@ final class PluginArchiveManifestReader extends PluginArchiveManifestReaderGwt {
                 throw new IllegalArgumentException("Archive missing " + CharSequences.quoteAndEscape(PluginArchiveManifest.MANIFEST_MF_PATH));
             }
 
-            return PluginArchiveManifest.with(manifest);
+            return PluginArchiveManifest.fromManifest(manifest);
         } catch (final IOException cause) {
             cause.printStackTrace();
             throw new IllegalArgumentException(cause);
         }
+    }
+
+    @GwtIncompatible
+    public static PluginArchiveManifest fromManifest(final Manifest manifest) throws IOException {
+        Objects.requireNonNull(manifest, "manifest");
+
+        final Attributes attributes = manifest.getMainAttributes();
+
+        return PluginArchiveManifest.with(
+                attribute(
+                        attributes,
+                        PluginArchiveManifest.PLUGIN_NAME,
+                        PluginName::with
+                ),
+                attribute(
+                        attributes,
+                        PluginArchiveManifest.PLUGIN_PROVIDER_FACTORY_CLASSNAME,
+                        ClassName::with
+                )
+        );
+    }
+
+    private static <T> T attribute(final Attributes attributes,
+                                   final String name,
+                                   final Function<String, T> parser) {
+        final String value = attributes.getValue(name);
+        if (null == value) {
+            throw new IllegalArgumentException("Manifest missing entry " + CharSequences.quoteAndEscape(name));
+        }
+
+        return parser.apply(value);
     }
 
     /**

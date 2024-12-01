@@ -48,7 +48,7 @@ final class ClassLoaderPluginProvider {
         final Manifest manifest = new Manifest();
         manifest.read(inputStream);
 
-        final PluginArchiveManifest pluginArchiveManifest = PluginArchiveManifest.with(manifest);
+        final PluginArchiveManifest pluginArchiveManifest = PluginArchiveManifest.fromManifest(manifest);
         final String className = pluginArchiveManifest.className()
                 .value();
         final Class<?> pluginProviderFactory = classLoader.loadClass(className);

@@ -49,7 +49,7 @@ public final class PluginArchiveManifest {
     /**
      * Factory that creates a {@link PluginArchiveManifest}.
      */
-    public static PluginArchiveManifest with(final Manifest manifest) throws IOException {
+    public static PluginArchiveManifest fromManifest(final Manifest manifest) throws IOException {
         Objects.requireNonNull(manifest, "manifest");
 
         final Attributes attributes = manifest.getMainAttributes();
@@ -77,6 +77,17 @@ public final class PluginArchiveManifest {
         }
 
         return parser.apply(value);
+    }
+
+    public static PluginArchiveManifest with(final PluginName pluginName,
+                                             final ClassName className) {
+        Objects.requireNonNull(pluginName, "pluginName");
+        Objects.requireNonNull(className, "className");
+
+        return new PluginArchiveManifest(
+                pluginName,
+                className
+        );
     }
 
     private PluginArchiveManifest(final PluginName pluginName,
