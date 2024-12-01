@@ -22,7 +22,6 @@ import walkingkooka.collect.set.ImmutableSortedSetTesting;
 import walkingkooka.collect.set.SortedSets;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.PluginName;
-import walkingkooka.reflect.ClassName;
 
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
@@ -36,7 +35,6 @@ public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet,
                                 PluginName.with("TestPlugin111"),
                                 "test-plugin-111.jar",
                                 Binary.with("content".getBytes(Charset.defaultCharset())),
-                                ClassName.with("example.TestPlugin111"),
                                 EmailAddress.parse("user1@example.com"),
                                 LocalDateTime.of(
                                         1999,
@@ -51,7 +49,6 @@ public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet,
                                 PluginName.with("TestPlugin222"),
                                 "test-plugin-222.jar",
                                 Binary.with("content".getBytes(Charset.defaultCharset())),
-                                ClassName.with("example.TestPlugin222"),
                                 EmailAddress.parse("user2@example.com"),
                                 LocalDateTime.of(
                                         1999,

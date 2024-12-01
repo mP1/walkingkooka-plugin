@@ -24,7 +24,6 @@ import walkingkooka.naming.HasName;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.net.http.server.hateos.HateosResource;
 import walkingkooka.plugin.PluginName;
-import walkingkooka.reflect.ClassName;
 import walkingkooka.text.CharSequences;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.JsonPropertyName;
@@ -48,14 +47,12 @@ public final class Plugin implements HateosResource<PluginName>,
     public static Plugin with(final PluginName name,
                               final String filename,
                               final Binary archive,
-                              final ClassName className,
                               final EmailAddress user,
                               final LocalDateTime timestamp) {
         return new Plugin(
                 Objects.requireNonNull(name, "name"),
                 CharSequences.failIfNullOrEmpty(filename, "filename"),
                 checkArchive(archive),
-                Objects.requireNonNull(className, "className"),
                 Objects.requireNonNull(user, "user"),
                 Objects.requireNonNull(timestamp, "timestamp")
         );
@@ -72,13 +69,11 @@ public final class Plugin implements HateosResource<PluginName>,
     private Plugin(final PluginName name,
                    final String filename,
                    final Binary archive,
-                   final ClassName className,
                    final EmailAddress user,
                    final LocalDateTime timestamp) {
         this.name = name;
         this.filename = filename;
         this.archive = archive;
-        this.className = className;
         this.user = user;
         this.timestamp = timestamp;
     }
@@ -101,12 +96,6 @@ public final class Plugin implements HateosResource<PluginName>,
     }
 
     private final Binary archive;
-
-    public ClassName className() {
-        return this.className;
-    }
-
-    private final ClassName className;
 
     public EmailAddress user() {
         return this.user;
@@ -149,7 +138,6 @@ public final class Plugin implements HateosResource<PluginName>,
                 this.name,
                 this.filename,
                 this.archive,
-                this.className,
                 this.user,
                 this.timestamp
         );
@@ -166,7 +154,6 @@ public final class Plugin implements HateosResource<PluginName>,
         return this.name.equals(other.name()) &&
                 this.filename.equals(other.filename()) &&
                 this.archive.equals(other.archive) &&
-                this.className.equals(other.className()) &&
                 this.user.equals(other.user) &&
                 this.timestamp.equals(other.timestamp);
     }
@@ -176,7 +163,6 @@ public final class Plugin implements HateosResource<PluginName>,
         return ToStringBuilder.empty()
                 .value(this.name)
                 .value(this.filename)
-                .value(this.className)
                 .value(this.user)
                 .value(this.timestamp)
                 .build();
@@ -196,11 +182,6 @@ public final class Plugin implements HateosResource<PluginName>,
                 ARCHIVE_PROPERTY,
                 context.marshall(this.archive)
         ).set(
-                CLASSNAME_PROPERTY,
-                context.marshall(
-                        this.className.value()
-                )
-        ).set(
                 USER_PROPERTY,
                 context.marshall(this.user)
         ).set(
@@ -214,7 +195,6 @@ public final class Plugin implements HateosResource<PluginName>,
         PluginName pluginName = null;
         String filename = null;
         Binary archive = null;
-        ClassName className = null;
         EmailAddress user = null;
         LocalDateTime timestamp = null;
 
@@ -237,14 +217,6 @@ public final class Plugin implements HateosResource<PluginName>,
                     archive = context.unmarshall(
                             child,
                             Binary.class
-                    );
-                    break;
-                case CLASSNAME_PROPERTY_STRING:
-                    className = ClassName.with(
-                            context.unmarshall(
-                                    child,
-                                    String.class
-                            )
                     );
                     break;
                 case USER_PROPERTY_STRING:
@@ -274,9 +246,6 @@ public final class Plugin implements HateosResource<PluginName>,
         if (null == filename) {
             JsonNodeUnmarshallContext.requiredPropertyMissing(FILENAME_PROPERTY, node);
         }
-        if (null == className) {
-            JsonNodeUnmarshallContext.requiredPropertyMissing(CLASSNAME_PROPERTY, node);
-        }
         if (null == archive) {
             JsonNodeUnmarshallContext.requiredPropertyMissing(ARCHIVE_PROPERTY, node);
         }
@@ -291,7 +260,6 @@ public final class Plugin implements HateosResource<PluginName>,
                 pluginName,
                 filename,
                 archive,
-                className,
                 user,
                 timestamp
         );
@@ -300,8 +268,6 @@ public final class Plugin implements HateosResource<PluginName>,
     private final static String NAME_PROPERTY_STRING = "name";
 
     private final static String FILENAME_PROPERTY_STRING = "filename";
-
-    private final static String CLASSNAME_PROPERTY_STRING = "className";
 
     private final static String ARCHIVE_PROPERTY_STRING = "archive";
 
@@ -312,8 +278,6 @@ public final class Plugin implements HateosResource<PluginName>,
     final static JsonPropertyName NAME_PROPERTY = JsonPropertyName.with(NAME_PROPERTY_STRING);
 
     final static JsonPropertyName FILENAME_PROPERTY = JsonPropertyName.with(FILENAME_PROPERTY_STRING);
-
-    final static JsonPropertyName CLASSNAME_PROPERTY = JsonPropertyName.with(CLASSNAME_PROPERTY_STRING);
 
     final static JsonPropertyName ARCHIVE_PROPERTY = JsonPropertyName.with(ARCHIVE_PROPERTY_STRING);
 
