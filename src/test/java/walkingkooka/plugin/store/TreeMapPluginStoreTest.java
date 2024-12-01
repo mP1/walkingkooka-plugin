@@ -20,7 +20,6 @@ package walkingkooka.plugin.store;
 import walkingkooka.Binary;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.PluginName;
-import walkingkooka.reflect.ClassName;
 
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
@@ -50,7 +49,6 @@ public final class TreeMapPluginStoreTest implements PluginStoreTesting<TreeMapP
                 PLUGIN_NAME,
                 "example.jar",
                 Binary.with("Hello".getBytes(Charset.defaultCharset())),
-                ClassName.with("example.Plugin"),
                 EmailAddress.parse("user@example.com"),
                 LocalDateTime.of(
                         1999,
