@@ -7,5 +7,3 @@
 # ClassLoaderPluginProvider uses ClassLoader will never be transpilable
 #
 **/ClassLoaderPluginProvider.*
-**/PluginArchiveManifest.*
-
