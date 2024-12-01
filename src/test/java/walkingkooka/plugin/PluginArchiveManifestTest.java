@@ -18,17 +18,68 @@
 package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.Binary;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.reflect.ClassName;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTesting2<PluginArchiveManifest> {
+
+    // fromArchive......................................................................................................
+
+    @Test
+    public void testFromArchiveWithNullFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> PluginArchiveManifest.fromArchive(null)
+        );
+    }
+
+    @Test
+    public void testFromArchive() throws IOException {
+        final String manifest = (
+                "Manifest-Version: 1.0\r\n" +
+                        "plugin-name: TestPluginName111\r\n" +
+                        "plugin-provider-factory-className: example.TestPluginName111\r\n"
+        );
+
+        final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        final Manifest manifestEntry = new Manifest();
+        manifestEntry.read(
+                new ByteArrayInputStream(
+                        manifest.getBytes(Charset.defaultCharset())
+                )
+        );
+
+        final JarOutputStream jarOut = new JarOutputStream(
+                bytes,
+                manifestEntry
+        );
+
+        jarOut.flush();
+        jarOut.finish();
+        jarOut.close();
+
+        this.checkEquals(
+                PluginArchiveManifest.with(manifestEntry),
+                PluginArchiveManifest.fromArchive(
+                        Binary.with(
+                                bytes.toByteArray()
+                        )
+                )
+        );
+    }
+
+    // with.............................................................................................................
 
     @Test
     public void testWithNullManifestFails() {

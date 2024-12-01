@@ -18,6 +18,7 @@
 package walkingkooka.plugin;
 
 import javaemul.internal.annotations.GwtIncompatible;
+import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.reflect.ClassName;
 import walkingkooka.text.CharSequences;
@@ -42,6 +43,10 @@ public final class PluginArchiveManifest {
     public final static String PLUGIN_NAME = "plugin-name";
 
     public final static String PLUGIN_PROVIDER_FACTORY_CLASSNAME = "plugin-provider-factory-className";
+
+    public static PluginArchiveManifest fromArchive(final Binary archive) {
+        return PluginArchiveManifestReader.fromArchive(archive);
+    }
 
     /**
      * Factory that creates a {@link PluginArchiveManifest}.
