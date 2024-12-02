@@ -50,11 +50,11 @@ public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTes
 
         this.checkEquals(
                 PluginArchiveManifest.fromManifest(
-                        this.manifest(manifest)
+                        JarFileTesting.manifest(manifest)
                 ),
                 PluginArchiveManifest.fromArchive(
                         Binary.with(
-                                this.jarFile(
+                                JarFileTesting.jarFile(
                                         manifest,
                                         Maps.empty()
                                 )
@@ -174,7 +174,7 @@ public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTes
     private PluginArchiveManifest createPluginArchiveManifest(final String content) {
         try {
             return PluginArchiveManifest.fromManifest(
-                    this.manifest(content)
+                    JarFileTesting.manifest(content)
             );
         } catch (final IOException cause) {
             throw new RuntimeException(cause);
