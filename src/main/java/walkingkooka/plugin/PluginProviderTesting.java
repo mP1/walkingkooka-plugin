@@ -23,6 +23,7 @@ import walkingkooka.text.printer.TreePrintableTesting;
 import java.util.Set;
 
 public interface PluginProviderTesting<P extends PluginProvider> extends PluginProviderLikeTesting<P, PluginProviderName>,
+        JarFileTesting,
         TreePrintableTesting {
 
     default void pluginInfosAndCheck(final PluginInfo... expected) {

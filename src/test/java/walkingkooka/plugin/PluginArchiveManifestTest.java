@@ -20,19 +20,15 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Binary;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
+import walkingkooka.collect.map.Maps;
 import walkingkooka.reflect.ClassName;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.jar.JarOutputStream;
-import java.util.jar.Manifest;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTesting2<PluginArchiveManifest> {
+public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTesting2<PluginArchiveManifest>,
+        JarFileTesting{
 
     // fromArchive......................................................................................................
 
@@ -52,28 +48,16 @@ public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTes
                         "plugin-provider-factory-className: example.TestPluginName111\r\n"
         );
 
-        final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        final Manifest manifestEntry = new Manifest();
-        manifestEntry.read(
-                new ByteArrayInputStream(
-                        manifest.getBytes(Charset.defaultCharset())
-                )
-        );
-
-        final JarOutputStream jarOut = new JarOutputStream(
-                bytes,
-                manifestEntry
-        );
-
-        jarOut.flush();
-        jarOut.finish();
-        jarOut.close();
-
         this.checkEquals(
-                PluginArchiveManifest.fromManifest(manifestEntry),
+                PluginArchiveManifest.fromManifest(
+                        this.manifest(manifest)
+                ),
                 PluginArchiveManifest.fromArchive(
                         Binary.with(
-                                bytes.toByteArray()
+                                this.jarFile(
+                                        manifest,
+                                        Maps.empty()
+                                )
                         )
                 )
         );
@@ -189,14 +173,9 @@ public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTes
 
     private PluginArchiveManifest createPluginArchiveManifest(final String content) {
         try {
-            final Manifest manifest = new Manifest();
-            manifest.read(
-                    new ByteArrayInputStream(
-                            content.getBytes(StandardCharsets.UTF_8)
-                    )
+            return PluginArchiveManifest.fromManifest(
+                    this.manifest(content)
             );
-
-            return PluginArchiveManifest.fromManifest(manifest);
         } catch (final IOException cause) {
             throw new RuntimeException(cause);
         }

@@ -27,19 +27,14 @@ import walkingkooka.text.CharSequences;
 import walkingkooka.text.LineEnding;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
-import java.util.jar.JarOutputStream;
 
 public final class ClassLoaderPluginProviderTest implements PluginProviderTesting<PluginProvider> {
 
@@ -95,20 +90,17 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
             //   manifest which points to TestPluginProvider
             //   TestPluginProvider which will create an instance of TestPluginImpl
             //   TestPluginImpl
-            final byte[] jar = createJar(
+            final byte[] jar = this.jarFile(
+                    "Manifest-Version: 1.0\r\n"+
+                            "plugin-name: TestPlugin123\r\n" +
+                            "plugin-provider-factory-className: walkingkooka.plugin.ClassLoaderPluginProviderTest$TestPluginProviderImpl\r\n",
                     Maps.of(
                             "resource123.txt", // ignored!
                             txtResource,
                             testPluginProviderImplClassName,
                             testPluginProviderClass,
                             testPluginImplClassName,
-                            testPluginImplClass,
-                            PluginArchiveManifest.MANIFEST_MF_PATH,
-                            (
-                                    "Manifest-Version: 1.0\r\n"+
-                                    "plugin-name: TestPlugin123\r\n" +
-                                    "plugin-provider-factory-className: walkingkooka.plugin.ClassLoaderPluginProviderTest$TestPluginProviderImpl\r\n"
-                            ).getBytes(StandardCharsets.UTF_8)
+                            testPluginImplClass
                     )
             );
 
@@ -156,28 +148,6 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
             );
         } catch (final IOException cause) {
             throw new Error(cause);
-        }
-    }
-
-    private static byte[] createJar(final Map<String, byte[]> contents) throws IOException {
-        try (final ByteArrayOutputStream bytes = new ByteArrayOutputStream()) {
-            final JarOutputStream jarOut = new JarOutputStream(bytes);
-
-            for (final Map.Entry<String, byte[]> mapEntry : contents.entrySet()) {
-                final JarEntry jarEntry = new JarEntry(mapEntry.getKey());
-
-                final byte[] resource = mapEntry.getValue();
-                jarEntry.setSize(resource.length);
-                jarOut.putNextEntry(jarEntry);
-                jarOut.write(resource);
-                jarOut.closeEntry();
-            }
-
-            jarOut.flush();
-            jarOut.finish();
-            jarOut.close();
-
-            return bytes.toByteArray();
         }
     }
 
