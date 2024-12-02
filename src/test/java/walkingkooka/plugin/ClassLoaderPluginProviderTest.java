@@ -90,7 +90,7 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
             //   manifest which points to TestPluginProvider
             //   TestPluginProvider which will create an instance of TestPluginImpl
             //   TestPluginImpl
-            final byte[] jar = this.jarFile(
+            final byte[] jar = JarFileTesting.jarFile(
                     "Manifest-Version: 1.0\r\n"+
                             "plugin-name: TestPlugin123\r\n" +
                             "plugin-provider-factory-className: walkingkooka.plugin.ClassLoaderPluginProviderTest$TestPluginProviderImpl\r\n",

@@ -44,7 +44,7 @@ public final class JarFileTestingTest implements JarFileTesting {
         final String file2 = "dir2/Hello2.txt";
         final String fileContent2 = "Hello2";
 
-        final byte[] jar = this.jarFile(
+        final byte[] jar = JarFileTesting.jarFile(
                 manifestContent,
                 Maps.of(
                         file1,

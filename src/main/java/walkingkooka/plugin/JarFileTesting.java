@@ -33,7 +33,7 @@ import java.util.jar.Manifest;
  */
 public interface JarFileTesting extends Testing {
 
-    default Manifest manifest(final String manifestContent) throws IOException {
+    static Manifest manifest(final String manifestContent) throws IOException {
         final Manifest manifest = new Manifest();
         manifest.read(
                 new ByteArrayInputStream(
@@ -43,13 +43,13 @@ public interface JarFileTesting extends Testing {
         return manifest;
     }
 
-    default byte[] jarFile(final String manifestContent,
-                           final Map<String, byte[]> contents) throws IOException {
+    static byte[] jarFile(final String manifestContent,
+                          final Map<String, byte[]> contents) throws IOException {
         try (final ByteArrayOutputStream bytes = new ByteArrayOutputStream()) {
 
             final JarOutputStream jarOut = new JarOutputStream(
                     bytes,
-                    this.manifest(manifestContent)
+                    manifest(manifestContent)
             );
 
             for (final Map.Entry<String, byte[]> mapEntry : contents.entrySet()) {
