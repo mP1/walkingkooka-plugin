@@ -23,6 +23,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.attribute.FileTime;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
@@ -43,6 +46,22 @@ public interface JarFileTesting extends Testing {
         return manifest;
     }
 
+    LocalDateTime CREATE = LocalDateTime.of(
+            1999,
+            12,
+            31,
+            12,
+            58
+    );
+
+    LocalDateTime LAST_MODIFIED = LocalDateTime.of(
+            2000,
+            1,
+            2,
+            4,
+            58
+    );
+
     static byte[] jarFile(final String manifestContent,
                           final Map<String, byte[]> contents) throws IOException {
         try (final ByteArrayOutputStream bytes = new ByteArrayOutputStream()) {
@@ -52,11 +71,26 @@ public interface JarFileTesting extends Testing {
                     manifest(manifestContent)
             );
 
+            final ZoneId zoneId = ZoneId.of("GMT");
+
             for (final Map.Entry<String, byte[]> mapEntry : contents.entrySet()) {
                 final JarEntry jarEntry = new JarEntry(mapEntry.getKey());
 
                 final byte[] resource = mapEntry.getValue();
-                jarEntry.setSize(resource.length);
+
+                jarEntry.setCreationTime(
+                        FileTime.fromMillis(
+                                CREATE.atZone(zoneId)
+                                        .toEpochSecond()
+                        )
+                );
+                jarEntry.setLastModifiedTime(
+                        FileTime.fromMillis(
+                                LAST_MODIFIED.atZone(zoneId)
+                                        .toEpochSecond()
+                        )
+                );
+
                 jarOut.putNextEntry(jarEntry);
                 jarOut.write(resource);
                 jarOut.closeEntry();
