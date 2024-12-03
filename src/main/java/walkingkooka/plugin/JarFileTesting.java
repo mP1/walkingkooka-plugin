@@ -66,14 +66,14 @@ public interface JarFileTesting extends Testing {
                           final Map<String, byte[]> contents) throws IOException {
         final ZoneId zoneId = ZoneId.of("GMT");
 
-        final FileTime create = FileTime.fromMillis(
+        final FileTime create = FileTime.from(
                 CREATE.atZone(zoneId)
-                        .toEpochSecond()
+                        .toInstant()
         );
 
-        final FileTime lastModified = FileTime.fromMillis(
+        final FileTime lastModified = FileTime.from(
                 LAST_MODIFIED.atZone(zoneId)
-                        .toEpochSecond()
+                        .toInstant()
         );
 
         // create ZipOutStream because it allows better control over MANIFEST entry timestamps
