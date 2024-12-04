@@ -36,14 +36,18 @@ import java.util.zip.ZipOutputStream;
  */
 public interface JarFileTesting extends Testing {
 
-    static Manifest manifest(final String manifestContent) throws IOException {
-        final Manifest manifest = new Manifest();
-        manifest.read(
-                new ByteArrayInputStream(
-                        manifestContent.getBytes(Charset.defaultCharset())
-                )
-        );
-        return manifest;
+    static Manifest manifest(final String manifestContent) {
+        try {
+            final Manifest manifest = new Manifest();
+            manifest.read(
+                    new ByteArrayInputStream(
+                            manifestContent.getBytes(Charset.defaultCharset())
+                    )
+            );
+            return manifest;
+        } catch (final IOException cause) {
+            throw new RuntimeException(cause);
+        }
     }
 
     LocalDateTime CREATE = LocalDateTime.of(
@@ -63,7 +67,7 @@ public interface JarFileTesting extends Testing {
     );
 
     static byte[] jarFile(final String manifestContent,
-                          final Map<String, byte[]> contents) throws IOException {
+                          final Map<String, byte[]> contents) {
         final ZoneId zoneId = ZoneId.of("GMT");
 
         final FileTime create = FileTime.from(
@@ -114,6 +118,8 @@ public interface JarFileTesting extends Testing {
             jarOut.close();
 
             return bytes.toByteArray();
+        } catch (final IOException cause) {
+            throw new RuntimeException(cause);
         }
     }
 }
