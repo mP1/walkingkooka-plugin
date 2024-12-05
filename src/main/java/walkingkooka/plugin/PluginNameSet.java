@@ -19,6 +19,8 @@ package walkingkooka.plugin;
 
 import walkingkooka.collect.set.ImmutableSortedSetDefaults;
 import walkingkooka.collect.set.SortedSets;
+import walkingkooka.net.HasUrlFragment;
+import walkingkooka.net.UrlFragment;
 import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.HasText;
 import walkingkooka.text.printer.IndentingPrinter;
@@ -40,7 +42,8 @@ import java.util.SortedSet;
 public final class PluginNameSet extends AbstractSet<PluginName>
         implements ImmutableSortedSetDefaults<PluginNameSet, PluginName>,
         HasText,
-        TreePrintable {
+        TreePrintable,
+        HasUrlFragment {
 
     public static PluginNameSet parse(final String text) {
         Objects.requireNonNull(text, "text");
@@ -226,6 +229,15 @@ public final class PluginNameSet extends AbstractSet<PluginName>
                 PluginNameSet::unmarshall,
                 PluginNameSet::marshall,
                 PluginNameSet.class
+        );
+    }
+
+    // HasUrlFragment...................................................................................................
+
+    @Override
+    public UrlFragment urlFragment() {
+        return UrlFragment.with(
+                this.text()
         );
     }
 }

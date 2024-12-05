@@ -20,6 +20,7 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.collect.set.ImmutableSortedSetTesting;
 import walkingkooka.collect.set.SortedSets;
+import walkingkooka.net.HasUrlFragmentTesting;
 import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
@@ -34,7 +35,8 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
         HasTextTesting,
         ParseStringTesting<PluginNameSet>,
         TreePrintableTesting,
-        JsonNodeMarshallingTesting<PluginNameSet> {
+        JsonNodeMarshallingTesting<PluginNameSet>,
+        HasUrlFragmentTesting {
 
     @Test
     public void testWithNullFails() {
@@ -169,6 +171,16 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
     @Override
     public PluginNameSet createJsonNodeMarshallingValue() {
         return this.createSet();
+    }
+
+    // HasUrlFragment...................................................................................................
+
+    @Test
+    public void testUrlFragment() {
+        this.urlFragmentAndCheck(
+                this.createSet(),
+                "Plugin111,Plugin222"
+        );
     }
 
     // class............................................................................................................
