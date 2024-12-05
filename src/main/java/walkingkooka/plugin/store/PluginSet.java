@@ -80,7 +80,7 @@ public final class PluginSet extends AbstractSet<Plugin> implements ImmutableSor
 
     @Override
     public PluginSet subSet(final Plugin after,
-                                     final Plugin before) {
+                            final Plugin before) {
         return new PluginSet(
                 this.set.subSet(
                         after,
