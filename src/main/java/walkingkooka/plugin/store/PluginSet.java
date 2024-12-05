@@ -30,11 +30,18 @@ import java.util.TreeSet;
 
 public final class PluginSet extends AbstractSet<Plugin> implements ImmutableSortedSetDefaults<PluginSet, Plugin> {
 
+    /**
+     * Empty {@link PluginSet}.
+     */
+    public final static PluginSet EMPTY = new PluginSet(SortedSets.empty());
+
     public static PluginSet with(final SortedSet<Plugin> set) {
         final ImmutableSortedSet<Plugin> copy = SortedSets.immutable(
                 Objects.requireNonNull(set, "set")
         );
-        return new PluginSet(copy);
+        return copy.isEmpty() ?
+                EMPTY :
+                new PluginSet(copy);
     }
 
     private PluginSet(final SortedSet<Plugin> set) {

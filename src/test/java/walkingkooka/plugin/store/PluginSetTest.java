@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin.store;
 
+import org.junit.jupiter.api.Test;
 import walkingkooka.Binary;
 import walkingkooka.collect.set.ImmutableSortedSetTesting;
 import walkingkooka.collect.set.SortedSets;
@@ -26,7 +27,20 @@ import walkingkooka.plugin.PluginName;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet, Plugin> {
+
+    @Test
+    public void testWithEmpty() {
+        assertSame(
+                PluginSet.EMPTY,
+                PluginSet.with(
+                        SortedSets.empty()
+                )
+        );
+    }
+
     @Override
     public PluginSet createSet() {
         return PluginSet.with(
