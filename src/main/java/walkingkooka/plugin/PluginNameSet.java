@@ -38,6 +38,44 @@ public final class PluginNameSet extends AbstractSet<PluginName>
         HasText,
         TreePrintable {
 
+    public static PluginNameSet parse(final String text) {
+        Objects.requireNonNull(text, "text");
+
+        final SortedSet<PluginName> names = SortedSets.tree();
+
+        final PluginNameSetParser parser = PluginNameSetParser.with(
+                text
+        );
+
+        parser.spaces();
+
+        if (parser.isNotEmpty()) {
+            for (; ; ) {
+                parser.spaces();
+
+                names.add(
+                        PluginName.with(
+                                parser.name()
+                        )
+                );
+
+                parser.spaces();
+
+                if (SEPARATOR.string().equals(parser.comma())) {
+                    continue;
+                }
+
+                if (parser.isEmpty()) {
+                    break;
+                }
+
+                parser.invalidCharacterException();
+            }
+        }
+
+        return withCopy(names);
+    }
+
     /**
      * Empty constant
      */
