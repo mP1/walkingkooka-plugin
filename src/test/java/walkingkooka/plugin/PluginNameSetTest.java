@@ -20,6 +20,7 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.collect.set.ImmutableSortedSetTesting;
 import walkingkooka.collect.set.SortedSets;
+import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 
@@ -28,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginNameSetTest implements ImmutableSortedSetTesting<PluginNameSet, PluginName>,
         HasTextTesting,
+        ParseStringTesting<PluginNameSet>,
         TreePrintableTesting {
 
     @Test
@@ -58,6 +60,66 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
                         PluginName.with("Plugin222")
                 )
         );
+    }
+
+    // parseString......................................................................................................
+
+    @Override
+    public void testParseStringEmptyFails() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Test
+    public void testParseEmpty() {
+        assertSame(
+                PluginNameSet.EMPTY,
+                this.parseStringAndCheck(
+                        "",
+                        PluginNameSet.EMPTY
+                )
+        );
+    }
+
+    @Test
+    public void testParseSpaces() {
+        assertSame(
+                PluginNameSet.EMPTY,
+                this.parseStringAndCheck(
+                        "   ",
+                        PluginNameSet.EMPTY
+                )
+        );
+    }
+
+    @Test
+    public void testParse() {
+        this.parseStringAndCheck(
+                "Plugin111,Plugin222",
+                this.createSet()
+        );
+    }
+
+    @Test
+    public void testParseWithExtraSpaces() {
+        this.parseStringAndCheck(
+                " Plugin111 , Plugin222 ",
+                this.createSet()
+        );
+    }
+
+    @Override
+    public PluginNameSet parseString(final String text) {
+        return PluginNameSet.parse(text);
+    }
+
+    @Override
+    public Class<? extends RuntimeException> parseStringFailedExpected(final Class<? extends RuntimeException> type) {
+        return type;
+    }
+
+    @Override
+    public RuntimeException parseStringFailedExpected(final RuntimeException type) {
+        return type;
     }
 
     // HasText..........................................................................................................
