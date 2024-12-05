@@ -23,6 +23,10 @@ import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.HasText;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
+import walkingkooka.tree.json.JsonNode;
+import walkingkooka.tree.json.marshall.JsonNodeContext;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.AbstractSet;
 import java.util.Comparator;
@@ -200,5 +204,28 @@ public final class PluginNameSet extends AbstractSet<PluginName>
             );
             printer.lineStart();
         }
+    }
+
+
+    // json.............................................................................................................
+
+    static PluginNameSet unmarshall(final JsonNode node,
+                                    final JsonNodeUnmarshallContext context) {
+        return parse(
+                node.stringOrFail()
+        );
+    }
+
+    private JsonNode marshall(final JsonNodeMarshallContext context) {
+        return JsonNode.string(this.text());
+    }
+
+    static {
+        JsonNodeContext.register(
+                JsonNodeContext.computeTypeName(PluginNameSet.class),
+                PluginNameSet::unmarshall,
+                PluginNameSet::marshall,
+                PluginNameSet.class
+        );
     }
 }

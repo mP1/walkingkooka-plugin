@@ -23,6 +23,9 @@ import walkingkooka.collect.set.SortedSets;
 import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
+import walkingkooka.tree.json.JsonNode;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -30,7 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class PluginNameSetTest implements ImmutableSortedSetTesting<PluginNameSet, PluginName>,
         HasTextTesting,
         ParseStringTesting<PluginNameSet>,
-        TreePrintableTesting {
+        TreePrintableTesting,
+        JsonNodeMarshallingTesting<PluginNameSet> {
 
     @Test
     public void testWithNullFails() {
@@ -141,6 +145,30 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
                 "Plugin111\n" +
                         "Plugin222\n"
         );
+    }
+
+    // json.............................................................................................................
+
+    @Test
+    public void testMarshall() {
+        this.marshallAndCheck(
+                this.createJsonNodeMarshallingValue(),
+                "\"Plugin111,Plugin222\""
+        );
+    }
+
+    @Override
+    public PluginNameSet unmarshall(final JsonNode jsonNode,
+                                    final JsonNodeUnmarshallContext context) {
+        return PluginNameSet.unmarshall(
+                jsonNode,
+                context
+        );
+    }
+
+    @Override
+    public PluginNameSet createJsonNodeMarshallingValue() {
+        return this.createSet();
     }
 
     // class............................................................................................................
