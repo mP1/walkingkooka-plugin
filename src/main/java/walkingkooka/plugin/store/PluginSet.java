@@ -36,12 +36,17 @@ public final class PluginSet extends AbstractSet<Plugin> implements ImmutableSor
     public final static PluginSet EMPTY = new PluginSet(SortedSets.empty());
 
     public static PluginSet with(final SortedSet<Plugin> set) {
-        final ImmutableSortedSet<Plugin> copy = SortedSets.immutable(
-                Objects.requireNonNull(set, "set")
+        return withCopy(
+                SortedSets.immutable(
+                        Objects.requireNonNull(set, "set")
+                )
         );
-        return copy.isEmpty() ?
+    }
+
+    private static PluginSet withCopy(final SortedSet<Plugin> set) {
+        return set.isEmpty() ?
                 EMPTY :
-                new PluginSet(copy);
+                new PluginSet(set);
     }
 
     private PluginSet(final SortedSet<Plugin> set) {
@@ -65,7 +70,7 @@ public final class PluginSet extends AbstractSet<Plugin> implements ImmutableSor
         );
         return this.equals(copy) ?
                 this :
-                new PluginSet(copy);
+                withCopy(copy);
     }
 
     @Override
@@ -81,7 +86,7 @@ public final class PluginSet extends AbstractSet<Plugin> implements ImmutableSor
     @Override
     public PluginSet subSet(final Plugin after,
                             final Plugin before) {
-        return new PluginSet(
+        return withCopy(
                 this.set.subSet(
                         after,
                         before

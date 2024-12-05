@@ -41,6 +41,31 @@ public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet,
         );
     }
 
+    @Test
+    public void testDeleteBecomesEmpty() {
+        final Plugin plugin = Plugin.with(
+                PluginName.with("TestPlugin111"),
+                "test-plugin-111.jar",
+                Binary.with("content".getBytes(Charset.defaultCharset())),
+                EmailAddress.parse("user1@example.com"),
+                LocalDateTime.of(
+                        1999,
+                        12,
+                        31,
+                        12,
+                        58,
+                        59
+                )
+        );
+
+        assertSame(
+                PluginSet.EMPTY,
+                PluginSet.with(
+                        SortedSets.of(plugin)
+                ).delete(plugin)
+        );
+    }
+
     @Override
     public PluginSet createSet() {
         return PluginSet.with(
