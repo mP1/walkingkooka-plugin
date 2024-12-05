@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.collect.set.ImmutableSortedSetTesting;
 import walkingkooka.collect.set.SortedSets;
 
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginNameSetTest implements ImmutableSortedSetTesting<PluginNameSet, PluginName> {
@@ -30,6 +31,18 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
         assertThrows(
                 NullPointerException.class,
                 () -> PluginNameSet.with(null)
+        );
+    }
+
+    @Test
+    public void testDeleteBecomesEmpty() {
+        final PluginName name = PluginName.with("Plugin111");
+
+        assertSame(
+                PluginNameSet.EMPTY,
+                PluginNameSet.with(
+                        SortedSets.of(name)
+                ).delete(name)
         );
     }
 
