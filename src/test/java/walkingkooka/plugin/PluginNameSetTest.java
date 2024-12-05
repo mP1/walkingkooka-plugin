@@ -20,11 +20,13 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.collect.set.ImmutableSortedSetTesting;
 import walkingkooka.collect.set.SortedSets;
+import walkingkooka.text.printer.TreePrintableTesting;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class PluginNameSetTest implements ImmutableSortedSetTesting<PluginNameSet, PluginName> {
+public final class PluginNameSetTest implements ImmutableSortedSetTesting<PluginNameSet, PluginName>,
+        TreePrintableTesting {
 
     @Test
     public void testWithNullFails() {
@@ -53,6 +55,17 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
                         PluginName.with("Plugin111"),
                         PluginName.with("Plugin222")
                 )
+        );
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Test
+    public void testTreePrint() {
+        this.treePrintAndCheck(
+                this.createSet(),
+                "Plugin111\n" +
+                        "Plugin222\n"
         );
     }
 
