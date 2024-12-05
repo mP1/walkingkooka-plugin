@@ -20,6 +20,7 @@ package walkingkooka.plugin;
 import walkingkooka.collect.set.ImmutableSortedSetDefaults;
 import walkingkooka.collect.set.SortedSets;
 import walkingkooka.text.CharacterConstant;
+import walkingkooka.text.HasText;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.text.printer.TreePrintable;
 
@@ -34,6 +35,7 @@ import java.util.SortedSet;
  */
 public final class PluginNameSet extends AbstractSet<PluginName>
         implements ImmutableSortedSetDefaults<PluginNameSet, PluginName>,
+        HasText,
         TreePrintable {
 
     /**
@@ -138,6 +140,16 @@ public final class PluginNameSet extends AbstractSet<PluginName>
     }
 
     private final SortedSet<PluginName> names;
+
+    // HasText..........................................................................................................
+
+    @Override
+    public String text() {
+        return SEPARATOR.toSeparatedString(
+                this,
+                Object::toString
+        );
+    }
 
     // TreePrintable....................................................................................................
 
