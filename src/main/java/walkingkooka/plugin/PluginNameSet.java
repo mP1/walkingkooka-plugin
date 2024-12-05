@@ -34,6 +34,11 @@ public final class PluginNameSet extends AbstractSet<PluginName>
         implements ImmutableSortedSetDefaults<PluginNameSet, PluginName> {
 
     /**
+     * Empty constant
+     */
+    public final static PluginNameSet EMPTY = new PluginNameSet(SortedSets.empty());
+
+    /**
      * The character that separates multiple {@link  PluginName}.
      */
     private final static CharacterConstant SEPARATOR = CharacterConstant.COMMA;
@@ -50,7 +55,9 @@ public final class PluginNameSet extends AbstractSet<PluginName>
     }
 
     private static PluginNameSet withCopy(final SortedSet<PluginName> names) {
-        return new PluginNameSet(names);
+        return names.isEmpty() ?
+                EMPTY :
+                new PluginNameSet(names);
     }
 
     // @VisibleForTesting
