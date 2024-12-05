@@ -20,6 +20,8 @@ package walkingkooka.plugin;
 import walkingkooka.collect.set.ImmutableSortedSetDefaults;
 import walkingkooka.collect.set.SortedSets;
 import walkingkooka.text.CharacterConstant;
+import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.TreePrintable;
 
 import java.util.AbstractSet;
 import java.util.Comparator;
@@ -31,7 +33,8 @@ import java.util.SortedSet;
  * An immutable {@link SortedSet} of {@link PluginName}.
  */
 public final class PluginNameSet extends AbstractSet<PluginName>
-        implements ImmutableSortedSetDefaults<PluginNameSet, PluginName> {
+        implements ImmutableSortedSetDefaults<PluginNameSet, PluginName>,
+        TreePrintable {
 
     /**
      * Empty constant
@@ -135,4 +138,17 @@ public final class PluginNameSet extends AbstractSet<PluginName>
     }
 
     private final SortedSet<PluginName> names;
+
+    // TreePrintable....................................................................................................
+
+    @Override
+    public void printTree(final IndentingPrinter printer) {
+        for (final PluginName name : this) {
+            TreePrintable.printTreeOrToString(
+                    name,
+                    printer
+            );
+            printer.lineStart();
+        }
+    }
 }
