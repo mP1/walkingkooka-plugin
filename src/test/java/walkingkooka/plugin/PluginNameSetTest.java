@@ -20,12 +20,14 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.collect.set.ImmutableSortedSetTesting;
 import walkingkooka.collect.set.SortedSets;
+import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginNameSetTest implements ImmutableSortedSetTesting<PluginNameSet, PluginName>,
+        HasTextTesting,
         TreePrintableTesting {
 
     @Test
@@ -55,6 +57,16 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
                         PluginName.with("Plugin111"),
                         PluginName.with("Plugin222")
                 )
+        );
+    }
+
+    // HasText..........................................................................................................
+
+    @Test
+    public void testText() {
+        this.textAndCheck(
+                this.createSet(),
+                "Plugin111,Plugin222"
         );
     }
 
