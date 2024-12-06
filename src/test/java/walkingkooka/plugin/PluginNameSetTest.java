@@ -76,6 +76,22 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
     }
 
     @Test
+    public void testParseInvalidCharacterFails() {
+        this.parseStringInvalidCharacterFails(
+                "plugin!1, plugin2",
+                '!'
+        );
+    }
+
+    @Test
+    public void testParseInvalidCharacterSecondPluginNameFails() {
+        this.parseStringInvalidCharacterFails(
+                "plugin1, plugin2!",
+                '!'
+        );
+    }
+
+    @Test
     public void testParseEmpty() {
         assertSame(
                 PluginNameSet.EMPTY,
