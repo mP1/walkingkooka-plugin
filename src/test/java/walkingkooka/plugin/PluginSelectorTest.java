@@ -313,6 +313,14 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     }
 
     @Test
+    public void testParseSpaceNameFails() {
+        this.parseStringInvalidCharacterFails(
+                " hello",
+                ' '
+        );
+    }
+
+    @Test
     public void testParseStringName() {
         final String text = "magic-plugin";
 

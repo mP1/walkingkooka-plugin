@@ -75,6 +75,13 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
 
             switch (c) {
                 case ' ':
+                    // spaces before name are illegal
+                    if(0 == i) {
+                        throw new InvalidCharacterException(
+                                text,
+                                i
+                        );
+                    }
                     endOfName = i;
                     startOfText = i + 1;
                     i = length;
