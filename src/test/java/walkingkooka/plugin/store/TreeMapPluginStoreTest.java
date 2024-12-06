@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin.store;
 
+import org.junit.jupiter.api.Test;
 import walkingkooka.Binary;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.PluginName;
@@ -45,8 +46,111 @@ public final class TreeMapPluginStoreTest implements PluginStoreTesting<TreeMapP
 
     @Override
     public Plugin value() {
+        return plugin(PLUGIN_NAME.value());
+    }
+
+    // filter...........................................................................................................
+
+    @Test
+    public void testFilterWithEmptyQuery() {
+        final Plugin plugin1 = plugin("Plugin111");
+
+        final TreeMapPluginStore store = TreeMapPluginStore.empty();
+        store.save(plugin1);
+
+        this.filterAndCheck(
+                store,
+                "",
+                0,
+                2
+        );
+    }
+
+    @Test
+    public void testFilterWithMatchesAllQuery() {
+        final Plugin plugin1 = plugin("Plugin111");
+        final Plugin plugin2 = plugin("Plugin222");
+
+        final TreeMapPluginStore store = TreeMapPluginStore.empty();
+        store.save(plugin1);
+        store.save(plugin2);
+
+        this.filterAndCheck(
+                store,
+                "*",
+                0,
+                2,
+                plugin1,
+                plugin2
+        );
+    }
+
+    @Test
+    public void testFilterWithMatchesAllOffset() {
+        final Plugin plugin1 = plugin("Plugin111");
+        final Plugin plugin2 = plugin("Plugin222");
+
+        final TreeMapPluginStore store = TreeMapPluginStore.empty();
+        store.save(plugin1);
+        store.save(plugin2);
+
+        this.filterAndCheck(
+                store,
+                "*",
+                1,
+                2,
+                plugin2
+        );
+    }
+
+    @Test
+    public void testFilterWithMatchesAllCount() {
+        final Plugin plugin1 = plugin("Plugin111");
+        final Plugin plugin2 = plugin("Plugin222");
+
+        final TreeMapPluginStore store = TreeMapPluginStore.empty();
+        store.save(plugin1);
+        store.save(plugin2);
+
+        this.filterAndCheck(
+                store,
+                "*",
+                0,
+                1,
+                plugin1
+        );
+    }
+
+    @Test
+    public void testFilterWithFilteringQueryOffsetCount() {
+        final Plugin plugin1 = plugin("Plugin111");
+        final Plugin plugin2 = plugin("Plugin222");
+        final Plugin plugin3 = plugin("Plugin333");
+        final Plugin plugin4 = plugin("Plugin444");
+        final Plugin plugin5 = plugin("Plugin555");
+        final Plugin plugin6 = plugin("Plugin666");
+
+        final TreeMapPluginStore store = TreeMapPluginStore.empty();
+        store.save(plugin1);
+        store.save(plugin2);
+        store.save(plugin3);
+        store.save(plugin4);
+        store.save(plugin5);
+        store.save(plugin6);
+
+        this.filterAndCheck(
+                store,
+                "*2* *4* *6*",
+                1,
+                2,
+                plugin4,
+                plugin6
+        );
+    }
+
+    private static Plugin plugin(final String name) {
         return Plugin.with(
-                PLUGIN_NAME,
+                PluginName.with(name),
                 "example.jar",
                 Binary.with("Hello".getBytes(Charset.defaultCharset())),
                 EmailAddress.parse("user@example.com"),

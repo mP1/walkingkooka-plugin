@@ -18,14 +18,19 @@
 package walkingkooka.plugin.store;
 
 import walkingkooka.plugin.PluginName;
+import walkingkooka.predicate.Predicates;
 import walkingkooka.store.Store;
 import walkingkooka.store.Stores;
+import walkingkooka.text.CaseSensitivity;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 final class TreeMapPluginStore implements PluginStore {
 
@@ -100,6 +105,31 @@ final class TreeMapPluginStore implements PluginStore {
                 from,
                 to
         );
+    }
+
+    @Override
+    public List<Plugin> filter(final String query,
+                               final int offset,
+                               final int count) {
+        Objects.requireNonNull(query, "query");
+        if (offset < 0) {
+            throw new IllegalArgumentException("Invalid offset " + offset + " < 0");
+        }
+        if (count < 0) {
+            throw new IllegalArgumentException("Invalid count " + count + " < 0");
+        }
+
+        final Predicate<CharSequence> globPattern = Predicates.globPatterns(
+                query,
+                CaseSensitivity.INSENSITIVE
+        );
+
+        return this.store.all()
+                .stream()
+                .filter(p -> globPattern.test(p.name().value()))
+                .skip(offset)
+                .limit(count)
+                .collect(Collectors.toList());
     }
 
     private final Store<PluginName, Plugin> store;

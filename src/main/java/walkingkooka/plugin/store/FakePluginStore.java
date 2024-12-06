@@ -20,9 +20,18 @@ package walkingkooka.plugin.store;
 import walkingkooka.plugin.PluginName;
 import walkingkooka.store.FakeStore;
 
+import java.util.List;
+
 public class FakePluginStore extends FakeStore<PluginName, Plugin> implements PluginStore {
 
     public FakePluginStore() {
         super();
+    }
+
+    @Override
+    public List<Plugin> filter(final String query,
+                               final int offset,
+                               final int count) {
+        throw new UnsupportedOperationException();
     }
 }

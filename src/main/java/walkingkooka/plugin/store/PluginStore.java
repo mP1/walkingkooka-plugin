@@ -20,5 +20,11 @@ package walkingkooka.plugin.store;
 import walkingkooka.plugin.PluginName;
 import walkingkooka.store.Store;
 
+import java.util.List;
+
 public interface PluginStore extends Store<PluginName, Plugin> {
+
+    List<Plugin> filter(final String query,
+                        final int offset,
+                        final int count);
 }
