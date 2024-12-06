@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.InvalidCharacterException;
 import walkingkooka.collect.set.ImmutableSortedSetDefaults;
 import walkingkooka.collect.set.SortedSets;
 import walkingkooka.net.HasUrlFragment;
@@ -49,7 +50,6 @@ public final class PluginNameSet extends AbstractSet<PluginName>
         Objects.requireNonNull(text, "text");
 
         final SortedSet<PluginName> names = SortedSets.tree();
-
         final PluginNameSetParser parser = PluginNameSetParser.with(
                 text
         );
@@ -60,11 +60,19 @@ public final class PluginNameSet extends AbstractSet<PluginName>
             for (; ; ) {
                 parser.spaces();
 
-                names.add(
-                        PluginName.with(
-                                parser.name()
-                        )
-                );
+                final int offset = parser.cursor.lineInfo().textOffset();
+                try {
+                    names.add(
+                            PluginName.with(
+                                    parser.name()
+                            )
+                    );
+                } catch (final InvalidCharacterException invalid) {
+                    throw invalid.setTextAndPosition(
+                            text,
+                            offset + invalid.position()
+                    );
+                }
 
                 parser.spaces();
 

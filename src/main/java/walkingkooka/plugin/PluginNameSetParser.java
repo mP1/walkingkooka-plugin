@@ -92,7 +92,7 @@ final class PluginNameSetParser implements CanBeEmpty {
 
     private final String text;
 
-    private final TextCursor cursor;
+    final TextCursor cursor;
 
     private InvalidCharacterException handleInvalidCharacterException(final InvalidCharacterException cause,
                                                                       final String token) {
