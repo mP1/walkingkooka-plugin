@@ -23,6 +23,7 @@ import walkingkooka.ToStringBuilder;
 import walkingkooka.naming.HasName;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.net.http.server.hateos.HateosResource;
+import walkingkooka.net.http.server.hateos.HateosResourceName;
 import walkingkooka.plugin.PluginName;
 import walkingkooka.text.CharSequences;
 import walkingkooka.tree.json.JsonNode;
@@ -43,6 +44,11 @@ import java.util.Optional;
 public final class Plugin implements HateosResource<PluginName>,
         Comparable<Plugin>,
         HasName<PluginName> {
+
+    /**
+     * A {@link HateosResourceName} with <code>plugin</code>.
+     */
+    public static final HateosResourceName HATEOS_RESOURCE_NAME = HateosResourceName.with("plugin");
 
     public static Plugin with(final PluginName name,
                               final String filename,
