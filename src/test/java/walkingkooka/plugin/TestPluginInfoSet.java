@@ -31,6 +31,7 @@ import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.function.Predicate;
 
 final class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements PluginInfoSetLike<StringName,
         TestPluginInfo,
@@ -114,6 +115,13 @@ final class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements Plu
     public TestPluginInfoSet deleteAll(final Collection<TestPluginInfo> infos) {
         return this.setElements(
                 this.pluginInfoSet.deleteAll(infos)
+        );
+    }
+
+    @Override
+    public TestPluginInfoSet deleteIf(final Predicate<? super TestPluginInfo> predicate) {
+        return this.setElements(
+                this.pluginInfoSet.deleteIf(predicate)
         );
     }
 
