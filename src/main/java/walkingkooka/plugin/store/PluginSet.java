@@ -20,13 +20,16 @@ package walkingkooka.plugin.store;
 import walkingkooka.collect.set.ImmutableSortedSet;
 import walkingkooka.collect.set.ImmutableSortedSetDefaults;
 import walkingkooka.collect.set.SortedSets;
+import walkingkooka.plugin.PluginName;
 
 import java.util.AbstractSet;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public final class PluginSet extends AbstractSet<Plugin> implements ImmutableSortedSetDefaults<PluginSet, Plugin> {
 
@@ -119,4 +122,17 @@ public final class PluginSet extends AbstractSet<Plugin> implements ImmutableSor
     }
 
     private final SortedSet<Plugin> set;
+
+    // extra............................................................................................................
+
+    /**
+     * Returns a {@link Set} containing all the {@link PluginName names}.
+     */
+    public Set<PluginName> names() {
+        return SortedSets.immutable(
+                this.set.stream()
+                        .map(Plugin::name)
+                        .collect(Collectors.toCollection(SortedSets::tree))
+        );
+    }
 }
