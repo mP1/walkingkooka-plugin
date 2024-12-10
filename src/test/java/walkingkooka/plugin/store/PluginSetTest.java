@@ -20,10 +20,10 @@ package walkingkooka.plugin.store;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Binary;
 import walkingkooka.collect.set.ImmutableSortedSetTesting;
-import walkingkooka.collect.set.Sets;
 import walkingkooka.collect.set.SortedSets;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.PluginName;
+import walkingkooka.plugin.PluginNameSet;
 
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
@@ -108,9 +108,11 @@ public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet,
     @Test
     public void testNames() {
         this.checkEquals(
-                Sets.of(
-                        PluginName.with("TestPlugin111"),
-                        PluginName.with("TestPlugin222")
+                PluginNameSet.with(
+                        SortedSets.of(
+                                PluginName.with("TestPlugin111"),
+                                PluginName.with("TestPlugin222")
+                        )
                 ),
                 this.createSet().names()
         );
