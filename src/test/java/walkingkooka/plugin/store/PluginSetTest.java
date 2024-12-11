@@ -24,13 +24,17 @@ import walkingkooka.collect.set.SortedSets;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.PluginName;
 import walkingkooka.plugin.PluginNameSet;
+import walkingkooka.tree.json.JsonNode;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet, Plugin> {
+public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet, Plugin>,
+        JsonNodeMarshallingTesting<PluginSet> {
 
     @Test
     public void testWithEmpty() {
@@ -115,6 +119,99 @@ public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet,
                         )
                 ),
                 this.createSet().names()
+        );
+    }
+
+    // json.............................................................................................................
+
+    @Test
+    public void testMarshall() {
+        this.marshallAndCheck(
+                this.createJsonNodeMarshallingValue(),
+                "[\n" +
+                        "  {\n" +
+                        "    \"name\": \"TestPlugin111\",\n" +
+                        "    \"filename\": \"test-plugin-111.jar\",\n" +
+                        "    \"archive\": \"Y29udGVudA==\",\n" +
+                        "    \"user\": \"user1@example.com\",\n" +
+                        "    \"timestamp\": \"1999-12-31T12:58:59\"\n" +
+                        "  },\n" +
+                        "  {\n" +
+                        "    \"name\": \"TestPlugin222\",\n" +
+                        "    \"filename\": \"test-plugin-222.jar\",\n" +
+                        "    \"archive\": \"Y29udGVudA==\",\n" +
+                        "    \"user\": \"user1@example.com\",\n" +
+                        "    \"timestamp\": \"1999-12-31T12:58:59\"\n" +
+                        "  }\n" +
+                        "]"
+        );
+    }
+
+    @Test
+    public void testUnmarshall() {
+        this.unmarshallAndCheck(
+                "[\n" +
+                        "  {\n" +
+                        "    \"name\": \"TestPlugin111\",\n" +
+                        "    \"filename\": \"test-plugin-111.jar\",\n" +
+                        "    \"archive\": \"Y29udGVudA==\",\n" +
+                        "    \"user\": \"user1@example.com\",\n" +
+                        "    \"timestamp\": \"1999-12-31T12:58:59\"\n" +
+                        "  },\n" +
+                        "  {\n" +
+                        "    \"name\": \"TestPlugin222\",\n" +
+                        "    \"filename\": \"test-plugin-222.jar\",\n" +
+                        "    \"archive\": \"Y29udGVudA==\",\n" +
+                        "    \"user\": \"user1@example.com\",\n" +
+                        "    \"timestamp\": \"1999-12-31T12:58:59\"\n" +
+                        "  }\n" +
+                        "]",
+                this.createJsonNodeMarshallingValue()
+        );
+    }
+
+    @Override
+    public PluginSet unmarshall(final JsonNode json, 
+                                final JsonNodeUnmarshallContext context) {
+        return PluginSet.unmarshall(
+                json,
+                context
+        );
+    }
+
+    @Override
+    public PluginSet createJsonNodeMarshallingValue() {
+        return PluginSet.with(
+                SortedSets.of(
+                        Plugin.with(
+                                PluginName.with("TestPlugin111"),
+                                "test-plugin-111.jar",
+                                Binary.with("content".getBytes(Charset.defaultCharset())),
+                                EmailAddress.parse("user1@example.com"),
+                                LocalDateTime.of(
+                                        1999,
+                                        12,
+                                        31,
+                                        12,
+                                        58,
+                                        59
+                                )
+                        ),
+                        Plugin.with(
+                                PluginName.with("TestPlugin222"),
+                                "test-plugin-222.jar",
+                                Binary.with("content".getBytes(Charset.defaultCharset())),
+                                EmailAddress.parse("user1@example.com"),
+                                LocalDateTime.of(
+                                        1999,
+                                        12,
+                                        31,
+                                        12,
+                                        58,
+                                        59
+                                )
+                        )
+                )
         );
     }
 
