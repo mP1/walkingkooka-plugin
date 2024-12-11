@@ -22,6 +22,10 @@ import walkingkooka.collect.set.ImmutableSortedSetDefaults;
 import walkingkooka.collect.set.SortedSets;
 import walkingkooka.plugin.PluginName;
 import walkingkooka.plugin.PluginNameSet;
+import walkingkooka.tree.json.JsonNode;
+import walkingkooka.tree.json.marshall.JsonNodeContext;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.AbstractSet;
 import java.util.Comparator;
@@ -134,6 +138,33 @@ public final class PluginSet extends AbstractSet<Plugin> implements ImmutableSor
                 this.set.stream()
                         .map(Plugin::name)
                         .collect(Collectors.toCollection(SortedSets::tree))
+        );
+    }
+
+    // Json.............................................................................................................
+
+    static PluginSet unmarshall(final JsonNode node,
+                                final JsonNodeUnmarshallContext context) {
+        return with(
+                new TreeSet<>(
+                        context.unmarshallSet(
+                                node,
+                                Plugin.class
+                        )
+                )
+        );
+    }
+
+    private JsonNode marshall(final JsonNodeMarshallContext context) {
+        return context.marshallCollection(this);
+    }
+
+    static {
+        JsonNodeContext.register(
+                JsonNodeContext.computeTypeName(PluginSet.class),
+                PluginSet::unmarshall,
+                PluginSet::marshall,
+                PluginSet.class
         );
     }
 }
