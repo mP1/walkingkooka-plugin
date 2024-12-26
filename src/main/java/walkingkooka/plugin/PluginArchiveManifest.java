@@ -109,7 +109,6 @@ public final class PluginArchiveManifest {
         return this.className;
     }
 
-    ;
     private ClassName className;
 
     // hashCode/equals..................................................................................................
