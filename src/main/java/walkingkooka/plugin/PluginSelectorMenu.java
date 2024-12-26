@@ -146,10 +146,10 @@ public final class PluginSelectorMenu<S extends PluginSelectorLike<N>, N extends
         }
 
         if (null == label) {
-            JsonNodeUnmarshallContext.requiredPropertyMissing(LABEL_PROPERTY, node);
+            JsonNodeUnmarshallContext.missingProperty(LABEL_PROPERTY, node);
         }
         if (null == selector) {
-            JsonNodeUnmarshallContext.requiredPropertyMissing(SELECTOR_PROPERTY, node);
+            JsonNodeUnmarshallContext.missingProperty(SELECTOR_PROPERTY, node);
         }
         return with(
                 label,

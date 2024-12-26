@@ -247,19 +247,19 @@ public final class Plugin implements HateosResource<PluginName>,
         }
 
         if (null == pluginName) {
-            JsonNodeUnmarshallContext.requiredPropertyMissing(NAME_PROPERTY, node);
+            JsonNodeUnmarshallContext.missingProperty(NAME_PROPERTY, node);
         }
         if (null == filename) {
-            JsonNodeUnmarshallContext.requiredPropertyMissing(FILENAME_PROPERTY, node);
+            JsonNodeUnmarshallContext.missingProperty(FILENAME_PROPERTY, node);
         }
         if (null == archive) {
-            JsonNodeUnmarshallContext.requiredPropertyMissing(ARCHIVE_PROPERTY, node);
+            JsonNodeUnmarshallContext.missingProperty(ARCHIVE_PROPERTY, node);
         }
         if (null == user) {
-            JsonNodeUnmarshallContext.requiredPropertyMissing(USER_PROPERTY, node);
+            JsonNodeUnmarshallContext.missingProperty(USER_PROPERTY, node);
         }
         if (null == timestamp) {
-            JsonNodeUnmarshallContext.requiredPropertyMissing(TIMESTAMP_PROPERTY, node);
+            JsonNodeUnmarshallContext.missingProperty(TIMESTAMP_PROPERTY, node);
         }
 
         return Plugin.with(
