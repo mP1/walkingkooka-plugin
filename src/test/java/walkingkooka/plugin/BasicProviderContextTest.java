@@ -20,6 +20,7 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.environment.FakeEnvironmentContext;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.plugin.store.PluginStores;
@@ -36,7 +37,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
 
     private final static String VAR_VALUE = "MagicValue123";
 
-    private final static EnvironmentContext ENVIRONMENT_CONTEXT = new EnvironmentContext() {
+    private final static EnvironmentContext ENVIRONMENT_CONTEXT = new FakeEnvironmentContext() {
 
         @Override
         public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {

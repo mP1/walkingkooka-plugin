@@ -25,6 +25,7 @@ import walkingkooka.plugin.store.PluginStore;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * A {@link ProviderContext} that always returns a dummy value for any given {@link EnvironmentValueName}.
@@ -50,6 +51,11 @@ final class PluginAliasesProviderContext implements ProviderContext {
     }
 
     private final static Optional<?> DUMMY = Optional.of("Dummy");
+
+    @Override
+    public Set<EnvironmentValueName<?>> environmentValueNames() {
+        throw new UnsupportedOperationException();
+    }
 
     @Override
     public LocalDateTime now() {
