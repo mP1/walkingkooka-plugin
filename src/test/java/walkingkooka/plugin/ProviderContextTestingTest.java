@@ -27,6 +27,7 @@ import walkingkooka.plugin.store.PluginStores;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 public final class ProviderContextTestingTest implements ProviderContextTesting<TestProviderContext> {
 
@@ -50,6 +51,11 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
         public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
             Objects.requireNonNull(name, "name");
 
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public Set<EnvironmentValueName<?>> environmentValueNames() {
             throw new UnsupportedOperationException();
         }
 
