@@ -48,6 +48,7 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
 
     final static class TestProviderContext implements ProviderContext {
 
+        @Override
         public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
             Objects.requireNonNull(name, "name");
 
