@@ -547,7 +547,7 @@ public final class ProviderCollectionTest implements ClassTesting<ProviderCollec
             );
         }
 
-        private TestPluginInfo info;
+        private final TestPluginInfo info;
 
         final StringName name;
     }
