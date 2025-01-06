@@ -43,7 +43,7 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
             AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
     PluginAlias<N, S> parse(final String text,
                             final PluginHelper<N, I, IS, S, A, AS> helper) {
-        final PluginExpressionParser parser = PluginExpressionParser.with(
+        final PluginExpressionParser<N> parser = PluginExpressionParser.with(
                 text,
                 helper::parseName
         );

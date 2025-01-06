@@ -156,7 +156,7 @@ public final class PluginSelectorTokenTest implements PluginSelectorTokenLikeTes
     }
 
     @Override
-    public PluginSelectorToken createObject() {
+    public PluginSelectorToken<PluginSelectorTokenAlternative> createObject() {
         return PluginSelectorToken.with(
                 LABEL,
                 TEXT,

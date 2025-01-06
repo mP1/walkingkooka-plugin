@@ -35,12 +35,12 @@ public final class PluginProviderTestingTest implements PluginProviderTesting<Te
 
     private final static PluginName PLUGIN_NAME2 = PluginName.with("Plugin-2");
 
-    private final static PluginInfo PLUGIN_INFO1 = PluginInfo.with(
+    private final static PluginInfo<PluginName> PLUGIN_INFO1 = PluginInfo.with(
             Url.parseAbsolute("https://example.com/plugin-1"),
             PLUGIN_NAME1
     );
 
-    private final static PluginInfo PLUGIN_INFO2 = PluginInfo.with(
+    private final static PluginInfo<PluginName> PLUGIN_INFO2 = PluginInfo.with(
             Url.parseAbsolute("https://example.com/plugin-2"),
             PLUGIN_NAME2
     );
