@@ -161,7 +161,7 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
         return this.infos;
     }
 
-    private Set<I> infos;
+    private final Set<I> infos;
 
     // Object...........................................................................................................
 
