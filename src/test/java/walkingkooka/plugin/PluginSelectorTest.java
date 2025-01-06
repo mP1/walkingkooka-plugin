@@ -166,7 +166,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                 NAME,
                 VALUE_TEXT
         );
-        ;
+
         assertSame(
                 selector,
                 selector.setValueText(VALUE_TEXT)
