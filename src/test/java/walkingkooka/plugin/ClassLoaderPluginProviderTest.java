@@ -169,7 +169,7 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
 
     // this class must be loaded by the system class loader and not the custom plugin classloader.
     public interface TestPluginProvider extends PluginProvider {
-
+        
         <T> Optional<T> plugin(final PluginName name,
                                final Class<T> type);
 
