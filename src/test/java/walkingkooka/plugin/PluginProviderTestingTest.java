@@ -36,13 +36,13 @@ public final class PluginProviderTestingTest implements PluginProviderTesting<Te
     private final static PluginName PLUGIN_NAME2 = PluginName.with("Plugin-2");
 
     private final static PluginInfo<PluginName> PLUGIN_INFO1 = PluginInfo.with(
-            Url.parseAbsolute("https://example.com/plugin-1"),
-            PLUGIN_NAME1
+        Url.parseAbsolute("https://example.com/plugin-1"),
+        PLUGIN_NAME1
     );
 
     private final static PluginInfo<PluginName> PLUGIN_INFO2 = PluginInfo.with(
-            Url.parseAbsolute("https://example.com/plugin-2"),
-            PLUGIN_NAME2
+        Url.parseAbsolute("https://example.com/plugin-2"),
+        PLUGIN_NAME2
     );
 
     private final static TestPlugin1 PLUGIN_1 = new TestPlugin1();
@@ -52,24 +52,24 @@ public final class PluginProviderTestingTest implements PluginProviderTesting<Te
     @Test
     public void testName() {
         this.nameAndCheck(
-                this.createPluginProvider(),
-                PLUGIN_PROVIDER_NAME
+            this.createPluginProvider(),
+            PLUGIN_PROVIDER_NAME
         );
     }
 
     @Test
     public void testPluginInfos() {
         this.pluginInfosAndCheck(
-                PLUGIN_INFO1,
-                PLUGIN_INFO2
+            PLUGIN_INFO1,
+            PLUGIN_INFO2
         );
     }
 
     @Test
     public void testUrl() {
         this.urlAndCheck(
-                this.createPluginProvider(),
-                PLUGIN_PROVIDER_URL
+            this.createPluginProvider(),
+            PLUGIN_PROVIDER_URL
         );
     }
 
@@ -88,8 +88,8 @@ public final class PluginProviderTestingTest implements PluginProviderTesting<Te
         @Override
         public Set<PluginInfo> pluginInfos() {
             return Sets.of(
-                    PLUGIN_INFO1,
-                    PLUGIN_INFO2
+                PLUGIN_INFO1,
+                PLUGIN_INFO2
             );
         }
 

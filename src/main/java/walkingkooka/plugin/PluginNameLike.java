@@ -37,8 +37,8 @@ public interface PluginNameLike<N extends Name & Comparable<N>> extends Name, Co
     static boolean isChar(final int pos,
                           final char c) {
         return (0 == pos ?
-                PluginName.INITIAL :
-                PluginName.PART).test(c);
+            PluginName.INITIAL :
+            PluginName.PART).test(c);
     }
 
     // parse............................................................................................................
@@ -67,8 +67,8 @@ public interface PluginNameLike<N extends Name & Comparable<N>> extends Name, Co
         final List<N> names = Lists.array();
 
         final PluginNameLikeParser<N> parser = PluginNameLikeParser.with(
-                text,
-                nameParser
+            text,
+            nameParser
         );
 
         parser.spaces();
@@ -101,10 +101,10 @@ public interface PluginNameLike<N extends Name & Comparable<N>> extends Name, Co
     @Override
     default int compareTo(final N other) {
         return CASE_SENSITIVITY.comparator()
-                .compare(
-                        this.value(),
-                        other.value()
-                );
+            .compare(
+                this.value(),
+                other.value()
+            );
     }
 
     // HasCaseSensitivity................................................................................................

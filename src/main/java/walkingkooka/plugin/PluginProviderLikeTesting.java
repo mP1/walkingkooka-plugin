@@ -22,5 +22,5 @@ import walkingkooka.naming.Name;
 import walkingkooka.net.HasAbsoluteUrlTesting;
 
 public interface PluginProviderLikeTesting<T extends PluginProviderLike<N>, N extends Name> extends HasNameTesting<N>,
-        HasAbsoluteUrlTesting<T> {
+    HasAbsoluteUrlTesting<T> {
 }

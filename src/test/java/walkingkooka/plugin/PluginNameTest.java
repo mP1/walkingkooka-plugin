@@ -29,20 +29,20 @@ final public class PluginNameTest implements PluginNameTesting<PluginName> {
     @Test
     public void testWithInitialSeparatorFails() {
         assertThrows(
-                InvalidCharacterException.class,
-                () -> PluginName.with(
-                        PluginName.SEPARATOR + "Hello"
-                )
+            InvalidCharacterException.class,
+            () -> PluginName.with(
+                PluginName.SEPARATOR + "Hello"
+            )
         );
     }
 
     @Test
     public void testWithIncludesSeparatorFails() {
         assertThrows(
-                InvalidCharacterException.class,
-                () -> PluginName.with(
-                        "Hello" + PluginName.SEPARATOR + "123"
-                )
+            InvalidCharacterException.class,
+            () -> PluginName.with(
+                "Hello" + PluginName.SEPARATOR + "123"
+            )
         );
     }
 

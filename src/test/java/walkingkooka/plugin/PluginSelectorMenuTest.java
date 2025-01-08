@@ -34,10 +34,10 @@ public final class PluginSelectorMenuTest implements PluginSelectorMenuLikeTesti
     private final static String LABEL = "Label Short123";
 
     private final static TestPluginSelector SELECTOR = new TestPluginSelector(
-            PluginSelector.parse(
-                    "TestSelector",
-                    Names::string
-            )
+        PluginSelector.parse(
+            "TestSelector",
+            Names::string
+        )
     );
 
     // with.............................................................................................................
@@ -47,8 +47,8 @@ public final class PluginSelectorMenuTest implements PluginSelectorMenuLikeTesti
     public PluginSelectorMenu<TestPluginSelector, StringName> createPluginSelectorMenu(final String label,
                                                                                        final TestPluginSelector selector) {
         return PluginSelectorMenu.with(
-                label,
-                selector
+            label,
+            selector
         );
     }
 
@@ -65,36 +65,36 @@ public final class PluginSelectorMenuTest implements PluginSelectorMenuLikeTesti
     // json.............................................................................................................
 
     private final static JsonNode JSON = JsonNode.parse("{\n" +
-            "  \"label\": \"Label Short123\",\n" +
-            "  \"selector\": \"TestSelector\"\n" +
-            "}");
+        "  \"label\": \"Label Short123\",\n" +
+        "  \"selector\": \"TestSelector\"\n" +
+        "}");
 
     @Test
     public void testMarshall() {
         this.checkEquals(
-                JSON,
-                PluginSelectorMenu.with(
-                        LABEL,
-                        SELECTOR
-                ).marshall(JsonNodeMarshallContexts.basic())
+            JSON,
+            PluginSelectorMenu.with(
+                LABEL,
+                SELECTOR
+            ).marshall(JsonNodeMarshallContexts.basic())
         );
     }
 
     @Test
     public void testUnmarshall() {
         this.checkEquals(
-                PluginSelectorMenu.with(
-                        LABEL,
-                        SELECTOR
+            PluginSelectorMenu.with(
+                LABEL,
+                SELECTOR
+            ),
+            PluginSelectorMenu.unmarshall(
+                JSON,
+                JsonNodeUnmarshallContexts.basic(
+                    ExpressionNumberKind.BIG_DECIMAL,
+                    MathContext.DECIMAL32
                 ),
-                PluginSelectorMenu.unmarshall(
-                        JSON,
-                        JsonNodeUnmarshallContexts.basic(
-                                ExpressionNumberKind.BIG_DECIMAL,
-                                MathContext.DECIMAL32
-                        ),
-                        TestPluginSelector.class
-                )
+                TestPluginSelector.class
+            )
         );
     }
 
@@ -103,7 +103,7 @@ public final class PluginSelectorMenuTest implements PluginSelectorMenuLikeTesti
     @Override
     public Class<PluginSelectorMenu<TestPluginSelector, StringName>> type() {
         return Cast.to(
-                PluginSelectorMenu.class
+            PluginSelectorMenu.class
         );
     }
 

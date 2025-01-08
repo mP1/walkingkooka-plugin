@@ -35,11 +35,11 @@ import java.util.stream.Collectors;
  * A helper that includes methods to create or parse strings into Plugin classes.
  */
 public interface PluginHelper<N extends Name & Comparable<N>,
-        I extends PluginInfoLike<I, N>,
-        IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-        S extends PluginSelectorLike<N>,
-        A extends PluginAliasLike<N, S, A>,
-        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>> {
+    I extends PluginInfoLike<I, N>,
+    IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+    S extends PluginSelectorLike<N>,
+    A extends PluginAliasLike<N, S, A>,
+    AS extends PluginAliasSetLike<N, I, IS, S, A, AS>> {
 
     /**
      * Factory that creates a {@link Name} with the given text.
@@ -112,17 +112,17 @@ public interface PluginHelper<N extends Name & Comparable<N>,
         Objects.requireNonNull(infos, "infos");
 
         return this.aliasSet(
-                infos.stream()
-                        .map(this::toAlias)
-                        .collect(Collectors.toCollection(SortedSets::tree))
+            infos.stream()
+                .map(this::toAlias)
+                .collect(Collectors.toCollection(SortedSets::tree))
         );
     }
 
     private A toAlias(final I info) {
         return this.alias(
-                info.name(),
-                Optional.empty(), // selector
-                Optional.empty() // url
+            info.name(),
+            Optional.empty(), // selector
+            Optional.empty() // url
         );
     }
 

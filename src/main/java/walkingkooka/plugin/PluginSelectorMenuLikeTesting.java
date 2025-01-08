@@ -28,39 +28,39 @@ import walkingkooka.text.printer.TreePrintableTesting;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface PluginSelectorMenuLikeTesting<M extends PluginSelectorMenuLike<S, N>, S extends PluginSelectorLike<N>, N extends Name & Comparable<N>> extends ClassTesting<M>,
-        HashCodeEqualsDefinedTesting2<M>,
-        TreePrintableTesting {
+    HashCodeEqualsDefinedTesting2<M>,
+    TreePrintableTesting {
 
     @Test
     default void testWithNullLabelFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createPluginSelectorMenu(
-                        null,
-                        this.createPluginSelector()
-                )
+            NullPointerException.class,
+            () -> this.createPluginSelectorMenu(
+                null,
+                this.createPluginSelector()
+            )
         );
     }
 
     @Test
     default void testWithEmptyLabelFails() {
         assertThrows(
-                IllegalArgumentException.class,
-                () -> this.createPluginSelectorMenu(
-                        "",
-                        this.createPluginSelector()
-                )
+            IllegalArgumentException.class,
+            () -> this.createPluginSelectorMenu(
+                "",
+                this.createPluginSelector()
+            )
         );
     }
 
     @Test
     default void testWithNullPluginSelectorFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createPluginSelectorMenu(
-                        "Label123",
-                        null
-                )
+            NullPointerException.class,
+            () -> this.createPluginSelectorMenu(
+                "Label123",
+                null
+            )
         );
     }
 
@@ -70,18 +70,18 @@ public interface PluginSelectorMenuLikeTesting<M extends PluginSelectorMenuLike<
         final S pluginSelector = this.createPluginSelector();
 
         final M menu = this.createPluginSelectorMenu(
-                label,
-                pluginSelector
+            label,
+            pluginSelector
         );
         this.checkEquals(
-                label,
-                menu.label(),
-                "label"
+            label,
+            menu.label(),
+            "label"
         );
         this.checkEquals(
-                pluginSelector,
-                menu.selector(),
-                "selector"
+            pluginSelector,
+            menu.selector(),
+            "selector"
         );
     }
 
@@ -100,8 +100,8 @@ public interface PluginSelectorMenuLikeTesting<M extends PluginSelectorMenuLike<
 
         final StringBuilder b = new StringBuilder();
         final IndentingPrinter printer = Printers.stringBuilder(
-                b,
-                EOL
+            b,
+            EOL
         ).indenting(INDENTATION);
 
         printer.println(label);
@@ -113,11 +113,11 @@ public interface PluginSelectorMenuLikeTesting<M extends PluginSelectorMenuLike<
         printer.flush();
 
         this.treePrintAndCheck(
-                this.createPluginSelectorMenu(
-                        label,
-                        selector
-                ),
-                b.toString()
+            this.createPluginSelectorMenu(
+                label,
+                selector
+            ),
+            b.toString()
         );
     }
 
@@ -126,28 +126,28 @@ public interface PluginSelectorMenuLikeTesting<M extends PluginSelectorMenuLike<
     @Test
     default void testEqualsDifferentLabel() {
         this.checkNotEquals(
-                this.createPluginSelectorMenu(
-                        "Different Label123",
-                        this.createPluginSelector()
-                )
+            this.createPluginSelectorMenu(
+                "Different Label123",
+                this.createPluginSelector()
+            )
         );
     }
 
     @Test
     default void testEqualsDifferentSelector() {
         this.checkNotEquals(
-                this.createPluginSelectorMenu(
-                        "Label123",
-                        this.createDifferentPluginSelector()
-                )
+            this.createPluginSelectorMenu(
+                "Label123",
+                this.createDifferentPluginSelector()
+            )
         );
     }
 
     @Override
     default M createObject() {
         return this.createPluginSelectorMenu(
-                "Label123",
-                this.createPluginSelector()
+            "Label123",
+            this.createPluginSelector()
         );
     }
 

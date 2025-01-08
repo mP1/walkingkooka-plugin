@@ -41,17 +41,17 @@ import java.util.SortedSet;
  * An immutable {@link SortedSet} of {@link PluginName}.
  */
 public final class PluginNameSet extends AbstractSet<PluginName>
-        implements ImmutableSortedSetDefaults<PluginNameSet, PluginName>,
-        HasText,
-        TreePrintable,
-        HasUrlFragment {
+    implements ImmutableSortedSetDefaults<PluginNameSet, PluginName>,
+    HasText,
+    TreePrintable,
+    HasUrlFragment {
 
     public static PluginNameSet parse(final String text) {
         Objects.requireNonNull(text, "text");
 
         final SortedSet<PluginName> names = SortedSets.tree();
         final PluginNameSetParser parser = PluginNameSetParser.with(
-                text
+            text
         );
 
         parser.spaces();
@@ -63,14 +63,14 @@ public final class PluginNameSet extends AbstractSet<PluginName>
                 final int offset = parser.cursor.lineInfo().textOffset();
                 try {
                     names.add(
-                            PluginName.with(
-                                    parser.name()
-                            )
+                        PluginName.with(
+                            parser.name()
+                        )
                     );
                 } catch (final InvalidCharacterException invalid) {
                     throw invalid.setTextAndPosition(
-                            text,
-                            offset + invalid.position()
+                        text,
+                        offset + invalid.position()
                     );
                 }
 
@@ -108,14 +108,14 @@ public final class PluginNameSet extends AbstractSet<PluginName>
         Objects.requireNonNull(names, "names");
 
         return withCopy(
-                SortedSets.immutable(names)
+            SortedSets.immutable(names)
         );
     }
 
     private static PluginNameSet withCopy(final SortedSet<PluginName> names) {
         return names.isEmpty() ?
-                EMPTY :
-                new PluginNameSet(names);
+            EMPTY :
+            new PluginNameSet(names);
     }
 
     // @VisibleForTesting
@@ -138,31 +138,31 @@ public final class PluginNameSet extends AbstractSet<PluginName>
     @Override
     public Comparator<PluginName> comparator() {
         return (Comparator<PluginName>)
-                this.names.comparator();
+            this.names.comparator();
     }
 
     @Override
     public PluginNameSet subSet(final PluginName from,
                                 final PluginName to) {
         return withCopy(
-                this.names.subSet(
-                        from,
-                        to
-                )
+            this.names.subSet(
+                from,
+                to
+            )
         );
     }
 
     @Override
     public PluginNameSet headSet(final PluginName alias) {
         return withCopy(
-                this.names.headSet(alias)
+            this.names.headSet(alias)
         );
     }
 
     @Override
     public PluginNameSet tailSet(final PluginName alias) {
         return withCopy(
-                this.names.tailSet(alias)
+            this.names.tailSet(alias)
         );
     }
 
@@ -188,8 +188,8 @@ public final class PluginNameSet extends AbstractSet<PluginName>
         final PluginNameSet copy = with(names);
 
         return this.equals(copy) ?
-                this :
-                copy;
+            this :
+            copy;
     }
 
     private final SortedSet<PluginName> names;
@@ -199,8 +199,8 @@ public final class PluginNameSet extends AbstractSet<PluginName>
     @Override
     public String text() {
         return SEPARATOR.toSeparatedString(
-                this,
-                Object::toString
+            this,
+            Object::toString
         );
     }
 
@@ -210,8 +210,8 @@ public final class PluginNameSet extends AbstractSet<PluginName>
     public void printTree(final IndentingPrinter printer) {
         for (final PluginName name : this) {
             TreePrintable.printTreeOrToString(
-                    name,
-                    printer
+                name,
+                printer
             );
             printer.lineStart();
         }
@@ -223,7 +223,7 @@ public final class PluginNameSet extends AbstractSet<PluginName>
     static PluginNameSet unmarshall(final JsonNode node,
                                     final JsonNodeUnmarshallContext context) {
         return parse(
-                node.stringOrFail()
+            node.stringOrFail()
         );
     }
 
@@ -233,10 +233,10 @@ public final class PluginNameSet extends AbstractSet<PluginName>
 
     static {
         JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(PluginNameSet.class),
-                PluginNameSet::unmarshall,
-                PluginNameSet::marshall,
-                PluginNameSet.class
+            JsonNodeContext.computeTypeName(PluginNameSet.class),
+            PluginNameSet::unmarshall,
+            PluginNameSet::marshall,
+            PluginNameSet.class
         );
     }
 
@@ -245,7 +245,7 @@ public final class PluginNameSet extends AbstractSet<PluginName>
     @Override
     public UrlFragment urlFragment() {
         return UrlFragment.with(
-                this.text()
+            this.text()
         );
     }
 }

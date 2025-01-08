@@ -38,35 +38,35 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends ClassTesting2<I>,
-        HashCodeEqualsDefinedTesting2<I>,
-        HateosResourceTesting<I, N>,
-        JsonNodeMarshallingTesting<I>,
-        ComparableTesting2<I>,
-        HasAbsoluteUrlTesting<I>,
-        ParseStringTesting<I>,
-        ToStringTesting<I> {
+    HashCodeEqualsDefinedTesting2<I>,
+    HateosResourceTesting<I, N>,
+    JsonNodeMarshallingTesting<I>,
+    ComparableTesting2<I>,
+    HasAbsoluteUrlTesting<I>,
+    ParseStringTesting<I>,
+    ToStringTesting<I> {
 
     // factory..........................................................................................................
 
     @Test
     default void testWithNullUrlFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createPluginInfoLike(
-                        null,
-                        this.createName("abc-123")
-                )
+            NullPointerException.class,
+            () -> this.createPluginInfoLike(
+                null,
+                this.createName("abc-123")
+            )
         );
     }
 
     @Test
     default void testWithNullNameFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createPluginInfoLike(
-                        Url.parseAbsolute("https://example.com/123"),
-                        null
-                )
+            NullPointerException.class,
+            () -> this.createPluginInfoLike(
+                Url.parseAbsolute("https://example.com/123"),
+                null
+            )
         );
     }
 
@@ -77,8 +77,8 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
 
     default I createPluginInfoLike() {
         return this.createPluginInfoLike(
-                Url.parseAbsolute("https://example.com/123"),
-                this.createName("Test123")
+            Url.parseAbsolute("https://example.com/123"),
+            this.createName("Test123")
         );
     }
 
@@ -95,14 +95,14 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     default void testCompareLess() {
         final AbsoluteUrl url = Url.parseAbsolute("https://example.com/123");
         this.compareToAndCheckLess(
-                this.createPluginInfoLike(
-                        url,
-                        this.createName("abc-123")
-                ),
-                this.createPluginInfoLike(
-                        url,
-                        this.createName("xyz-456")
-                )
+            this.createPluginInfoLike(
+                url,
+                this.createName("abc-123")
+            ),
+            this.createPluginInfoLike(
+                url,
+                this.createName("xyz-456")
+            )
         );
     }
 
@@ -118,14 +118,14 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
         final N name = this.createName("abc-123");
 
         this.checkNotEquals(
-                this.createPluginInfoLike(
-                        Url.parseAbsolute("https://example.com"),
-                        name
-                ),
-                this.createPluginInfoLike(
-                        Url.parseAbsolute("https://example.com/different"),
-                        name
-                )
+            this.createPluginInfoLike(
+                Url.parseAbsolute("https://example.com"),
+                name
+            ),
+            this.createPluginInfoLike(
+                Url.parseAbsolute("https://example.com/different"),
+                name
+            )
         );
     }
 
@@ -134,14 +134,14 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
         final AbsoluteUrl url = Url.parseAbsolute("https://example.com");
 
         this.checkNotEquals(
-                this.createPluginInfoLike(
-                        url,
-                        this.createName("abc-123")
-                ),
-                this.createPluginInfoLike(
-                        url,
-                        this.createName("different-456")
-                )
+            this.createPluginInfoLike(
+                url,
+                this.createName("abc-123")
+            ),
+            this.createPluginInfoLike(
+                url,
+                this.createName("different-456")
+            )
         );
     }
 
@@ -158,12 +158,12 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     default void testHateosId() {
         final N name = this.createName("abc-123");
         final I info = this.createPluginInfoLike(
-                Url.parseAbsolute("https://example.com/123"),
-                name
+            Url.parseAbsolute("https://example.com/123"),
+            name
         );
         this.hateosLinkIdAndCheck(
-                info,
-                name.value()
+            info,
+            name.value()
         );
     }
 
@@ -171,13 +171,13 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     default void testId() {
         final N name = this.createName("abc-123");
         final I info = this.createPluginInfoLike(
-                Url.parseAbsolute("https://example.com/123"),
-                name
+            Url.parseAbsolute("https://example.com/123"),
+            name
         );
 
         this.idAndCheck(
-                info,
-                Optional.of(name)
+            info,
+            Optional.of(name)
         );
     }
 
@@ -191,9 +191,9 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     @Test
     default void testSetNameWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createPluginInfoLike()
-                        .setName(null)
+            NullPointerException.class,
+            () -> this.createPluginInfoLike()
+                .setName(null)
         );
     }
 
@@ -201,8 +201,8 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     default void testSetNameWithSame() {
         final I info = this.createPluginInfoLike();
         assertSame(
-                info,
-                info.setName(info.name())
+            info,
+            info.setName(info.name())
         );
     }
 
@@ -210,9 +210,9 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
                                  final N name,
                                  final I expected) {
         this.checkEquals(
-                expected,
-                info.setName(name),
-                () -> info + " setName " + name
+            expected,
+            info.setName(name),
+            () -> info + " setName " + name
         );
     }
 
@@ -222,8 +222,8 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     default void testToString() {
         final I info = this.createPluginInfoLike();
         this.toStringAndCheck(
-                info,
-                info.url() + " " + info.name()
+            info,
+            info.url() + " " + info.name()
         );
     }
 
@@ -231,8 +231,8 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     default void testParseToStringRoundtrip() {
         final I info = this.createPluginInfoLike();
         this.parseStringAndCheck(
-                info.toString(),
-                info
+            info.toString(),
+            info
         );
     }
 
@@ -240,9 +240,9 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     default void testParseStaticMethod() throws Exception {
         final Method parse = this.type().getMethod("parse", String.class);
         this.checkEquals(
-                JavaVisibility.PUBLIC,
-                JavaVisibility.of(parse),
-                parse::toGenericString
+            JavaVisibility.PUBLIC,
+            JavaVisibility.of(parse),
+            parse::toGenericString
         );
     }
 
@@ -254,11 +254,11 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
         final String name = "TestName123";
 
         this.parseStringAndCheck(
-                url + " " + name,
-                this.createPluginInfoLike(
-                        Url.parseAbsolute(url),
-                        this.createName(name)
-                )
+            url + " " + name,
+            this.createPluginInfoLike(
+                Url.parseAbsolute(url),
+                this.createName(name)
+            )
         );
     }
 

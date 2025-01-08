@@ -54,13 +54,13 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginSelectorTest implements ClassTesting2<PluginSelector<StringName>>,
-        ComparableTesting2<PluginSelector<StringName>>,
-        HashCodeEqualsDefinedTesting2<PluginSelector<StringName>>,
-        HasNameTesting<StringName>,
-        HasTextTesting,
-        ToStringTesting<PluginSelector<StringName>>,
-        ParseStringTesting<PluginSelector<StringName>>,
-        TreePrintableTesting {
+    ComparableTesting2<PluginSelector<StringName>>,
+    HashCodeEqualsDefinedTesting2<PluginSelector<StringName>>,
+    HasNameTesting<StringName>,
+    HasTextTesting,
+    ToStringTesting<PluginSelector<StringName>>,
+    ParseStringTesting<PluginSelector<StringName>>,
+    TreePrintableTesting {
 
     private final static StringName NAME = Names.string("magic-plugin-123");
 
@@ -69,39 +69,39 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     @Test
     public void testWithNullNameFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginSelector.with(
-                        null,
-                        VALUE_TEXT
-                )
+            NullPointerException.class,
+            () -> PluginSelector.with(
+                null,
+                VALUE_TEXT
+            )
         );
     }
 
     @Test
     public void testWithNullTextFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginSelector.with(
-                        NAME,
-                        null
-                )
+            NullPointerException.class,
+            () -> PluginSelector.with(
+                NAME,
+                null
+            )
         );
     }
 
     @Test
     public void testWith() {
         final PluginSelector<StringName> selector = PluginSelector.with(
-                NAME,
-                VALUE_TEXT
+            NAME,
+            VALUE_TEXT
         );
 
         this.nameAndCheck(
-                selector,
-                NAME
+            selector,
+            NAME
         );
         this.valueTextAndCheck(
-                selector,
-                VALUE_TEXT
+            selector,
+            VALUE_TEXT
         );
     }
 
@@ -110,40 +110,40 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     @Test
     public void testSetNameWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginSelector.with(
-                        NAME,
-                        VALUE_TEXT
-                ).setName(null)
+            NullPointerException.class,
+            () -> PluginSelector.with(
+                NAME,
+                VALUE_TEXT
+            ).setName(null)
         );
     }
 
     @Test
     public void testSetNameWithSame() {
         final PluginSelector<StringName> selector = PluginSelector.with(
-                NAME,
-                VALUE_TEXT
+            NAME,
+            VALUE_TEXT
         );
         assertSame(
-                selector,
-                selector.setName(NAME)
+            selector,
+            selector.setName(NAME)
         );
     }
 
     @Test
     public void testSetNameWithDifferent() {
         final PluginSelector<StringName> selector = PluginSelector.with(
-                NAME,
-                VALUE_TEXT
+            NAME,
+            VALUE_TEXT
         );
         final StringName different = Names.string("different");
 
         this.checkEquals(
-                PluginSelector.with(
-                        different,
-                        VALUE_TEXT
-                ),
-                selector.setName(different)
+            PluginSelector.with(
+                different,
+                VALUE_TEXT
+            ),
+            selector.setName(different)
         );
     }
 
@@ -152,24 +152,24 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     @Test
     public void testSetValueTextWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginSelector.with(
-                        NAME,
-                        VALUE_TEXT
-                ).setValueText(null)
+            NullPointerException.class,
+            () -> PluginSelector.with(
+                NAME,
+                VALUE_TEXT
+            ).setValueText(null)
         );
     }
 
     @Test
     public void testSetValueTextWithSame() {
         final PluginSelector<StringName> selector = PluginSelector.with(
-                NAME,
-                VALUE_TEXT
+            NAME,
+            VALUE_TEXT
         );
 
         assertSame(
-                selector,
-                selector.setValueText(VALUE_TEXT)
+            selector,
+            selector.setValueText(VALUE_TEXT)
         );
     }
 
@@ -178,48 +178,48 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         final String text = "(\"Hello\")";
 
         final PluginSelector<StringName> selector = PluginSelector.with(
-                NAME,
-                text
+            NAME,
+            text
         );
         assertSame(
-                selector,
-                selector.setValueText(text)
+            selector,
+            selector.setValueText(text)
         );
     }
 
     @Test
     public void testSetValueTextWithDifferentText() {
         final PluginSelector<StringName> selector = PluginSelector.with(
-                NAME,
-                VALUE_TEXT
+            NAME,
+            VALUE_TEXT
         );
         final String differentText = "(\"Different\")";
         final PluginSelector<StringName> different = selector.setValueText(differentText);
 
         assertNotSame(
-                different,
-                selector
+            different,
+            selector
         );
         this.nameAndCheck(
-                different,
-                NAME
+            different,
+            NAME
         );
         this.valueTextAndCheck(
-                different,
-                differentText
+            different,
+            differentText
         );
         this.valueTextAndCheck(
-                selector,
-                VALUE_TEXT
+            selector,
+            VALUE_TEXT
         );
     }
 
     private void valueTextAndCheck(final PluginSelector<StringName> selector,
                                    final String expected) {
         this.checkEquals(
-                expected,
-                selector.valueText(),
-                selector::toString
+            expected,
+            selector.valueText(),
+            selector::toString
         );
     }
 
@@ -228,77 +228,77 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     @Test
     public void testSetValueWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginSelector.with(
-                        NAME,
-                        VALUE_TEXT
-                ).setValues(null)
+            NullPointerException.class,
+            () -> PluginSelector.with(
+                NAME,
+                VALUE_TEXT
+            ).setValues(null)
         );
     }
 
     @Test
     public void testSetValuesIncludesNull() {
         assertThrows(
-                IllegalArgumentException.class,
-                () -> PluginSelector.with(
-                        NAME,
-                        VALUE_TEXT
-                ).setValues(
-                        Arrays.asList(new Object[]{null})
-                )
+            IllegalArgumentException.class,
+            () -> PluginSelector.with(
+                NAME,
+                VALUE_TEXT
+            ).setValues(
+                Arrays.asList(new Object[]{null})
+            )
         );
     }
 
     @Test
     public void testSetValuesIncludesInvalidValue() {
         assertThrows(
-                IllegalArgumentException.class,
-                () -> PluginSelector.with(
-                        NAME,
-                        VALUE_TEXT
-                ).setValues(
-                        Lists.of(true)
-                )
+            IllegalArgumentException.class,
+            () -> PluginSelector.with(
+                NAME,
+                VALUE_TEXT
+            ).setValues(
+                Lists.of(true)
+            )
         );
     }
 
     @Test
     public void testSetValues() {
         this.checkEquals(
-                PluginSelector.with(
-                        NAME,
-                        "(\"Hello\", 2.5, plugin3)"
-                ),
-                PluginSelector.with(
-                        NAME,
-                        VALUE_TEXT
-                ).setValues(
-                        Lists.of(
-                                "Hello",
-                                2.5,
-                                TestPluginSelector.parse("plugin3")
-                        )
+            PluginSelector.with(
+                NAME,
+                "(\"Hello\", 2.5, plugin3)"
+            ),
+            PluginSelector.with(
+                NAME,
+                VALUE_TEXT
+            ).setValues(
+                Lists.of(
+                    "Hello",
+                    2.5,
+                    TestPluginSelector.parse("plugin3")
                 )
+            )
         );
     }
 
     @Test
     public void testSetValuesWithWholeNumber() {
         this.checkEquals(
-                PluginSelector.with(
-                        NAME,
-                        "(\"Hello\", 22, plugin3)"
-                ),
-                PluginSelector.with(
-                        NAME,
-                        VALUE_TEXT
-                ).setValues(
-                        Lists.of(
-                                "Hello",
-                                22.0,
-                                TestPluginSelector.parse("plugin3")
-                        )
+            PluginSelector.with(
+                NAME,
+                "(\"Hello\", 22, plugin3)"
+            ),
+            PluginSelector.with(
+                NAME,
+                VALUE_TEXT
+            ).setValues(
+                Lists.of(
+                    "Hello",
+                    22.0,
+                    TestPluginSelector.parse("plugin3")
                 )
+            )
         );
     }
 
@@ -307,16 +307,16 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     @Test
     public void testParseStringFails() {
         this.parseStringInvalidCharacterFails(
-                "hello/",
-                StringPath.SEPARATOR.character()
+            "hello/",
+            StringPath.SEPARATOR.character()
         );
     }
 
     @Test
     public void testParseSpaceNameFails() {
         this.parseStringInvalidCharacterFails(
-                " hello",
-                ' '
+            " hello",
+            ' '
         );
     }
 
@@ -325,11 +325,11 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         final String text = "magic-plugin";
 
         this.parseStringAndCheck(
-                text,
-                PluginSelector.with(
-                        Names.string(text),
-                        ""
-                )
+            text,
+            PluginSelector.with(
+                Names.string(text),
+                ""
+            )
         );
     }
 
@@ -338,11 +338,11 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         final String text = "magic-plugin";
 
         this.parseStringAndCheck(
-                text + " ",
-                PluginSelector.with(
-                        Names.string(text),
-                        ""
-                )
+            text + " ",
+            PluginSelector.with(
+                Names.string(text),
+                ""
+            )
         );
     }
 
@@ -352,11 +352,11 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         final String patternText = "@@";
 
         this.parseStringAndCheck(
-                name + " " + patternText,
-                PluginSelector.with(
-                        Names.string(name),
-                        patternText
-                )
+            name + " " + patternText,
+            PluginSelector.with(
+                Names.string(name),
+                patternText
+            )
         );
     }
 
@@ -365,34 +365,34 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     @Test
     public void testParseToString() {
         final PluginSelector<StringName> selector = PluginSelector.with(
-                Names.string("magic-plugin-123"),
-                ""
+            Names.string("magic-plugin-123"),
+            ""
         );
 
         this.parseStringAndCheck(
-                selector.toString(),
-                selector
+            selector.toString(),
+            selector
         );
     }
 
     @Test
     public void testParseToStringWithText() {
         final PluginSelector<StringName> selector = PluginSelector.with(
-                Names.string("magic-plugin-123"),
-                "hello"
+            Names.string("magic-plugin-123"),
+            "hello"
         );
 
         this.parseStringAndCheck(
-                selector.toString(),
-                selector
+            selector.toString(),
+            selector
         );
     }
 
     @Override
     public PluginSelector<StringName> parseString(final String text) {
         return PluginSelector.parse(
-                text,
-                Names::string
+            text,
+            Names::string
         );
     }
 
@@ -414,19 +414,19 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
 
     private final static BiFunction<TextCursor, ParserContext, Optional<StringName>> NAME_PARSER_AND_FACTORY = (final TextCursor text,
                                                                                                                 final ParserContext context) ->
-            Parsers.stringInitialAndPartCharPredicate(
-                    (i) -> i >= 'a' && i <= 'z',
-                    (i) -> i >= 'a' && i <= 'z' || i >= '0' && i <= '9' || i == '-',
-                    1, // minLength
-                    32 // maxLength
-            ).parse(
-                    text,
-                    context
-            ).map(
-                    (final ParserToken token) -> Names.string(
-                            token.cast(StringParserToken.class).value()
-                    )
-            );
+        Parsers.stringInitialAndPartCharPredicate(
+            (i) -> i >= 'a' && i <= 'z',
+            (i) -> i >= 'a' && i <= 'z' || i >= '0' && i <= '9' || i == '-',
+            1, // minLength
+            32 // maxLength
+        ).parse(
+            text,
+            context
+        ).map(
+            (final ParserToken token) -> Names.string(
+                token.cast(StringParserToken.class).value()
+            )
+        );
 
     private final static PluginSelectorEvaluateValueTextProvider<StringName, TestProvided> PROVIDER = (final StringName name,
                                                                                                        final List<?> values,
@@ -436,13 +436,13 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         @Override
         public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
             return Cast.to(
-                    Optional.ofNullable(
-                            ENVIRONMENT_VALUE_NAME_1.equals(name) ?
-                                    ENVIRONMENT_VALUE_1 :
-                                    ENVIRONMENT_VALUE_NAME_2.equals(name) ?
-                                            ENVIRONMENT_VALUE_2 :
-                                            null
-                    )
+                Optional.ofNullable(
+                    ENVIRONMENT_VALUE_NAME_1.equals(name) ?
+                        ENVIRONMENT_VALUE_1 :
+                        ENVIRONMENT_VALUE_NAME_2.equals(name) ?
+                            ENVIRONMENT_VALUE_2 :
+                            null
+                )
             );
         }
     };
@@ -451,8 +451,8 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         TestProvided(final StringName name,
                      final Object... values) {
             this(
-                    name,
-                    Lists.of(values)
+                name,
+                Lists.of(values)
             );
         }
 
@@ -468,8 +468,8 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         @Override
         public int hashCode() {
             return Objects.hash(
-                    this.name,
-                    this.values
+                this.name,
+                this.values
             );
         }
 
@@ -480,17 +480,17 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
 
         private boolean equals0(final TestProvided other) {
             return this.name.equals(other.name) &&
-                    this.values.equals(other.values);
+                this.values.equals(other.values);
         }
 
         @Override
         public String toString() {
             return (
-                    this.name +
-                            " " +
-                            this.values.stream()
-                                    .map(Object::toString)
-                                    .collect(Collectors.joining(",", "(", ")"))
+                this.name +
+                    " " +
+                    this.values.stream()
+                        .map(Object::toString)
+                        .collect(Collectors.joining(",", "(", ")"))
             ).toString();
         }
     }
@@ -498,45 +498,45 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     @Test
     public void testEvaluateValueTextWIthNullNameParserAndFactoryFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginSelector.parse(
-                        "name",
-                        Names::string
-                ).evaluateValueText(
-                        null,
-                        PROVIDER,
-                        CONTEXT
-                )
+            NullPointerException.class,
+            () -> PluginSelector.parse(
+                "name",
+                Names::string
+            ).evaluateValueText(
+                null,
+                PROVIDER,
+                CONTEXT
+            )
         );
     }
 
     @Test
     public void testEvaluateValueTextWIthNullProviderFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginSelector.parse(
-                        "name",
-                        Names::string
-                ).evaluateValueText(
-                        NAME_PARSER_AND_FACTORY,
-                        null,
-                        CONTEXT
-                )
+            NullPointerException.class,
+            () -> PluginSelector.parse(
+                "name",
+                Names::string
+            ).evaluateValueText(
+                NAME_PARSER_AND_FACTORY,
+                null,
+                CONTEXT
+            )
         );
     }
 
     @Test
     public void testEvaluateValueTextWIthNullContextFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginSelector.parse(
-                        "name",
-                        Names::string
-                ).evaluateValueText(
-                        NAME_PARSER_AND_FACTORY,
-                        PROVIDER,
-                        null
-                )
+            NullPointerException.class,
+            () -> PluginSelector.parse(
+                "name",
+                Names::string
+            ).evaluateValueText(
+                NAME_PARSER_AND_FACTORY,
+                PROVIDER,
+                null
+            )
         );
     }
 
@@ -545,146 +545,146 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         final String text = NAME + " text/plain";
 
         final InvalidCharacterException thrown = assertThrows(
-                InvalidCharacterException.class,
-                () -> PluginSelector.parse(
-                        text,
-                        Names::string
-                ).evaluateValueText(
-                        NAME_PARSER_AND_FACTORY,
-                        PROVIDER,
-                        CONTEXT
-                )
+            InvalidCharacterException.class,
+            () -> PluginSelector.parse(
+                text,
+                Names::string
+            ).evaluateValueText(
+                NAME_PARSER_AND_FACTORY,
+                PROVIDER,
+                CONTEXT
+            )
         );
 
         this.checkEquals(
-                new InvalidCharacterException(
-                        text,
-                        text.indexOf(' ')
-                ).getMessage(),
-                thrown.getMessage()
+            new InvalidCharacterException(
+                text,
+                text.indexOf(' ')
+            ).getMessage(),
+            thrown.getMessage()
         );
     }
 
     @Test
     public void testEvaluateValueTextWhenEmpty() {
         this.evaluateValueTextAndCheck(
-                NAME + "",
-                new TestProvided(NAME)
+            NAME + "",
+            new TestProvided(NAME)
         );
     }
 
     @Test
     public void testEvaluateValueTextSpacesText() {
         this.evaluateValueTextAndCheck(
-                NAME + " ",
-                new TestProvided(NAME)
+            NAME + " ",
+            new TestProvided(NAME)
         );
     }
 
     @Test
     public void testEvaluateValueTextSpacesText2() {
         this.evaluateValueTextAndCheck(
-                NAME + "   ",
-                new TestProvided(NAME)
+            NAME + "   ",
+            new TestProvided(NAME)
         );
     }
 
     @Test
     public void testEvaluateValueTextOpenParensFail() {
         this.evaluateValueTextFails(
-                NAME + "(",
-                "Invalid character '(' at 16 in \"magic-plugin-123(\""
+            NAME + "(",
+            "Invalid character '(' at 16 in \"magic-plugin-123(\""
         );
     }
 
     @Test
     public void testEvaluateValueTextDoubleLiteral() {
         this.evaluateValueTextAndCheck(
-                NAME + " (1)",
-                new TestProvided(NAME, 1.0)
+            NAME + " (1)",
+            new TestProvided(NAME, 1.0)
         );
     }
 
     @Test
     public void testEvaluateValueTextNegativeDoubleLiteral() {
         this.evaluateValueTextAndCheck(
-                NAME + " (-1)",
-                new TestProvided(NAME, -1.0)
+            NAME + " (-1)",
+            new TestProvided(NAME, -1.0)
         );
     }
 
     @Test
     public void testEvaluateValueTextDoubleLiteralWithDecimals() {
         this.evaluateValueTextAndCheck(
-                NAME + " (1.25)",
-                NAME_PARSER_AND_FACTORY,
-                PROVIDER,
-                CONTEXT,
-                new TestProvided(NAME, 1.25)
+            NAME + " (1.25)",
+            NAME_PARSER_AND_FACTORY,
+            PROVIDER,
+            CONTEXT,
+            new TestProvided(NAME, 1.25)
         );
     }
 
     @Test
     public void testEvaluateValueTextDoubleMissingClosingParensFail() {
         this.evaluateValueTextFails(
-                "super-magic-converter123(1",
-                "Invalid character '1' at 25 in \"super-magic-converter123(1\""
+            "super-magic-converter123(1",
+            "Invalid character '1' at 25 in \"super-magic-converter123(1\""
         );
     }
 
     @Test
     public void testEvaluateValueTextStringUnclosedFail() {
         this.evaluateValueTextFails(
-                NAME + " (\"unclosed",
-                "Missing terminating '\"'"
+            NAME + " (\"unclosed",
+            "Missing terminating '\"'"
         );
     }
 
     @Test
     public void testEvaluateValueTextEmptyParameterList() {
         this.evaluateValueTextAndCheck(
-                NAME + " ()",
-                new TestProvided(NAME)
+            NAME + " ()",
+            new TestProvided(NAME)
         );
     }
 
     @Test
     public void testEvaluateValueTextEmptyParameterListWithExtraSpaces() {
         this.evaluateValueTextAndCheck(
-                NAME + "  ( )",
-                new TestProvided(NAME)
+            NAME + "  ( )",
+            new TestProvided(NAME)
         );
     }
 
     @Test
     public void testEvaluateValueTextEmptyParameterListWithExtraSpaces2() {
         this.evaluateValueTextAndCheck(
-                NAME + "  (   )",
-                new TestProvided(NAME)
+            NAME + "  (   )",
+            new TestProvided(NAME)
         );
     }
 
     @Test
     public void testEvaluateValueTextStringLiteral() {
         this.evaluateValueTextAndCheck(
-                NAME + " (\"string-literal-parameter\")",
-                new TestProvided(NAME, "string-literal-parameter")
+            NAME + " (\"string-literal-parameter\")",
+            new TestProvided(NAME, "string-literal-parameter")
         );
     }
 
     @Test
     public void testEvaluateValueTextStringLiteralStringLiteral() {
         this.evaluateValueTextAndCheck(
-                NAME + " (\"string-literal-parameter-1\",\"string-literal-parameter-2\")",
-                new TestProvided(NAME, "string-literal-parameter-1", "string-literal-parameter-2")
+            NAME + " (\"string-literal-parameter-1\",\"string-literal-parameter-2\")",
+            new TestProvided(NAME, "string-literal-parameter-1", "string-literal-parameter-2")
         );
     }
 
     @Test
     public void testEvaluateValueTextStringLiteralStringLiteralWithExtraSpaceIgnored() {
         this.evaluateValueTextAndCheck(
-                NAME + "  ( \"string-literal-parameter-1\" , \"string-literal-parameter-2\" )",
-                new TestProvided(NAME, "string-literal-parameter-1", "string-literal-parameter-2")
+            NAME + "  ( \"string-literal-parameter-1\" , \"string-literal-parameter-2\" )",
+            new TestProvided(NAME, "string-literal-parameter-1", "string-literal-parameter-2")
         );
     }
 
@@ -699,64 +699,64 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     @Test
     public void testEvaluateValueTextEnvironmentValueName() {
         this.evaluateValueTextAndCheck(
-                NAME + "  ( $" + ENVIRONMENT_VALUE_NAME_1 + ")",
-                new TestProvided(NAME, ENVIRONMENT_VALUE_1)
+            NAME + "  ( $" + ENVIRONMENT_VALUE_NAME_1 + ")",
+            new TestProvided(NAME, ENVIRONMENT_VALUE_1)
         );
     }
 
     @Test
     public void testEvaluateValueTextEnvironmentValueName2() {
         this.evaluateValueTextAndCheck(
-                NAME + "  ( $" + ENVIRONMENT_VALUE_NAME_1 + ",$" + ENVIRONMENT_VALUE_NAME_2 + ",\"string-literal-parameter-3\" )",
-                new TestProvided(NAME, ENVIRONMENT_VALUE_1, ENVIRONMENT_VALUE_2, "string-literal-parameter-3")
+            NAME + "  ( $" + ENVIRONMENT_VALUE_NAME_1 + ",$" + ENVIRONMENT_VALUE_NAME_2 + ",\"string-literal-parameter-3\" )",
+            new TestProvided(NAME, ENVIRONMENT_VALUE_1, ENVIRONMENT_VALUE_2, "string-literal-parameter-3")
         );
     }
 
     @Test
     public void testEvaluateValueTextProvided() {
         this.evaluateValueTextAndCheck(
-                NAME + " (" + NAME2 + ")",
-                new TestProvided(
-                        NAME,
-                        new TestProvided(NAME2)
-                )
+            NAME + " (" + NAME2 + ")",
+            new TestProvided(
+                NAME,
+                new TestProvided(NAME2)
+            )
         );
     }
 
     @Test
     public void testEvaluateValueTextProvidedProvided() {
         this.evaluateValueTextAndCheck(
-                NAME + " (" + NAME2 + "," + NAME3 + ")",
-                new TestProvided(
-                        NAME,
-                        new TestProvided(NAME2),
-                        new TestProvided(NAME3)
-                )
+            NAME + " (" + NAME2 + "," + NAME3 + ")",
+            new TestProvided(
+                NAME,
+                new TestProvided(NAME2),
+                new TestProvided(NAME3)
+            )
         );
     }
 
     @Test
     public void testEvaluateValueTextNestedProvided() {
         this.evaluateValueTextAndCheck(
-                NAME + " (" + NAME2 + "(" + NAME3 + "))",
+            NAME + " (" + NAME2 + "(" + NAME3 + "))",
+            new TestProvided(
+                NAME,
                 new TestProvided(
-                        NAME,
-                        new TestProvided(
-                                NAME2,
-                                new TestProvided(NAME3)
-                        )
+                    NAME2,
+                    new TestProvided(NAME3)
                 )
+            )
         );
     }
 
     private void evaluateValueTextFails(final String selector,
                                         final String expected) {
         this.evaluateValueTextFails(
-                selector,
-                NAME_PARSER_AND_FACTORY,
-                PROVIDER,
-                CONTEXT,
-                expected
+            selector,
+            NAME_PARSER_AND_FACTORY,
+            PROVIDER,
+            CONTEXT,
+            expected
         );
     }
 
@@ -766,30 +766,30 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                                         final ProviderContext context,
                                         final String expected) {
         final IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
-                () -> PluginSelector.parse(
-                        selector,
-                        Names::string
-                ).evaluateValueText(
-                        nameParserAndFactory,
-                        provider,
-                        context
-                )
+            IllegalArgumentException.class,
+            () -> PluginSelector.parse(
+                selector,
+                Names::string
+            ).evaluateValueText(
+                nameParserAndFactory,
+                provider,
+                context
+            )
         );
         this.checkEquals(
-                expected,
-                thrown.getMessage()
+            expected,
+            thrown.getMessage()
         );
     }
 
     private void evaluateValueTextAndCheck(final String selector,
                                            final TestProvided expected) {
         this.evaluateValueTextAndCheck(
-                selector,
-                NAME_PARSER_AND_FACTORY,
-                PROVIDER,
-                CONTEXT,
-                expected
+            selector,
+            NAME_PARSER_AND_FACTORY,
+            PROVIDER,
+            CONTEXT,
+            expected
         );
     }
 
@@ -799,15 +799,15 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                                            final ProviderContext context,
                                            final TestProvided expected) {
         this.checkEquals(
-                expected,
-                PluginSelector.parse(
-                        selector,
-                        Names::string
-                ).evaluateValueText(
-                        nameParserAndCreator,
-                        provider,
-                        context
-                )
+            expected,
+            PluginSelector.parse(
+                selector,
+                Names::string
+            ).evaluateValueText(
+                nameParserAndCreator,
+                provider,
+                context
+            )
         );
     }
 
@@ -816,20 +816,20 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     @Test
     public void testEqualsDifferentName() {
         this.checkNotEquals(
-                PluginSelector.with(
-                        Names.string("different"),
-                        VALUE_TEXT
-                )
+            PluginSelector.with(
+                Names.string("different"),
+                VALUE_TEXT
+            )
         );
     }
 
     @Test
     public void testEqualsDifferentValueText() {
         this.checkNotEquals(
-                PluginSelector.with(
-                        NAME,
-                        "different"
-                )
+            PluginSelector.with(
+                NAME,
+                "different"
+            )
         );
     }
 
@@ -838,50 +838,50 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         final String valueText = "\"Hello\"";
 
         this.compareToAndCheckLess(
-                PluginSelector.with(
-                        Names.string("a1"),
-                        valueText
-                ),
-                PluginSelector.with(
-                        Names.string("b2"),
-                        valueText
-                )
+            PluginSelector.with(
+                Names.string("a1"),
+                valueText
+            ),
+            PluginSelector.with(
+                Names.string("b2"),
+                valueText
+            )
         );
     }
 
     @Test
     public void testCompareToDifferentValue() {
         this.compareToAndCheckLess(
-                PluginSelector.with(
-                        NAME,
-                        "a1"
-                ),
-                PluginSelector.with(
-                        NAME,
-                        "b2"
-                )
+            PluginSelector.with(
+                NAME,
+                "a1"
+            ),
+            PluginSelector.with(
+                NAME,
+                "b2"
+            )
         );
     }
 
     @Test
     public void testCompareToDifferentValueCaseImportant() {
         this.compareToAndCheckLess(
-                PluginSelector.with(
-                        NAME,
-                        "A1"
-                ),
-                PluginSelector.with(
-                        NAME,
-                        "a"
-                )
+            PluginSelector.with(
+                NAME,
+                "A1"
+            ),
+            PluginSelector.with(
+                NAME,
+                "a"
+            )
         );
     }
 
     @Override
     public PluginSelector<StringName> createComparable() {
         return PluginSelector.with(
-                NAME,
-                VALUE_TEXT
+            NAME,
+            VALUE_TEXT
         );
     }
 
@@ -890,33 +890,33 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     @Test
     public void testToString() {
         this.toStringAndCheck(
-                PluginSelector.with(
-                        NAME,
-                        ""
-                ),
-                "magic-plugin-123"
+            PluginSelector.with(
+                NAME,
+                ""
+            ),
+            "magic-plugin-123"
         );
     }
 
     @Test
     public void testToStringWithValueText() {
         this.toStringAndCheck(
-                PluginSelector.with(
-                        NAME,
-                        VALUE_TEXT
-                ),
-                NAME + " " + VALUE_TEXT
+            PluginSelector.with(
+                NAME,
+                VALUE_TEXT
+            ),
+            NAME + " " + VALUE_TEXT
         );
     }
 
     @Test
     public void testToStringWithQuotes() {
         this.toStringAndCheck(
-                PluginSelector.with(
-                        NAME,
-                        "\"Hello\""
-                ),
-                "magic-plugin-123 \"Hello\""
+            PluginSelector.with(
+                NAME,
+                "\"Hello\""
+            ),
+            "magic-plugin-123 \"Hello\""
         );
     }
 
@@ -937,17 +937,17 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     @Test
     public void testTreePrintWithoutText() {
         this.treePrintAndCheck(
-                this.parseString("abc123"),
-                "abc123\n"
+            this.parseString("abc123"),
+            "abc123\n"
         );
     }
 
     @Test
     public void testTreePrintWithText() {
         this.treePrintAndCheck(
-                this.parseString("magic-plugin-123 @@"),
-                "magic-plugin-123\n" +
-                        "  \"@@\"\n"
+            this.parseString("magic-plugin-123 @@"),
+            "magic-plugin-123\n" +
+                "  \"@@\"\n"
         );
     }
 
@@ -956,13 +956,13 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     @Test
     public void testMarshall() {
         this.checkEquals(
-                JsonNode.string(NAME + " " + VALUE_TEXT),
-                PluginSelector.with(
-                        NAME,
-                        VALUE_TEXT
-                ).marshall(
-                        JsonNodeMarshallContexts.basic()
-                )
+            JsonNode.string(NAME + " " + VALUE_TEXT),
+            PluginSelector.with(
+                NAME,
+                VALUE_TEXT
+            ).marshall(
+                JsonNodeMarshallContexts.basic()
+            )
         );
     }
 }

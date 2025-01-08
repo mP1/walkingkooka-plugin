@@ -32,25 +32,25 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
 
     // filter............................................................................................................
 
-    static <N extends Name & Comparable<N>, 
-            I extends PluginInfoLike<I, N>, 
-            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-            S extends PluginSelectorLike<N>,
-            A extends PluginAliasLike<N, S, A>,
-            AS extends PluginAliasSetLike<N, I, IS, S, A, AS>> IS delete(final IS s,
-                                                                         final I i) {
+    static <N extends Name & Comparable<N>,
+        I extends PluginInfoLike<I, N>,
+        IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+        S extends PluginSelectorLike<N>,
+        A extends PluginAliasLike<N, S, A>,
+        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>> IS delete(final IS s,
+                                                                     final I i) {
         return s.delete(
-                i
+            i
         );
     }
 
     @Test
     public void testFilterWithNullProviderFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> new TestPluginInfoSet(
-                        Sets.empty()
-                ).filter(null)
+            NullPointerException.class,
+            () -> new TestPluginInfoSet(
+                Sets.empty()
+            ).filter(null)
         );
     }
 
@@ -59,99 +59,99 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
         final TestPluginInfoSet set = this.createSet();
 
         this.checkEquals(
-                set,
-                set.filter(set)
+            set,
+            set.filter(set)
         );
     }
 
     @Test
     public void testFilterLess() {
         final TestPluginInfo info1 = new TestPluginInfo(
-                "https://example.com/test-111",
-                "test-111"
+            "https://example.com/test-111",
+            "test-111"
         );
         final TestPluginInfo info2 = new TestPluginInfo(
-                "https://example.com/test-222",
-                "test-222"
+            "https://example.com/test-222",
+            "test-222"
         );
         final TestPluginInfo info3 = new TestPluginInfo(
-                "https://example.com/test-333",
-                "test-333"
+            "https://example.com/test-333",
+            "test-333"
         );
 
         this.filterAndCheck(
-                Sets.of(
-                        info1,
-                        info2
-                ),
-                Sets.of(
-                        info1,
-                        info2,
-                        info3
-                ),
+            Sets.of(
                 info1,
                 info2
+            ),
+            Sets.of(
+                info1,
+                info2,
+                info3
+            ),
+            info1,
+            info2
         );
     }
 
     @Test
     public void testFilterDifferentNames() {
         final TestPluginInfo info1 = new TestPluginInfo(
-                "https://example.com/test-111",
-                "test-111"
+            "https://example.com/test-111",
+            "test-111"
         );
         final TestPluginInfo info2 = new TestPluginInfo(
-                "https://example.com/test-222",
-                "test-222"
+            "https://example.com/test-222",
+            "test-222"
         );
 
         this.filterAndCheck(
-                Sets.of(
-                        info1,
-                        info2
-                ),
-                Sets.of(
-                        new TestPluginInfo(
-                                "https://example.com/test-111",
-                                "test-original-111"
-                        ),
-                        new TestPluginInfo(
-                                "https://example.com/test-222",
-                                "test-original-222"
-                        )
-                ),
+            Sets.of(
                 info1,
                 info2
+            ),
+            Sets.of(
+                new TestPluginInfo(
+                    "https://example.com/test-111",
+                    "test-original-111"
+                ),
+                new TestPluginInfo(
+                    "https://example.com/test-222",
+                    "test-original-222"
+                )
+            ),
+            info1,
+            info2
         );
     }
 
     @Test
     public void testFilterMoreSelectedRemoved() {
         final TestPluginInfo info1 = new TestPluginInfo(
-                "https://example.com/test-111",
-                "test-111"
+            "https://example.com/test-111",
+            "test-111"
         );
         final TestPluginInfo info2 = new TestPluginInfo(
-                "https://example.com/test-222",
-                "test-222"
+            "https://example.com/test-222",
+            "test-222"
         );
         final TestPluginInfo info3 = new TestPluginInfo(
-                "https://example.com/test-333",
-                "test-333"
+            "https://example.com/test-333",
+            "test-333"
         );
 
         this.filterAndCheck(
-                Sets.of(
-                        info1,
-                        info2,
-                        info3
-                ),
-                Sets.of(
-                        info1,
-                        info2
-                ),
+            Sets.of(
+                info1,
+                info2,
+                info3
+            ),
+            Sets.of(
                 info1,
                 info2
+            ),
+            info1,
+            info2
         );
     }
 
@@ -159,11 +159,11 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
                                 final Set<TestPluginInfo> provider,
                                 final TestPluginInfo... expected) {
         this.filterAndCheck(
-                selected,
-                provider,
-                Sets.of(
-                        expected
-                )
+            selected,
+            provider,
+            Sets.of(
+                expected
+            )
         );
     }
 
@@ -171,15 +171,15 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
                                 final Set<TestPluginInfo> provider,
                                 final Set<TestPluginInfo> expected) {
         this.checkEquals(
-                expected,
+            expected,
+            new TestPluginInfoSet(
+                selected
+            ).filter(
                 new TestPluginInfoSet(
-                        selected
-                ).filter(
-                        new TestPluginInfoSet(
-                                provider
-                        )
-                ),
-                () -> selected + " filter " + provider
+                    provider
+                )
+            ),
+            () -> selected + " filter " + provider
         );
     }
 
@@ -188,222 +188,222 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
     @Test
     public void testRenameIfPresentWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> new TestPluginInfoSet(
-                        Sets.empty()
-                ).renameIfPresent(null)
+            NullPointerException.class,
+            () -> new TestPluginInfoSet(
+                Sets.empty()
+            ).renameIfPresent(null)
         );
     }
 
     @Test
     public void testRenameIfPresentEmptyRenames() {
         final TestPluginInfo info1 = new TestPluginInfo(
-                "https://example.com/test-111",
-                "test-111"
+            "https://example.com/test-111",
+            "test-111"
         );
         final TestPluginInfo info2 = new TestPluginInfo(
-                "https://example.com/test-222",
-                "test-222"
+            "https://example.com/test-222",
+            "test-222"
         );
         final TestPluginInfo info3 = new TestPluginInfo(
-                "https://example.com/test-333",
-                "test-333"
+            "https://example.com/test-333",
+            "test-333"
         );
 
         final Set<TestPluginInfo> infos = Sets.of(
-                info1,
-                info2,
-                info3
+            info1,
+            info2,
+            info3
         );
 
         this.renameIfPresentAndCheck(
-                infos,
-                Sets.empty(),
-                infos
+            infos,
+            Sets.empty(),
+            infos
         );
     }
 
     @Test
     public void testRenameIfPresentIgnoreUnknownRenames() {
         final TestPluginInfo info1 = new TestPluginInfo(
-                "https://example.com/test-111",
-                "test-111"
+            "https://example.com/test-111",
+            "test-111"
         );
         final TestPluginInfo info2 = new TestPluginInfo(
-                "https://example.com/test-222",
-                "test-222"
+            "https://example.com/test-222",
+            "test-222"
         );
         final TestPluginInfo info3 = new TestPluginInfo(
-                "https://example.com/test-333",
-                "test-333"
+            "https://example.com/test-333",
+            "test-333"
         );
 
         final Set<TestPluginInfo> infos = Sets.of(
-                info1,
-                info2,
-                info3
+            info1,
+            info2,
+            info3
         );
 
         this.renameIfPresentAndCheck(
-                infos,
-                Sets.of(
-                        new TestPluginInfo(
-                                "https://example.com/test-444",
-                                "test-444"
-                        )
-                ),
-                infos
+            infos,
+            Sets.of(
+                new TestPluginInfo(
+                    "https://example.com/test-444",
+                    "test-444"
+                )
+            ),
+            infos
         );
     }
 
     @Test
     public void testRenameIfPresentSomeRenames() {
         final TestPluginInfo info1 = new TestPluginInfo(
-                "https://example.com/test-111",
-                "test-111"
+            "https://example.com/test-111",
+            "test-111"
         );
         final TestPluginInfo info2 = new TestPluginInfo(
-                "https://example.com/test-222",
-                "test-222"
+            "https://example.com/test-222",
+            "test-222"
         );
         final TestPluginInfo info3 = new TestPluginInfo(
-                "https://example.com/test-333",
-                "test-333"
+            "https://example.com/test-333",
+            "test-333"
         );
         final TestPluginInfo info1Renamed = new TestPluginInfo(
-                "https://example.com/test-111",
-                "test-111-renamed"
+            "https://example.com/test-111",
+            "test-111-renamed"
         );
 
         this.renameIfPresentAndCheck(
-                Sets.of(
-                        info1,
-                        info2,
-                        info3
-                ),
-                Sets.of(
-                        info1Renamed
-                ),
-                info1Renamed,
+            Sets.of(
+                info1,
                 info2,
                 info3
+            ),
+            Sets.of(
+                info1Renamed
+            ),
+            info1Renamed,
+            info2,
+            info3
         );
     }
 
     @Test
     public void testRenameIfPresentSomeRenames2() {
         final TestPluginInfo info1 = new TestPluginInfo(
-                "https://example.com/test-111",
-                "test-111"
+            "https://example.com/test-111",
+            "test-111"
         );
         final TestPluginInfo info2 = new TestPluginInfo(
-                "https://example.com/test-222",
-                "test-222"
+            "https://example.com/test-222",
+            "test-222"
         );
         final TestPluginInfo info3 = new TestPluginInfo(
-                "https://example.com/test-333",
-                "test-333"
+            "https://example.com/test-333",
+            "test-333"
         );
         final TestPluginInfo info1Renamed = new TestPluginInfo(
-                "https://example.com/test-111",
-                "test-111-renamed"
+            "https://example.com/test-111",
+            "test-111-renamed"
         );
 
         final TestPluginInfo info2Renamed = new TestPluginInfo(
-                "https://example.com/test-222",
-                "test-222-renamed"
+            "https://example.com/test-222",
+            "test-222-renamed"
         );
 
         this.renameIfPresentAndCheck(
-                Sets.of(
-                        info1,
-                        info2,
-                        info3
-                ),
-                Sets.of(
-                        info1Renamed,
-                        info2Renamed
-                ),
-                info1Renamed,
-                info2Renamed,
+            Sets.of(
+                info1,
+                info2,
                 info3
+            ),
+            Sets.of(
+                info1Renamed,
+                info2Renamed
+            ),
+            info1Renamed,
+            info2Renamed,
+            info3
         );
     }
 
     @Test
     public void testRenameIfPresentIgnoreUnknownRenames2() {
         final TestPluginInfo info1 = new TestPluginInfo(
-                "https://example.com/test-111",
-                "test-111"
+            "https://example.com/test-111",
+            "test-111"
         );
         final TestPluginInfo info2 = new TestPluginInfo(
-                "https://example.com/test-222",
-                "test-222"
+            "https://example.com/test-222",
+            "test-222"
         );
         final TestPluginInfo info3 = new TestPluginInfo(
-                "https://example.com/test-333",
-                "test-333"
+            "https://example.com/test-333",
+            "test-333"
         );
 
         final Set<TestPluginInfo> infos = Sets.of(
-                info1,
-                info2,
-                info3
+            info1,
+            info2,
+            info3
         );
 
         this.renameIfPresentAndCheck(
-                infos,
-                Sets.of(
-                        new TestPluginInfo(
-                                "https://example.com/test-ignored-rename-444",
-                                "test-ignored-rename-444"
-                        )
-                ),
-                infos
+            infos,
+            Sets.of(
+                new TestPluginInfo(
+                    "https://example.com/test-ignored-rename-444",
+                    "test-ignored-rename-444"
+                )
+            ),
+            infos
         );
     }
 
     @Test
     public void testRenameIfPresentSomeRenamesAndIgnoredRenames() {
         final TestPluginInfo info1 = new TestPluginInfo(
-                "https://example.com/test-111",
-                "test-111"
+            "https://example.com/test-111",
+            "test-111"
         );
         final TestPluginInfo info2 = new TestPluginInfo(
-                "https://example.com/test-222",
-                "test-222"
+            "https://example.com/test-222",
+            "test-222"
         );
         final TestPluginInfo info3 = new TestPluginInfo(
-                "https://example.com/test-333",
-                "test-333"
+            "https://example.com/test-333",
+            "test-333"
         );
         final TestPluginInfo info1Renamed = new TestPluginInfo(
-                "https://example.com/test-111",
-                "test-111-renamed"
+            "https://example.com/test-111",
+            "test-111-renamed"
         );
 
         final TestPluginInfo info2Renamed = new TestPluginInfo(
-                "https://example.com/test-222",
-                "test-222-renamed"
+            "https://example.com/test-222",
+            "test-222-renamed"
         );
 
         this.renameIfPresentAndCheck(
-                Sets.of(
-                        info1,
-                        info2,
-                        info3
-                ),
-                Sets.of(
-                        info1Renamed,
-                        info2Renamed,
-                        new TestPluginInfo(
-                                "https://example.com/test-444",
-                                "test-444-ignored"
-                        )
-                ),
+            Sets.of(
+                info1,
+                info2,
+                info3
+            ),
+            Sets.of(
                 info1Renamed,
                 info2Renamed,
-                info3
+                new TestPluginInfo(
+                    "https://example.com/test-444",
+                    "test-444-ignored"
+                )
+            ),
+            info1Renamed,
+            info2Renamed,
+            info3
         );
     }
 
@@ -411,11 +411,11 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
                                          final Set<TestPluginInfo> renameInfos,
                                          final TestPluginInfo... expected) {
         this.renameIfPresentAndCheck(
-                infos,
-                renameInfos,
-                Sets.of(
-                        expected
-                )
+            infos,
+            renameInfos,
+            Sets.of(
+                expected
+            )
         );
     }
 
@@ -423,15 +423,15 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
                                          final Set<TestPluginInfo> renameInfos,
                                          final Set<TestPluginInfo> expected) {
         this.checkEquals(
-                expected,
+            expected,
+            new TestPluginInfoSet(
+                infos
+            ).renameIfPresent(
                 new TestPluginInfoSet(
-                        infos
-                ).renameIfPresent(
-                        new TestPluginInfoSet(
-                                renameInfos
-                        )
-                ),
-                () -> infos + " renameIfPresent " + renameInfos
+                    renameInfos
+                )
+            ),
+            () -> infos + " renameIfPresent " + renameInfos
         );
     }
 
@@ -440,31 +440,31 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
     @Test
     public void testUrls() {
         final TestPluginInfo info1 = new TestPluginInfo(
-                "https://example.com/test-111",
-                "test-111"
+            "https://example.com/test-111",
+            "test-111"
         );
         final TestPluginInfo info2 = new TestPluginInfo(
-                "https://example.com/test-222",
-                "test-222"
+            "https://example.com/test-222",
+            "test-222"
         );
         final TestPluginInfo info3 = new TestPluginInfo(
-                "https://example.com/test-222",
-                "test-222"
+            "https://example.com/test-222",
+            "test-222"
         );
 
         this.checkEquals(
+            Sets.of(
+                info1.url(),
+                info2.url(),
+                info3.url()
+            ),
+            new TestPluginInfoSet(
                 Sets.of(
-                        info1.url(),
-                        info2.url(),
-                        info3.url()
-                ),
-                new TestPluginInfoSet(
-                        Sets.of(
-                                info1,
-                                info2,
-                                info3
-                        )
-                ).url()
+                    info1,
+                    info2,
+                    info3
+                )
+            ).url()
         );
     }
 
@@ -473,8 +473,8 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
     @Test
     public void testAliasSet() {
         this.aliasSetAndCheck(
-                TestPluginInfoSet.parse("https://example.com/name1 name1, https://example.com/name2 name2, https://example.com/name3 name3"),
-                TestPluginAliasSet.parse("name1, name2, name3")
+            TestPluginInfoSet.parse("https://example.com/name1 name1, https://example.com/name2 name2, https://example.com/name3 name3"),
+            TestPluginAliasSet.parse("name1, name2, name3")
         );
     }
 
@@ -483,70 +483,70 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
     @Test
     public void testEmptyConcatAndText() {
         this.textAndCheck(
-                TestPluginInfoSet.EMPTY.concat(
-                        new TestPluginInfo(
-                                "https://example.com/test-111",
-                                "test-111"
-                        )
-                ),
-                "https://example.com/test-111 test-111"
+            TestPluginInfoSet.EMPTY.concat(
+                new TestPluginInfo(
+                    "https://example.com/test-111",
+                    "test-111"
+                )
+            ),
+            "https://example.com/test-111 test-111"
         );
     }
 
     @Test
     public void testDeleteAndText() {
         this.textAndCheck(
-                new TestPluginInfoSet(
-                        Sets.of(
-                                new TestPluginInfo(
-                                        "https://example.com/test-111",
-                                        "test-111"
-                                ),
-                                new TestPluginInfo(
-                                        "https://example.com/test-222",
-                                        "test-222"
-                                ),
-                                new TestPluginInfo(
-                                        "https://example.com/test-333",
-                                        "test-333"
-                                )
-                        )
-                ).delete(
-                        new TestPluginInfo(
-                                "https://example.com/test-333",
-                                "test-333"
-                        )
-                ),
-                "https://example.com/test-111 test-111,https://example.com/test-222 test-222"
+            new TestPluginInfoSet(
+                Sets.of(
+                    new TestPluginInfo(
+                        "https://example.com/test-111",
+                        "test-111"
+                    ),
+                    new TestPluginInfo(
+                        "https://example.com/test-222",
+                        "test-222"
+                    ),
+                    new TestPluginInfo(
+                        "https://example.com/test-333",
+                        "test-333"
+                    )
+                )
+            ).delete(
+                new TestPluginInfo(
+                    "https://example.com/test-333",
+                    "test-333"
+                )
+            ),
+            "https://example.com/test-111 test-111,https://example.com/test-222 test-222"
         );
     }
 
     @Test
     public void testDeleteAndText2() {
         this.textAndCheck(
-                delete(
-                        new TestPluginInfoSet(
-                                Sets.of(
-                                        new TestPluginInfo(
-                                                "https://example.com/test-111",
-                                                "test-111"
-                                        ),
-                                        new TestPluginInfo(
-                                                "https://example.com/test-222",
-                                                "test-222"
-                                        ),
-                                        new TestPluginInfo(
-                                                "https://example.com/test-333",
-                                                "test-333"
-                                        )
-                                )
+            delete(
+                new TestPluginInfoSet(
+                    Sets.of(
+                        new TestPluginInfo(
+                            "https://example.com/test-111",
+                            "test-111"
                         ),
                         new TestPluginInfo(
-                                "https://example.com/test-333",
-                                "test-333"
+                            "https://example.com/test-222",
+                            "test-222"
+                        ),
+                        new TestPluginInfo(
+                            "https://example.com/test-333",
+                            "test-333"
                         )
+                    )
                 ),
-                "https://example.com/test-111 test-111,https://example.com/test-222 test-222"
+                new TestPluginInfo(
+                    "https://example.com/test-333",
+                    "test-333"
+                )
+            ),
+            "https://example.com/test-111 test-111,https://example.com/test-222 test-222"
         );
     }
 
@@ -555,24 +555,24 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
     @Override
     public TestPluginInfoSet createSet() {
         return new TestPluginInfoSet(
-                Sets.of(
-                        new TestPluginInfo(
-                                "https://example.com/test-111",
-                                "test-111"
-                        ),
-                        new TestPluginInfo(
-                                "https://example.com/test-222",
-                                "test-222"
-                        )
+            Sets.of(
+                new TestPluginInfo(
+                    "https://example.com/test-111",
+                    "test-111"
+                ),
+                new TestPluginInfo(
+                    "https://example.com/test-222",
+                    "test-222"
                 )
+            )
         );
     }
 
     @Override
     public TestPluginInfo info() {
         return new TestPluginInfo(
-                "https://example.com/test-111",
-                "test-111"
+            "https://example.com/test-111",
+            "test-111"
         );
     }
 
@@ -590,10 +590,10 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
     @Test
     public void testParseEmpty() {
         this.parseStringAndCheck(
-                "",
-                new TestPluginInfoSet(
-                        Sets.empty()
-                )
+            "",
+            new TestPluginInfoSet(
+                Sets.empty()
+            )
         );
     }
 
@@ -602,12 +602,12 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
         final String text = "https://example.com/1 test-1";
 
         this.parseStringAndCheck(
-                text,
-                new TestPluginInfoSet(
-                        Sets.of(
-                                TestPluginInfo.parse(text)
-                        )
+            text,
+            new TestPluginInfoSet(
+                Sets.of(
+                    TestPluginInfo.parse(text)
                 )
+            )
         );
     }
 
@@ -616,44 +616,44 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
         final String text = " https://example.com/1 test-1 ";
 
         this.parseStringAndCheck(
-                text,
-                new TestPluginInfoSet(
-                        Sets.of(
-                                TestPluginInfo.parse(text)
-                        )
+            text,
+            new TestPluginInfoSet(
+                Sets.of(
+                    TestPluginInfo.parse(text)
                 )
+            )
         );
     }
 
     @Test
     public void testParseUrlStringNameCommaFails() {
         this.parseStringFails(
-                "https://example.com/1 test-1,",
-                new IllegalArgumentException("Missing url")
+            "https://example.com/1 test-1,",
+            new IllegalArgumentException("Missing url")
         );
     }
 
     @Test
     public void testParseUrlStringNameCommaSpaceFails() {
         this.parseStringFails(
-                "https://example.com/1 test-1,   ",
-                new IllegalArgumentException("Missing url")
+            "https://example.com/1 test-1,   ",
+            new IllegalArgumentException("Missing url")
         );
     }
 
     @Test
     public void testParseUrlStringNameCommaUrlFails() {
         this.parseStringFails(
-                "https://example.com/1 test-1,https://example.com/2",
-                new IllegalArgumentException("Missing name")
+            "https://example.com/1 test-1,https://example.com/2",
+            new IllegalArgumentException("Missing name")
         );
     }
 
     @Test
     public void testParseUrlStringNameCommaUrlStringFails() {
         this.parseStringFails(
-                "https://example.com/1 test-1,https://example.com/2 ",
-                new IllegalArgumentException("Missing name")
+            "https://example.com/1 test-1,https://example.com/2 ",
+            new IllegalArgumentException("Missing name")
         );
     }
 
@@ -663,13 +663,13 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
         final String text2 = "https://example.com/2 test-2";
 
         this.parseStringAndCheck(
-                text1 + "," + text2,
-                new TestPluginInfoSet(
-                        Sets.of(
-                                TestPluginInfo.parse(text1),
-                                TestPluginInfo.parse(text2)
-                        )
+            text1 + "," + text2,
+            new TestPluginInfoSet(
+                Sets.of(
+                    TestPluginInfo.parse(text1),
+                    TestPluginInfo.parse(text2)
                 )
+            )
         );
     }
 
@@ -679,13 +679,13 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
         final String text2 = " https://example.com/2 test-2 ";
 
         this.parseStringAndCheck(
-                text1 + "," + text2,
-                new TestPluginInfoSet(
-                        Sets.of(
-                                TestPluginInfo.parse(text1),
-                                TestPluginInfo.parse(text2)
-                        )
+            text1 + "," + text2,
+            new TestPluginInfoSet(
+                Sets.of(
+                    TestPluginInfo.parse(text1),
+                    TestPluginInfo.parse(text2)
                 )
+            )
         );
     }
 
@@ -695,13 +695,13 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
         final String text2 = "  https://example.com/2  test-2  ";
 
         this.parseStringAndCheck(
-                text1 + "," + text2,
-                new TestPluginInfoSet(
-                        Sets.of(
-                                TestPluginInfo.parse(text1),
-                                TestPluginInfo.parse(text2)
-                        )
+            text1 + "," + text2,
+            new TestPluginInfoSet(
+                Sets.of(
+                    TestPluginInfo.parse(text1),
+                    TestPluginInfo.parse(text2)
                 )
+            )
         );
     }
 
@@ -714,10 +714,10 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
 
     @Override
     public TestPluginInfoSet unmarshall(final JsonNode json,
-                                            final JsonNodeUnmarshallContext context) {
+                                        final JsonNodeUnmarshallContext context) {
         return TestPluginInfoSet.unmarshall(
-                json,
-                context
+            json,
+            context
         );
     }
 }

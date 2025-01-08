@@ -36,15 +36,15 @@ import java.util.stream.Collectors;
  * A {@link ImmutableSortedSet} holding {@link PluginAliasLike} entries.
  */
 public interface PluginAliasSetLike<N extends Name & Comparable<N>,
-        I extends PluginInfoLike<I, N>,
-        IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-        S extends PluginSelectorLike<N>,
-        A extends PluginAliasLike<N, S, A>,
-        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
-        extends ImmutableSortedSet<A>,
-            HasText,
-            HasUrlFragment,
-            TreePrintable {
+    I extends PluginInfoLike<I, N>,
+    IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+    S extends PluginSelectorLike<N>,
+    A extends PluginAliasLike<N, S, A>,
+    AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+    extends ImmutableSortedSet<A>,
+    HasText,
+    HasUrlFragment,
+    TreePrintable {
 
     /**
      * Returns a {@link PluginSelectorLike} replacing the {@link Name} if it was an alias.
@@ -85,19 +85,19 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
 
         // filter keep all other entries that do not have the name or alias.
         return this.setElements(
-                this.toSet()
-                        .stream()
-                        .filter(
-                                p -> false ==
-                                        (
-                                                aliasOrName.equals(p.name()) ||
-                                                        aliasOrName.equals(
-                                                                p.selector()
-                                                                        .map(PluginSelectorLike::name)
-                                                                        .orElse(null)
-                                                        )
-                                        )
-                        ).collect(Collectors.toCollection(SortedSets::tree))
+            this.toSet()
+                .stream()
+                .filter(
+                    p -> false ==
+                        (
+                            aliasOrName.equals(p.name()) ||
+                                aliasOrName.equals(
+                                    p.selector()
+                                        .map(PluginSelectorLike::name)
+                                        .orElse(null)
+                                )
+                        )
+                ).collect(Collectors.toCollection(SortedSets::tree))
         );
     }
 
@@ -151,13 +151,13 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
 
     @Override
     default AS setElements(final Set<A> aliases) {
-        return this.setElements((SortedSet<A>)aliases);
+        return this.setElements((SortedSet<A>) aliases);
     }
 
     AS setElements(final SortedSet<A> var1);
 
     default AS setElementsFailIfDifferent(final Set<A> aliases) {
-        return this.setElementsFailIfDifferent((SortedSet<A>)aliases);
+        return this.setElementsFailIfDifferent((SortedSet<A>) aliases);
     }
 
     AS setElementsFailIfDifferent(final SortedSet<A> aliases);

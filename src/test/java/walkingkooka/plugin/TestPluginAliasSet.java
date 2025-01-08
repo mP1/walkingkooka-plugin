@@ -30,27 +30,27 @@ import java.util.Optional;
 import java.util.SortedSet;
 
 final class TestPluginAliasSet extends AbstractSet<TestPluginAlias>
-        implements PluginAliasSetLike<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias, TestPluginAliasSet>,
-        ImmutableSortedSetDefaults<TestPluginAliasSet, TestPluginAlias> {
+    implements PluginAliasSetLike<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias, TestPluginAliasSet>,
+    ImmutableSortedSetDefaults<TestPluginAliasSet, TestPluginAlias> {
 
     public static TestPluginAliasSet parse(final String text) {
         return new TestPluginAliasSet(
-                PluginAliasSet.parse(
-                        text,
-                        TestPluginHelper.INSTANCE
-                )
+            PluginAliasSet.parse(
+                text,
+                TestPluginHelper.INSTANCE
+            )
         );
     }
 
     public static TestPluginAliasSet with(final SortedSet<TestPluginAlias> aliases) {
         return new TestPluginAliasSet(
-                PluginAliasSet.with(aliases, TestPluginHelper.INSTANCE)
+            PluginAliasSet.with(aliases, TestPluginHelper.INSTANCE)
         );
     }
 
     public TestPluginAliasSet(final PluginAliasSet<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias, TestPluginAliasSet> pluginAliasSet) {
         this.pluginAliasSet =
-                Objects.requireNonNull(pluginAliasSet, "pluginAliasSet");
+            Objects.requireNonNull(pluginAliasSet, "pluginAliasSet");
     }
 
     @Override
@@ -90,49 +90,49 @@ final class TestPluginAliasSet extends AbstractSet<TestPluginAlias>
 
     public TestPluginAliasSet concatOrReplace(final TestPluginAlias alias) {
         return this.setElements(
-                this.pluginAliasSet.concatOrReplace(alias)
+            this.pluginAliasSet.concatOrReplace(alias)
         );
     }
 
     @Override
     public TestPluginAliasSet concat(final TestPluginAlias alias) {
         return this.setElements(
-                this.pluginAliasSet.concat(alias)
+            this.pluginAliasSet.concat(alias)
         );
     }
 
     @Override
     public TestPluginAliasSet concatAll(final Collection<TestPluginAlias> aliases) {
         return this.setElements(
-                this.pluginAliasSet.concatAll(aliases)
+            this.pluginAliasSet.concatAll(aliases)
         );
     }
 
     @Override
     public TestPluginAliasSet delete(final TestPluginAlias alias) {
         return this.setElements(
-                this.pluginAliasSet.delete(alias)
+            this.pluginAliasSet.delete(alias)
         );
     }
 
     @Override
     public TestPluginAliasSet deleteAll(final Collection<TestPluginAlias> aliases) {
         return this.setElements(
-                this.pluginAliasSet.deleteAll(aliases)
+            this.pluginAliasSet.deleteAll(aliases)
         );
     }
 
     @Override
     public TestPluginAliasSet deleteAliasOrNameAll(final Collection<StringName> aliasOrNames) {
         return this.setElements(
-                this.pluginAliasSet.deleteAliasOrNameAll(aliasOrNames)
+            this.pluginAliasSet.deleteAliasOrNameAll(aliasOrNames)
         );
     }
 
     @Override
     public TestPluginAliasSet keepAliasOrNameAll(final Collection<StringName> aliasOrNames) {
         return this.setElements(
-                this.pluginAliasSet.keepAliasOrNameAll(aliasOrNames)
+            this.pluginAliasSet.keepAliasOrNameAll(aliasOrNames)
         );
     }
 
@@ -140,10 +140,10 @@ final class TestPluginAliasSet extends AbstractSet<TestPluginAlias>
     public TestPluginAliasSet replace(final TestPluginAlias oldAlias,
                                       final TestPluginAlias newAlias) {
         return this.setElements(
-                this.pluginAliasSet.replace(
-                        oldAlias,
-                        newAlias
-                )
+            this.pluginAliasSet.replace(
+                oldAlias,
+                newAlias
+            )
         );
     }
 
@@ -151,16 +151,16 @@ final class TestPluginAliasSet extends AbstractSet<TestPluginAlias>
     public TestPluginAliasSet setElements(final SortedSet<TestPluginAlias> aliases) {
         // no need to take a defensive copy before testing for equality
         return aliases.equals(this) ?
-                this :
-                new TestPluginAliasSet(
-                        this.pluginAliasSet.setElements(aliases)
-                );
+            this :
+            new TestPluginAliasSet(
+                this.pluginAliasSet.setElements(aliases)
+            );
     }
 
     @Override
     public TestPluginAliasSet setElementsFailIfDifferent(final SortedSet<TestPluginAlias> aliases) {
         return new TestPluginAliasSet(
-                this.pluginAliasSet.setElementsFailIfDifferent(aliases)
+            this.pluginAliasSet.setElementsFailIfDifferent(aliases)
         );
     }
 
@@ -178,24 +178,24 @@ final class TestPluginAliasSet extends AbstractSet<TestPluginAlias>
     public TestPluginAliasSet subSet(final TestPluginAlias after,
                                      final TestPluginAlias before) {
         return new TestPluginAliasSet(
-                this.pluginAliasSet.subSet(
-                        after,
-                        before
-                )
+            this.pluginAliasSet.subSet(
+                after,
+                before
+            )
         );
     }
 
     @Override
     public TestPluginAliasSet headSet(final TestPluginAlias from) {
         return this.setElements(
-                this.pluginAliasSet.headSet(from)
+            this.pluginAliasSet.headSet(from)
         );
     }
 
     @Override
     public TestPluginAliasSet tailSet(final TestPluginAlias to) {
         return this.setElements(
-                this.pluginAliasSet.tailSet(to)
+            this.pluginAliasSet.tailSet(to)
         );
     }
 

@@ -33,7 +33,7 @@ import java.util.function.BiFunction;
  * An interface that should be implemented by all selector token alternatives.
  */
 public interface PluginSelectorTokenAlternativeLike extends HasText,
-        TreePrintable {
+    TreePrintable {
 
     String label();
 
@@ -51,13 +51,13 @@ public interface PluginSelectorTokenAlternativeLike extends HasText,
         Objects.requireNonNull(context, "context");
 
         return JsonNode.object()
-                .set(
-                        PluginSelectorTokenAlternativeLikeJsonConstants.LABEL_PROPERTY,
-                        JsonNode.string(this.label())
-                ).set(
-                        PluginSelectorTokenAlternativeLikeJsonConstants.TEXT_PROPERTY,
-                        JsonNode.string(this.text())
-                );
+            .set(
+                PluginSelectorTokenAlternativeLikeJsonConstants.LABEL_PROPERTY,
+                JsonNode.string(this.label())
+            ).set(
+                PluginSelectorTokenAlternativeLikeJsonConstants.TEXT_PROPERTY,
+                JsonNode.string(this.text())
+            );
     }
 
     /**
@@ -96,8 +96,8 @@ public interface PluginSelectorTokenAlternativeLike extends HasText,
         }
 
         return factory.apply(
-                label,
-                text
+            label,
+            text
         );
     }
 }

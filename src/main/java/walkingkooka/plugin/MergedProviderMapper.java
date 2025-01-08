@@ -33,25 +33,25 @@ import java.util.function.Function;
  * The final {@link #infos()} will contain infos from both the renamingInfo and providerInfos, where renamingInfos overwrites providerInfos.
  */
 public final class MergedProviderMapper<N extends Name & Comparable<N>,
+    I extends PluginInfoLike<I, N>,
+    IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+    S extends PluginSelectorLike<N>,
+    A extends PluginAliasLike<N, S, A>,
+    AS extends PluginAliasSetLike<N, I, IS, S, A, AS>> {
+
+    public static <N extends Name & Comparable<N>,
         I extends PluginInfoLike<I, N>,
         IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
         S extends PluginSelectorLike<N>,
         A extends PluginAliasLike<N, S, A>,
-        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>> {
-
-    public static <N extends Name & Comparable<N>,
-            I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-            S extends PluginSelectorLike<N>,
-            A extends PluginAliasLike<N, S, A>,
-            AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
     MergedProviderMapper<N, I, IS, S, A, AS> with(final IS renamingInfos,
                                                   final IS providerInfos,
                                                   final PluginHelper<N, I, IS, S, A, AS> helper) {
         return new MergedProviderMapper<>(
-                Objects.requireNonNull(renamingInfos, "renamingInfos"),
-                Objects.requireNonNull(providerInfos, "providerInfos"),
-                Objects.requireNonNull(helper, "helper")
+            Objects.requireNonNull(renamingInfos, "renamingInfos"),
+            Objects.requireNonNull(providerInfos, "providerInfos"),
+            Objects.requireNonNull(helper, "helper")
         );
     }
 
@@ -66,14 +66,14 @@ public final class MergedProviderMapper<N extends Name & Comparable<N>,
         for (final Entry<AbsoluteUrl, I> urlToProviderInfo : urlToProviderInfos.entrySet()) {
             final AbsoluteUrl providerInfoUrl = urlToProviderInfo.getKey();
             final N providerName = urlToProviderInfo.getValue()
-                    .name();
+                .name();
 
             final I renamingInfo = urlToRenamingInfos.get(providerInfoUrl);
             renamingNameToProviderName.put(
-                    null != renamingInfo ?
-                            renamingInfo.name() :
-                            providerName,
-                    providerName
+                null != renamingInfo ?
+                    renamingInfo.name() :
+                    providerName,
+                providerName
             );
         }
         this.renamingNameToProviderName = renamingNameToProviderName;
@@ -82,7 +82,7 @@ public final class MergedProviderMapper<N extends Name & Comparable<N>,
         final Set<I> infos = Sets.hash();
 
         for (final I providerInfo : providerInfos) {
-            if(false == urlToRenamingInfos.containsKey(providerInfo.url())) {
+            if (false == urlToRenamingInfos.containsKey(providerInfo.url())) {
                 infos.add(providerInfo);
             }
         }
@@ -97,8 +97,8 @@ public final class MergedProviderMapper<N extends Name & Comparable<N>,
 
         for (final I info : infos) {
             urlToInfo.put(
-                    info.url(),
-                    info
+                info.url(),
+                info
             );
         }
 
@@ -132,9 +132,9 @@ public final class MergedProviderMapper<N extends Name & Comparable<N>,
         Objects.requireNonNull(selector, "selector");
 
         return (S) selector.setName(
-                this.name(
-                        selector.name()
-                )
+            this.name(
+                selector.name()
+            )
         );
     }
 

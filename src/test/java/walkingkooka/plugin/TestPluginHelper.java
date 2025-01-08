@@ -57,24 +57,24 @@ final class TestPluginHelper implements PluginHelper<StringName, TestPluginInfo,
         Objects.requireNonNull(context, "context");
 
         return Parsers.stringInitialAndPartCharPredicate(
-                (i) -> i >= 'a' && i <= 'z',
-                (i) -> i >= 'a' && i <= 'z' || i >= '0' && i <= '9' || i == '-',
-                1, // minLength
-                32 // maxLength
+            (i) -> i >= 'a' && i <= 'z',
+            (i) -> i >= 'a' && i <= 'z' || i >= '0' && i <= '9' || i == '-',
+            1, // minLength
+            32 // maxLength
         ).parse(
-                cursor,
-                context
+            cursor,
+            context
         ).map(
-                (final ParserToken token) -> this.name(
-                        token.cast(StringParserToken.class).value()
-                )
+            (final ParserToken token) -> this.name(
+                token.cast(StringParserToken.class).value()
+            )
         );
     }
 
     @Override
     public Set<StringName> names(final Set<StringName> names) {
         return Sets.immutable(
-                Objects.requireNonNull(names, "names")
+            Objects.requireNonNull(names, "names")
         );
     }
 
@@ -116,9 +116,9 @@ final class TestPluginHelper implements PluginHelper<StringName, TestPluginInfo,
                                  final Optional<TestPluginSelector> selector,
                                  final Optional<AbsoluteUrl> url) {
         return TestPluginAlias.with(
-                name,
-                selector,
-                url
+            name,
+            selector,
+            url
         );
     }
 

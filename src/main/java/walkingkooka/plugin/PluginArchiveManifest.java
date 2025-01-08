@@ -57,16 +57,16 @@ public final class PluginArchiveManifest {
         final Attributes attributes = manifest.getMainAttributes();
 
         return new PluginArchiveManifest(
-                attribute(
-                        attributes,
-                        PLUGIN_NAME,
-                        PluginName::with
-                ),
-                attribute(
-                        attributes,
-                        PLUGIN_PROVIDER_FACTORY_CLASSNAME,
-                        ClassName::with
-                )
+            attribute(
+                attributes,
+                PLUGIN_NAME,
+                PluginName::with
+            ),
+            attribute(
+                attributes,
+                PLUGIN_PROVIDER_FACTORY_CLASSNAME,
+                ClassName::with
+            )
         );
     }
 
@@ -88,8 +88,8 @@ public final class PluginArchiveManifest {
         Objects.requireNonNull(className, "className");
 
         return new PluginArchiveManifest(
-                pluginName,
-                className
+            pluginName,
+            className
         );
     }
 
@@ -116,21 +116,21 @@ public final class PluginArchiveManifest {
     @Override
     public int hashCode() {
         return Objects.hash(
-                this.pluginName,
-                this.className
+            this.pluginName,
+            this.className
         );
     }
 
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-                other instanceof PluginArchiveManifest &&
-                        this.equals0(Cast.to(other));
+            other instanceof PluginArchiveManifest &&
+                this.equals0(Cast.to(other));
     }
 
     private boolean equals0(final PluginArchiveManifest other) {
         return this.pluginName.equals(other.pluginName) &&
-                this.className.equals(other.className());
+            this.className.equals(other.className());
     }
 
     @Override

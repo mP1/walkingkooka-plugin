@@ -33,9 +33,9 @@ import java.util.function.Function;
  * Provides a unique identifying {@link AbsoluteUrl} and {@link Name}.
  */
 public final class PluginInfo<N extends Name & Comparable<N>> implements HasName<N>,
-        HasAbsoluteUrl,
-        Comparable<PluginInfo<N>>,
-        HateosResource<N> {
+    HasAbsoluteUrl,
+    Comparable<PluginInfo<N>>,
+    HateosResource<N> {
 
     /**
      * Useful helper that should be used by {@link PluginInfoLike} implementation parse methods.
@@ -50,8 +50,8 @@ public final class PluginInfo<N extends Name & Comparable<N>> implements HasName
     public static <N extends Name & Comparable<N>> PluginInfo<N> parse(final String text,
                                                                        final Function<String, N> nameFactory) {
         final PluginInfoParser<N> parser = PluginInfoParser.with(
-                text,
-                nameFactory
+            text,
+            nameFactory
         );
 
         parser.spaces();
@@ -64,21 +64,21 @@ public final class PluginInfo<N extends Name & Comparable<N>> implements HasName
 
         parser.spaces();
 
-        if(parser.isNotEmpty()) {
+        if (parser.isNotEmpty()) {
             parser.invalidCharacterException();
         }
 
         return new PluginInfo<>(
-                url,
-                name
+            url,
+            name
         );
     }
 
     public static <N extends Name & Comparable<N>> PluginInfo<N> with(final AbsoluteUrl url,
                                                                       final N name) {
         return new PluginInfo<>(
-                Objects.requireNonNull(url, "url"),
-                Objects.requireNonNull(name, "name")
+            Objects.requireNonNull(url, "url"),
+            Objects.requireNonNull(name, "name")
         );
     }
 
@@ -108,11 +108,11 @@ public final class PluginInfo<N extends Name & Comparable<N>> implements HasName
         Objects.requireNonNull(name, "name");
 
         return this.name.equals(name) ?
-                this :
-                new PluginInfo<>(
-                        this.url,
-                        name
-                );
+            this :
+            new PluginInfo<>(
+                this.url,
+                name
+            );
     }
 
     private final N name;
@@ -122,13 +122,13 @@ public final class PluginInfo<N extends Name & Comparable<N>> implements HasName
     @Override
     public String hateosLinkId() {
         return this.name()
-                .value();
+            .value();
     }
 
     @Override
     public Optional<N> id() {
         return Optional.of(
-                this.name()
+            this.name()
         );
     }
 
@@ -140,11 +140,11 @@ public final class PluginInfo<N extends Name & Comparable<N>> implements HasName
 
         if (Comparators.EQUAL == compare) {
             compare = this.url()
-                    .normalize()
-                    .compareTo(
-                            other.url()
-                                    .normalize()
-                    );
+                .normalize()
+                .compareTo(
+                    other.url()
+                        .normalize()
+                );
         }
 
         return compare;
@@ -155,21 +155,21 @@ public final class PluginInfo<N extends Name & Comparable<N>> implements HasName
     @Override
     public int hashCode() {
         return Objects.hash(
-                this.url,
-                this.name
+            this.url,
+            this.name
         );
     }
 
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-                other instanceof PluginInfo &&
-                        this.equals0(Cast.to(other));
+            other instanceof PluginInfo &&
+                this.equals0(Cast.to(other));
     }
 
     private boolean equals0(final PluginInfo<?> other) {
         return this.url.equals(other.url) &&
-                this.name.equals(other.name);
+            this.name.equals(other.name);
     }
 
     @Override

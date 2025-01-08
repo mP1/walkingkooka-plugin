@@ -36,21 +36,21 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
      * Parses the text holding a {@link PluginAlias} using the given {@link PluginHelper}.
      */
     public static <N extends Name & Comparable<N>,
-            I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-            S extends PluginSelectorLike<N>,
-            A extends PluginAliasLike<N, S, A>,
-            AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+        I extends PluginInfoLike<I, N>,
+        IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+        S extends PluginSelectorLike<N>,
+        A extends PluginAliasLike<N, S, A>,
+        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
     PluginAlias<N, S> parse(final String text,
                             final PluginHelper<N, I, IS, S, A, AS> helper) {
         final PluginExpressionParser<N> parser = PluginExpressionParser.with(
-                text,
-                helper::parseName
+            text,
+            helper::parseName
         );
         final PluginAlias<N, S> alias = parse0(
-                parser,
-                helper,
-                PluginAliasesProviderContext.INSTANCE
+            parser,
+            helper,
+            PluginAliasesProviderContext.INSTANCE
         );
 
         if (false == parser.cursor.isEmpty()) {
@@ -61,11 +61,11 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
     }
 
     static <N extends Name & Comparable<N>,
-            I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-            S extends PluginSelectorLike<N>,
-            A extends PluginAliasLike<N, S, A>,
-            AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+        I extends PluginInfoLike<I, N>,
+        IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+        S extends PluginSelectorLike<N>,
+        A extends PluginAliasLike<N, S, A>,
+        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
     PluginAlias<N, S> parse0(final PluginExpressionParser<N> parser,
                              final PluginHelper<N, I, IS, S, A, AS> helper,
                              final ProviderContext context) {
@@ -77,9 +77,9 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
             parser.spaces();
 
             final Optional<S> maybeSelector = tryParseSelector(
-                    parser,
-                    helper,
-                    context
+                parser,
+                helper,
+                context
             );
 
             final PluginAlias<N, S> pluginAlias;
@@ -87,17 +87,17 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
             if (false == maybeSelector.isPresent()) {
                 // name END
                 pluginAlias = PluginAlias.with(
-                        nameOrAlias.get(),
-                        maybeSelector, // no selector
-                        Optional.empty() // no url
+                    nameOrAlias.get(),
+                    maybeSelector, // no selector
+                    Optional.empty() // no url
                 );
 
             } else {
                 parser.spaces();
                 pluginAlias = PluginAlias.with(
-                        nameOrAlias.get(),
-                        maybeSelector, // selector
-                        parser.url() // url
+                    nameOrAlias.get(),
+                    maybeSelector, // selector
+                    parser.url() // url
                 );
 
                 // there could be spaces after the url
@@ -112,11 +112,11 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
      * Tries to parse a selector expression returning a {@link PluginSelectorLike}.
      */
     private static <N extends Name & Comparable<N>,
-            I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-            S extends PluginSelectorLike<N>,
-            A extends PluginAliasLike<N, S, A>,
-            AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+        I extends PluginInfoLike<I, N>,
+        IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+        S extends PluginSelectorLike<N>,
+        A extends PluginAliasLike<N, S, A>,
+        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
     Optional<S> tryParseSelector(final PluginExpressionParser<N> parser,
                                  final PluginHelper<N, I, IS, S, A, AS> helper,
                                  final ProviderContext context) {
@@ -150,7 +150,7 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
 
                     for (; ; ) {
                         if (parser.environmentValue(
-                                context
+                            context
                         ).isPresent()) {
                             break;
                         }
@@ -173,8 +173,8 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
             }
 
             selector = helper.parseSelector(
-                    start.textBetween()
-                            .toString()
+                start.textBetween()
+                    .toString()
             );
         }
 
@@ -188,16 +188,16 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
                                                                                                            final Optional<S> selector,
                                                                                                            final Optional<AbsoluteUrl> url) {
         return new PluginAlias<>(
-                Objects.requireNonNull(name, "name"),
-                Objects.requireNonNull(selector, "selector"),
-                Objects.requireNonNull(url, "url")
+            Objects.requireNonNull(name, "name"),
+            Objects.requireNonNull(selector, "selector"),
+            Objects.requireNonNull(url, "url")
         );
     }
 
     private PluginAlias(final N name,
                         final Optional<S> selector,
                         final Optional<AbsoluteUrl> url) {
-        if(false == selector.isPresent() && url.isPresent()) {
+        if (false == selector.isPresent() && url.isPresent()) {
             throw new IllegalArgumentException(name + " missing selector when url=" + url.get());
         }
 
@@ -243,9 +243,9 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
                 result = selector.name().compareTo(otherSelector.name());
                 if (Comparators.EQUAL == result) {
                     result = selector.valueText()
-                            .compareTo(
-                                    otherSelector.valueText()
-                            );
+                        .compareTo(
+                            otherSelector.valueText()
+                        );
 
                     if (Comparators.EQUAL == result) {
 
@@ -256,19 +256,19 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
                             result = url.compareTo(otherUrl);
                         } else {
                             result = null == url ?
-                                    null == otherUrl ?
-                                            Comparators.EQUAL :
-                                            Comparators.LESS :
-                                    Comparators.MORE;
+                                null == otherUrl ?
+                                    Comparators.EQUAL :
+                                    Comparators.LESS :
+                                Comparators.MORE;
                         }
                     }
                 }
             } else {
                 result = null == selector ?
-                        null == otherSelector ?
-                                Comparators.EQUAL :
-                                Comparators.LESS :
-                        Comparators.MORE;
+                    null == otherSelector ?
+                        Comparators.EQUAL :
+                        Comparators.LESS :
+                    Comparators.MORE;
             }
         }
         return result;
@@ -305,23 +305,23 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
     @Override
     public int hashCode() {
         return Objects.hash(
-                this.name,
-                this.selector,
-                this.url
+            this.name,
+            this.selector,
+            this.url
         );
     }
 
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-                other instanceof PluginAlias &&
-                        this.equals0(Cast.to(other));
+            other instanceof PluginAlias &&
+                this.equals0(Cast.to(other));
     }
 
     private boolean equals0(final PluginAlias<?, ?> other) {
         return this.name.equals(other.name) &&
-                this.selector.equals(other.selector) &&
-                this.url.equals(other.url);
+            this.selector.equals(other.selector) &&
+            this.url.equals(other.url);
     }
 
     @Override
@@ -345,8 +345,8 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
             final Optional<AbsoluteUrl> url = this.url;
             if (url.isPresent()) {
                 printer.println(
-                        url.get()
-                                .toString()
+                    url.get()
+                        .toString()
                 );
             }
         }

@@ -26,41 +26,41 @@ import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.HasTextTesting;
 
 public interface PluginInfoSetLikeTesting<N extends Name & Comparable<N>,
-        I extends PluginInfoLike<I, N>,
-        IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-        S extends PluginSelectorLike<N>,
-        A extends PluginAliasLike<N, S, A>,
-        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
-        extends ImmutableSetTesting<IS, I>,
-            HateosResourceSetTesting<IS, I, N>,
-            ParseStringTesting<IS>,
-            HasTextTesting {
+    I extends PluginInfoLike<I, N>,
+    IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+    S extends PluginSelectorLike<N>,
+    A extends PluginAliasLike<N, S, A>,
+    AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+    extends ImmutableSetTesting<IS, I>,
+    HateosResourceSetTesting<IS, I, N>,
+    ParseStringTesting<IS>,
+    HasTextTesting {
 
     // empty............................................................................................................
 
     @Test
     default void testEmpty() throws Exception {
         this.textAndCheck(
-                (IS) this.type()
-                        .getField("EMPTY")
-                        .get(null),
-                ""
+            (IS) this.type()
+                .getField("EMPTY")
+                .get(null),
+            ""
         );
     }
 
     @Test
     default void testEmptyConcatText() throws Exception {
         final IS set = (IS) this.type()
-                .getField("EMPTY")
-                .get(null);
+            .getField("EMPTY")
+            .get(null);
 
         final I info = this.info();
 
         this.textAndCheck(
-                set.concat(
-                        info
-                ),
-                info.toString()
+            set.concat(
+                info
+            ),
+            info.toString()
         );
     }
 
@@ -71,9 +71,9 @@ public interface PluginInfoSetLikeTesting<N extends Name & Comparable<N>,
     default void aliasSetAndCheck(final IS infos,
                                   final AS aliases) {
         this.checkEquals(
-                aliases,
-                infos.aliasSet(),
-                infos::text
+            aliases,
+            infos.aliasSet(),
+            infos::text
         );
     }
 
@@ -103,11 +103,11 @@ public interface PluginInfoSetLikeTesting<N extends Name & Comparable<N>,
         final IS set = this.createSet();
 
         this.textAndCheck(
+            set,
+            CharacterConstant.COMMA.toSeparatedString(
                 set,
-                CharacterConstant.COMMA.toSeparatedString(
-                        set,
-                        Object::toString
-                )
+                Object::toString
+            )
         );
     }
 }

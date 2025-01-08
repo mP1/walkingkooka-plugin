@@ -32,7 +32,7 @@ final class PluginNameSetParser implements CanBeEmpty {
 
     static PluginNameSetParser with(final String text) {
         return new PluginNameSetParser(
-                text
+            text
         );
     }
 
@@ -43,44 +43,44 @@ final class PluginNameSetParser implements CanBeEmpty {
 
     String spaces() {
         return SPACES.parse(
-                        this.cursor,
-                        CONTEXT
-                ).map(ParserToken::text)
-                .orElse("");
+                this.cursor,
+                CONTEXT
+            ).map(ParserToken::text)
+            .orElse("");
     }
 
     private final static Parser<ParserContext> SPACES = Parsers.stringCharPredicate(
-            CharPredicates.is(' '),
-            1,
-            Character.MAX_VALUE
+        CharPredicates.is(' '),
+        1,
+        Character.MAX_VALUE
     );
 
     String name() {
         return NAME.parse(
-                        this.cursor,
-                        CONTEXT
-                ).map(ParserToken::text)
-                .orElse("");
+                this.cursor,
+                CONTEXT
+            ).map(ParserToken::text)
+            .orElse("");
     }
 
     private final static Parser<ParserContext> NAME = Parsers.stringCharPredicate(
-            CharPredicates.any(" " + PluginInfoSetLike.SEPARATOR.character()).negate(),
-            1,
-            Character.MAX_VALUE
+        CharPredicates.any(" " + PluginInfoSetLike.SEPARATOR.character()).negate(),
+        1,
+        Character.MAX_VALUE
     );
 
     String comma() {
         return COMMA.parse(
-                        this.cursor,
-                        CONTEXT
-                ).map(ParserToken::text)
-                .orElse("");
+                this.cursor,
+                CONTEXT
+            ).map(ParserToken::text)
+            .orElse("");
     }
 
     private final static Parser<ParserContext> COMMA = Parsers.character(
-            CharPredicates.is(
-                    PluginInfoSetLike.SEPARATOR.character()
-            )
+        CharPredicates.is(
+            PluginInfoSetLike.SEPARATOR.character()
+        )
     );
 
     @Override
@@ -97,19 +97,19 @@ final class PluginNameSetParser implements CanBeEmpty {
     private InvalidCharacterException handleInvalidCharacterException(final InvalidCharacterException cause,
                                                                       final String token) {
         return cause.setTextAndPosition(
-                this.text,
-                this.cursor.lineInfo()
-                        .textOffset() -
-                        token.length() +
-                        cause.position()
+            this.text,
+            this.cursor.lineInfo()
+                .textOffset() -
+                token.length() +
+                cause.position()
         );
     }
 
     void invalidCharacterException() {
         throw new InvalidCharacterException(
-                this.text,
-                this.cursor.lineInfo()
-                        .textOffset()
+            this.text,
+            this.cursor.lineInfo()
+                .textOffset()
         );
     }
 }

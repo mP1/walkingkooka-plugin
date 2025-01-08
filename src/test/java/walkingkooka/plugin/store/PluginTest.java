@@ -37,11 +37,11 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
-        ToStringTesting<Plugin>,
-        ComparableTesting2<Plugin>,
-        ClassTesting<Plugin>,
-        JsonNodeMarshallingTesting<Plugin>,
-        HateosResourceTesting<Plugin, PluginName> {
+    ToStringTesting<Plugin>,
+    ComparableTesting2<Plugin>,
+    ClassTesting<Plugin>,
+    JsonNodeMarshallingTesting<Plugin>,
+    HateosResourceTesting<Plugin, PluginName> {
 
     private final static PluginName NAME = PluginName.with("TestPlugin123");
 
@@ -58,109 +58,109 @@ public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
     @Test
     public void testWithNullIdFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> Plugin.with(
-                        null,
-                        FILENAME,
-                        ARCHIVE,
-                        USER,
-                        TIMESTAMP
-                )
+            NullPointerException.class,
+            () -> Plugin.with(
+                null,
+                FILENAME,
+                ARCHIVE,
+                USER,
+                TIMESTAMP
+            )
         );
     }
 
     @Test
     public void testWithNullFilenameFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> Plugin.with(
-                        NAME,
-                        null,
-                        ARCHIVE,
-                        USER,
-                        TIMESTAMP
-                )
+            NullPointerException.class,
+            () -> Plugin.with(
+                NAME,
+                null,
+                ARCHIVE,
+                USER,
+                TIMESTAMP
+            )
         );
     }
 
     @Test
     public void testWithEmptyFilenameFails() {
         assertThrows(
-                IllegalArgumentException.class,
-                () -> Plugin.with(
-                        NAME,
-                        "",
-                        ARCHIVE,
-                        USER,
-                        TIMESTAMP
-                )
+            IllegalArgumentException.class,
+            () -> Plugin.with(
+                NAME,
+                "",
+                ARCHIVE,
+                USER,
+                TIMESTAMP
+            )
         );
     }
 
     @Test
     public void testWithNullArchiveFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> Plugin.with(
-                        NAME,
-                        FILENAME,
-                        null,
-                        USER,
-                        TIMESTAMP
-                )
+            NullPointerException.class,
+            () -> Plugin.with(
+                NAME,
+                FILENAME,
+                null,
+                USER,
+                TIMESTAMP
+            )
         );
     }
 
     @Test
     public void testWithEmptyArchiveFails() {
         assertThrows(
-                IllegalArgumentException.class,
-                () -> Plugin.with(
-                        NAME,
-                        FILENAME,
-                        Binary.EMPTY,
-                        USER,
-                        TIMESTAMP
-                )
+            IllegalArgumentException.class,
+            () -> Plugin.with(
+                NAME,
+                FILENAME,
+                Binary.EMPTY,
+                USER,
+                TIMESTAMP
+            )
         );
     }
 
     @Test
     public void testWithNullUserFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> Plugin.with(
-                        NAME,
-                        FILENAME,
-                        ARCHIVE,
-                        null,
-                        TIMESTAMP
-                )
+            NullPointerException.class,
+            () -> Plugin.with(
+                NAME,
+                FILENAME,
+                ARCHIVE,
+                null,
+                TIMESTAMP
+            )
         );
     }
 
     @Test
     public void testWithNullTimestampFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> Plugin.with(
-                        NAME,
-                        FILENAME,
-                        ARCHIVE,
-                        USER,
-                        null
-                )
+            NullPointerException.class,
+            () -> Plugin.with(
+                NAME,
+                FILENAME,
+                ARCHIVE,
+                USER,
+                null
+            )
         );
     }
 
     @Test
     public void testWith() {
         final Plugin plugin = Plugin.with(
-                NAME,
-                FILENAME,
-                ARCHIVE,
-                USER,
-                TIMESTAMP
+            NAME,
+            FILENAME,
+            ARCHIVE,
+            USER,
+            TIMESTAMP
         );
         this.checkEquals(NAME, plugin.name(), "name");
         this.checkEquals(FILENAME, plugin.filename(), "filename(");
@@ -180,36 +180,36 @@ public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
     @Test
     public void testCompareSort() {
         final Plugin a1 = Plugin.with(
-                PluginName.with("A1"),
-                FILENAME,
-                ARCHIVE,
-                USER,
-                TIMESTAMP
+            PluginName.with("A1"),
+            FILENAME,
+            ARCHIVE,
+            USER,
+            TIMESTAMP
         );
 
         final Plugin b2 = Plugin.with(
-                PluginName.with("B2"),
-                FILENAME,
-                ARCHIVE,
-                USER,
-                TIMESTAMP
+            PluginName.with("B2"),
+            FILENAME,
+            ARCHIVE,
+            USER,
+            TIMESTAMP
         );
 
         final Plugin c3 = Plugin.with(
-                PluginName.with("C3"),
-                FILENAME,
-                ARCHIVE,
-                USER,
-                TIMESTAMP
+            PluginName.with("C3"),
+            FILENAME,
+            ARCHIVE,
+            USER,
+            TIMESTAMP
         );
 
         this.compareToArraySortAndCheck(
-                c3,
-                a1,
-                b2,
-                a1,
-                b2,
-                c3
+            c3,
+            a1,
+            b2,
+            a1,
+            b2,
+            c3
         );
     }
 
@@ -223,78 +223,78 @@ public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
     @Test
     public void testEqualsDifferentId() {
         this.checkNotEquals(
-                Plugin.with(
-                        PluginName.with("Different"),
-                        FILENAME,
-                        ARCHIVE,
-                        USER,
-                        TIMESTAMP
-                )
+            Plugin.with(
+                PluginName.with("Different"),
+                FILENAME,
+                ARCHIVE,
+                USER,
+                TIMESTAMP
+            )
         );
     }
 
     @Test
     public void testEqualsDifferentFilename() {
         this.checkNotEquals(
-                Plugin.with(
-                        NAME,
-                        "different.jar",
-                        ARCHIVE,
-                        USER,
-                        TIMESTAMP
-                )
+            Plugin.with(
+                NAME,
+                "different.jar",
+                ARCHIVE,
+                USER,
+                TIMESTAMP
+            )
         );
     }
 
     @Test
     public void testEqualsDifferentArchive() {
         this.checkNotEquals(
-                Plugin.with(
-                        NAME,
-                        FILENAME,
-                        Binary.with(
-                                "different".getBytes(Charset.defaultCharset())
-                        ),
-                        USER,
-                        TIMESTAMP
-                )
+            Plugin.with(
+                NAME,
+                FILENAME,
+                Binary.with(
+                    "different".getBytes(Charset.defaultCharset())
+                ),
+                USER,
+                TIMESTAMP
+            )
         );
     }
 
     @Test
     public void testEqualsDifferentUser() {
         this.checkNotEquals(
-                Plugin.with(
-                        NAME,
-                        FILENAME,
-                        ARCHIVE,
-                        EmailAddress.parse("different@example.com"),
-                        TIMESTAMP
-                )
+            Plugin.with(
+                NAME,
+                FILENAME,
+                ARCHIVE,
+                EmailAddress.parse("different@example.com"),
+                TIMESTAMP
+            )
         );
     }
 
     @Test
     public void testEqualsDifferentTimestamp() {
         this.checkNotEquals(
-                Plugin.with(
-                        NAME,
-                        FILENAME,
-                        ARCHIVE,
-                        USER,
-                        LocalDateTime.now()
-                )
+            Plugin.with(
+                NAME,
+                FILENAME,
+                ARCHIVE,
+                USER,
+                LocalDateTime.now()
+            )
         );
     }
 
     @Override
     public Plugin createObject() {
         return Plugin.with(
-                NAME,
-                FILENAME,
-                ARCHIVE,
-                USER,
-                TIMESTAMP
+            NAME,
+            FILENAME,
+            ARCHIVE,
+            USER,
+            TIMESTAMP
         );
     }
 
@@ -303,14 +303,14 @@ public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
     @Test
     public void testToString() {
         this.toStringAndCheck(
-                Plugin.with(
-                        NAME,
-                        FILENAME,
-                        ARCHIVE,
-                        USER,
-                        TIMESTAMP
-                ),
-                "TestPlugin123 \"file.jar\" user@example.com 1999-12-31T12:58"
+            Plugin.with(
+                NAME,
+                FILENAME,
+                ARCHIVE,
+                USER,
+                TIMESTAMP
+            ),
+            "TestPlugin123 \"file.jar\" user@example.com 1999-12-31T12:58"
         );
     }
 
@@ -325,8 +325,8 @@ public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
     public Plugin unmarshall(final JsonNode json,
                              final JsonNodeUnmarshallContext context) {
         return Plugin.unmarshall(
-                json,
-                context
+            json,
+            context
         );
     }
 

@@ -59,10 +59,10 @@ public final class TreeMapPluginStoreTest implements PluginStoreTesting<TreeMapP
         store.save(plugin1);
 
         this.filterAndCheck(
-                store,
-                "",
-                0,
-                2
+            store,
+            "",
+            0,
+            2
         );
     }
 
@@ -76,12 +76,12 @@ public final class TreeMapPluginStoreTest implements PluginStoreTesting<TreeMapP
         store.save(plugin2);
 
         this.filterAndCheck(
-                store,
-                "*",
-                0,
-                2,
-                plugin1,
-                plugin2
+            store,
+            "*",
+            0,
+            2,
+            plugin1,
+            plugin2
         );
     }
 
@@ -95,11 +95,11 @@ public final class TreeMapPluginStoreTest implements PluginStoreTesting<TreeMapP
         store.save(plugin2);
 
         this.filterAndCheck(
-                store,
-                "*",
-                1,
-                2,
-                plugin2
+            store,
+            "*",
+            1,
+            2,
+            plugin2
         );
     }
 
@@ -113,11 +113,11 @@ public final class TreeMapPluginStoreTest implements PluginStoreTesting<TreeMapP
         store.save(plugin2);
 
         this.filterAndCheck(
-                store,
-                "*",
-                0,
-                1,
-                plugin1
+            store,
+            "*",
+            0,
+            1,
+            plugin1
         );
     }
 
@@ -139,28 +139,28 @@ public final class TreeMapPluginStoreTest implements PluginStoreTesting<TreeMapP
         store.save(plugin6);
 
         this.filterAndCheck(
-                store,
-                "*2* *4* *6*",
-                1,
-                2,
-                plugin4,
-                plugin6
+            store,
+            "*2* *4* *6*",
+            1,
+            2,
+            plugin4,
+            plugin6
         );
     }
 
     private static Plugin plugin(final String name) {
         return Plugin.with(
-                PluginName.with(name),
-                "example.jar",
-                Binary.with("Hello".getBytes(Charset.defaultCharset())),
-                EmailAddress.parse("user@example.com"),
-                LocalDateTime.of(
-                        1999,
-                        12,
-                        31,
-                        12,
-                        58
-                )
+            PluginName.with(name),
+            "example.jar",
+            Binary.with("Hello".getBytes(Charset.defaultCharset())),
+            EmailAddress.parse("user@example.com"),
+            LocalDateTime.of(
+                1999,
+                12,
+                31,
+                12,
+                58
+            )
         );
     }
 

@@ -34,22 +34,22 @@ public final class FilteredProviderGuardTest implements ClassTesting2<FilteredPr
     @Test
     public void testWithNullSetFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> FilteredProviderGuard.with(
-                        null,
-                        TestPluginHelper.INSTANCE
-                )
+            NullPointerException.class,
+            () -> FilteredProviderGuard.with(
+                null,
+                TestPluginHelper.INSTANCE
+            )
         );
     }
 
     @Test
     public void testWithNullPluginFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> FilteredProviderGuard.with(
-                        Sets.of(NAME),
-                        null
-                )
+            NullPointerException.class,
+            () -> FilteredProviderGuard.with(
+                Sets.of(NAME),
+                null
+            )
         );
     }
 
@@ -58,33 +58,33 @@ public final class FilteredProviderGuardTest implements ClassTesting2<FilteredPr
     @Test
     public void testName() {
         this.guard()
-                .name(NAME);
+            .name(NAME);
     }
 
     @Test
     public void testNameWithNullFails() {
         final NullPointerException thrown = assertThrows(
-                NullPointerException.class,
-                () -> this.guard()
-                        .name(null)
+            NullPointerException.class,
+            () -> this.guard()
+                .name(null)
         );
 
         this.checkEquals(
-                "name",
-                thrown.getMessage()
+            "name",
+            thrown.getMessage()
         );
     }
 
     @Test
     public void testNameUnknownFails() {
         final IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
-                () -> this.guard().name(Names.string("Unknown123"))
+            IllegalArgumentException.class,
+            () -> this.guard().name(Names.string("Unknown123"))
         );
 
         this.checkEquals(
-                "Unknown StringName Unknown123",
-                thrown.getMessage()
+            "Unknown StringName Unknown123",
+            thrown.getMessage()
         );
     }
 
@@ -93,51 +93,51 @@ public final class FilteredProviderGuardTest implements ClassTesting2<FilteredPr
     @Test
     public void testSelector() {
         this.guard()
-                .selector(
-                        new TestPluginSelector(
-                                NAME
-                        )
-                );
+            .selector(
+                new TestPluginSelector(
+                    NAME
+                )
+            );
     }
 
     @Test
     public void testSelectorWithNullFails() {
         final NullPointerException thrown = assertThrows(
-                NullPointerException.class,
-                () -> this.guard()
-                        .selector(null)
+            NullPointerException.class,
+            () -> this.guard()
+                .selector(null)
         );
 
         this.checkEquals(
-                "selector",
-                thrown.getMessage()
+            "selector",
+            thrown.getMessage()
         );
     }
 
     @Test
     public void testSelectorUnknownFails() {
         final IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
-                () -> this.guard()
-                        .selector(
-                                new TestPluginSelector(
-                                        Names.string("Unknown123")
-                                )
-                        )
+            IllegalArgumentException.class,
+            () -> this.guard()
+                .selector(
+                    new TestPluginSelector(
+                        Names.string("Unknown123")
+                    )
+                )
         );
 
         this.checkEquals(
-                "Unknown StringName Unknown123",
-                thrown.getMessage()
+            "Unknown StringName Unknown123",
+            thrown.getMessage()
         );
     }
 
     private FilteredProviderGuard<StringName, TestPluginSelector> guard() {
         return FilteredProviderGuard.with(
-                Sets.of(
-                        NAME
-                ),
-                TestPluginHelper.INSTANCE
+            Sets.of(
+                NAME
+            ),
+            TestPluginHelper.INSTANCE
         );
     }
 

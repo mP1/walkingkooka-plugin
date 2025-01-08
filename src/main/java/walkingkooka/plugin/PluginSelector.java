@@ -47,9 +47,9 @@ import java.util.function.Function;
  * {@link walkingkooka.tree.json.JsonString} and unmarshalling parsing an equivalent {@link walkingkooka.tree.json.JsonString}.
  */
 public final class PluginSelector<N extends Name & Comparable<N>> implements HasName<N>,
-        HasText,
-        Comparable<PluginSelector<N>>,
-        TreePrintable {
+    HasText,
+    Comparable<PluginSelector<N>>,
+    TreePrintable {
 
     /**
      * Parses the given text into a selector, giving the component {@link Name} and {@link String text} to the provided factory
@@ -76,10 +76,10 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
             switch (c) {
                 case ' ':
                     // spaces before name are illegal
-                    if(0 == i) {
+                    if (0 == i) {
                         throw new InvalidCharacterException(
-                                text,
-                                i
+                            text,
+                            i
                         );
                     }
                     endOfName = i;
@@ -105,8 +105,8 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
         }
 
         return new PluginSelector<>(
-                nameFactory.apply(nameText),
-                textAfter
+            nameFactory.apply(nameText),
+            textAfter
         );
     }
 
@@ -119,8 +119,8 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
         Objects.requireNonNull(text, "text");
 
         return new PluginSelector<>(
-                name,
-                text
+            name,
+            text
         );
     }
 
@@ -139,11 +139,11 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
         Objects.requireNonNull(name, "name");
 
         return this.name.equals(name) ?
-                this :
-                new PluginSelector<>(
-                        name,
-                        this.valueText
-                );
+            this :
+            new PluginSelector<>(
+                name,
+                this.valueText
+            );
     }
 
     private final N name;
@@ -162,11 +162,11 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
         Objects.requireNonNull(text, "text");
 
         return this.valueText.equals(text) ?
-                this :
-                new PluginSelector<>(
-                        this.name,
-                        text
-                );
+            this :
+            new PluginSelector<>(
+                this.name,
+                text
+            );
     }
 
     private final String valueText;
@@ -205,9 +205,9 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
             if (value instanceof String) {
                 final String string = (String) value;
                 b.append(
-                        CharSequences.quoteAndEscape(
-                                string
-                        )
+                    CharSequences.quoteAndEscape(
+                        string
+                    )
                 );
                 continue;
             }
@@ -215,7 +215,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
             if (value instanceof PluginSelectorLike) {
                 final PluginSelectorLike<?> pluginSelectorLike = (PluginSelectorLike<?>) value;
                 b.append(pluginSelectorLike.name())
-                        .append(pluginSelectorLike.valueText());
+                    .append(pluginSelectorLike.valueText());
                 continue;
             }
 
@@ -227,7 +227,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
         }
 
         return this.setValueText(
-                b.toString()
+            b.toString()
         );
     }
 
@@ -255,29 +255,29 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
         Objects.requireNonNull(context, "context");
 
         final String nameText = this.name()
-                .value();
+            .value();
         final PluginExpressionParser<N> nameParser = PluginExpressionParser.with(
-                nameText,
-                nameParserAndFactory
+            nameText,
+            nameParserAndFactory
         );
 
         final Optional<N> name = nameParser.name();
         if (false == name.isPresent() || false == nameParser.isEmpty()) {
             throw new IllegalArgumentException(
-                    "Unable to parse name in " +
-                            CharSequences.quoteAndEscape(nameText)
+                "Unable to parse name in " +
+                    CharSequences.quoteAndEscape(nameText)
             );
         }
 
         final PluginExpressionParser<N> parser = PluginExpressionParser.with(
-                this.valueText(),
-                nameParserAndFactory
+            this.valueText(),
+            nameParserAndFactory
         );
 
         final List<?> parameters = parseParameters(
-                parser,
-                provider,
-                context
+            parser,
+            provider,
+            context
         );
 
         parser.spaces();
@@ -287,9 +287,9 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
         }
 
         return provider.get(
-                name.get(),
-                parameters,
-                context
+            name.get(),
+            parameters,
+            context
         );
     }
 
@@ -304,13 +304,13 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
         final T plugin;
         if (name.isPresent()) {
             plugin = provider.get(
-                    name.get(),
-                    parseParameters(
-                            parser,
-                            provider,
-                            context
-                    ),
+                name.get(),
+                parseParameters(
+                    parser,
+                    provider,
                     context
+                ),
+                context
             );
         } else {
             plugin = null;
@@ -347,9 +347,9 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
                 // try parsing for a plugin with or without parameters
                 {
                     final Optional<T> plugin = parseNameAndParameters(
-                            parser,
-                            provider,
-                            context
+                        parser,
+                        provider,
+                        context
                     );
                     if (plugin.isPresent()) {
                         parameters.add(plugin.get());
@@ -401,17 +401,17 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
     private void invalidCharacter(final PluginExpressionParser<?> parser) {
         final TextCursorLineInfo lineInfo = parser.cursor.lineInfo();
         final int pos = Math.max(
-                lineInfo.textOffset() - 1,
-                0
+            lineInfo.textOffset() - 1,
+            0
         );
 
         throw new InvalidCharacterException(
-                lineInfo.text()
-                        .toString(),
-                pos
+            lineInfo.text()
+                .toString(),
+            pos
         ).setTextAndPosition(
-                this.toString(),
-                this.name().textLength() + pos
+            this.toString(),
+            this.name().textLength() + pos
         );
     }
 
@@ -424,7 +424,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
     public int compareTo(final PluginSelector<N> other) {
         int result = this.name.compareTo(other.name);
 
-        if(Comparators.EQUAL == result) {
+        if (Comparators.EQUAL == result) {
             result = this.valueText.compareTo(other.valueText);
         }
 
@@ -436,20 +436,20 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
     @Override
     public int hashCode() {
         return Objects.hash(
-                this.name,
-                this.valueText
+            this.name,
+            this.valueText
         );
     }
 
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-                other instanceof PluginSelector && this.equals0((PluginSelector<?>) other);
+            other instanceof PluginSelector && this.equals0((PluginSelector<?>) other);
     }
 
     private boolean equals0(final PluginSelector<?> other) {
         return this.name.equals(other.name) &&
-                this.valueText.equals(other.valueText);
+            this.valueText.equals(other.valueText);
     }
 
     /**
@@ -462,10 +462,10 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
         final String valueText = this.valueText;
 
         return valueText.isEmpty() ?
-                name :
-                valueText.startsWith("(") ?
-                        name.concat(valueText) :
-                        name + " " + valueText;
+            name :
+            valueText.startsWith("(") ?
+                name.concat(valueText) :
+                name + " " + valueText;
     }
 
     // HasText..........................................................................................................
@@ -486,7 +486,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
             printer.indent();
             {
                 printer.println(
-                        CharSequences.quoteAndEscape(valueText)
+                    CharSequences.quoteAndEscape(valueText)
                 );
             }
             printer.outdent();

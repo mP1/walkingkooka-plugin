@@ -35,8 +35,8 @@ public final class JarFileTestingTest implements JarFileTesting {
 
     @Test
     public void testJarFile() throws IOException {
-        final String manifestContent = "Manifest-Version: 1.0\r\n"+
-                "Test-Key: Test-Value\r\n";
+        final String manifestContent = "Manifest-Version: 1.0\r\n" +
+            "Test-Key: Test-Value\r\n";
 
         final String file1 = "dir1/Hello.txt";
         final String fileContent1 = "Hello";
@@ -45,59 +45,59 @@ public final class JarFileTestingTest implements JarFileTesting {
         final String fileContent2 = "Hello2";
 
         final byte[] jar = JarFileTesting.jarFile(
-                manifestContent,
-                Maps.of(
-                        file1,
-                        fileContent1.getBytes(StandardCharsets.UTF_8),
-                        file2,
-                        fileContent2.getBytes(StandardCharsets.UTF_8)
-                )
+            manifestContent,
+            Maps.of(
+                file1,
+                fileContent1.getBytes(StandardCharsets.UTF_8),
+                file2,
+                fileContent2.getBytes(StandardCharsets.UTF_8)
+            )
         );
 
         final JarInputStream jarInputStream = new JarInputStream(
-                new ByteArrayInputStream(jar)
+            new ByteArrayInputStream(jar)
         );
 
         final Manifest manifest = jarInputStream.getManifest();
         final Attributes mainAttributes = manifest.getMainAttributes();
 
         this.checkEquals(
-                "1.0",
-                mainAttributes.getValue("Manifest-Version"),
-                "Manifest-Version\n" + mainAttributes
+            "1.0",
+            mainAttributes.getValue("Manifest-Version"),
+            "Manifest-Version\n" + mainAttributes
         );
 
         this.checkEquals(
-                "Test-Value",
-                mainAttributes.getValue("Test-Key"),
-                "Test-Key\n" + mainAttributes
+            "Test-Value",
+            mainAttributes.getValue("Test-Key"),
+            "Test-Key\n" + mainAttributes
         );
 
         final Map<String, String> fileToContent = Maps.hash();
 
-        for(;;) {
+        for (; ; ) {
             final JarEntry entry = jarInputStream.getNextJarEntry();
-            if(null == entry) {
+            if (null == entry) {
                 break;
             }
 
             fileToContent.put(
-                    entry.getName(),
+                entry.getName(),
                 new String(
-                        jarInputStream.readAllBytes(),
-                        Charset.defaultCharset()
+                    jarInputStream.readAllBytes(),
+                    Charset.defaultCharset()
                 )
             );
         }
 
         this.checkEquals(
-                Maps.of(
-                        file1,
-                        fileContent1,
-                        file2,
-                        fileContent2
-                ),
-                fileToContent
+            Maps.of(
+                file1,
+                fileContent1,
+                file2,
+                fileContent2
+            ),
+            fileToContent
         );
     }
 }

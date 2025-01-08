@@ -36,8 +36,8 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
     public void testParseUrlSpaceNameFails() {
         final String text = "https://example.com/test-123 test/123";
         this.parseStringInvalidCharacterFails(
-                text,
-                text.lastIndexOf('/')
+            text,
+            text.lastIndexOf('/')
         );
     }
 
@@ -45,68 +45,68 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
     public void testParseInfoCommaUrlSpaceMissingNameFails() {
         final String text = "https://example.com/test-111 test-111,https://example.com/test-222";
         this.parseStringFails(
-                text,
-                new IllegalArgumentException("Missing name")
+            text,
+            new IllegalArgumentException("Missing name")
         );
     }
 
     @Test
     public void testParseUrlSpaceName() {
         this.parseStringAndCheck(
-                "https://example.com/test-123 test-123",
-                new TestPluginInfoSet(
-                        Sets.of(
-                                new TestPluginInfo(
-                                        "https://example.com/test-123",
-                                        "test-123"
-                                )
-                        )
+            "https://example.com/test-123 test-123",
+            new TestPluginInfoSet(
+                Sets.of(
+                    new TestPluginInfo(
+                        "https://example.com/test-123",
+                        "test-123"
+                    )
                 )
+            )
         );
     }
 
     @Test
     public void testParseSpaceUrlSpaceName() {
         this.parseStringAndCheck(
-                " https://example.com/test-123 test-123",
-                new TestPluginInfoSet(
-                        Sets.of(
-                                new TestPluginInfo(
-                                        "https://example.com/test-123",
-                                        "test-123"
-                                )
-                        )
+            " https://example.com/test-123 test-123",
+            new TestPluginInfoSet(
+                Sets.of(
+                    new TestPluginInfo(
+                        "https://example.com/test-123",
+                        "test-123"
+                    )
                 )
+            )
         );
     }
 
     @Test
     public void testParseSpaceSpaceUrlSpaceName() {
         this.parseStringAndCheck(
-                "  https://example.com/test-123 test-123",
-                new TestPluginInfoSet(
-                        Sets.of(
-                                new TestPluginInfo(
-                                        "https://example.com/test-123",
-                                        "test-123"
-                                )
-                        )
+            "  https://example.com/test-123 test-123",
+            new TestPluginInfoSet(
+                Sets.of(
+                    new TestPluginInfo(
+                        "https://example.com/test-123",
+                        "test-123"
+                    )
                 )
+            )
         );
     }
 
     @Test
     public void testParseUrlSpaceSpaceName() {
         this.parseStringAndCheck(
-                "https://example.com/test-123  test-123",
-                new TestPluginInfoSet(
-                        Sets.of(
-                                new TestPluginInfo(
-                                        "https://example.com/test-123",
-                                        "test-123"
-                                )
-                        )
+            "https://example.com/test-123  test-123",
+            new TestPluginInfoSet(
+                Sets.of(
+                    new TestPluginInfo(
+                        "https://example.com/test-123",
+                        "test-123"
+                    )
                 )
+            )
         );
     }
 
@@ -114,50 +114,50 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
     public void testParseSecondInfoFails() {
         final String text = "https://example.com/test-111 test-111,https://example.com/test-222 test/222";
         this.parseStringInvalidCharacterFails(
-                text,
-                text.lastIndexOf('/')
+            text,
+            text.lastIndexOf('/')
         );
     }
 
     @Test
     public void testParseMany() {
         this.parseStringAndCheck(
-                "https://example.com/test-111 test-111,https://example.com/test-222 test-222",
-                new TestPluginInfoSet(
-                        Sets.of(
-                                new TestPluginInfo(
-                                        "https://example.com/test-111",
-                                        "test-111"
-                                ),
-                                new TestPluginInfo(
-                                        "https://example.com/test-222",
-                                        "test-222"
-                                )
-                        )
+            "https://example.com/test-111 test-111,https://example.com/test-222 test-222",
+            new TestPluginInfoSet(
+                Sets.of(
+                    new TestPluginInfo(
+                        "https://example.com/test-111",
+                        "test-111"
+                    ),
+                    new TestPluginInfo(
+                        "https://example.com/test-222",
+                        "test-222"
+                    )
                 )
+            )
         );
     }
 
     @Test
     public void testParseMany3() {
         this.parseStringAndCheck(
-                "https://example.com/test-111 test-111,https://example.com/test-222 test-222,https://example.com/test-333 test-333",
-                new TestPluginInfoSet(
-                        Sets.of(
-                                new TestPluginInfo(
-                                        "https://example.com/test-111",
-                                        "test-111"
-                                ),
-                                new TestPluginInfo(
-                                        "https://example.com/test-222",
-                                        "test-222"
-                                ),
-                                new TestPluginInfo(
-                                        "https://example.com/test-333",
-                                        "test-333"
-                                )
-                        )
+            "https://example.com/test-111 test-111,https://example.com/test-222 test-222,https://example.com/test-333 test-333",
+            new TestPluginInfoSet(
+                Sets.of(
+                    new TestPluginInfo(
+                        "https://example.com/test-111",
+                        "test-111"
+                    ),
+                    new TestPluginInfo(
+                        "https://example.com/test-222",
+                        "test-222"
+                    ),
+                    new TestPluginInfo(
+                        "https://example.com/test-333",
+                        "test-333"
+                    )
                 )
+            )
         );
     }
 
@@ -171,32 +171,32 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
     @Override
     public TestPluginInfoSet createSet() {
         return new TestPluginInfoSet(
-                Sets.of(
-                        new TestPluginInfo(
-                                "https://example.com/test-plugin-1",
-                                "test-plugin-1"
-                        ),
-                        new TestPluginInfo(
-                                "https://example.com/test-plugin-2",
-                                "test-plugin-2"
-                        )
+            Sets.of(
+                new TestPluginInfo(
+                    "https://example.com/test-plugin-1",
+                    "test-plugin-1"
+                ),
+                new TestPluginInfo(
+                    "https://example.com/test-plugin-2",
+                    "test-plugin-2"
                 )
+            )
         );
     }
 
     public TestPluginInfo info() {
         return new TestPluginInfo(
-                "https://example.com/test-plugin-111",
-                "test-plugin-111"
+            "https://example.com/test-plugin-111",
+            "test-plugin-111"
         );
     }
 
     @Override
     public TestPluginInfoSet unmarshall(final JsonNode node,
-                                            final JsonNodeUnmarshallContext context) {
+                                        final JsonNodeUnmarshallContext context) {
         return TestPluginInfoSet.unmarshall(
-                node,
-                context
+            node,
+            context
         );
     }
 
@@ -212,10 +212,10 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
     @Test
     public void testTreePrint() {
         this.treePrintAndCheck(
-             this.createSet(),
-             "TestPluginInfoSet\n" +
-                     "  https://example.com/test-plugin-1 test-plugin-1\n" +
-                     "  https://example.com/test-plugin-2 test-plugin-2\n"
+            this.createSet(),
+            "TestPluginInfoSet\n" +
+                "  https://example.com/test-plugin-1 test-plugin-1\n" +
+                "  https://example.com/test-plugin-2 test-plugin-2\n"
         );
     }
 }

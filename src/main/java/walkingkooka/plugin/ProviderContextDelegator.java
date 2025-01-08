@@ -22,7 +22,7 @@ import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.plugin.store.PluginStore;
 
 public interface ProviderContextDelegator extends ProviderContext,
-        EnvironmentContextDelegator {
+    EnvironmentContextDelegator {
 
     @Override
     default EnvironmentContext environmentContext() {
@@ -32,7 +32,7 @@ public interface ProviderContextDelegator extends ProviderContext,
     @Override
     default PluginStore pluginStore() {
         return this.providerContext()
-                .pluginStore();
+            .pluginStore();
     }
 
     ProviderContext providerContext();

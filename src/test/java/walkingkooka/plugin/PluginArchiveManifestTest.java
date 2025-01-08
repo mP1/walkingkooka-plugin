@@ -28,38 +28,38 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTesting2<PluginArchiveManifest>,
-        JarFileTesting{
+    JarFileTesting {
 
     // fromArchive......................................................................................................
 
     @Test
     public void testFromArchiveWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginArchiveManifest.fromArchive(null)
+            NullPointerException.class,
+            () -> PluginArchiveManifest.fromArchive(null)
         );
     }
 
     @Test
     public void testFromArchive() throws IOException {
         final String manifest = (
-                "Manifest-Version: 1.0\r\n" +
-                        "plugin-name: TestPluginName111\r\n" +
-                        "plugin-provider-factory-className: example.TestPluginName111\r\n"
+            "Manifest-Version: 1.0\r\n" +
+                "plugin-name: TestPluginName111\r\n" +
+                "plugin-provider-factory-className: example.TestPluginName111\r\n"
         );
 
         this.checkEquals(
-                PluginArchiveManifest.fromManifest(
-                        JarFileTesting.manifest(manifest)
-                ),
-                PluginArchiveManifest.fromArchive(
-                        Binary.with(
-                                JarFileTesting.jarFile(
-                                        manifest,
-                                        Maps.empty()
-                                )
-                        )
+            PluginArchiveManifest.fromManifest(
+                JarFileTesting.manifest(manifest)
+            ),
+            PluginArchiveManifest.fromArchive(
+                Binary.with(
+                    JarFileTesting.jarFile(
+                        manifest,
+                        Maps.empty()
+                    )
                 )
+            )
         );
     }
 
@@ -68,42 +68,42 @@ public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTes
     @Test
     public void testFromManifestNullManifestFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginArchiveManifest.fromManifest(null)
+            NullPointerException.class,
+            () -> PluginArchiveManifest.fromManifest(null)
         );
     }
 
     @Test
     public void testFromManifestManifestMissingPluginNameFails() {
         final IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
-                () -> this.createPluginArchiveManifest("")
+            IllegalArgumentException.class,
+            () -> this.createPluginArchiveManifest("")
         );
 
         this.checkEquals(
-                "Manifest missing entry \"plugin-name\"",
-                thrown.getMessage()
+            "Manifest missing entry \"plugin-name\"",
+            thrown.getMessage()
         );
     }
 
     @Test
     public void testFromManifestManifestMissingPluginProviderFactoryClassNameFails() {
         final IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
-                () -> this.createPluginArchiveManifest("plugin-name: TestPlugin123\n")
+            IllegalArgumentException.class,
+            () -> this.createPluginArchiveManifest("plugin-name: TestPlugin123\n")
         );
 
         this.checkEquals(
-                "Manifest missing entry \"plugin-provider-factory-className\"",
-                thrown.getMessage()
+            "Manifest missing entry \"plugin-provider-factory-className\"",
+            thrown.getMessage()
         );
     }
 
     @Test
     public void testFromManifest() {
         this.checkEquals(
-                ClassName.with("example.TestPluginProvider123"),
-                this.createObject().className()
+            ClassName.with("example.TestPluginProvider123"),
+            this.createObject().className()
         );
     }
 
@@ -112,22 +112,22 @@ public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTes
     @Test
     public void testWithNullPluginNameFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginArchiveManifest.with(
-                        null,
-                        ClassName.INT
-                )
+            NullPointerException.class,
+            () -> PluginArchiveManifest.with(
+                null,
+                ClassName.INT
+            )
         );
     }
 
     @Test
     public void testWithNullClassNameFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginArchiveManifest.with(
-                        PluginName.with("TestPlugin111"),
-                        null
-                )
+            NullPointerException.class,
+            () -> PluginArchiveManifest.with(
+                PluginName.with("TestPlugin111"),
+                null
+            )
         );
     }
 
@@ -137,17 +137,17 @@ public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTes
         final ClassName className = ClassName.with(this.getClass().getCanonicalName());
 
         final PluginArchiveManifest manifest = PluginArchiveManifest.with(
-                pluginName,
-                className
+            pluginName,
+            className
         );
 
         this.checkEquals(
-                pluginName,
-                manifest.pluginName()
+            pluginName,
+            manifest.pluginName()
         );
         this.checkEquals(
-                className,
-                manifest.className()
+            className,
+            manifest.className()
         );
     }
 
@@ -156,25 +156,25 @@ public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTes
     @Test
     public void testEqualsDifferentClassName() {
         this.checkNotEquals(
-                this.createPluginArchiveManifest(
-                        "plugin-name: TestPlugin123\n" +
-                                "plugin-provider-factory-className: example.DifferentPluginProvider\n"
-                )
+            this.createPluginArchiveManifest(
+                "plugin-name: TestPlugin123\n" +
+                    "plugin-provider-factory-className: example.DifferentPluginProvider\n"
+            )
         );
     }
 
     @Override
     public PluginArchiveManifest createObject() {
         return this.createPluginArchiveManifest(
-                "plugin-name: TestPlugin123\n" +
-                        "plugin-provider-factory-className: example.TestPluginProvider123\n"
+            "plugin-name: TestPlugin123\n" +
+                "plugin-provider-factory-className: example.TestPluginProvider123\n"
         );
     }
 
     private PluginArchiveManifest createPluginArchiveManifest(final String content) {
         try {
             return PluginArchiveManifest.fromManifest(
-                    JarFileTesting.manifest(content)
+                JarFileTesting.manifest(content)
             );
         } catch (final IOException cause) {
             throw new RuntimeException(cause);

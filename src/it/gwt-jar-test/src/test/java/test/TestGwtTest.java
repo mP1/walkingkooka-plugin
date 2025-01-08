@@ -4,6 +4,7 @@ import com.google.gwt.junit.client.GWTTestCase;
 
 import java.util.Comparator;
 import java.util.List;
+
 import walkingkooka.collect.list.Lists;
 import walkingkooka.j2cl.locale.LocaleAware;
 import walkingkooka.plugin.PluginName;
@@ -18,8 +19,8 @@ public class TestGwtTest extends GWTTestCase {
 
     public void testAssertEquals() {
         assertEquals(
-                1,
-                1
+            1,
+            1
         );
     }
 
@@ -37,8 +38,8 @@ public class TestGwtTest extends GWTTestCase {
         list.sort(Comparator.naturalOrder());
 
         assertEquals(
-                Lists.of(a, b, d, c),
-                list
+            Lists.of(a, b, d, c),
+            list
         );
     }
 }

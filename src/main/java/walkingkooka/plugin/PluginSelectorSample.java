@@ -26,6 +26,7 @@ import java.util.Objects;
 
 /**
  * Value type that holds a sample for a selector.
+ *
  * @param <S>
  * @param <N>
  */
@@ -34,8 +35,8 @@ public final class PluginSelectorSample<S extends PluginSelectorLike<N>, N exten
     public static <S extends PluginSelectorLike<N>, N extends Name & Comparable<N>> PluginSelectorSample<S, N> with(final String label,
                                                                                                                     final S selector) {
         return new PluginSelectorSample<>(
-                CharSequences.failIfNullOrEmpty(label, "label"),
-                Objects.requireNonNull(selector, "selector")
+            CharSequences.failIfNullOrEmpty(label, "label"),
+            Objects.requireNonNull(selector, "selector")
         );
     }
 
@@ -62,20 +63,20 @@ public final class PluginSelectorSample<S extends PluginSelectorLike<N>, N exten
     @Override
     public int hashCode() {
         return Objects.hash(
-                this.label,
-                this.selector
+            this.label,
+            this.selector
         );
     }
 
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-                other instanceof PluginSelector && this.equals0((PluginSelectorSample<?, ?>) other);
+            other instanceof PluginSelector && this.equals0((PluginSelectorSample<?, ?>) other);
     }
 
     private boolean equals0(final PluginSelectorSample<?, ?> other) {
         return this.label.equals(other.label) &&
-                this.selector.equals(other.selector);
+            this.selector.equals(other.selector);
     }
 
     @Override

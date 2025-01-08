@@ -39,8 +39,8 @@ public final class PluginHelperTestingTest implements PluginHelperTesting<TestPl
         final String text = "A1";
 
         this.nameAndCheck(
-                text,
-                Names.string(text)
+            text,
+            Names.string(text)
         );
     }
 
@@ -49,8 +49,8 @@ public final class PluginHelperTestingTest implements PluginHelperTesting<TestPl
         final String text = "A1";
 
         this.parseNameAndCheck(
-                TextCursors.charSequence(text),
-                ParserContexts.fake()
+            TextCursors.charSequence(text),
+            ParserContexts.fake()
         );
     }
 
@@ -59,9 +59,9 @@ public final class PluginHelperTestingTest implements PluginHelperTesting<TestPl
         final String text = "a1";
 
         this.parseNameAndCheck(
-                TextCursors.charSequence(text),
-                ParserContexts.fake(),
-                Names.string(text)
+            TextCursors.charSequence(text),
+            ParserContexts.fake(),
+            Names.string(text)
         );
     }
 
@@ -71,11 +71,11 @@ public final class PluginHelperTestingTest implements PluginHelperTesting<TestPl
         final StringName name = Names.string("A1");
 
         this.parseInfoAndCheck(
-                url + " " + name,
-                new TestPluginInfo(
-                        url,
-                        name
-                )
+            url + " " + name,
+            new TestPluginInfo(
+                url,
+                name
+            )
         );
     }
 
@@ -85,16 +85,16 @@ public final class PluginHelperTestingTest implements PluginHelperTesting<TestPl
         final TestPluginInfo info2 = TestPluginInfo.parse("https://example.com/2 name2");
 
         this.infoSetAndCheck(
+            Sets.of(
+                info1,
+                info2
+            ),
+            new TestPluginInfoSet(
                 Sets.of(
-                        info1,
-                        info2
-                ),
-                new TestPluginInfoSet(
-                        Sets.of(
-                                info1,
-                                info2
-                        )
+                    info1,
+                    info2
                 )
+            )
         );
     }
 
@@ -103,8 +103,8 @@ public final class PluginHelperTestingTest implements PluginHelperTesting<TestPl
         final String text = "a1(\"Hello\")";
 
         this.parseSelectorAndCheck(
-                text,
-                TestPluginSelector.parse(text)
+            text,
+            TestPluginSelector.parse(text)
         );
     }
 

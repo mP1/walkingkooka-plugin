@@ -42,8 +42,8 @@ public final class PluginSelectorMenu<S extends PluginSelectorLike<N>, N extends
     public static <S extends PluginSelectorLike<N>, N extends Name & Comparable<N>> PluginSelectorMenu<S, N> with(final String label,
                                                                                                                   final S selector) {
         return new PluginSelectorMenu<>(
-                CharSequences.failIfNullOrEmpty(label, "label"),
-                Objects.requireNonNull(selector, "selector")
+            CharSequences.failIfNullOrEmpty(label, "label"),
+            Objects.requireNonNull(selector, "selector")
         );
     }
 
@@ -78,28 +78,28 @@ public final class PluginSelectorMenu<S extends PluginSelectorLike<N>, N extends
     @Override
     public int hashCode() {
         return Objects.hash(
-                this.label,
-                this.selector
+            this.label,
+            this.selector
         );
     }
 
     @Override
     public boolean equals(final Object other) {
         return other == this ||
-                other instanceof PluginSelectorMenu && this.equals0((PluginSelectorMenu<?, ?>) other);
+            other instanceof PluginSelectorMenu && this.equals0((PluginSelectorMenu<?, ?>) other);
     }
 
     private boolean equals0(final PluginSelectorMenu<?, ?> other) {
         return this.label.equals(other.label) &&
-                this.selector.equals(other.selector);
+            this.selector.equals(other.selector);
     }
 
     @Override
     public String toString() {
         return ToStringBuilder.empty()
-                .value(this.label)
-                .value(this.selector)
-                .build();
+            .value(this.label)
+            .value(this.selector)
+            .build();
     }
 
     // TreePrintable....................................................................................................
@@ -129,14 +129,14 @@ public final class PluginSelectorMenu<S extends PluginSelectorLike<N>, N extends
             switch (name.value()) {
                 case LABEL_PROPERTY_STRING:
                     label = context.unmarshall(
-                            child,
-                            String.class
+                        child,
+                        String.class
                     );
                     break;
                 case SELECTOR_PROPERTY_STRING:
                     selector = context.unmarshall(
-                            child,
-                            pluginSelectorType
+                        child,
+                        pluginSelectorType
                     );
                     break;
                 default:
@@ -152,8 +152,8 @@ public final class PluginSelectorMenu<S extends PluginSelectorLike<N>, N extends
             JsonNodeUnmarshallContext.missingProperty(SELECTOR_PROPERTY, node);
         }
         return with(
-                label,
-                selector
+            label,
+            selector
         );
     }
 
@@ -162,14 +162,14 @@ public final class PluginSelectorMenu<S extends PluginSelectorLike<N>, N extends
      */
     public JsonNode marshall(final JsonNodeMarshallContext context) {
         return JsonNode.object()
-                .setChildren(
-                        Lists.of(
-                                context.marshall(this.label)
-                                        .setName(LABEL_PROPERTY),
-                                context.marshall(this.selector)
-                                        .setName(SELECTOR_PROPERTY)
-                        )
-                );
+            .setChildren(
+                Lists.of(
+                    context.marshall(this.label)
+                        .setName(LABEL_PROPERTY),
+                    context.marshall(this.selector)
+                        .setName(SELECTOR_PROPERTY)
+                )
+            );
     }
 
     private final static String LABEL_PROPERTY_STRING = "label";

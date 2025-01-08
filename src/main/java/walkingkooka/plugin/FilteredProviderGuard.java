@@ -29,18 +29,18 @@ import java.util.function.Function;
 public final class FilteredProviderGuard<N extends Name & Comparable<N>, S extends PluginSelectorLike<N>> {
 
     public static <N extends Name & Comparable<N>,
-            I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-            S extends PluginSelectorLike<N>,
-            A extends PluginAliasLike<N, S, A>,
-            AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+        I extends PluginInfoLike<I, N>,
+        IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+        S extends PluginSelectorLike<N>,
+        A extends PluginAliasLike<N, S, A>,
+        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
     FilteredProviderGuard<N, S> with(final Set<N> names,
                                      final PluginHelper<N, I, IS, S, A, AS> helper) {
         Objects.requireNonNull(helper, "helper");
 
         return new FilteredProviderGuard<>(
-                helper.names(names),
-                helper.unknownName()
+            helper.names(names),
+            helper.unknownName()
         );
     }
 

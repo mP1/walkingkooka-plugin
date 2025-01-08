@@ -42,7 +42,7 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
     public void testLoadManifestAndGetPlugin() throws Exception {
         final ClassLoader classLoader = this.createClassLoader();
         final TestPluginProvider pluginProvider = createPluginProvider(
-                classLoader
+            classLoader
         );
 
         log("ClassLoader using JAR=" + classLoader);
@@ -50,40 +50,40 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
         log("Test.classLoader=" + this.getClass().getClassLoader());
 
         final TestPlugin plugin = pluginProvider.plugin(
-                PLUGIN_NAME,
-                TestPlugin.class
+            PLUGIN_NAME,
+            TestPlugin.class
         ).get();
         this.checkEquals(
-                classLoader,
-                pluginProvider.getClass().getClassLoader(),
-                "pluginProvider classLoader"
+            classLoader,
+            pluginProvider.getClass().getClassLoader(),
+            "pluginProvider classLoader"
         );
 
         this.checkEquals(
-                plugin.getClass().getClassLoader(),
-                classLoader,
-                "plugin classLoader"
+            plugin.getClass().getClassLoader(),
+            classLoader,
+            "plugin classLoader"
         );
     }
 
     private ClassLoader createClassLoader() {
         try {
             final byte[] txtResource = new byte[]{
-                    'X',
-                    'Y',
-                    'Z'
+                'X',
+                'Y',
+                'Z'
             };
             final String testPluginProviderImplClassName = "/walkingkooka/plugin/ClassLoaderPluginProviderTest$TestPluginProviderImpl.class";
 
             final byte[] testPluginProviderClass = this.getClass()
-                    .getResourceAsStream(testPluginProviderImplClassName)
-                    .readAllBytes();
+                .getResourceAsStream(testPluginProviderImplClassName)
+                .readAllBytes();
 
             final String testPluginImplClassName = "/walkingkooka/plugin/ClassLoaderPluginProviderTest$TestPluginImpl.class";
 
             final byte[] testPluginImplClass = this.getClass()
-                    .getResourceAsStream(testPluginImplClassName)
-                    .readAllBytes();
+                .getResourceAsStream(testPluginImplClassName)
+                .readAllBytes();
 
             // create a jar file with the following:
             //   *.txt file which is ignored.
@@ -91,60 +91,60 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
             //   TestPluginProvider which will create an instance of TestPluginImpl
             //   TestPluginImpl
             final byte[] jar = JarFileTesting.jarFile(
-                    "Manifest-Version: 1.0\r\n"+
-                            "plugin-name: TestPlugin123\r\n" +
-                            "plugin-provider-factory-className: walkingkooka.plugin.ClassLoaderPluginProviderTest$TestPluginProviderImpl\r\n",
-                    Maps.of(
-                            "resource123.txt", // ignored!
-                            txtResource,
-                            testPluginProviderImplClassName,
-                            testPluginProviderClass,
-                            testPluginImplClassName,
-                            testPluginImplClass
-                    )
+                "Manifest-Version: 1.0\r\n" +
+                    "plugin-name: TestPlugin123\r\n" +
+                    "plugin-provider-factory-className: walkingkooka.plugin.ClassLoaderPluginProviderTest$TestPluginProviderImpl\r\n",
+                Maps.of(
+                    "resource123.txt", // ignored!
+                    txtResource,
+                    testPluginProviderImplClassName,
+                    testPluginProviderClass,
+                    testPluginImplClassName,
+                    testPluginImplClass
+                )
             );
 
             return ClassLoaderResourceProviders.classLoader(
-                    new ClassLoader() {
+                new ClassLoader() {
 
-                        @Override
-                        protected Class<?> loadClass(final String name,
-                                                     final boolean resolve) throws ClassNotFoundException {
-                            log("TestClassLoader.loading " + name);
+                    @Override
+                    protected Class<?> loadClass(final String name,
+                                                 final boolean resolve) throws ClassNotFoundException {
+                        log("TestClassLoader.loading " + name);
 
-                            // dont want the following 2 classes to be loaded by system
-                            if (name.equals("walkingkooka.plugin.ClassLoaderPluginProviderTest$TestPluginProviderImpl")) {
-                                throw new ClassNotFoundException(name);
-                            }
-                            if (name.equals("walkingkooka.plugin.ClassLoaderPluginProviderTest$TestPluginImpl")) {
-                                throw new ClassNotFoundException(name);
-                            }
-                            final Class<?> loaded = super.loadClass(name, resolve);
-                            log("TestClassLoader.loadedClass using " + loaded.getName() + " " + loaded.getClassLoader());
-                            return loaded;
+                        // dont want the following 2 classes to be loaded by system
+                        if (name.equals("walkingkooka.plugin.ClassLoaderPluginProviderTest$TestPluginProviderImpl")) {
+                            throw new ClassNotFoundException(name);
                         }
-
-                        @Override
-                        public URL getResource(final String name) {
-                            return null;
+                        if (name.equals("walkingkooka.plugin.ClassLoaderPluginProviderTest$TestPluginImpl")) {
+                            throw new ClassNotFoundException(name);
                         }
+                        final Class<?> loaded = super.loadClass(name, resolve);
+                        log("TestClassLoader.loadedClass using " + loaded.getName() + " " + loaded.getClassLoader());
+                        return loaded;
+                    }
 
-                        @Override
-                        public Enumeration<URL> getResources(final String name) {
-                            throw new UnsupportedOperationException();
-                        }
+                    @Override
+                    public URL getResource(final String name) {
+                        return null;
+                    }
 
-                        @Override
-                        public InputStream getResourceAsStream(final String name) {
-                            return null;
-                        }
-                    },
-                    ClassLoaderResourceProviders.jarFileWithLibs(
-                            new JarInputStream(
-                                    new ByteArrayInputStream(jar)
-                            ),
-                            LineEnding.NL
-                    )
+                    @Override
+                    public Enumeration<URL> getResources(final String name) {
+                        throw new UnsupportedOperationException();
+                    }
+
+                    @Override
+                    public InputStream getResourceAsStream(final String name) {
+                        return null;
+                    }
+                },
+                ClassLoaderResourceProviders.jarFileWithLibs(
+                    new JarInputStream(
+                        new ByteArrayInputStream(jar)
+                    ),
+                    LineEnding.NL
+                )
             );
         } catch (final IOException cause) {
             throw new Error(cause);
@@ -155,7 +155,7 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
     public PluginProvider createPluginProvider() {
         try {
             return this.createPluginProvider(
-                    this.createClassLoader()
+                this.createClassLoader()
             );
         } catch (final IOException | ClassNotFoundException cause) {
             throw new Error(cause);
@@ -164,12 +164,12 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
 
     private TestPluginProvider createPluginProvider(final ClassLoader classLoader) throws IOException, ClassNotFoundException {
         return (TestPluginProvider)
-                PluginProviders.classLoader(classLoader);
+            PluginProviders.classLoader(classLoader);
     }
 
     // this class must be loaded by the system class loader and not the custom plugin classloader.
     public interface TestPluginProvider extends PluginProvider {
-        
+
         <T> Optional<T> plugin(final PluginName name,
                                final Class<T> type);
 
@@ -186,9 +186,9 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
 
             if (name.equals(PLUGIN_NAME)) {
                 return Optional.of(
-                        type.cast(
-                                new TestPluginImpl()
-                        )
+                    type.cast(
+                        new TestPluginImpl()
+                    )
                 );
             }
 
@@ -199,16 +199,16 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
             Objects.requireNonNull(type, "type");
 
             return Sets.of(
-                    type.cast(
-                            new TestPluginImpl()
-                    )
+                type.cast(
+                    new TestPluginImpl()
+                )
             );
         }
 
         @Override
         public Set<PluginInfo> pluginInfos() {
             return Sets.of(
-                    PLUGIN_INFO
+                PLUGIN_INFO
             );
         }
 
@@ -230,8 +230,8 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
     public final static PluginName PLUGIN_NAME = PluginName.with("PluginName123");
 
     public final static PluginInfo PLUGIN_INFO = PluginInfo.with(
-            Url.parseAbsolute("https://example.com/Plugin123"),
-            PLUGIN_NAME
+        Url.parseAbsolute("https://example.com/Plugin123"),
+        PLUGIN_NAME
     );
 
     public interface TestPlugin {

@@ -35,25 +35,25 @@ import java.util.function.Function;
  * infos with some names updated if they are present in the mapping with a different name.
  */
 public final class FilteredProviderMapper<N extends Name & Comparable<N>,
+    I extends PluginInfoLike<I, N>,
+    IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+    S extends PluginSelectorLike<N>,
+    A extends PluginAliasLike<N, S, A>,
+    AS extends PluginAliasSetLike<N, I, IS, S, A, AS>> {
+
+    public static <N extends Name & Comparable<N>,
         I extends PluginInfoLike<I, N>,
         IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
         S extends PluginSelectorLike<N>,
         A extends PluginAliasLike<N, S, A>,
-        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>> {
-
-    public static <N extends Name & Comparable<N>,
-            I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-            S extends PluginSelectorLike<N>,
-            A extends PluginAliasLike<N, S, A>,
-            AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
     FilteredProviderMapper<N, I, IS, S, A, AS> with(final IS mappingInfos,
-                                                final IS providerInfos,
-                                                final PluginHelper<N, I, IS, S, A, AS> helper) {
+                                                    final IS providerInfos,
+                                                    final PluginHelper<N, I, IS, S, A, AS> helper) {
         return new FilteredProviderMapper<>(
-                Objects.requireNonNull(mappingInfos, "mappingInfos"),
-                Objects.requireNonNull(providerInfos, "providerInfos"),
-                Objects.requireNonNull(helper, "helper")
+            Objects.requireNonNull(mappingInfos, "mappingInfos"),
+            Objects.requireNonNull(providerInfos, "providerInfos"),
+            Objects.requireNonNull(helper, "helper")
         );
     }
 
@@ -70,9 +70,9 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
             final I providerInfo = urlToProviderInfos.get(mappingInfoUrl);
             if (null != providerInfo) {
                 mappingNameToProviderName.put(
-                        urlAndMappingInfo.getValue()
-                                .name(),
-                        providerInfo.name()
+                    urlAndMappingInfo.getValue()
+                        .name(),
+                    providerInfo.name()
                 );
             }
         }
@@ -96,8 +96,8 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
 
         for (final I info : infos) {
             urlToInfo.put(
-                    info.url(),
-                    info
+                info.url(),
+                info
             );
         }
 
@@ -131,9 +131,9 @@ public final class FilteredProviderMapper<N extends Name & Comparable<N>,
         Objects.requireNonNull(selector, "selector");
 
         return (S) selector.setName(
-                this.name(
-                        selector.name()
-                )
+            this.name(
+                selector.name()
+            )
         );
     }
 

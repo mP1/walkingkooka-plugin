@@ -29,12 +29,12 @@ import java.util.Optional;
  * Defines the public methods for a plugin alias.
  */
 public interface PluginAliasLike<N extends Name & Comparable<N>,
-        S extends PluginSelectorLike<N>,
-        A extends PluginAliasLike<N, S, A>>
-        extends Comparable<A>,
-            HasName<N>,
-            HasText,
-            TreePrintable {
+    S extends PluginSelectorLike<N>,
+    A extends PluginAliasLike<N, S, A>>
+    extends Comparable<A>,
+    HasName<N>,
+    HasText,
+    TreePrintable {
 
     /**
      * Getter that returns a {@link PluginSelectorLike} if one was present.

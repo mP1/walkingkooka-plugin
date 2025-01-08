@@ -34,20 +34,20 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 final class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements PluginInfoSetLike<StringName,
-        TestPluginInfo,
-        TestPluginInfoSet,
-        TestPluginSelector,
-        TestPluginAlias,
-        TestPluginAliasSet> {
+    TestPluginInfo,
+    TestPluginInfoSet,
+    TestPluginSelector,
+    TestPluginAlias,
+    TestPluginAliasSet> {
 
     public final static TestPluginInfoSet EMPTY = new TestPluginInfoSet(Sets.empty());
 
     static TestPluginInfoSet parse(final String text) {
         return new TestPluginInfoSet(
-                PluginInfoSet.parse(
-                        text,
-                        TestPluginInfo::parse
-                )
+            PluginInfoSet.parse(
+                text,
+                TestPluginInfo::parse
+            )
         );
     }
 
@@ -70,18 +70,18 @@ final class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements Plu
     @Override
     public TestPluginInfoSet filter(final TestPluginInfoSet infos) {
         return this.setElements(
-                this.pluginInfoSet.filter(
-                        infos.pluginInfoSet
-                )
+            this.pluginInfoSet.filter(
+                infos.pluginInfoSet
+            )
         );
     }
 
     @Override
     public TestPluginInfoSet renameIfPresent(TestPluginInfoSet renameInfos) {
         return this.setElements(
-                this.pluginInfoSet.renameIfPresent(
-                        renameInfos.pluginInfoSet
-                )
+            this.pluginInfoSet.renameIfPresent(
+                renameInfos.pluginInfoSet
+            )
         );
     }
 
@@ -93,35 +93,35 @@ final class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements Plu
     @Override
     public TestPluginInfoSet concat(final TestPluginInfo info) {
         return this.setElements(
-                this.pluginInfoSet.concat(info)
+            this.pluginInfoSet.concat(info)
         );
     }
 
     @Override
     public TestPluginInfoSet concatAll(final Collection<TestPluginInfo> infos) {
         return this.setElements(
-                this.pluginInfoSet.concatAll(infos)
+            this.pluginInfoSet.concatAll(infos)
         );
     }
 
     @Override
     public TestPluginInfoSet delete(final TestPluginInfo info) {
         return this.setElements(
-                this.pluginInfoSet.delete(info)
+            this.pluginInfoSet.delete(info)
         );
     }
 
     @Override
     public TestPluginInfoSet deleteAll(final Collection<TestPluginInfo> infos) {
         return this.setElements(
-                this.pluginInfoSet.deleteAll(infos)
+            this.pluginInfoSet.deleteAll(infos)
         );
     }
 
     @Override
     public TestPluginInfoSet deleteIf(final Predicate<? super TestPluginInfo> predicate) {
         return this.setElements(
-                this.pluginInfoSet.deleteIf(predicate)
+            this.pluginInfoSet.deleteIf(predicate)
         );
     }
 
@@ -129,30 +129,30 @@ final class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements Plu
     public TestPluginInfoSet replace(final TestPluginInfo oldInfo,
                                      final TestPluginInfo newInfo) {
         return this.setElements(
-                this.pluginInfoSet.replace(
-                        oldInfo,
-                        newInfo
-                )
+            this.pluginInfoSet.replace(
+                oldInfo,
+                newInfo
+            )
         );
     }
 
     @Override
     public ImmutableSet<TestPluginInfo> setElementsFailIfDifferent(final Set<TestPluginInfo> infos) {
         return this.setElements(
-                this.pluginInfoSet.setElementsFailIfDifferent(
-                        infos
-                )
+            this.pluginInfoSet.setElementsFailIfDifferent(
+                infos
+            )
         );
     }
 
     @Override
     public TestPluginInfoSet setElements(final Set<TestPluginInfo> infos) {
         final TestPluginInfoSet after = new TestPluginInfoSet(
-                this.pluginInfoSet.setElements(infos)
+            this.pluginInfoSet.setElements(infos)
         );
         return this.pluginInfoSet.equals(infos) ?
-                this :
-                after;
+            this :
+            after;
     }
 
     @Override
@@ -203,19 +203,19 @@ final class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements Plu
     static TestPluginInfoSet unmarshall(final JsonNode node,
                                         final JsonNodeUnmarshallContext context) {
         return new TestPluginInfoSet(
-                context.unmarshallSet(
-                        node,
-                        TestPluginInfo.class
-                )
+            context.unmarshallSet(
+                node,
+                TestPluginInfo.class
+            )
         );
     }
 
     static {
         JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(TestPluginInfoSet.class),
-                TestPluginInfoSet::unmarshall,
-                TestPluginInfoSet::marshall,
-                TestPluginInfoSet.class
+            JsonNodeContext.computeTypeName(TestPluginInfoSet.class),
+            TestPluginInfoSet::unmarshall,
+            TestPluginInfoSet::marshall,
+            TestPluginInfoSet.class
         );
     }
 }

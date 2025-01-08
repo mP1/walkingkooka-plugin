@@ -32,34 +32,34 @@ final class TestPluginSelector implements PluginSelectorLike<StringName> {
 
     static TestPluginSelector parse(final String selector) {
         return new TestPluginSelector(
-                PluginSelector.parse(
-                        selector,
-                        Names::string
-                )
+            PluginSelector.parse(
+                selector,
+                Names::string
+            )
         );
     }
 
 
     TestPluginSelector(final String name) {
         this(
-                Names.string(name)
+            Names.string(name)
         );
     }
 
     TestPluginSelector(final StringName name) {
         this(
-                name,
-                ""
+            name,
+            ""
         );
     }
 
     TestPluginSelector(final StringName name,
                        final String valueText) {
         this(
-                PluginSelector.with(
-                        name,
-                        valueText
-                )
+            PluginSelector.with(
+                name,
+                valueText
+            )
         );
     }
 
@@ -77,8 +77,8 @@ final class TestPluginSelector implements PluginSelectorLike<StringName> {
         Objects.requireNonNull(name, "name");
 
         return this.name().equals(name) ?
-                this :
-                new TestPluginSelector(this.pluginSelector.setName(name));
+            this :
+            new TestPluginSelector(this.pluginSelector.setName(name));
     }
 
     @Override
@@ -89,7 +89,7 @@ final class TestPluginSelector implements PluginSelectorLike<StringName> {
     @Override
     public TestPluginSelector setValueText(final String valueText) {
         return new TestPluginSelector(
-                this.pluginSelector.setValueText(valueText)
+            this.pluginSelector.setValueText(valueText)
         );
     }
 
@@ -138,16 +138,16 @@ final class TestPluginSelector implements PluginSelectorLike<StringName> {
     static TestPluginSelector unmarshall(final JsonNode node,
                                          final JsonNodeUnmarshallContext context) {
         return TestPluginSelector.parse(
-                node.stringOrFail()
+            node.stringOrFail()
         );
     }
 
     static {
         JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(TestPluginSelector.class),
-                TestPluginSelector::unmarshall,
-                TestPluginSelector::marshall,
-                TestPluginSelector.class
+            JsonNodeContext.computeTypeName(TestPluginSelector.class),
+            TestPluginSelector::unmarshall,
+            TestPluginSelector::marshall,
+            TestPluginSelector.class
         );
     }
 }

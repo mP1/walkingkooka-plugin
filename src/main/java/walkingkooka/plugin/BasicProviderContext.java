@@ -31,8 +31,8 @@ final class BasicProviderContext implements ProviderContext, EnvironmentContextD
     static BasicProviderContext with(final EnvironmentContext environmentContext,
                                      final PluginStore pluginStore) {
         return new BasicProviderContext(
-                Objects.requireNonNull(environmentContext, "environmentContext"),
-                Objects.requireNonNull(pluginStore, "pluginStore")
+            Objects.requireNonNull(environmentContext, "environmentContext"),
+            Objects.requireNonNull(pluginStore, "pluginStore")
         );
     }
 

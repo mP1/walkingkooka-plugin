@@ -31,39 +31,39 @@ public interface PluginStoreTesting<T extends PluginStore> extends StoreTesting<
     @Test
     default void testFilterWithNullQueryFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createStore()
-                        .filter(
-                                null,
-                                0,
-                                1
-                        )
+            NullPointerException.class,
+            () -> this.createStore()
+                .filter(
+                    null,
+                    0,
+                    1
+                )
         );
     }
 
     @Test
     default void testFilterWithNegativeOffsetFails() {
         assertThrows(
-                IllegalArgumentException.class,
-                () -> this.createStore()
-                        .filter(
-                                "query",
-                                -1,
-                                1
-                        )
+            IllegalArgumentException.class,
+            () -> this.createStore()
+                .filter(
+                    "query",
+                    -1,
+                    1
+                )
         );
     }
 
     @Test
     default void testFilterWithNegativeCountFails() {
         assertThrows(
-                IllegalArgumentException.class,
-                () -> this.createStore()
-                        .filter(
-                                "query",
-                                0,
-                                -1
-                        )
+            IllegalArgumentException.class,
+            () -> this.createStore()
+                .filter(
+                    "query",
+                    0,
+                    -1
+                )
         );
     }
 
@@ -73,11 +73,11 @@ public interface PluginStoreTesting<T extends PluginStore> extends StoreTesting<
                                 final int count,
                                 final Plugin... plugins) {
         this.filterAndCheck(
-                store,
-                query,
-                offset,
-                count,
-                Lists.of(plugins)
+            store,
+            query,
+            offset,
+            count,
+            Lists.of(plugins)
         );
     }
 
@@ -87,12 +87,12 @@ public interface PluginStoreTesting<T extends PluginStore> extends StoreTesting<
                                 final int count,
                                 final List<Plugin> plugins) {
         this.checkEquals(
-                plugins,
-                store.filter(
-                        query,
-                        offset,
-                        count
-                )
+            plugins,
+            store.filter(
+                query,
+                offset,
+                count
+            )
         );
     }
 }

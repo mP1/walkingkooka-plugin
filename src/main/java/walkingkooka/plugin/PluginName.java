@@ -43,10 +43,10 @@ final public class PluginName implements PluginNameLike<PluginName> {
     }
 
     final static CharPredicate INITIAL = CharPredicates.range('A', 'Z')
-            .or(CharPredicates.range('a', 'z'));
+        .or(CharPredicates.range('a', 'z'));
 
     final static CharPredicate PART = INITIAL.or(CharPredicates.range('0', '9'))
-            .or(CharPredicates.is('-'));
+        .or(CharPredicates.is('-'));
 
     public final static int MIN_LENGTH = 1;
 
@@ -60,10 +60,10 @@ final public class PluginName implements PluginNameLike<PluginName> {
      */
     public static PluginName with(final String name) {
         CharPredicates.failIfNullOrEmptyOrInitialAndPartFalse(
-                name,
-                PluginName.class.getSimpleName(),
-                INITIAL,
-                PART
+            name,
+            PluginName.class.getSimpleName(),
+            INITIAL,
+            PART
         );
 
         return new PluginName(name);
@@ -89,10 +89,10 @@ final public class PluginName implements PluginNameLike<PluginName> {
      */
     public PluginName checkLength(final String label) {
         Name.checkLength(
-                label,
-                this.value(),
-                MIN_LENGTH,
-                MAX_LENGTH
+            label,
+            this.value(),
+            MIN_LENGTH,
+            MAX_LENGTH
         );
 
         return this;
@@ -108,8 +108,8 @@ final public class PluginName implements PluginNameLike<PluginName> {
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-                other instanceof PluginName &&
-                        this.equals0(Cast.to(other));
+            other instanceof PluginName &&
+                this.equals0(Cast.to(other));
     }
 
     private boolean equals0(final PluginName other) {
@@ -134,10 +134,10 @@ final public class PluginName implements PluginNameLike<PluginName> {
 
     static {
         JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(PluginName.class),
-                PluginName::unmarshall,
-                PluginName::marshall,
-                PluginName.class
+            JsonNodeContext.computeTypeName(PluginName.class),
+            PluginName::unmarshall,
+            PluginName::marshall,
+            PluginName.class
         );
     }
 }

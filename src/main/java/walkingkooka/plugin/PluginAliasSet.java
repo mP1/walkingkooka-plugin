@@ -44,15 +44,15 @@ import java.util.stream.Collectors;
  * A {@link Set} containing unique alias/name mappings. Instances of this class should be wrapped.
  */
 public final class PluginAliasSet<N extends Name & Comparable<N>,
-        I extends PluginInfoLike<I, N>,
-        IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-        S extends PluginSelectorLike<N>,
-        A extends PluginAliasLike<N, S, A>,
-        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
-        extends AbstractSet<A>
-        implements ImmutableSortedSetDefaults<PluginAliasSet<N, I, IS, S, A, AS>, A>,
-        HasText,
-        TreePrintable {
+    I extends PluginInfoLike<I, N>,
+    IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+    S extends PluginSelectorLike<N>,
+    A extends PluginAliasLike<N, S, A>,
+    AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+    extends AbstractSet<A>
+    implements ImmutableSortedSetDefaults<PluginAliasSet<N, I, IS, S, A, AS>, A>,
+    HasText,
+    TreePrintable {
 
     /**
      * The separator character between name/alias declarations.
@@ -60,31 +60,31 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     public final static CharacterConstant SEPARATOR = CharacterConstant.with(PluginExpressionParser.PARAMETER_SEPARATOR_CHARACTER);
 
     public static <N extends Name & Comparable<N>,
-            I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-            S extends PluginSelectorLike<N>,
-            A extends PluginAliasLike<N, S, A>,
-            AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+        I extends PluginInfoLike<I, N>,
+        IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+        S extends PluginSelectorLike<N>,
+        A extends PluginAliasLike<N, S, A>,
+        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
     PluginAliasSet<N, I, IS, S, A, AS> parse(final String text,
                                              final PluginHelper<N, I, IS, S, A, AS> helper) {
         Objects.requireNonNull(text, "text");
         Objects.requireNonNull(helper, "helper");
 
         return parse0(
-                PluginExpressionParser.with(
-                        text,
-                        helper::parseName
-                ),
-                helper
+            PluginExpressionParser.with(
+                text,
+                helper::parseName
+            ),
+            helper
         );
     }
 
     private static <N extends Name & Comparable<N>,
-            I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-            S extends PluginSelectorLike<N>,
-            A extends PluginAliasLike<N, S, A>,
-            AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+        I extends PluginInfoLike<I, N>,
+        IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+        S extends PluginSelectorLike<N>,
+        A extends PluginAliasLike<N, S, A>,
+        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
     PluginAliasSet<N, I, IS, S, A, AS> parse0(final PluginExpressionParser<N> parser,
                                               final PluginHelper<N, I, IS, S, A, AS> helper) {
 
@@ -106,50 +106,50 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
             }
 
             final A pluginAliasLike = helper.alias(
-                    PluginAlias.parse0(
-                            parser,
-                            helper,
-                            PluginAliasesProviderContext.INSTANCE
-                    )
+                PluginAlias.parse0(
+                    parser,
+                    helper,
+                    PluginAliasesProviderContext.INSTANCE
+                )
             );
 
-            if(false == aliases.add(pluginAliasLike)) {
+            if (false == aliases.add(pluginAliasLike)) {
                 throw new IllegalArgumentException("Duplicate " + pluginAliasLike);
             }
             requireSeparator = true;
         }
 
         return prepare(
-                aliases,
-                helper
+            aliases,
+            helper
         );
     }
 
     public static <N extends Name & Comparable<N>,
-            I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-            S extends PluginSelectorLike<N>,
-            A extends PluginAliasLike<N, S, A>,
-            AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+        I extends PluginInfoLike<I, N>,
+        IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+        S extends PluginSelectorLike<N>,
+        A extends PluginAliasLike<N, S, A>,
+        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
     PluginAliasSet<N, I, IS, S, A, AS> with(final SortedSet<A> aliases,
                                             final PluginHelper<N, I, IS, S, A, AS> helper) {
         Objects.requireNonNull(aliases, "aliases");
         Objects.requireNonNull(helper, "helper");
 
         return aliases instanceof PluginAliasSet ?
-                Cast.to(aliases) :
-                prepare(
-                        SortedSets.immutable(aliases),
-                        helper
-                );
+            Cast.to(aliases) :
+            prepare(
+                SortedSets.immutable(aliases),
+                helper
+            );
     }
 
     private static <N extends Name & Comparable<N>,
-            I extends PluginInfoLike<I, N>,
-            IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-            S extends PluginSelectorLike<N>,
-            A extends PluginAliasLike<N, S, A>,
-            AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+        I extends PluginInfoLike<I, N>,
+        IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+        S extends PluginSelectorLike<N>,
+        A extends PluginAliasLike<N, S, A>,
+        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
     PluginAliasSet<N, I, IS, S, A, AS> prepare(final SortedSet<A> aliases,
                                                final PluginHelper<N, I, IS, S, A, AS> helper) {
         Objects.requireNonNull(aliases, "aliases");
@@ -173,8 +173,8 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                 final N name = nameOrAlias;
 
                 if (null != aliasOrNameToName.put(
-                        name,
-                        name
+                    name,
+                    name
                 )) {
                     throw duplicateAliasOrName(name);
                 }
@@ -186,15 +186,15 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                 final N alias = nameOrAlias;
 
                 if (null != aliasOrNameToName.put(
-                        alias,
-                        selectorName
+                    alias,
+                    selectorName
                 )) {
                     throw duplicateAliasOrName(alias);
                 }
 
                 duplicateCheck(
-                        alias,
-                        aliasToSelector
+                    alias,
+                    aliasToSelector
                 );
 
                 final Optional<AbsoluteUrl> maybeUrl = pluginAlias.url();
@@ -210,8 +210,8 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                         throw new IllegalArgumentException("Duplicate alias: " + alias);
                     }
                     final N duplicate = nameToAlias.put(
-                            selectorName,
-                            alias
+                        selectorName,
+                        alias
                     );
                     if (null != duplicate) {
                         throw new IllegalArgumentException("Duplicate alias: " + duplicate + " and " + alias);
@@ -219,8 +219,8 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                 }
 
                 aliasToSelector.put(
-                        alias,
-                        selector
+                    alias,
+                    selector
                 );
             }
         }
@@ -228,22 +228,22 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
         // both alias to a name and the name cannot both exist if the alias does not have a different info
         final String duplicateNamesAliases = aliasesWithoutInfos.stream()
-                .filter(a -> {
-                    final N aliasName = a;
-                    final S selector = aliasToSelector.get(aliasName);
-                    return null != selector && namesNotAliases.contains(selector.name());
-                }).map(Name::toString)
-                .collect(Collectors.joining(", "));
+            .filter(a -> {
+                final N aliasName = a;
+                final S selector = aliasToSelector.get(aliasName);
+                return null != selector && namesNotAliases.contains(selector.name());
+            }).map(Name::toString)
+            .collect(Collectors.joining(", "));
         if (false == duplicateNamesAliases.isEmpty()) {
             throw new IllegalArgumentException("Duplicate name/alias: " + duplicateNamesAliases);
         }
 
         return new PluginAliasSet<>(
-                aliases,
-                aliasToSelector,
-                aliasOrNameToName,
-                namesNotAliases,
-                helper
+            aliases,
+            aliasToSelector,
+            aliasOrNameToName,
+            namesNotAliases,
+            helper
         );
     }
 
@@ -294,8 +294,8 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         } else {
             // if alias/name is unknown return and let call to provider handle error reporting...
             result = (S) this.aliasOrName(aliasOrName)
-                    .map(selector::setName)
-                    .orElse(selector);
+                .map(selector::setName)
+                .orElse(selector);
         }
 
         return result;
@@ -308,7 +308,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         Objects.requireNonNull(alias, "alias");
 
         return Optional.ofNullable(
-                this.aliasToSelector.get(alias)
+            this.aliasToSelector.get(alias)
         );
     }
 
@@ -321,7 +321,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         Objects.requireNonNull(aliasOrName, "aliasOrName");
 
         return Optional.ofNullable(
-                this.aliasOrNameToName.get(aliasOrName)
+            this.aliasOrNameToName.get(aliasOrName)
         );
     }
 
@@ -344,9 +344,9 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         IS newInfos = providerInfos;
 
         final Set<N> aliasesWithoutInfos = this.pluginAliasLikes.stream()
-                .filter(pal -> pal.selector().isPresent() && false == pal.url().isPresent())
-                .map(pal -> pal.name())
-                .collect(Collectors.toSet());
+            .filter(pal -> pal.selector().isPresent() && false == pal.url().isPresent())
+            .map(pal -> pal.name())
+            .collect(Collectors.toSet());
 
         // remove $newInfos which are not referenced by name or alias
         final Set<I> unreferencedProviderInfos = Sets.hash();
@@ -362,14 +362,14 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         newInfos = newInfos.deleteAll(unreferencedProviderInfos);
 
         final IS aliasesInfos = helper.infoSet(
-                this.pluginAliasLikes.stream()
-                        .filter(pal -> pal.url().isPresent())
-                        .map(pal -> helper.info(
-                                        pal.url()
-                                                .get(),
-                                        pal.name()
-                                )
-                        ).collect(Collectors.toCollection(SortedSets::tree))
+            this.pluginAliasLikes.stream()
+                .filter(pal -> pal.url().isPresent())
+                .map(pal -> helper.info(
+                        pal.url()
+                            .get(),
+                        pal.name()
+                    )
+                ).collect(Collectors.toCollection(SortedSets::tree))
         );
 
         // remove unmentioned provider.infos
@@ -379,8 +379,8 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
             for (final I providerInfo : providerInfos) {
                 nameToProviderInfo.put(
-                        providerInfo.name(),
-                        providerInfo
+                    providerInfo.name(),
+                    providerInfo
                 );
             }
 
@@ -388,20 +388,20 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                 final Optional<S> selector = this.aliasSelector(aliasName);
                 if (selector.isPresent()) {
                     final I providerInfo = nameToProviderInfo.get(
-                            selector.get()
-                                    .name()
+                        selector.get()
+                            .name()
                     );
                     if (null != providerInfo) {
 
                         if (newInfos.contains(providerInfo)) {
                             newInfos = newInfos.replace(
-                                    providerInfo,
-                                    providerInfo.setName(aliasName)
+                                providerInfo,
+                                providerInfo.setName(aliasName)
                             );
 
                         } else {
                             newInfos = newInfos.concat(
-                                    providerInfo.setName(aliasName)
+                                providerInfo.setName(aliasName)
                             );
                         }
                     }
@@ -420,12 +420,12 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
                         final I providerInfo = nameToProviderInfo.get(alias);
                         if (null != providerInfo) {
                             newInfos = newInfos.replace(
-                                    providerInfo,
-                                    aliasInfo
+                                providerInfo,
+                                aliasInfo
                             );
                         } else {
                             newInfos = newInfos.concat(
-                                    aliasInfo
+                                aliasInfo
                             );
                         }
                     }
@@ -457,18 +457,18 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
 
             for (final A alias : this.pluginAliasLikes) {
                 nameToPluginAliasLike.put(
-                        alias.name(),
-                        alias
+                    alias.name(),
+                    alias
                 );
 
                 final N selectorName = alias.selector()
-                        .map(PluginSelectorLike::name)
-                        .orElse(null);
+                    .map(PluginSelectorLike::name)
+                    .orElse(null);
 
                 if (null != selectorName) {
                     nameToPluginAliasLike.put(
-                            selectorName,
-                            alias
+                        selectorName,
+                        alias
                     );
                 }
             }
@@ -496,19 +496,19 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         A pluginAliasWithName = this.findPluginAliasLikeWithNameOrAlias(alias.name());
         if (null != pluginAliasWithName) {
             pluginAliasSet = this.replace(
-                    pluginAliasWithName,
-                    alias
+                pluginAliasWithName,
+                alias
             );
         } else {
             final S selector = alias.selector()
-                    .orElse(null);
+                .orElse(null);
             if (null != selector) {
                 pluginAliasWithName = this.findPluginAliasLikeWithNameOrAlias(selector.name());
 
                 if (null != pluginAliasWithName) {
                     pluginAliasSet = this.replace(
-                            pluginAliasWithName,
-                            alias
+                        pluginAliasWithName,
+                        alias
                     );
                 }
             }
@@ -525,10 +525,10 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         Objects.requireNonNull(aliasOrNames, "aliasOrNames");
 
         return prepare(
-                this.stream()
-                        .filter(aon -> false == aliasOrNames.contains(aon.name()))
-                        .collect(Collectors.toCollection(SortedSets::tree)),
-                this.helper
+            this.stream()
+                .filter(aon -> false == aliasOrNames.contains(aon.name()))
+                .collect(Collectors.toCollection(SortedSets::tree)),
+            this.helper
         );
     }
 
@@ -536,10 +536,10 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         Objects.requireNonNull(aliasOrNames, "aliasOrNames");
 
         return prepare(
-                this.stream()
-                        .filter(aon -> aliasOrNames.contains(aon.name()))
-                        .collect(Collectors.toCollection(SortedSets::tree)),
-                this.helper
+            this.stream()
+                .filter(aon -> aliasOrNames.contains(aon.name()))
+                .collect(Collectors.toCollection(SortedSets::tree)),
+            this.helper
         );
     }
 
@@ -549,9 +549,9 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     public String text() {
         if (null == this.text) {
             this.text = this.pluginAliasLikes.stream()
-                    .map(this::aliasText)
-                    .collect(Collectors.joining(SEPARATOR_SPACE))
-                    .trim();
+                .map(this::aliasText)
+                .collect(Collectors.joining(SEPARATOR_SPACE))
+                .trim();
         }
 
         return this.text;
@@ -567,9 +567,9 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     private String aliasText(final A alias) {
         final String text = alias.text();
         return alias.url()
-                .isPresent() ?
-                text.concat(" ") :
-                text;
+            .isPresent() ?
+            text.concat(" ") :
+            text;
     }
 
     private String text;
@@ -597,27 +597,27 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     public PluginAliasSet<N, I, IS, S, A, AS> subSet(final A from,
                                                      final A to) {
         return prepare(
-                this.pluginAliasLikes.subSet(
-                        from,
-                        to
-                ),
-                this.helper
+            this.pluginAliasLikes.subSet(
+                from,
+                to
+            ),
+            this.helper
         );
     }
 
     @Override
     public PluginAliasSet<N, I, IS, S, A, AS> headSet(final A alias) {
         return prepare(
-                this.pluginAliasLikes.headSet(alias),
-                this.helper
+            this.pluginAliasLikes.headSet(alias),
+            this.helper
         );
     }
 
     @Override
     public PluginAliasSet<N, I, IS, S, A, AS> tailSet(final A alias) {
         return prepare(
-                this.pluginAliasLikes.tailSet(alias),
-                this.helper
+            this.pluginAliasLikes.tailSet(alias),
+            this.helper
         );
     }
 
@@ -641,13 +641,13 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     @Override
     public PluginAliasSet<N, I, IS, S, A, AS> setElements(final SortedSet<A> pluginAliasLikes) {
         final PluginAliasSet<N, I, IS, S, A, AS> copy = with(
-                pluginAliasLikes,
-                this.helper
+            pluginAliasLikes,
+            this.helper
         );
 
         return this.equals(copy) ?
-                this :
-                copy;
+            this :
+            copy;
     }
 
     // TreePrintable....................................................................................................

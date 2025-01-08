@@ -40,9 +40,9 @@ public interface JarFileTesting extends Testing {
         try {
             final Manifest manifest = new Manifest();
             manifest.read(
-                    new ByteArrayInputStream(
-                            manifestContent.getBytes(Charset.defaultCharset())
-                    )
+                new ByteArrayInputStream(
+                    manifestContent.getBytes(Charset.defaultCharset())
+                )
             );
             return manifest;
         } catch (final IOException cause) {
@@ -51,19 +51,19 @@ public interface JarFileTesting extends Testing {
     }
 
     LocalDateTime CREATE = LocalDateTime.of(
-            1999,
-            12,
-            31,
-            12,
-            58
+        1999,
+        12,
+        31,
+        12,
+        58
     );
 
     LocalDateTime LAST_MODIFIED = LocalDateTime.of(
-            2000,
-            1,
-            2,
-            4,
-            58
+        2000,
+        1,
+        2,
+        4,
+        58
     );
 
     static byte[] jarFile(final String manifestContent,
@@ -71,20 +71,20 @@ public interface JarFileTesting extends Testing {
         final ZoneId zoneId = ZoneId.of("GMT");
 
         final FileTime create = FileTime.from(
-                CREATE.atZone(zoneId)
-                        .toInstant()
+            CREATE.atZone(zoneId)
+                .toInstant()
         );
 
         final FileTime lastModified = FileTime.from(
-                LAST_MODIFIED.atZone(zoneId)
-                        .toInstant()
+            LAST_MODIFIED.atZone(zoneId)
+                .toInstant()
         );
 
         // create ZipOutStream because it allows better control over MANIFEST entry timestamps
         try (final ByteArrayOutputStream bytes = new ByteArrayOutputStream()) {
 
             final ZipOutputStream jarOut = new ZipOutputStream(
-                    bytes
+                bytes
             );
 
             {
@@ -96,7 +96,7 @@ public interface JarFileTesting extends Testing {
                 jarOut.putNextEntry(jarEntry);
 
                 manifest(manifestContent)
-                        .write(jarOut);
+                    .write(jarOut);
 
                 jarOut.closeEntry();
             }

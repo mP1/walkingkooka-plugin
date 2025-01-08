@@ -39,8 +39,8 @@ final class PluginNameLikeParser<N extends Name & Comparable<N>> implements CanB
     static <N extends Name & Comparable<N>> PluginNameLikeParser<N> with(final String text,
                                                                          final Function<String, N> nameParser) {
         return new PluginNameLikeParser<>(
-                text,
-                nameParser
+            text,
+            nameParser
         );
     }
 
@@ -53,26 +53,26 @@ final class PluginNameLikeParser<N extends Name & Comparable<N>> implements CanB
 
     String spaces() {
         return SPACES.parse(
-                        this.cursor,
-                        CONTEXT
-                ).map(ParserToken::text)
-                .orElse("");
+                this.cursor,
+                CONTEXT
+            ).map(ParserToken::text)
+            .orElse("");
     }
 
     private final static Parser<ParserContext> SPACES = Parsers.stringCharPredicate(
-            CharPredicates.is(' '),
-            1,
-            Character.MAX_VALUE
+        CharPredicates.is(' '),
+        1,
+        Character.MAX_VALUE
     );
 
     N name() {
         final String name = NAME.parse(
-                        this.cursor,
-                        CONTEXT
-                ).map(ParserToken::text)
-                .orElse("");
+                this.cursor,
+                CONTEXT
+            ).map(ParserToken::text)
+            .orElse("");
 
-        if(name.isEmpty()) {
+        if (name.isEmpty()) {
             this.invalidCharacterException();
         }
 
@@ -80,8 +80,8 @@ final class PluginNameLikeParser<N extends Name & Comparable<N>> implements CanB
             return this.nameParser.apply(name);
         } catch (final InvalidCharacterException cause) {
             throw this.handleInvalidCharacterException(
-                    cause,
-                    name
+                cause,
+                name
             );
         }
     }
@@ -89,23 +89,23 @@ final class PluginNameLikeParser<N extends Name & Comparable<N>> implements CanB
     private final Function<String, N> nameParser;
 
     private final static Parser<ParserContext> NAME = Parsers.stringCharPredicate(
-            CharPredicates.any(" " + PluginInfoSetLike.SEPARATOR.character()).negate(),
-            1,
-            Character.MAX_VALUE
+        CharPredicates.any(" " + PluginInfoSetLike.SEPARATOR.character()).negate(),
+        1,
+        Character.MAX_VALUE
     );
 
     String comma() {
         return COMMA.parse(
-                        this.cursor,
-                        CONTEXT
-                ).map(ParserToken::text)
-                .orElse("");
+                this.cursor,
+                CONTEXT
+            ).map(ParserToken::text)
+            .orElse("");
     }
 
     private final static Parser<ParserContext> COMMA = Parsers.character(
-            CharPredicates.is(
-                    PluginInfoSetLike.SEPARATOR.character()
-            )
+        CharPredicates.is(
+            PluginInfoSetLike.SEPARATOR.character()
+        )
     );
 
     @Override
@@ -122,19 +122,19 @@ final class PluginNameLikeParser<N extends Name & Comparable<N>> implements CanB
     private InvalidCharacterException handleInvalidCharacterException(final InvalidCharacterException cause,
                                                                       final String token) {
         return cause.setTextAndPosition(
-                this.text,
-                this.cursor.lineInfo()
-                        .textOffset() -
-                        token.length() +
-                        cause.position()
+            this.text,
+            this.cursor.lineInfo()
+                .textOffset() -
+                token.length() +
+                cause.position()
         );
     }
 
     void invalidCharacterException() {
         throw new InvalidCharacterException(
-                this.text,
-                this.cursor.lineInfo()
-                        .textOffset()
+            this.text,
+            this.cursor.lineInfo()
+                .textOffset()
         );
     }
 }

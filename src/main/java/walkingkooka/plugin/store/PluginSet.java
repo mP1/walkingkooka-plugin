@@ -45,16 +45,16 @@ public final class PluginSet extends AbstractSet<Plugin> implements ImmutableSor
 
     public static PluginSet with(final SortedSet<Plugin> set) {
         return withCopy(
-                SortedSets.immutable(
-                        Objects.requireNonNull(set, "set")
-                )
+            SortedSets.immutable(
+                Objects.requireNonNull(set, "set")
+            )
         );
     }
 
     private static PluginSet withCopy(final SortedSet<Plugin> set) {
         return set.isEmpty() ?
-                EMPTY :
-                new PluginSet(set);
+            EMPTY :
+            new PluginSet(set);
     }
 
     private PluginSet(final SortedSet<Plugin> set) {
@@ -74,11 +74,11 @@ public final class PluginSet extends AbstractSet<Plugin> implements ImmutableSor
     @Override
     public PluginSet setElements(final SortedSet<Plugin> set) {
         final ImmutableSortedSet<Plugin> copy = SortedSets.immutable(
-                Objects.requireNonNull(set, "set")
+            Objects.requireNonNull(set, "set")
         );
         return this.equals(copy) ?
-                this :
-                withCopy(copy);
+            this :
+            withCopy(copy);
     }
 
     @Override
@@ -95,24 +95,24 @@ public final class PluginSet extends AbstractSet<Plugin> implements ImmutableSor
     public PluginSet subSet(final Plugin after,
                             final Plugin before) {
         return withCopy(
-                this.set.subSet(
-                        after,
-                        before
-                )
+            this.set.subSet(
+                after,
+                before
+            )
         );
     }
 
     @Override
     public PluginSet headSet(final Plugin from) {
         return this.setElements(
-                this.set.headSet(from)
+            this.set.headSet(from)
         );
     }
 
     @Override
     public PluginSet tailSet(final Plugin to) {
         return this.setElements(
-                this.set.tailSet(to)
+            this.set.tailSet(to)
         );
     }
 
@@ -135,9 +135,9 @@ public final class PluginSet extends AbstractSet<Plugin> implements ImmutableSor
      */
     public PluginNameSet names() {
         return PluginNameSet.with(
-                this.set.stream()
-                        .map(Plugin::name)
-                        .collect(Collectors.toCollection(SortedSets::tree))
+            this.set.stream()
+                .map(Plugin::name)
+                .collect(Collectors.toCollection(SortedSets::tree))
         );
     }
 
@@ -146,12 +146,12 @@ public final class PluginSet extends AbstractSet<Plugin> implements ImmutableSor
     static PluginSet unmarshall(final JsonNode node,
                                 final JsonNodeUnmarshallContext context) {
         return with(
-                new TreeSet<>(
-                        context.unmarshallSet(
-                                node,
-                                Plugin.class
-                        )
+            new TreeSet<>(
+                context.unmarshallSet(
+                    node,
+                    Plugin.class
                 )
+            )
         );
     }
 
@@ -161,10 +161,10 @@ public final class PluginSet extends AbstractSet<Plugin> implements ImmutableSor
 
     static {
         JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(PluginSet.class),
-                PluginSet::unmarshall,
-                PluginSet::marshall,
-                PluginSet.class
+            JsonNodeContext.computeTypeName(PluginSet.class),
+            PluginSet::unmarshall,
+            PluginSet::marshall,
+            PluginSet.class
         );
     }
 }

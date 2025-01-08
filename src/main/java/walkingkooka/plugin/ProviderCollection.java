@@ -38,23 +38,23 @@ import java.util.stream.Collectors;
  */
 public final class ProviderCollection<P extends Provider, N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>, S extends PluginSelectorLike<N>, OUT> {
     public static <P extends Provider,
-            N extends Name & Comparable<N>,
-            I extends PluginInfoLike<I, N>,
-            S extends PluginSelectorLike<N>,
-            OUT> ProviderCollection<P, N, I, S, OUT> with(final ProviderCollectionProviderGetter<P, N, S, OUT> providerGetter,
-                                                          final Function<P, Set<I>> infoGetter,
-                                                          final String providedLabel,
-                                                          final Set<P> providers) {
+        N extends Name & Comparable<N>,
+        I extends PluginInfoLike<I, N>,
+        S extends PluginSelectorLike<N>,
+        OUT> ProviderCollection<P, N, I, S, OUT> with(final ProviderCollectionProviderGetter<P, N, S, OUT> providerGetter,
+                                                      final Function<P, Set<I>> infoGetter,
+                                                      final String providedLabel,
+                                                      final Set<P> providers) {
         Objects.requireNonNull(providerGetter, "providerGetter");
         Objects.requireNonNull(infoGetter, "infoGetter");
         CharSequences.failIfNullOrEmpty(providedLabel, "providedLabel");
         Objects.requireNonNull(providers, "providers");
 
         return new ProviderCollection<>(
-                providerGetter,
-                infoGetter,
-                providedLabel,
-                Sets.immutable(providers)
+            providerGetter,
+            infoGetter,
+            providedLabel,
+            Sets.immutable(providers)
         );
     }
 
@@ -77,15 +77,15 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
                 if (null == infosForName) {
                     infosForName = Sets.hash();
                     nameToInfos.put(
-                            name,
-                            infosForName
+                        name,
+                        infosForName
                     );
                 }
                 infosForName.add(info);
 
                 nameToProvider.put(
-                        name,
-                        provider
+                    name,
+                    provider
                 );
 
                 infos.add(info);
@@ -93,11 +93,11 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
         }
 
         // remove duplicates
-        for(final Entry<N, Set<I>> nameAndInfos : nameToInfos.entrySet()) {
+        for (final Entry<N, Set<I>> nameAndInfos : nameToInfos.entrySet()) {
             final Set<I> info = nameAndInfos.getValue();
-            if(info.size() > 1) {
+            if (info.size() > 1) {
                 nameToProvider.remove(
-                        nameAndInfos.getKey()
+                    nameAndInfos.getKey()
                 );
             }
         }
@@ -118,10 +118,10 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
         Objects.requireNonNull(context, "context");
 
         return this.providerGetter.get(
-                        this.provider(selector.name()),
-                        selector,
-                        context
-                );
+            this.provider(selector.name()),
+            selector,
+            context
+        );
     }
 
     /**
@@ -135,16 +135,16 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
         Objects.requireNonNull(context, "context");
 
         return this.providerGetter.get(
-                        this.provider(name),
-                        name,
-                        values,
-                        context
+            this.provider(name),
+            name,
+            values,
+            context
         );
     }
 
     private P provider(final N name) {
         final P provider = this.nameToProvider.get(name);
-        if(null == provider) {
+        if (null == provider) {
             throw new IllegalArgumentException("Unknown " + name);
         }
         return provider;
@@ -173,7 +173,7 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-                other instanceof ProviderCollection && this.equals0((ProviderCollection<?, ?, ?, ?, ?>) other);
+            other instanceof ProviderCollection && this.equals0((ProviderCollection<?, ?, ?, ?, ?>) other);
     }
 
     private boolean equals0(final ProviderCollection<?, ?, ?, ?, ?> other) {
@@ -183,8 +183,8 @@ public final class ProviderCollection<P extends Provider, N extends Name & Compa
     @Override
     public String toString() {
         return this.providers.stream()
-                .map(Object::toString)
-                .collect(Collectors.joining(", "));
+            .map(Object::toString)
+            .collect(Collectors.joining(", "));
     }
 
     private final Set<P> providers;

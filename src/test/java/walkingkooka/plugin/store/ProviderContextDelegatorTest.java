@@ -48,11 +48,11 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
         @Override
         public ProviderContext providerContext() {
             return ProviderContexts.basic(
-                    EnvironmentContexts.empty(
-                            LocalDateTime::now,
-                            EnvironmentContext.ANONYMOUS
-                    ),
-                    PluginStores.treeMap()
+                EnvironmentContexts.empty(
+                    LocalDateTime::now,
+                    EnvironmentContext.ANONYMOUS
+                ),
+                PluginStores.treeMap()
             );
         }
 

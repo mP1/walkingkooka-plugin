@@ -32,8 +32,8 @@ import walkingkooka.text.printer.TreePrintableTesting;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class MergedProviderMapperTest implements TreePrintableTesting,
-        ClassTesting2<MergedProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias, TestPluginAliasSet>>,
-        ToStringTesting<MergedProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias, TestPluginAliasSet>> {
+    ClassTesting2<MergedProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias, TestPluginAliasSet>>,
+    ToStringTesting<MergedProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias, TestPluginAliasSet>> {
 
     private final static StringName NAME_RENAME = Names.string("RenameName");
 
@@ -42,13 +42,13 @@ public final class MergedProviderMapperTest implements TreePrintableTesting,
     private final static AbsoluteUrl URL_RENAME_PROVIDER = Url.parseAbsolute("https://example.com/RenamedName-RenamedProviderName");
 
     private final static TestPluginInfo INFO_RENAME = new TestPluginInfo(
-            URL_RENAME_PROVIDER,
-            NAME_RENAME
+        URL_RENAME_PROVIDER,
+        NAME_RENAME
     );
 
     private final static TestPluginInfo INFO_RENAME_PROVIDER = new TestPluginInfo(
-            URL_RENAME_PROVIDER,
-            NAME_PROVIDER
+        URL_RENAME_PROVIDER,
+        NAME_PROVIDER
     );
 
     private final static StringName NAME_BOTH = Names.string("NameBoth");
@@ -56,8 +56,8 @@ public final class MergedProviderMapperTest implements TreePrintableTesting,
     private final static AbsoluteUrl URL_BOTH = Url.parseAbsolute("https://example.com/NameBoth");
 
     private final static TestPluginInfo INFO_BOTH = new TestPluginInfo(
-            URL_BOTH,
-            NAME_BOTH
+        URL_BOTH,
+        NAME_BOTH
     );
 
     private final static AbsoluteUrl URL_RENAME_ONLY = Url.parseAbsolute("https://example.com/RenameOnly");
@@ -65,8 +65,8 @@ public final class MergedProviderMapperTest implements TreePrintableTesting,
     private final static StringName NAME_RENAME_ONLY = Names.string("RenameOnlyName");
 
     private final static TestPluginInfo INFO_RENAME_ONLY = new TestPluginInfo(
-            URL_RENAME_ONLY,
-            NAME_RENAME_ONLY
+        URL_RENAME_ONLY,
+        NAME_RENAME_ONLY
     );
 
     private final static StringName NAME_PROVIDER_ONLY = Names.string("ProviderOnlyName");
@@ -74,34 +74,34 @@ public final class MergedProviderMapperTest implements TreePrintableTesting,
     private final static AbsoluteUrl URL_PROVIDER_ONLY = Url.parseAbsolute("https://example.com/ProviderOnly");
 
     private final static TestPluginInfo INFO_PROVIDER_ONLY = new TestPluginInfo(
-            URL_PROVIDER_ONLY,
-            NAME_PROVIDER_ONLY
+        URL_PROVIDER_ONLY,
+        NAME_PROVIDER_ONLY
     );
 
     // TestPluginInfoSet......................................................................................................
 
     private final static TestPluginInfoSet INFOS_RENAME = new TestPluginInfoSet(
-            Sets.of(
-                    INFO_RENAME,
-                    INFO_BOTH,
-                    INFO_RENAME_ONLY
-            )
+        Sets.of(
+            INFO_RENAME,
+            INFO_BOTH,
+            INFO_RENAME_ONLY
+        )
     );
 
     private final static TestPluginInfoSet INFOS_PROVIDER = new TestPluginInfoSet(
-            Sets.of(
-                    INFO_RENAME_PROVIDER,
-                    INFO_BOTH,
-                    INFO_PROVIDER_ONLY
-            )
+        Sets.of(
+            INFO_RENAME_PROVIDER,
+            INFO_BOTH,
+            INFO_PROVIDER_ONLY
+        )
     );
 
     private final static TestPluginHelper HELPER = TestPluginHelper.INSTANCE;
 
     private final static MergedProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias, TestPluginAliasSet> MAPPER = MergedProviderMapper.with(
-            INFOS_RENAME,
-            INFOS_PROVIDER,
-            HELPER
+        INFOS_RENAME,
+        INFOS_PROVIDER,
+        HELPER
     );
 
     // with.............................................................................................................
@@ -109,36 +109,36 @@ public final class MergedProviderMapperTest implements TreePrintableTesting,
     @Test
     public void testWithNullRenamingInfosFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> MergedProviderMapper.with(
-                        null,
-                        INFOS_PROVIDER,
-                        HELPER
-                )
+            NullPointerException.class,
+            () -> MergedProviderMapper.with(
+                null,
+                INFOS_PROVIDER,
+                HELPER
+            )
         );
     }
 
     @Test
     public void testWithNullProviderInfosFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> MergedProviderMapper.with(
-                        INFOS_RENAME,
-                        null,
-                        HELPER
-                )
+            NullPointerException.class,
+            () -> MergedProviderMapper.with(
+                INFOS_RENAME,
+                null,
+                HELPER
+            )
         );
     }
 
     @Test
     public void testWithNullHelperFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> MergedProviderMapper.with(
-                        INFOS_RENAME,
-                        INFOS_PROVIDER,
-                        null
-                )
+            NullPointerException.class,
+            () -> MergedProviderMapper.with(
+                INFOS_RENAME,
+                INFOS_PROVIDER,
+                null
+            )
         );
     }
 
@@ -147,49 +147,49 @@ public final class MergedProviderMapperTest implements TreePrintableTesting,
     @Test
     public void testNameFilteredNameFailed() {
         assertThrows(
-                UnknownStringNameException.class,
-                () -> MAPPER.name(NAME_PROVIDER)
+            UnknownStringNameException.class,
+            () -> MAPPER.name(NAME_PROVIDER)
         );
     }
 
     @Test
     public void testNameUnknownFails() {
         assertThrows(
-                UnknownStringNameException.class,
-                () -> MAPPER.name(NAME_RENAME_ONLY)
+            UnknownStringNameException.class,
+            () -> MAPPER.name(NAME_RENAME_ONLY)
         );
     }
 
     @Test
     public void testName() {
         this.nameAndCheck(
-                NAME_BOTH,
-                NAME_BOTH
+            NAME_BOTH,
+            NAME_BOTH
         );
     }
 
     @Test
     public void testNameMapped() {
         this.nameAndCheck(
-                NAME_RENAME,
-                NAME_PROVIDER
+            NAME_RENAME,
+            NAME_PROVIDER
         );
     }
 
     @Test
     public void testNameProviderOnly() {
         this.nameAndCheck(
-                NAME_PROVIDER_ONLY,
-                NAME_PROVIDER_ONLY
+            NAME_PROVIDER_ONLY,
+            NAME_PROVIDER_ONLY
         );
     }
 
     private void nameAndCheck(final StringName name,
                               final StringName expected) {
         this.checkEquals(
-                expected,
-                MAPPER.name(name),
-                () -> "name " + name + " " + MAPPER
+            expected,
+            MAPPER.name(name),
+            () -> "name " + name + " " + MAPPER
         );
     }
 
@@ -198,20 +198,20 @@ public final class MergedProviderMapperTest implements TreePrintableTesting,
     @Test
     public void testSelectorFilteredSelectorFailed() {
         assertThrows(
-                UnknownStringNameException.class,
-                () -> MAPPER.selector(
-                        new TestPluginSelector(NAME_PROVIDER)
-                )
+            UnknownStringNameException.class,
+            () -> MAPPER.selector(
+                new TestPluginSelector(NAME_PROVIDER)
+            )
         );
     }
 
     @Test
     public void testSelectorUnknownFails() {
         assertThrows(
-                UnknownStringNameException.class,
-                () -> MAPPER.selector(
-                        new TestPluginSelector(NAME_RENAME_ONLY)
-                )
+            UnknownStringNameException.class,
+            () -> MAPPER.selector(
+                new TestPluginSelector(NAME_RENAME_ONLY)
+            )
         );
     }
 
@@ -220,33 +220,33 @@ public final class MergedProviderMapperTest implements TreePrintableTesting,
         final TestPluginSelector selector = new TestPluginSelector(NAME_BOTH);
 
         this.selectorAndCheck(
-                selector,
-                selector
+            selector,
+            selector
         );
     }
 
     @Test
     public void testSelectorMapped() {
         this.selectorAndCheck(
-                new TestPluginSelector(NAME_RENAME),
-                new TestPluginSelector(NAME_PROVIDER)
+            new TestPluginSelector(NAME_RENAME),
+            new TestPluginSelector(NAME_PROVIDER)
         );
     }
 
     @Test
     public void testSelectorProviderOnly() {
         this.selectorAndCheck(
-                new TestPluginSelector(NAME_PROVIDER_ONLY),
-                new TestPluginSelector(NAME_PROVIDER_ONLY)
+            new TestPluginSelector(NAME_PROVIDER_ONLY),
+            new TestPluginSelector(NAME_PROVIDER_ONLY)
         );
     }
 
     private void selectorAndCheck(final TestPluginSelector selector,
                                   final TestPluginSelector expected) {
         this.checkEquals(
-                expected,
-                MAPPER.selector(selector),
-                () -> "selector " + selector + " " + MAPPER
+            expected,
+            MAPPER.selector(selector),
+            () -> "selector " + selector + " " + MAPPER
         );
     }
 
@@ -255,15 +255,15 @@ public final class MergedProviderMapperTest implements TreePrintableTesting,
     @Test
     public void testInfos() {
         this.checkEquals(
-                new TestPluginInfoSet(
-                        Sets.of(
-                                INFO_RENAME_ONLY,
-                                INFO_RENAME,
-                                INFO_PROVIDER_ONLY,
-                                INFO_BOTH
-                        )
-                ),
-                MAPPER.infos()
+            new TestPluginInfoSet(
+                Sets.of(
+                    INFO_RENAME_ONLY,
+                    INFO_RENAME,
+                    INFO_PROVIDER_ONLY,
+                    INFO_BOTH
+                )
+            ),
+            MAPPER.infos()
         );
     }
 
@@ -272,8 +272,8 @@ public final class MergedProviderMapperTest implements TreePrintableTesting,
     @Test
     public void testToString() {
         this.toStringAndCheck(
-                MAPPER,
-                "https://example.com/NameBoth NameBoth,https://example.com/ProviderOnly ProviderOnlyName,https://example.com/RenamedName-RenamedProviderName RenameName,https://example.com/RenameOnly RenameOnlyName"
+            MAPPER,
+            "https://example.com/NameBoth NameBoth,https://example.com/ProviderOnly ProviderOnlyName,https://example.com/RenamedName-RenamedProviderName RenameName,https://example.com/RenameOnly RenameOnlyName"
         );
     }
 

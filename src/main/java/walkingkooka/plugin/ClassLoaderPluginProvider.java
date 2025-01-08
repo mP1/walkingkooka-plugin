@@ -37,7 +37,7 @@ final class ClassLoaderPluginProvider {
      * name to create the instance which will be the wrapped {@link PluginProvider}.
      */
     static PluginProvider createFromManifest(final ClassLoader classLoader) throws IOException,
-            ClassNotFoundException {
+        ClassNotFoundException {
         Objects.requireNonNull(classLoader, "classLoader");
 
         final InputStream inputStream = classLoader.getResourceAsStream(PluginArchiveManifest.MANIFEST_MF_PATH);
@@ -50,25 +50,25 @@ final class ClassLoaderPluginProvider {
 
         final PluginArchiveManifest pluginArchiveManifest = PluginArchiveManifest.fromManifest(manifest);
         final String className = pluginArchiveManifest.className()
-                .value();
+            .value();
         final Class<?> pluginProviderFactory = classLoader.loadClass(className);
 
         try {
             return (PluginProvider)
-                    pluginProviderFactory.getDeclaredConstructor()
-                            .newInstance();
+                pluginProviderFactory.getDeclaredConstructor()
+                    .newInstance();
         } catch (final NoSuchMethodException missing) {
             // Manifest: plugin-provider-factory-className: "x.yZ" missing no args constructor
             throw illegalArgumentException(
-                    className,
-                    "Missing no argument constructor",
-                    missing
+                className,
+                "Missing no argument constructor",
+                missing
             );
         } catch (final IllegalAccessException | InvocationTargetException | InstantiationException cause) {
             throw illegalArgumentException(
-                    className,
-                    "Instance creation failed",
-                    cause
+                className,
+                "Instance creation failed",
+                cause
             );
         }
     }
@@ -77,13 +77,13 @@ final class ClassLoaderPluginProvider {
                                                                      final String content,
                                                                      final Throwable cause) {
         return new IllegalArgumentException(
-                "Manifest " +
-                        PluginArchiveManifest.PLUGIN_PROVIDER_FACTORY_CLASSNAME +
-                        ": " +
-                        CharSequences.quoteAndEscape(className) +
-                        " " +
-                        content,
-                cause
+            "Manifest " +
+                PluginArchiveManifest.PLUGIN_PROVIDER_FACTORY_CLASSNAME +
+                ": " +
+                CharSequences.quoteAndEscape(className) +
+                " " +
+                content,
+            cause
         );
     }
 }

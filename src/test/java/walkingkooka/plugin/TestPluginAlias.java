@@ -29,11 +29,11 @@ public final class TestPluginAlias implements PluginAliasLike<StringName, TestPl
                                 final Optional<TestPluginSelector> selector,
                                 final Optional<AbsoluteUrl> url) {
         return with(
-                PluginAlias.with(
-                        name,
-                        selector,
-                        url
-                )
+            PluginAlias.with(
+                name,
+                selector,
+                url
+            )
         );
     }
 

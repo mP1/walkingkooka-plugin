@@ -14,67 +14,67 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginSelectorTokenTest implements PluginSelectorTokenLikeTesting<PluginSelectorToken<PluginSelectorTokenAlternative>, PluginSelectorTokenAlternative>,
-        ClassTesting2<PluginSelectorToken<PluginSelectorTokenAlternative>> {
+    ClassTesting2<PluginSelectorToken<PluginSelectorTokenAlternative>> {
 
     private final static String LABEL = "Label123";
 
     private final static String TEXT = "Text123";
 
     private final static List<PluginSelectorTokenAlternative> ALTERNATIVES = Lists.of(
-            PluginSelectorTokenAlternative.with(
-                    "alternative-label-1",
-                    "alternative-text-1"
-            ),
-            PluginSelectorTokenAlternative.with(
-                    "alternative-label-2",
-                    "alternative-text-2"
-            )
+        PluginSelectorTokenAlternative.with(
+            "alternative-label-1",
+            "alternative-text-1"
+        ),
+        PluginSelectorTokenAlternative.with(
+            "alternative-label-2",
+            "alternative-text-2"
+        )
     );
 
     @Test
     public void testWithNullLabelFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginSelectorToken.with(
-                        null,
-                        TEXT,
-                        ALTERNATIVES
-                )
+            NullPointerException.class,
+            () -> PluginSelectorToken.with(
+                null,
+                TEXT,
+                ALTERNATIVES
+            )
         );
     }
 
     @Test
     public void testWithNullLTextFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginSelectorToken.with(
-                        LABEL,
-                        null,
-                        ALTERNATIVES
-                )
+            NullPointerException.class,
+            () -> PluginSelectorToken.with(
+                LABEL,
+                null,
+                ALTERNATIVES
+            )
         );
     }
 
     @Test
     public void testWith() {
         final PluginSelectorToken<PluginSelectorTokenAlternative> component = PluginSelectorToken.with(
-                LABEL,
-                TEXT,
-                ALTERNATIVES
+            LABEL,
+            TEXT,
+            ALTERNATIVES
         );
         this.checkEquals(
-                LABEL,
-                component.label(),
-                "label"
+            LABEL,
+            component.label(),
+            "label"
         );
         this.textAndCheck(
-                component,
-                TEXT
+            component,
+            TEXT
         );
         this.checkEquals(
-                ALTERNATIVES,
-                component.alternatives(),
-                "label"
+            ALTERNATIVES,
+            component.alternatives(),
+            "label"
         );
     }
 
@@ -85,38 +85,38 @@ public final class PluginSelectorTokenTest implements PluginSelectorTokenLikeTes
         final List<PluginSelectorTokenAlternative> alternatives = Lists.empty();
 
         final PluginSelectorToken<PluginSelectorTokenAlternative> component = PluginSelectorToken.with(
-                label,
-                text,
-                alternatives
+            label,
+            text,
+            alternatives
         );
         this.checkEquals(
-                label,
-                component.label(),
-                "label"
+            label,
+            component.label(),
+            "label"
         );
         this.textAndCheck(
-                component,
-                text
+            component,
+            text
         );
     }
 
     @Override
     public PluginSelectorToken<PluginSelectorTokenAlternative> createPluginSelectorTokenLike(final String label,
-                                                                                                     final String text,
-                                                                                                     final List<PluginSelectorTokenAlternative> alternatives) {
+                                                                                             final String text,
+                                                                                             final List<PluginSelectorTokenAlternative> alternatives) {
         return PluginSelectorToken.with(
-                label,
-                text,
-                alternatives
+            label,
+            text,
+            alternatives
         );
     }
 
     @Override
     public PluginSelectorTokenAlternative createPluginSelectorTokenAlternativesLike(final String label,
-                                                                                            final String text) {
+                                                                                    final String text) {
         return PluginSelectorTokenAlternative.with(
-                label,
-                text
+            label,
+            text
         );
     }
 
@@ -125,42 +125,42 @@ public final class PluginSelectorTokenTest implements PluginSelectorTokenLikeTes
     @Test
     public void testEqualsDifferentLabel() {
         this.checkNotEquals(
-                PluginSelectorToken.with(
-                        "different " + LABEL,
-                        TEXT,
-                        ALTERNATIVES
-                )
+            PluginSelectorToken.with(
+                "different " + LABEL,
+                TEXT,
+                ALTERNATIVES
+            )
         );
     }
 
     @Test
     public void testEqualsDifferentText() {
         this.checkNotEquals(
-                PluginSelectorToken.with(
-                        LABEL,
-                        "different " + TEXT,
-                        ALTERNATIVES
-                )
+            PluginSelectorToken.with(
+                LABEL,
+                "different " + TEXT,
+                ALTERNATIVES
+            )
         );
     }
 
     @Test
     public void testEqualsDifferentAlternatives() {
         this.checkNotEquals(
-                PluginSelectorToken.with(
-                        LABEL,
-                        TEXT,
-                        Lists.empty()
-                )
+            PluginSelectorToken.with(
+                LABEL,
+                TEXT,
+                Lists.empty()
+            )
         );
     }
 
     @Override
     public PluginSelectorToken<PluginSelectorTokenAlternative> createObject() {
         return PluginSelectorToken.with(
-                LABEL,
-                TEXT,
-                ALTERNATIVES
+            LABEL,
+            TEXT,
+            ALTERNATIVES
         );
     }
 
@@ -169,17 +169,17 @@ public final class PluginSelectorTokenTest implements PluginSelectorTokenLikeTes
     @Test
     public void testTreePrint() {
         this.treePrintAndCheck(
-                PluginSelectorToken.with(
-                        LABEL,
-                        TEXT,
-                        ALTERNATIVES
-                ),
-                "Label123\n" +
-                        "Text123\n" +
-                        "  alternative-label-1\n" +
-                        "  alternative-text-1\n" +
-                        "  alternative-label-2\n" +
-                        "  alternative-text-2\n"
+            PluginSelectorToken.with(
+                LABEL,
+                TEXT,
+                ALTERNATIVES
+            ),
+            "Label123\n" +
+                "Text123\n" +
+                "  alternative-label-1\n" +
+                "  alternative-text-1\n" +
+                "  alternative-label-2\n" +
+                "  alternative-text-2\n"
         );
     }
 
@@ -189,24 +189,24 @@ public final class PluginSelectorTokenTest implements PluginSelectorTokenLikeTes
     public PluginSelectorToken<PluginSelectorTokenAlternative> unmarshall(final JsonNode json,
                                                                           final JsonNodeUnmarshallContext context) {
         return PluginSelectorTokenLike.unmarshall(
-                json,
-                context,
-                PluginSelectorToken::with,
-                PluginSelectorTokenAlternative.class
+            json,
+            context,
+            PluginSelectorToken::with,
+            PluginSelectorTokenAlternative.class
         );
     }
 
     static {
         JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(PluginSelectorToken.class),
-                (json, context) -> PluginSelectorTokenLike.unmarshall(
-                        json,
-                        context,
-                        PluginSelectorToken::with,
-                        PluginSelectorTokenAlternative.class
-                ),
-                PluginSelectorToken::marshall,
-                PluginSelectorToken.class
+            JsonNodeContext.computeTypeName(PluginSelectorToken.class),
+            (json, context) -> PluginSelectorTokenLike.unmarshall(
+                json,
+                context,
+                PluginSelectorToken::with,
+                PluginSelectorTokenAlternative.class
+            ),
+            PluginSelectorToken::marshall,
+            PluginSelectorToken.class
         );
     }
 
