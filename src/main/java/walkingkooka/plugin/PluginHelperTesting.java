@@ -31,30 +31,30 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A, AS>,
-        N extends Name & Comparable<N>,
-        I extends PluginInfoLike<I, N>,
-        IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-        S extends PluginSelectorLike<N>,
-        A extends PluginAliasLike<N, S, A>,
-        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
-            extends ClassTesting<H> {
+    N extends Name & Comparable<N>,
+    I extends PluginInfoLike<I, N>,
+    IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+    S extends PluginSelectorLike<N>,
+    A extends PluginAliasLike<N, S, A>,
+    AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+    extends ClassTesting<H> {
 
     // name.............................................................................................................
 
     @Test
     default void testNameWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createPluginHelper().name(null)
+            NullPointerException.class,
+            () -> this.createPluginHelper().name(null)
         );
     }
 
     default void nameAndCheck(final String text,
                               final N expected) {
         this.nameAndCheck(
-                this.createPluginHelper(),
-                text,
-                expected
+            this.createPluginHelper(),
+            text,
+            expected
         );
     }
 
@@ -62,8 +62,8 @@ public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A, AS>,
                               final String text,
                               final N expected) {
         this.checkEquals(
-                expected,
-                helper.name(text)
+            expected,
+            helper.name(text)
         );
     }
 
@@ -72,33 +72,33 @@ public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A, AS>,
     @Test
     default void testParseNameWithNullTextCursorFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createPluginHelper()
-                        .parseName(
-                                null,
-                                ParserContexts.fake()
-                        )
+            NullPointerException.class,
+            () -> this.createPluginHelper()
+                .parseName(
+                    null,
+                    ParserContexts.fake()
+                )
         );
     }
 
     @Test
     default void testParseNameWithNullContextFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createPluginHelper()
-                        .parseName(
-                                TextCursors.fake(),
-                                null
-                        )
+            NullPointerException.class,
+            () -> this.createPluginHelper()
+                .parseName(
+                    TextCursors.fake(),
+                    null
+                )
         );
     }
 
     default void parseNameAndCheck(final TextCursor cursor,
                                    final ParserContext context) {
         this.parseNameAndCheck(
-                this.createPluginHelper(),
-                cursor,
-                context
+            this.createPluginHelper(),
+            cursor,
+            context
         );
     }
 
@@ -106,10 +106,10 @@ public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A, AS>,
                                    final ParserContext context,
                                    final N expected) {
         this.parseNameAndCheck(
-                this.createPluginHelper(),
-                cursor,
-                context,
-                expected
+            this.createPluginHelper(),
+            cursor,
+            context,
+            expected
         );
     }
 
@@ -117,10 +117,10 @@ public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A, AS>,
                                    final ParserContext context,
                                    final Optional<N> expected) {
         this.parseNameAndCheck(
-                this.createPluginHelper(),
-                cursor,
-                context,
-                expected
+            this.createPluginHelper(),
+            cursor,
+            context,
+            expected
         );
     }
 
@@ -128,10 +128,10 @@ public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A, AS>,
                                    final TextCursor cursor,
                                    final ParserContext context) {
         this.parseNameAndCheck(
-                helper,
-                cursor,
-                context,
-                Optional.empty()
+            helper,
+            cursor,
+            context,
+            Optional.empty()
         );
     }
 
@@ -140,10 +140,10 @@ public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A, AS>,
                                    final ParserContext context,
                                    final N expected) {
         this.parseNameAndCheck(
-                helper,
-                cursor,
-                context,
-                Optional.of(expected)
+            helper,
+            cursor,
+            context,
+            Optional.of(expected)
         );
     }
 
@@ -152,11 +152,11 @@ public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A, AS>,
                                    final ParserContext context,
                                    final Optional<N> expected) {
         this.checkEquals(
-                expected,
-                helper.parseName(
-                        cursor,
-                        context
-                )
+            expected,
+            helper.parseName(
+                cursor,
+                context
+            )
         );
     }
 
@@ -165,17 +165,17 @@ public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A, AS>,
     @Test
     default void testNamesWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createPluginHelper().names(null)
+            NullPointerException.class,
+            () -> this.createPluginHelper().names(null)
         );
     }
 
     default void namesAndCheck(final Set<N> names,
                                final Set<N> expected) {
         this.namesAndCheck(
-                this.createPluginHelper(),
-                names,
-                expected
+            this.createPluginHelper(),
+            names,
+            expected
         );
     }
 
@@ -183,8 +183,8 @@ public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A, AS>,
                                final Set<N> names,
                                final Set<N> expected) {
         this.checkEquals(
-                expected,
-                helper.names(names)
+            expected,
+            helper.names(names)
         );
     }
 
@@ -193,17 +193,17 @@ public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A, AS>,
     @Test
     default void testParseInfoWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createPluginHelper().parseInfo(null)
+            NullPointerException.class,
+            () -> this.createPluginHelper().parseInfo(null)
         );
     }
 
     default void parseInfoAndCheck(final String text,
                                    final I expected) {
         this.parseInfoAndCheck(
-                this.createPluginHelper(),
-                text,
-                expected
+            this.createPluginHelper(),
+            text,
+            expected
         );
     }
 
@@ -211,8 +211,8 @@ public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A, AS>,
                                    final String text,
                                    final I expected) {
         this.checkEquals(
-                expected,
-                helper.parseInfo(text)
+            expected,
+            helper.parseInfo(text)
         );
     }
 
@@ -221,18 +221,18 @@ public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A, AS>,
     @Test
     default void testInfoSetWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createPluginHelper()
-                        .infoSet(null)
+            NullPointerException.class,
+            () -> this.createPluginHelper()
+                .infoSet(null)
         );
     }
 
     default void infoSetAndCheck(final Set<I> infoSet,
                                  final IS expected) {
         this.infoSetAndCheck(
-                this.createPluginHelper(),
-                infoSet,
-                expected
+            this.createPluginHelper(),
+            infoSet,
+            expected
         );
     }
 
@@ -240,8 +240,8 @@ public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A, AS>,
                                  final Set<I> infoSet,
                                  final IS expected) {
         this.checkEquals(
-                expected,
-                helper.infoSet(infoSet)
+            expected,
+            helper.infoSet(infoSet)
         );
     }
 
@@ -250,18 +250,18 @@ public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A, AS>,
     @Test
     default void testParseSelectorWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createPluginHelper()
-                        .parseSelector(null)
+            NullPointerException.class,
+            () -> this.createPluginHelper()
+                .parseSelector(null)
         );
     }
 
     default void parseSelectorAndCheck(final String text,
                                        final S expected) {
         this.parseSelectorAndCheck(
-                this.createPluginHelper(),
-                text,
-                expected
+            this.createPluginHelper(),
+            text,
+            expected
         );
     }
 
@@ -269,8 +269,8 @@ public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A, AS>,
                                        final String text,
                                        final S expected) {
         this.checkEquals(
-                expected,
-                helper.parseSelector(text)
+            expected,
+            helper.parseSelector(text)
         );
     }
 
@@ -279,39 +279,39 @@ public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A, AS>,
     @Test
     default void testAliasWithNullNameFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createPluginHelper()
-                        .alias(
-                                null,
-                                Optional.empty(),
-                                Optional.empty()
-                        )
+            NullPointerException.class,
+            () -> this.createPluginHelper()
+                .alias(
+                    null,
+                    Optional.empty(),
+                    Optional.empty()
+                )
         );
     }
 
     @Test
     default void testAliasWithNullSelectorFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createPluginHelper()
-                        .alias(
-                                this.createName(),
-                                null,
-                                Optional.empty()
-                        )
+            NullPointerException.class,
+            () -> this.createPluginHelper()
+                .alias(
+                    this.createName(),
+                    null,
+                    Optional.empty()
+                )
         );
     }
 
     @Test
     default void testAliasWithNullUrlFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createPluginHelper()
-                        .alias(
-                                this.createName(),
-                                Optional.empty(),
-                                null
-                        )
+            NullPointerException.class,
+            () -> this.createPluginHelper()
+                .alias(
+                    this.createName(),
+                    Optional.empty(),
+                    null
+                )
         );
     }
 

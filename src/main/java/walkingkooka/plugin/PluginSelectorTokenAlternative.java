@@ -16,8 +16,8 @@ public final class PluginSelectorTokenAlternative implements PluginSelectorToken
     public static PluginSelectorTokenAlternative with(final String label,
                                                       final String text) {
         return new PluginSelectorTokenAlternative(
-                Objects.requireNonNull(label, "label"),
-                Objects.requireNonNull(text, "text")
+            Objects.requireNonNull(label, "label"),
+            Objects.requireNonNull(text, "text")
         );
     }
 
@@ -44,21 +44,21 @@ public final class PluginSelectorTokenAlternative implements PluginSelectorToken
     @Override
     public int hashCode() {
         return Objects.hash(
-                this.label,
-                this.text
+            this.label,
+            this.text
         );
     }
 
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-                other instanceof PluginSelectorTokenAlternative &&
-                        this.equals0(Cast.to(other));
+            other instanceof PluginSelectorTokenAlternative &&
+                this.equals0(Cast.to(other));
     }
 
     private boolean equals0(final PluginSelectorTokenAlternative other) {
         return this.label.equals(other.label) &&
-                this.text.equals(other.text);
+            this.text.equals(other.text);
     }
 
     @Override
@@ -71,18 +71,18 @@ public final class PluginSelectorTokenAlternative implements PluginSelectorToken
     static PluginSelectorTokenAlternative unmarshall(final JsonNode node,
                                                      final JsonNodeUnmarshallContext context) {
         return PluginSelectorTokenAlternativeLike.unmarshall(
-                node,
-                context,
-                PluginSelectorTokenAlternative::with
+            node,
+            context,
+            PluginSelectorTokenAlternative::with
         );
     }
 
     static {
         JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(PluginSelectorTokenAlternative.class),
-                PluginSelectorTokenAlternative::unmarshall,
-                PluginSelectorTokenAlternative::marshall,
-                PluginSelectorTokenAlternative.class
+            JsonNodeContext.computeTypeName(PluginSelectorTokenAlternative.class),
+            PluginSelectorTokenAlternative::unmarshall,
+            PluginSelectorTokenAlternative::marshall,
+            PluginSelectorTokenAlternative.class
         );
     }
 }

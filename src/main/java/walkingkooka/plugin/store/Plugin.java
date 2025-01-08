@@ -42,8 +42,8 @@ import java.util.Optional;
  * Note {@link Comparable#compareTo(Object)} only uses the {@link #name(), ignoring all other properties.
  */
 public final class Plugin implements HateosResource<PluginName>,
-        Comparable<Plugin>,
-        HasName<PluginName> {
+    Comparable<Plugin>,
+    HasName<PluginName> {
 
     /**
      * A {@link HateosResourceName} with <code>plugin</code>.
@@ -56,11 +56,11 @@ public final class Plugin implements HateosResource<PluginName>,
                               final EmailAddress user,
                               final LocalDateTime timestamp) {
         return new Plugin(
-                Objects.requireNonNull(name, "name"),
-                CharSequences.failIfNullOrEmpty(filename, "filename"),
-                checkArchive(archive),
-                Objects.requireNonNull(user, "user"),
-                Objects.requireNonNull(timestamp, "timestamp")
+            Objects.requireNonNull(name, "name"),
+            CharSequences.failIfNullOrEmpty(filename, "filename"),
+            checkArchive(archive),
+            Objects.requireNonNull(user, "user"),
+            Objects.requireNonNull(timestamp, "timestamp")
         );
     }
 
@@ -120,7 +120,7 @@ public final class Plugin implements HateosResource<PluginName>,
     @Override
     public Optional<PluginName> id() {
         return Optional.of(
-                this.name()
+            this.name()
         );
     }
 
@@ -141,59 +141,59 @@ public final class Plugin implements HateosResource<PluginName>,
     @Override
     public int hashCode() {
         return Objects.hash(
-                this.name,
-                this.filename,
-                this.archive,
-                this.user,
-                this.timestamp
+            this.name,
+            this.filename,
+            this.archive,
+            this.user,
+            this.timestamp
         );
     }
 
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-                other instanceof Plugin &&
-                        this.equals0(Cast.to(other));
+            other instanceof Plugin &&
+                this.equals0(Cast.to(other));
     }
 
     private boolean equals0(final Plugin other) {
         return this.name.equals(other.name()) &&
-                this.filename.equals(other.filename()) &&
-                this.archive.equals(other.archive) &&
-                this.user.equals(other.user) &&
-                this.timestamp.equals(other.timestamp);
+            this.filename.equals(other.filename()) &&
+            this.archive.equals(other.archive) &&
+            this.user.equals(other.user) &&
+            this.timestamp.equals(other.timestamp);
     }
 
     @Override
     public String toString() {
         return ToStringBuilder.empty()
-                .value(this.name)
-                .value(this.filename)
-                .value(this.user)
-                .value(this.timestamp)
-                .build();
+            .value(this.name)
+            .value(this.filename)
+            .value(this.user)
+            .value(this.timestamp)
+            .build();
     }
 
     // json.............................................................................................................
 
     private JsonNode marshall(final JsonNodeMarshallContext context) {
         return JsonNode.object()
-                .set(
+            .set(
                 NAME_PROPERTY,
                 context.marshall(this.name)
-        ).set(
+            ).set(
                 FILENAME_PROPERTY,
                 JsonNode.string(this.filename)
-        ).set(
+            ).set(
                 ARCHIVE_PROPERTY,
                 context.marshall(this.archive)
-        ).set(
+            ).set(
                 USER_PROPERTY,
                 context.marshall(this.user)
-        ).set(
+            ).set(
                 TIMESTAMP_PROPERTY,
                 context.marshall(this.timestamp)
-        );
+            );
     }
 
     static Plugin unmarshall(final JsonNode node,
@@ -209,38 +209,38 @@ public final class Plugin implements HateosResource<PluginName>,
             switch (name.value()) {
                 case NAME_PROPERTY_STRING:
                     pluginName = context.unmarshall(
-                            child,
-                            PluginName.class
+                        child,
+                        PluginName.class
                     );
                     break;
                 case FILENAME_PROPERTY_STRING:
                     filename = context.unmarshall(
-                            child,
-                            String.class
+                        child,
+                        String.class
                     );
                     break;
                 case ARCHIVE_PROPERTY_STRING:
                     archive = context.unmarshall(
-                            child,
-                            Binary.class
+                        child,
+                        Binary.class
                     );
                     break;
                 case USER_PROPERTY_STRING:
                     user = context.unmarshall(
-                            child,
-                            EmailAddress.class
+                        child,
+                        EmailAddress.class
                     );
                     break;
                 case TIMESTAMP_PROPERTY_STRING:
                     timestamp = context.unmarshall(
-                            child,
-                            LocalDateTime.class
+                        child,
+                        LocalDateTime.class
                     );
                     break;
                 default:
                     JsonNodeUnmarshallContext.unknownPropertyPresent(
-                            name,
-                            node
+                        name,
+                        node
                     );
                     break;
             }
@@ -263,11 +263,11 @@ public final class Plugin implements HateosResource<PluginName>,
         }
 
         return Plugin.with(
-                pluginName,
-                filename,
-                archive,
-                user,
-                timestamp
+            pluginName,
+            filename,
+            archive,
+            user,
+            timestamp
         );
     }
 
@@ -293,10 +293,10 @@ public final class Plugin implements HateosResource<PluginName>,
 
     static {
         JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(Plugin.class),
-                Plugin::unmarshall,
-                Plugin::marshall,
-                Plugin.class
+            JsonNodeContext.computeTypeName(Plugin.class),
+            Plugin::unmarshall,
+            Plugin::marshall,
+            Plugin.class
         );
     }
 }

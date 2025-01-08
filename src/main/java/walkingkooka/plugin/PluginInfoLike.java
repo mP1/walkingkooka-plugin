@@ -32,10 +32,10 @@ import java.util.Optional;
  * Note each {@link PluginInfoLike} must provide a public static parse method which must also be able to parse {@link Object#toString()}.
  */
 public interface PluginInfoLike<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends
-        HasName<N>,
-        HasAbsoluteUrl,
-        Comparable<I>,
-        HateosResource<N> {
+    HasName<N>,
+    HasAbsoluteUrl,
+    Comparable<I>,
+    HateosResource<N> {
 
     I setName(final N name);
 
@@ -49,7 +49,7 @@ public interface PluginInfoLike<I extends PluginInfoLike<I, N>, N extends Name &
     @Override
     default Optional<N> id() {
         return Optional.of(
-                this.name()
+            this.name()
         );
     }
 }

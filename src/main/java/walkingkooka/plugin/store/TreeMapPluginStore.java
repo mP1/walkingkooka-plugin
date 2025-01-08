@@ -40,8 +40,8 @@ final class TreeMapPluginStore implements PluginStore {
 
     private TreeMapPluginStore() {
         this.store = Stores.treeMap(
-                Comparator.naturalOrder(),
-                TreeMapPluginStore::idSetter
+            Comparator.naturalOrder(),
+            TreeMapPluginStore::idSetter
         );
     }
 
@@ -82,10 +82,10 @@ final class TreeMapPluginStore implements PluginStore {
 
     @Override
     public Set<PluginName> ids(final int from,
-                         final int count) {
+                               final int count) {
         return this.store.ids(
-                from,
-                count
+            from,
+            count
         );
     }
 
@@ -93,8 +93,8 @@ final class TreeMapPluginStore implements PluginStore {
     public List<Plugin> values(final int from,
                                final int count) {
         return this.store.values(
-                from,
-                count
+            from,
+            count
         );
     }
 
@@ -102,8 +102,8 @@ final class TreeMapPluginStore implements PluginStore {
     public List<Plugin> between(final PluginName from,
                                 final PluginName to) {
         return this.store.between(
-                from,
-                to
+            from,
+            to
         );
     }
 
@@ -120,16 +120,16 @@ final class TreeMapPluginStore implements PluginStore {
         }
 
         final Predicate<CharSequence> globPattern = Predicates.globPatterns(
-                query,
-                CaseSensitivity.INSENSITIVE
+            query,
+            CaseSensitivity.INSENSITIVE
         );
 
         return this.store.all()
-                .stream()
-                .filter(p -> globPattern.test(p.name().value()))
-                .skip(offset)
-                .limit(count)
-                .collect(Collectors.toList());
+            .stream()
+            .filter(p -> globPattern.test(p.name().value()))
+            .skip(offset)
+            .limit(count)
+            .collect(Collectors.toList());
     }
 
     private final Store<PluginName, Plugin> store;

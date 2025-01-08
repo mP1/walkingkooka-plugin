@@ -53,8 +53,8 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
     static <N extends Name & Comparable<N>> PluginExpressionParser<N> with(final String text,
                                                                            final BiFunction<TextCursor, ParserContext, Optional<N>> nameParser) {
         return new PluginExpressionParser<>(
-                Objects.requireNonNull(text, "text"),
-                Objects.requireNonNull(nameParser, "parseName")
+            Objects.requireNonNull(text, "text"),
+            Objects.requireNonNull(nameParser, "parseName")
         );
     }
 
@@ -69,8 +69,8 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
      */
     Optional<N> name() {
         return this.nameParser.apply(
-                this.cursor,
-                PARSER_CONTEXT
+            this.cursor,
+            PARSER_CONTEXT
         );
     }
 
@@ -81,25 +81,25 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
      */
     boolean spaces() {
         return text(SPACE)
-                .isPresent();
+            .isPresent();
     }
 
     private final static Parser<ParserContext> SPACE = Parsers.character(CharPredicates.whitespace())
-            .repeating();
+        .repeating();
 
     /**
      * Matches a LEFT PARENS which marks the start of a plugin parameters.
      */
     boolean parametersBegin() {
         return this.text(PARAMETER_BEGIN_PARSER)
-                .isPresent();
+            .isPresent();
     }
 
     final static String PARAMETER_BEGIN = "(";
 
     private final static Parser<ParserContext> PARAMETER_BEGIN_PARSER = Parsers.string(
-            PARAMETER_BEGIN,
-            CaseSensitivity.SENSITIVE
+        PARAMETER_BEGIN,
+        CaseSensitivity.SENSITIVE
     );
 
     /**
@@ -107,7 +107,7 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
      */
     boolean parameterSeparator() {
         return this.text(PARAMETER_SEPARATOR_PARSER)
-                .isPresent();
+            .isPresent();
     }
 
     final static char PARAMETER_SEPARATOR_CHARACTER = ',';
@@ -115,8 +115,8 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
     final static String PARAMETER_SEPARATOR = "" + PARAMETER_SEPARATOR_CHARACTER;
 
     private final static Parser<ParserContext> PARAMETER_SEPARATOR_PARSER = Parsers.string(
-            PARAMETER_SEPARATOR,
-            CaseSensitivity.SENSITIVE
+        PARAMETER_SEPARATOR,
+        CaseSensitivity.SENSITIVE
     );
 
     /**
@@ -124,14 +124,14 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
      */
     boolean parametersEnd() {
         return this.text(PARAMETER_END_PARSER)
-                .isPresent();
+            .isPresent();
     }
 
     final static String PARAMETER_END = ")";
 
     private final static Parser<ParserContext> PARAMETER_END_PARSER = Parsers.string(
-            PARAMETER_END,
-            CaseSensitivity.SENSITIVE
+        PARAMETER_END,
+        CaseSensitivity.SENSITIVE
     );
 
     /**
@@ -139,8 +139,8 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
      */
     Optional<Double> number() {
         return this.token(
-                NUMBER_LITERAL,
-                t -> t.cast(DoubleParserToken.class).value()
+            NUMBER_LITERAL,
+            t -> t.cast(DoubleParserToken.class).value()
         );
     }
 
@@ -154,8 +154,8 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
      */
     Optional<String> doubleQuotedString() {
         return this.token(
-                DOUBLE_QUOTED_STRING_LITERAL,
-                t -> t.cast(DoubleQuotedParserToken.class).value()
+            DOUBLE_QUOTED_STRING_LITERAL,
+            t -> t.cast(DoubleQuotedParserToken.class).value()
         );
     }
 
@@ -173,8 +173,8 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
         final TextCursorSavePoint save = this.cursor.save();
         try {
             url = this.token(
-                    NON_SPACE_TOKEN,
-                    t -> Url.parseAbsolute(t.text())
+                NON_SPACE_TOKEN,
+                t -> Url.parseAbsolute(t.text())
             );
         } catch (final RuntimeException badUrl) {
             save.restore();
@@ -187,9 +187,9 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
      * Parsers a token being terminated by whitespace
      */
     private final static Parser<ParserContext> NON_SPACE_TOKEN = Parsers.stringCharPredicate(
-            CharPredicates.whitespace().negate(),
-            1,
-            Integer.MAX_VALUE
+        CharPredicates.whitespace().negate(),
+        1,
+        Integer.MAX_VALUE
     );
 
     /**
@@ -197,13 +197,13 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
      */
     Optional<Object> environmentValue(final ProviderContext context) {
         return this.token(
-                ENVIRONMENT_VALUE_NAME,
-                s -> context.environmentValueOrFail(
-                        EnvironmentValueName.with(
-                                s.text()
-                                        .substring(1) // skip leading DOLLAR-SIGN
-                        )
+            ENVIRONMENT_VALUE_NAME,
+            s -> context.environmentValueOrFail(
+                EnvironmentValueName.with(
+                    s.text()
+                        .substring(1) // skip leading DOLLAR-SIGN
                 )
+            )
         );
     }
 
@@ -211,29 +211,29 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
      * Parses a DOLLAR-SIGN then {@link EnvironmentValueName}
      */
     private final static Parser<ParserContext> ENVIRONMENT_VALUE_NAME = Parsers.sequenceParserBuilder()
-            .required(
-                    Parsers.string("$", CaseSensitivity.SENSITIVE)
-            ).required(
-                    Parsers.stringInitialAndPartCharPredicate(
-                            EnvironmentValueName.INITIAL,
-                            EnvironmentValueName.PART,
-                            2,
-                            EnvironmentValueName.MAX_LENGTH
-                    )
-            ).build();
+        .required(
+            Parsers.string("$", CaseSensitivity.SENSITIVE)
+        ).required(
+            Parsers.stringInitialAndPartCharPredicate(
+                EnvironmentValueName.INITIAL,
+                EnvironmentValueName.PART,
+                2,
+                EnvironmentValueName.MAX_LENGTH
+            )
+        ).build();
 
     private Optional<String> text(final Parser<ParserContext> parser) {
         return this.token(
-                parser,
-                ParserToken::text
+            parser,
+            ParserToken::text
         );
     }
 
     private <T> Optional<T> token(final Parser<ParserContext> parser,
                                   final Function<ParserToken, T> mapper) {
         return parser.parse(
-                this.cursor,
-                PARSER_CONTEXT
+            this.cursor,
+            PARSER_CONTEXT
         ).map(mapper);
     }
 
@@ -241,8 +241,8 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
      * Singleton which can be reused.
      */
     private final static ParserContext PARSER_CONTEXT = ParserContexts.basic(
-            DateTimeContexts.fake(), // dates are not supported
-            DecimalNumberContexts.american(MathContext.UNLIMITED) // only the decimal char is actually required.
+        DateTimeContexts.fake(), // dates are not supported
+        DecimalNumberContexts.american(MathContext.UNLIMITED) // only the decimal char is actually required.
     );
 
     /**
@@ -252,15 +252,15 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
         final TextCursorLineInfo lineInfo = this.cursor.lineInfo();
 
         final String text = lineInfo.text()
-                .toString();
+            .toString();
         int pos = lineInfo.textOffset();
-        if(pos >= text.length()) {
+        if (pos >= text.length()) {
             pos--;
         }
 
         return new InvalidCharacterException(
-                text,
-                pos
+            text,
+            pos
         );
     }
 

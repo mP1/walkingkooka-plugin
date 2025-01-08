@@ -32,18 +32,18 @@ public class TestPluginInfo implements PluginInfoLike<TestPluginInfo, StringName
 
     public static TestPluginInfo parse(final String text) {
         return new TestPluginInfo(
-                PluginInfo.parse(
-                        text,
-                        Names::string
-                )
+            PluginInfo.parse(
+                text,
+                Names::string
+            )
         );
     }
 
     TestPluginInfo(final String url,
                    final String name) {
         this(
-                Url.parseAbsolute(url),
-                Names.string(name)
+            Url.parseAbsolute(url),
+            Names.string(name)
         );
     }
 
@@ -66,10 +66,10 @@ public class TestPluginInfo implements PluginInfoLike<TestPluginInfo, StringName
         Objects.requireNonNull(name, "name");
 
         return this.name().equals(name) ?
-                this :
-                new TestPluginInfo(
-                        this.pluginInfo.setName(name)
-                );
+            this :
+            new TestPluginInfo(
+                this.pluginInfo.setName(name)
+            );
     }
 
     @Override
@@ -122,10 +122,10 @@ public class TestPluginInfo implements PluginInfoLike<TestPluginInfo, StringName
 
     static {
         JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(TestPluginInfo.class),
-                TestPluginInfo::unmarshall,
-                TestPluginInfo::marshall,
-                TestPluginInfo.class
+            JsonNodeContext.computeTypeName(TestPluginInfo.class),
+            TestPluginInfo::unmarshall,
+            TestPluginInfo::marshall,
+            TestPluginInfo.class
         );
     }
 }

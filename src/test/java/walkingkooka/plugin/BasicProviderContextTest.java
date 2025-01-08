@@ -44,9 +44,9 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
             Objects.requireNonNull(name, "name");
 
             return Optional.ofNullable(
-                    VAR.equals(name) ?
-                            (T) VAR_VALUE :
-                            null
+                VAR.equals(name) ?
+                    (T) VAR_VALUE :
+                    null
             );
         }
 
@@ -67,22 +67,22 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     @Test
     public void testWithNullEnvironmentContextFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> BasicProviderContext.with(
-                        null,
-                        PLUGIN_STORE
-                )
+            NullPointerException.class,
+            () -> BasicProviderContext.with(
+                null,
+                PLUGIN_STORE
+            )
         );
     }
 
     @Test
     public void testWithNullPluginStoreFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> BasicProviderContext.with(
-                        ENVIRONMENT_CONTEXT,
-                        null
-                )
+            NullPointerException.class,
+            () -> BasicProviderContext.with(
+                ENVIRONMENT_CONTEXT,
+                null
+            )
         );
     }
 
@@ -91,17 +91,17 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     @Test
     public void testEnvironmentValue() {
         this.environmentValueAndCheck(
-                this.createContext(),
-                VAR,
-                VAR_VALUE
+            this.createContext(),
+            VAR,
+            VAR_VALUE
         );
     }
 
     @Test
     public void testEnvironmentValueUnknown() {
         this.environmentValueAndCheck(
-                this.createContext(),
-                EnvironmentValueName.with("Unknown")
+            this.createContext(),
+            EnvironmentValueName.with("Unknown")
         );
     }
 
@@ -110,8 +110,8 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     @Test
     public void testPluginStore() {
         this.pluginStoreAndCheck(
-                this.createContext(),
-                PLUGIN_STORE
+            this.createContext(),
+            PLUGIN_STORE
         );
     }
 
@@ -119,8 +119,8 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     @Override
     public BasicProviderContext createContext() {
         return BasicProviderContext.with(
-                ENVIRONMENT_CONTEXT,
-                PLUGIN_STORE
+            ENVIRONMENT_CONTEXT,
+            PLUGIN_STORE
         );
     }
 
@@ -129,8 +129,8 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     @Test
     public void testToString() {
         this.toStringAndCheck(
-                this.createContext(),
-                ENVIRONMENT_CONTEXT.toString()
+            this.createContext(),
+            ENVIRONMENT_CONTEXT.toString()
         );
     }
 

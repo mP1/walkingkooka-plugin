@@ -25,8 +25,8 @@ import walkingkooka.text.printer.TreePrintableTesting;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface PluginSelectorTokenAlternativeLikeTesting<T extends PluginSelectorTokenAlternativeLike> extends HasTextTesting,
-        TreePrintableTesting,
-        HashCodeEqualsDefinedTesting2<T> {
+    TreePrintableTesting,
+    HashCodeEqualsDefinedTesting2<T> {
 
     String LABEL = "Label123";
 
@@ -35,39 +35,39 @@ public interface PluginSelectorTokenAlternativeLikeTesting<T extends PluginSelec
     @Test
     default void testWithNullLabelFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createPluginSelectorTokenAlternativeLike(
-                        null,
-                        TEXT
-                )
+            NullPointerException.class,
+            () -> this.createPluginSelectorTokenAlternativeLike(
+                null,
+                TEXT
+            )
         );
     }
 
     @Test
     default void testWithNullTextFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createPluginSelectorTokenAlternativeLike(
-                        LABEL,
-                        null
-                )
+            NullPointerException.class,
+            () -> this.createPluginSelectorTokenAlternativeLike(
+                LABEL,
+                null
+            )
         );
     }
 
     @Test
     default void testWith() {
         final T alternative = this.createPluginSelectorTokenAlternativeLike(
-                LABEL,
-                TEXT
+            LABEL,
+            TEXT
         );
         this.checkEquals(
-                LABEL,
-                alternative.label(),
-                "label"
+            LABEL,
+            alternative.label(),
+            "label"
         );
         this.textAndCheck(
-                alternative,
-                TEXT
+            alternative,
+            TEXT
         );
     }
 
@@ -77,17 +77,17 @@ public interface PluginSelectorTokenAlternativeLikeTesting<T extends PluginSelec
         final String text = "";
 
         final T alternative = this.createPluginSelectorTokenAlternativeLike(
-                label,
-                text
+            label,
+            text
         );
         this.checkEquals(
-                label,
-                alternative.label(),
-                "label"
+            label,
+            alternative.label(),
+            "label"
         );
         this.textAndCheck(
-                alternative,
-                text
+            alternative,
+            text
         );
     }
 
@@ -96,28 +96,28 @@ public interface PluginSelectorTokenAlternativeLikeTesting<T extends PluginSelec
     @Test
     default void testEqualsDifferentLabel() {
         this.checkNotEquals(
-                this.createPluginSelectorTokenAlternativeLike(
-                        "different " + LABEL,
-                        TEXT
-                )
+            this.createPluginSelectorTokenAlternativeLike(
+                "different " + LABEL,
+                TEXT
+            )
         );
     }
 
     @Test
     default void testEqualsDifferentText() {
         this.checkNotEquals(
-                this.createPluginSelectorTokenAlternativeLike(
-                        LABEL,
-                        "different " + TEXT
-                )
+            this.createPluginSelectorTokenAlternativeLike(
+                LABEL,
+                "different " + TEXT
+            )
         );
     }
 
     @Override
     default T createObject() {
         return this.createPluginSelectorTokenAlternativeLike(
-                LABEL,
-                TEXT
+            LABEL,
+            TEXT
         );
     }
 

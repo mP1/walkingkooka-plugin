@@ -51,8 +51,8 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
         final String text = "/host/path test-name-123";
 
         this.parseStringFails(
-                text,
-                new IllegalArgumentException("no protocol: /host/path")
+            text,
+            new IllegalArgumentException("no protocol: /host/path")
         );
     }
 
@@ -61,8 +61,8 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
         final String text = "https://example.com/path";
 
         this.parseStringFails(
-                text,
-                new IllegalArgumentException("Missing name")
+            text,
+            new IllegalArgumentException("Missing name")
         );
     }
 
@@ -72,8 +72,8 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
 
         // slash within StringName will throw a InvalidCharacterException.
         this.parseStringFails(
-                text,
-                new InvalidCharacterException(text, text.lastIndexOf('/'))
+            text,
+            new InvalidCharacterException(text, text.lastIndexOf('/'))
         );
     }
 
@@ -99,20 +99,20 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
 
         public static TestPluginInfoLike parse(final String text) {
             return new TestPluginInfoLike(
-                    PluginInfo.parse(
-                            text,
-                            Names::string
-                    )
+                PluginInfo.parse(
+                    text,
+                    Names::string
+                )
             );
         }
 
         TestPluginInfoLike(final AbsoluteUrl url,
                            final StringName name) {
             this(
-                    PluginInfo.with(
+                PluginInfo.with(
                     url,
                     name
-                    )
+                )
             );
         }
 
@@ -129,10 +129,10 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
         @Override
         public TestPluginInfoLike setName(final StringName name) {
             return this.name().equals(name) ?
-                    this :
-                    new TestPluginInfoLike(
-                            this.info.setName(name)
-                    );
+                this :
+                new TestPluginInfoLike(
+                    this.info.setName(name)
+                );
         }
 
         @Override
@@ -159,8 +159,8 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
         @Override
         public boolean equals(final Object other) {
             return this == other ||
-                    other instanceof TestPluginInfoLike &&
-                            this.equals0(Cast.to(other));
+                other instanceof TestPluginInfoLike &&
+                    this.equals0(Cast.to(other));
         }
 
         private boolean equals0(final TestPluginInfoLike other) {
@@ -176,7 +176,7 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
             Objects.requireNonNull(context, "context");
 
             return JsonNode.string(
-                    this.toString()
+                this.toString()
             );
         }
     }
@@ -186,16 +186,16 @@ public final class PlugInfoLikeTestingTest implements PluginInfoLikeTesting<Test
     static TestPluginInfoLike unmarshall2(final JsonNode node,
                                           final JsonNodeUnmarshallContext context) {
         return TestPluginInfoLike.parse(
-                node.stringOrFail()
+            node.stringOrFail()
         );
     }
 
     static {
         JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(TestPluginInfoLike.class),
-                PlugInfoLikeTestingTest::unmarshall2,
-                TestPluginInfoLike::marshall,
-                TestPluginInfoLike.class
+            JsonNodeContext.computeTypeName(TestPluginInfoLike.class),
+            PlugInfoLikeTestingTest::unmarshall2,
+            TestPluginInfoLike::marshall,
+            TestPluginInfoLike.class
         );
     }
 

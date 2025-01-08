@@ -42,8 +42,8 @@ final class PluginInfoParser<N extends Name & Comparable<N>> implements CanBeEmp
         Objects.requireNonNull(name, "name");
 
         return new PluginInfoParser<>(
-                text,
-                name
+            text,
+            name
         );
     }
 
@@ -56,21 +56,21 @@ final class PluginInfoParser<N extends Name & Comparable<N>> implements CanBeEmp
 
     String spaces() {
         return SKIP_SPACES.parse(
-                        this.cursor,
-                        CONTEXT
-                ).map(ParserToken::text)
-                .orElse("");
+                this.cursor,
+                CONTEXT
+            ).map(ParserToken::text)
+            .orElse("");
     }
 
     private final static Parser<ParserContext> SKIP_SPACES = Parsers.stringCharPredicate(
-            CharPredicates.is(' '),
-            1,
-            Character.MAX_VALUE
+        CharPredicates.is(' '),
+        1,
+        Character.MAX_VALUE
     );
 
     AbsoluteUrl url() {
         final String token = this.token();
-        if(token.isEmpty()) {
+        if (token.isEmpty()) {
             throw new IllegalArgumentException("Missing url");
         }
 
@@ -78,15 +78,15 @@ final class PluginInfoParser<N extends Name & Comparable<N>> implements CanBeEmp
             return Url.parseAbsolute(token);
         } catch (final InvalidCharacterException cause) {
             throw this.handleInvalidCharacterException(
-                    cause,
-                    token
+                cause,
+                token
             );
         }
     }
 
     N name() {
         final String token = this.token();
-        if(token.isEmpty()) {
+        if (token.isEmpty()) {
             throw new IllegalArgumentException("Missing name");
         }
 
@@ -94,8 +94,8 @@ final class PluginInfoParser<N extends Name & Comparable<N>> implements CanBeEmp
             return this.name.apply(token);
         } catch (final InvalidCharacterException cause) {
             throw this.handleInvalidCharacterException(
-                    cause,
-                    token
+                cause,
+                token
             );
         }
     }
@@ -104,16 +104,16 @@ final class PluginInfoParser<N extends Name & Comparable<N>> implements CanBeEmp
 
     private String token() {
         return SKIP_NOT_SPACES.parse(
-                        this.cursor,
-                        CONTEXT
-                ).map(ParserToken::text)
-                .orElse("");
+                this.cursor,
+                CONTEXT
+            ).map(ParserToken::text)
+            .orElse("");
     }
 
     private final static Parser<ParserContext> SKIP_NOT_SPACES = Parsers.stringCharPredicate(
-            CharPredicates.is(' ').negate(),
-            1,
-            Character.MAX_VALUE
+        CharPredicates.is(' ').negate(),
+        1,
+        Character.MAX_VALUE
     );
 
     @Override
@@ -130,19 +130,19 @@ final class PluginInfoParser<N extends Name & Comparable<N>> implements CanBeEmp
     private InvalidCharacterException handleInvalidCharacterException(final InvalidCharacterException cause,
                                                                       final String token) {
         return cause.setTextAndPosition(
-                this.text,
-                this.cursor.lineInfo()
-                        .textOffset() -
-                        token.length() +
-                        cause.position()
+            this.text,
+            this.cursor.lineInfo()
+                .textOffset() -
+                token.length() +
+                cause.position()
         );
     }
 
     void invalidCharacterException() {
         throw new InvalidCharacterException(
             this.text,
-                this.cursor.lineInfo()
-                        .textOffset()
+            this.cursor.lineInfo()
+                .textOffset()
         );
     }
 }

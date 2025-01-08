@@ -30,8 +30,8 @@ import java.util.List;
  * Interface that should be implemented by all selectors.
  */
 public interface PluginSelectorLike<N extends Name & Comparable<N>> extends HasName<N>, HasText,
-        HasUrlFragment,
-        TreePrintable {
+    HasUrlFragment,
+    TreePrintable {
 
     /**
      * Would be setter that returns a selector with the given {@link Name}.

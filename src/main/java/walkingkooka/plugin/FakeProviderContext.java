@@ -20,7 +20,7 @@ package walkingkooka.plugin;
 import walkingkooka.environment.FakeEnvironmentContext;
 import walkingkooka.plugin.store.PluginStore;
 
-public class FakeProviderContext extends FakeEnvironmentContext implements ProviderContext{
+public class FakeProviderContext extends FakeEnvironmentContext implements ProviderContext {
     @Override
     public PluginStore pluginStore() {
         throw new UnsupportedOperationException();

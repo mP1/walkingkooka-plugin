@@ -28,7 +28,7 @@ import walkingkooka.text.CaseSensitivity;
 import java.util.List;
 
 final class PluginNameLikeTest implements ParseStringTesting<List<PluginName>>,
-        ClassTesting<TestPluginNameLike> {
+    ClassTesting<TestPluginNameLike> {
 
     // parse............................................................................................................
 
@@ -40,60 +40,60 @@ final class PluginNameLikeTest implements ParseStringTesting<List<PluginName>>,
     @Test
     public void testParseCommaFails() {
         this.parseStringInvalidCharacterFails(
-                ",",
-                0
+            ",",
+            0
         );
     }
 
     @Test
     public void testParseEmptyString() {
         this.parseStringAndCheck(
-                "",
-                Lists.empty()
+            "",
+            Lists.empty()
         );
     }
 
     @Test
     public void testParseSpaces() {
         this.parseStringAndCheck(
-                "   ",
-                Lists.empty()
+            "   ",
+            Lists.empty()
         );
     }
 
     @Test
     public void testParseName() {
         this.parseStringAndCheck(
-                "abc",
-                Lists.of(PluginName.with("abc"))
+            "abc",
+            Lists.of(PluginName.with("abc"))
         );
     }
 
     @Test
     public void testParseNameSpaces() {
         this.parseStringAndCheck(
-                "abc   ",
-                Lists.of(PluginName.with("abc"))
+            "abc   ",
+            Lists.of(PluginName.with("abc"))
         );
     }
 
     @Test
     public void testParseNameSpaceSeparatorSpaceName() {
         this.parseStringAndCheck(
-                "abc , xyz",
-                Lists.of(
-                        PluginName.with("abc"),
-                        PluginName.with("xyz")
-                )
+            "abc , xyz",
+            Lists.of(
+                PluginName.with("abc"),
+                PluginName.with("xyz")
+            )
         );
     }
 
     @Override
     public List<PluginName> parseString(final String text) {
         return PluginNameLike.parse(
-                text,
-                PluginName::with,
-                Lists::immutable
+            text,
+            PluginName::with,
+            Lists::immutable
         );
     }
 
@@ -145,7 +145,7 @@ final class PluginNameLikeTest implements ParseStringTesting<List<PluginName>>,
         @Override
         public int hashCode() {
             return this.caseSensitivity()
-                    .hash(this.value);
+                .hash(this.value);
         }
 
         @Override
@@ -155,10 +155,10 @@ final class PluginNameLikeTest implements ParseStringTesting<List<PluginName>>,
 
         private boolean equals0(final TestPluginNameLike other) {
             return this.caseSensitivity()
-                    .equals(
+                .equals(
                     this.value,
                     other.value
-            );
+                );
         }
     }
 

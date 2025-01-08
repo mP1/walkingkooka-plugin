@@ -32,8 +32,8 @@ public final class ProviderContexts implements PublicStaticHelper {
     public static ProviderContext basic(final EnvironmentContext environmentContext,
                                         final PluginStore pluginStore) {
         return BasicProviderContext.with(
-                environmentContext,
-                pluginStore
+            environmentContext,
+            pluginStore
         );
     }
 

@@ -23,17 +23,17 @@ import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 public interface ProviderContextTesting<C extends ProviderContext> extends ContextTesting<C>,
-        EnvironmentContextTesting2<C>,
-        TreePrintableTesting {
+    EnvironmentContextTesting2<C>,
+    TreePrintableTesting {
 
     // pluginStore......................................................................................................
 
     default void pluginStoreAndCheck(final ProviderContext providerContext,
                                      final PluginStore expected) {
         this.checkEquals(
-                expected,
-                providerContext.pluginStore(),
-                "pluginStore"
+            expected,
+            providerContext.pluginStore(),
+            "pluginStore"
         );
     }
 

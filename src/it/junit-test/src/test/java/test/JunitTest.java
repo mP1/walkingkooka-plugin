@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import java.util.Comparator;
 import java.util.List;
+
 import walkingkooka.collect.list.Lists;
 import walkingkooka.plugin.PluginName;
 
@@ -47,8 +48,8 @@ public class JunitTest {
         list.sort(Comparator.naturalOrder());
 
         Assert.assertEquals(
-                Lists.of(a, b, d, c),
-                list
+            Lists.of(a, b, d, c),
+            list
         );
     }
 }

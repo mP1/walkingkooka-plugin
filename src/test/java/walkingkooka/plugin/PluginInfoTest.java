@@ -31,10 +31,10 @@ import walkingkooka.reflect.JavaVisibility;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginInfoTest implements ClassTesting2<PluginInfo<PluginName>>,
-        HasNameTesting<PluginName>,
-        HasAbsoluteUrlTesting<PluginInfo<PluginName>>,
-        HashCodeEqualsDefinedTesting2<PluginInfo<PluginName>>,
-        ComparableTesting2<PluginInfo<PluginName>> {
+    HasNameTesting<PluginName>,
+    HasAbsoluteUrlTesting<PluginInfo<PluginName>>,
+    HashCodeEqualsDefinedTesting2<PluginInfo<PluginName>>,
+    ComparableTesting2<PluginInfo<PluginName>> {
 
     private final static AbsoluteUrl URL = Url.parseAbsolute("https://example.com");
 
@@ -43,22 +43,22 @@ public final class PluginInfoTest implements ClassTesting2<PluginInfo<PluginName
     @Test
     public void testWithNullUrlFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginInfo.with(
-                        null,
-                        NAME
-                )
+            NullPointerException.class,
+            () -> PluginInfo.with(
+                null,
+                NAME
+            )
         );
     }
 
     @Test
     public void testWithNullNameFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginInfo.with(
-                        URL,
-                        null
-                )
+            NullPointerException.class,
+            () -> PluginInfo.with(
+                URL,
+                null
+            )
         );
     }
 
@@ -67,28 +67,28 @@ public final class PluginInfoTest implements ClassTesting2<PluginInfo<PluginName
     @Test
     public void testEqualsDifferentUrl() {
         this.checkNotEquals(
-                PluginInfo.with(
-                        Url.parseAbsolute("http://example.com/different"),
-                        NAME
-                )
+            PluginInfo.with(
+                Url.parseAbsolute("http://example.com/different"),
+                NAME
+            )
         );
     }
 
     @Test
     public void testEqualsDifferentName() {
         this.checkNotEquals(
-                PluginInfo.with(
-                        URL,
-                        PluginName.with("different-123")
-                )
+            PluginInfo.with(
+                URL,
+                PluginName.with("different-123")
+            )
         );
     }
 
     @Override
     public PluginInfo<PluginName> createObject() {
         return PluginInfo.with(
-                URL,
-                NAME
+            URL,
+            NAME
         );
     }
 
@@ -97,10 +97,10 @@ public final class PluginInfoTest implements ClassTesting2<PluginInfo<PluginName
     @Test
     public void testCompareLess() {
         this.compareToAndCheckLess(
-                PluginInfo.with(
-                        URL,
-                        PluginName.with("xyz-456")
-                )
+            PluginInfo.with(
+                URL,
+                PluginName.with("xyz-456")
+            )
         );
     }
 

@@ -36,34 +36,34 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
-        I extends PluginInfoLike<I, N>,
-        IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-        S extends PluginSelectorLike<N>,
-        A extends PluginAliasLike<N, S, A>,
-        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
-        extends ImmutableSortedSetTesting<AS, A>,
-        HasTextTesting,
-        TreePrintableTesting,
-        ParseStringTesting<AS>,
-        ToStringTesting<AS>,
-        HasUrlFragmentTesting {
+    I extends PluginInfoLike<I, N>,
+    IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+    S extends PluginSelectorLike<N>,
+    A extends PluginAliasLike<N, S, A>,
+    AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+    extends ImmutableSortedSetTesting<AS, A>,
+    HasTextTesting,
+    TreePrintableTesting,
+    ParseStringTesting<AS>,
+    ToStringTesting<AS>,
+    HasUrlFragmentTesting {
 
     // selector.........................................................................................................
 
     @Test
     default void testSelectorWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createSet().selector(null)
+            NullPointerException.class,
+            () -> this.createSet().selector(null)
         );
     }
 
     default void selectorAndCheck(final String aliases,
                                   final S selector) {
         this.selectorAndCheck(
-                aliases,
-                selector,
-                selector
+            aliases,
+            selector,
+            selector
         );
     }
 
@@ -71,18 +71,18 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                   final S selector,
                                   final S expected) {
         this.selectorAndCheck(
-                this.parseString(aliases),
-                selector,
-                expected
+            this.parseString(aliases),
+            selector,
+            expected
         );
     }
 
     default void selectorAndCheck(final AS aliases,
                                   final S selector) {
         this.selectorAndCheck(
-                aliases,
-                selector,
-                selector
+            aliases,
+            selector,
+            selector
         );
     }
 
@@ -90,9 +90,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                   final S selector,
                                   final S expected) {
         this.checkEquals(
-                expected,
-                aliases.selector(selector),
-                () -> aliases + " selector " + selector
+            expected,
+            aliases.selector(selector),
+            () -> aliases + " selector " + selector
         );
     }
 
@@ -100,9 +100,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                final S selector,
                                final String expected) {
         this.selectorFails(
-                this.parseString(aliases),
-                selector,
-                expected
+            this.parseString(aliases),
+            selector,
+            expected
         );
     }
 
@@ -110,13 +110,13 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                final S selector,
                                final String expected) {
         final IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
-                () -> aliases.selector(selector)
+            IllegalArgumentException.class,
+            () -> aliases.selector(selector)
         );
 
         this.checkEquals(
-                expected,
-                thrown.getMessage()
+            expected,
+            thrown.getMessage()
         );
     }
 
@@ -125,17 +125,17 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
     @Test
     default void testAliasOrNameWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createSet().aliasOrName(null)
+            NullPointerException.class,
+            () -> this.createSet().aliasOrName(null)
         );
     }
 
     default void aliasOrNameAndCheck(final String text,
                                      final N aliasOrName) {
         this.aliasOrNameAndCheck(
-                text,
-                aliasOrName,
-                Optional.empty()
+            text,
+            aliasOrName,
+            Optional.empty()
         );
     }
 
@@ -143,9 +143,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                      final N aliasOrName,
                                      final N expected) {
         this.aliasOrNameAndCheck(
-                text,
-                aliasOrName,
-                Optional.of(expected)
+            text,
+            aliasOrName,
+            Optional.of(expected)
         );
     }
 
@@ -153,18 +153,18 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                      final N aliasOrName,
                                      final Optional<N> expected) {
         this.aliasOrNameAndCheck(
-                this.parseString(text),
-                aliasOrName,
-                expected
+            this.parseString(text),
+            aliasOrName,
+            expected
         );
     }
 
     default void aliasOrNameAndCheck(final AS aliases,
                                      final N aliasOrName) {
         this.aliasOrNameAndCheck(
-                aliases,
-                aliasOrName,
-                Optional.empty()
+            aliases,
+            aliasOrName,
+            Optional.empty()
         );
     }
 
@@ -172,9 +172,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                      final N aliasOrName,
                                      final N expected) {
         this.aliasOrNameAndCheck(
-                aliases,
-                aliasOrName,
-                Optional.of(expected)
+            aliases,
+            aliasOrName,
+            Optional.of(expected)
         );
     }
 
@@ -182,9 +182,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                      final N aliasOrName,
                                      final Optional<N> expected) {
         this.checkEquals(
-                expected,
-                aliases.aliasOrName(aliasOrName),
-                () -> "aliasOrName  " + aliasOrName + " in " + aliases
+            expected,
+            aliases.aliasOrName(aliasOrName),
+            () -> "aliasOrName  " + aliasOrName + " in " + aliases
         );
     }
 
@@ -193,17 +193,17 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
     @Test
     default void testAliasSelectorWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createSet().aliasSelector(null)
+            NullPointerException.class,
+            () -> this.createSet().aliasSelector(null)
         );
     }
 
     default void aliasSelectorAndCheck(final String text,
                                        final N alias) {
         this.aliasSelectorAndCheck(
-                this.parseString(text),
-                alias,
-                Optional.empty()
+            this.parseString(text),
+            alias,
+            Optional.empty()
         );
     }
 
@@ -211,9 +211,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                        final N alias,
                                        final S expected) {
         this.aliasSelectorAndCheck(
-                this.parseString(text),
-                alias,
-                Optional.of(expected)
+            this.parseString(text),
+            alias,
+            Optional.of(expected)
         );
     }
 
@@ -221,18 +221,18 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                        final N alias,
                                        final Optional<S> expected) {
         this.aliasSelectorAndCheck(
-                this.parseString(text),
-                alias,
-                expected
+            this.parseString(text),
+            alias,
+            expected
         );
     }
 
     default void aliasSelectorAndCheck(final AS aliases,
                                        final N alias) {
         this.aliasSelectorAndCheck(
-                aliases,
-                alias,
-                Optional.empty()
+            aliases,
+            alias,
+            Optional.empty()
         );
     }
 
@@ -240,9 +240,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                        final N alias,
                                        final S expected) {
         this.aliasSelectorAndCheck(
-                aliases,
-                alias,
-                Optional.of(expected)
+            aliases,
+            alias,
+            Optional.of(expected)
         );
     }
 
@@ -250,9 +250,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                        final N alias,
                                        final Optional<S> expected) {
         this.checkEquals(
-                expected,
-                aliases.aliasSelector(alias),
-                () -> "aliasSelector  " + alias + " in " + aliases
+            expected,
+            aliases.aliasSelector(alias),
+            () -> "aliasSelector  " + alias + " in " + aliases
         );
     }
 
@@ -261,8 +261,8 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
     @Test
     default void testMergeWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createSet().merge(null)
+            NullPointerException.class,
+            () -> this.createSet().merge(null)
         );
     }
 
@@ -270,9 +270,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                final IS providerInfos,
                                final I... expected) {
         this.mergeAndCheck(
-                aliases,
-                providerInfos,
-                Sets.of(expected)
+            aliases,
+            providerInfos,
+            Sets.of(expected)
         );
     }
 
@@ -280,9 +280,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                final IS providerInfos,
                                final Set<I> expected) {
         this.checkEquals(
-                expected,
-                aliases.merge(providerInfos),
-                "merge"
+            expected,
+            aliases.merge(providerInfos),
+            "merge"
         );
     }
 
@@ -291,8 +291,8 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
     @Test
     default void testDeleteAliasOrNameWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createSet().deleteAliasOrName(null)
+            NullPointerException.class,
+            () -> this.createSet().deleteAliasOrName(null)
         );
     }
 
@@ -300,9 +300,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                      final N aliasOrName,
                                      final A... expected) {
         this.deleteAliasAndCheck(
-                this.parseString(text),
-                aliasOrName,
-                expected
+            this.parseString(text),
+            aliasOrName,
+            expected
         );
     }
 
@@ -310,9 +310,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                      final N aliasOrName,
                                      final A... expected) {
         this.deleteAliasAndCheck(
-                aliases,
-                aliasOrName,
-                Sets.of(expected)
+            aliases,
+            aliasOrName,
+            Sets.of(expected)
         );
     }
 
@@ -320,9 +320,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                      final N aliasOrName,
                                      final Set<A> expected) {
         this.deleteAliasAndCheck(
-                aliases,
-                aliasOrName,
-                expected
+            aliases,
+            aliasOrName,
+            expected
         );
     }
 
@@ -348,19 +348,19 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
     @Test
     default void testContainsAliasOrNameWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createSet()
-                        .containsAliasOrName(null)
+            NullPointerException.class,
+            () -> this.createSet()
+                .containsAliasOrName(null)
         );
     }
 
-    private void containsAliasOrNameAndCheck(final String aliases, 
-                                             final N aliasOrName, 
+    private void containsAliasOrNameAndCheck(final String aliases,
+                                             final N aliasOrName,
                                              final boolean expected) {
         this.containsAliasOrNameAndCheck(
-                this.parseString(aliases),
-                aliasOrName,
-                expected
+            this.parseString(aliases),
+            aliasOrName,
+            expected
         );
     }
 
@@ -368,9 +368,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                              final N aliasOrName,
                                              final boolean expected) {
         this.checkEquals(
-                expected,
-                aliases.containsAliasOrName(aliasOrName),
-                () -> aliases.text() + " containsAliasOrName " + aliasOrName
+            expected,
+            aliases.containsAliasOrName(aliasOrName),
+            () -> aliases.text() + " containsAliasOrName " + aliasOrName
         );
     }
 
@@ -379,9 +379,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
     @Test
     default void testDeleteAliasOrNameAllWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createSet()
-                        .deleteAliasOrNameAll(null)
+            NullPointerException.class,
+            () -> this.createSet()
+                .deleteAliasOrNameAll(null)
         );
     }
 
@@ -389,9 +389,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                               final Collection<N> aliasOrName,
                                               final String expected) {
         this.deleteAliasOrNameAllAndCheck(
-                this.parseString(aliases),
-                aliasOrName,
-                this.parseString(expected)
+            this.parseString(aliases),
+            aliasOrName,
+            this.parseString(expected)
         );
     }
 
@@ -399,9 +399,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                               final Collection<N> aliasOrNames,
                                               final AS expected) {
         this.checkEquals(
-                expected,
-                aliases.deleteAliasOrNameAll(aliasOrNames),
-                () -> aliases.text() + " deleteAliasOrNameAll " + aliasOrNames
+            expected,
+            aliases.deleteAliasOrNameAll(aliasOrNames),
+            () -> aliases.text() + " deleteAliasOrNameAll " + aliasOrNames
         );
     }
 
@@ -410,9 +410,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
     @Test
     default void testKeepAliasOrNameAllWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> this.createSet()
-                        .keepAliasOrNameAll(null)
+            NullPointerException.class,
+            () -> this.createSet()
+                .keepAliasOrNameAll(null)
         );
     }
 
@@ -421,12 +421,12 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         final AS aliases = this.createSet();
 
         assertSame(
-                aliases.keepAliasOrNameAll(
-                        aliases.stream()
-                                .map(PluginAliasLike::name)
-                                .collect(Collectors.toList())
-                ),
-                aliases
+            aliases.keepAliasOrNameAll(
+                aliases.stream()
+                    .map(PluginAliasLike::name)
+                    .collect(Collectors.toList())
+            ),
+            aliases
         );
     }
 
@@ -434,9 +434,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                             final Collection<N> aliasOrName,
                                             final String expected) {
         this.keepAliasOrNameAllAndCheck(
-                this.parseString(aliases),
-                aliasOrName,
-                this.parseString(expected)
+            this.parseString(aliases),
+            aliasOrName,
+            this.parseString(expected)
         );
     }
 
@@ -444,9 +444,9 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
                                             final Collection<N> aliasOrNames,
                                             final AS expected) {
         this.checkEquals(
-                expected,
-                aliases.keepAliasOrNameAll(aliasOrNames),
-                () -> aliases.text() + " keepAliasOrNameAll " + aliasOrNames
+            expected,
+            aliases.keepAliasOrNameAll(aliasOrNames),
+            () -> aliases.text() + " keepAliasOrNameAll " + aliasOrNames
         );
     }
 
@@ -457,8 +457,8 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         final AS aliases = this.createSet();
 
         this.urlFragmentAndCheck(
-                aliases,
-                aliases.text()
+            aliases,
+            aliases.text()
         );
     }
 

@@ -36,8 +36,8 @@ final class PluginInfoSetLikeParser<N extends Name & Comparable<N>, I extends Pl
     static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>> PluginInfoSetLikeParser<N, I> with(final String text,
                                                                                                                final Function<String, I> infoParser) {
         return new PluginInfoSetLikeParser<>(
-                text,
-                infoParser
+            text,
+            infoParser
         );
     }
 
@@ -50,16 +50,16 @@ final class PluginInfoSetLikeParser<N extends Name & Comparable<N>, I extends Pl
 
     String spaces() {
         return SPACES.parse(
-                        this.cursor,
-                        CONTEXT
-                ).map(ParserToken::text)
-                .orElse("");
+                this.cursor,
+                CONTEXT
+            ).map(ParserToken::text)
+            .orElse("");
     }
 
     private final static Parser<ParserContext> SPACES = Parsers.stringCharPredicate(
-            CharPredicates.is(' '),
-            1,
-            Character.MAX_VALUE
+        CharPredicates.is(' '),
+        1,
+        Character.MAX_VALUE
     );
 
     I info() {
@@ -68,15 +68,15 @@ final class PluginInfoSetLikeParser<N extends Name & Comparable<N>, I extends Pl
         final String name = this.name();
 
         final String token = url +
-                spaces +
-                name;
+            spaces +
+            name;
 
         try {
             return this.infoParser.apply(token);
         } catch (final InvalidCharacterException cause) {
             throw this.handleInvalidCharacterException(
-                    cause,
-                    token
+                cause,
+                token
             );
         }
     }
@@ -85,44 +85,44 @@ final class PluginInfoSetLikeParser<N extends Name & Comparable<N>, I extends Pl
 
     private String url() {
         return URL.parse(
-                        this.cursor,
-                        CONTEXT
-                ).map(ParserToken::text)
-                .orElse("");
+                this.cursor,
+                CONTEXT
+            ).map(ParserToken::text)
+            .orElse("");
     }
 
     private final static Parser<ParserContext> URL = Parsers.stringCharPredicate(
-            CharPredicates.any(" ").negate(),
-            1,
-            Character.MAX_VALUE
+        CharPredicates.any(" ").negate(),
+        1,
+        Character.MAX_VALUE
     );
 
     private String name() {
         return NAME.parse(
-                        this.cursor,
-                        CONTEXT
-                ).map(ParserToken::text)
-                .orElse("");
+                this.cursor,
+                CONTEXT
+            ).map(ParserToken::text)
+            .orElse("");
     }
 
     private final static Parser<ParserContext> NAME = Parsers.stringCharPredicate(
-            CharPredicates.any(" " + PluginInfoSetLike.SEPARATOR.character()).negate(),
-            1,
-            Character.MAX_VALUE
+        CharPredicates.any(" " + PluginInfoSetLike.SEPARATOR.character()).negate(),
+        1,
+        Character.MAX_VALUE
     );
 
     String comma() {
         return COMMA.parse(
-                        this.cursor,
-                        CONTEXT
-                ).map(ParserToken::text)
-                .orElse("");
+                this.cursor,
+                CONTEXT
+            ).map(ParserToken::text)
+            .orElse("");
     }
 
     private final static Parser<ParserContext> COMMA = Parsers.character(
-            CharPredicates.is(
-                    PluginInfoSetLike.SEPARATOR.character()
-            )
+        CharPredicates.is(
+            PluginInfoSetLike.SEPARATOR.character()
+        )
     );
 
     @Override
@@ -139,19 +139,19 @@ final class PluginInfoSetLikeParser<N extends Name & Comparable<N>, I extends Pl
     private InvalidCharacterException handleInvalidCharacterException(final InvalidCharacterException cause,
                                                                       final String token) {
         return cause.setTextAndPosition(
-                this.text,
-                this.cursor.lineInfo()
-                        .textOffset() -
-                        token.length() +
-                        cause.position()
+            this.text,
+            this.cursor.lineInfo()
+                .textOffset() -
+                token.length() +
+                cause.position()
         );
     }
 
     void invalidCharacterException() {
         throw new InvalidCharacterException(
             this.text,
-                this.cursor.lineInfo()
-                        .textOffset()
+            this.cursor.lineInfo()
+                .textOffset()
         );
     }
 }

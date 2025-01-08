@@ -37,16 +37,16 @@ public final class PluginInfoLikeTest implements PluginInfoLikeTesting<TestPlugi
     @Test
     public void testSort() {
         final TestPluginInfo info1 = new TestPluginInfo(
-                Url.parseAbsolute("https://example.com/1"),
-                Names.string("plugin1")
+            Url.parseAbsolute("https://example.com/1"),
+            Names.string("plugin1")
         );
         final TestPluginInfo info2 = new TestPluginInfo(
-                Url.parseAbsolute("https://example.com/2"),
-                Names.string("plugin2")
+            Url.parseAbsolute("https://example.com/2"),
+            Names.string("plugin2")
         );
         final TestPluginInfo info3 = new TestPluginInfo(
-                Url.parseAbsolute("https://example.com/different-1"),
-                Names.string("plugin1")
+            Url.parseAbsolute("https://example.com/different-1"),
+            Names.string("plugin1")
         );
 
         final Set<TestPluginInfo> infos = SortedSets.tree();
@@ -55,14 +55,14 @@ public final class PluginInfoLikeTest implements PluginInfoLikeTesting<TestPlugi
         infos.add(info3);
 
         this.checkEquals(
-                Lists.of(
-                        info1,
-                        info3,
-                        info2
-                ),
-                Lists.of(
-                        infos.toArray()
-                )
+            Lists.of(
+                info1,
+                info3,
+                info2
+            ),
+            Lists.of(
+                infos.toArray()
+            )
         );
     }
 
@@ -75,8 +75,8 @@ public final class PluginInfoLikeTest implements PluginInfoLikeTesting<TestPlugi
     public TestPluginInfo createPluginInfoLike(final AbsoluteUrl url,
                                                final StringName name) {
         return new TestPluginInfo(
-                Objects.requireNonNull(url, "url"),
-                Objects.requireNonNull(name, "name")
+            Objects.requireNonNull(url, "url"),
+            Objects.requireNonNull(name, "name")
         );
     }
 
@@ -85,109 +85,109 @@ public final class PluginInfoLikeTest implements PluginInfoLikeTesting<TestPlugi
     @Test
     public void testParseEmptyFails() {
         this.parseStringFails(
-                "",
-                new IllegalArgumentException("Missing url")
+            "",
+            new IllegalArgumentException("Missing url")
         );
     }
 
     @Test
     public void testParseMissingUrlFails() {
         this.parseStringFails(
-                " ",
-                new IllegalArgumentException("Missing url")
+            " ",
+            new IllegalArgumentException("Missing url")
         );
     }
 
     @Test
     public void testParseUrlFails() {
         this.parseStringFails(
-                " https://example.com/1",
-                new IllegalArgumentException("Missing name")
+            " https://example.com/1",
+            new IllegalArgumentException("Missing name")
         );
     }
 
     @Test
     public void testParseUrlSpaceName() {
         this.parseStringAndCheck(
-                "https://example.com/1 plugin1",
-                new TestPluginInfo(
-                        Url.parseAbsolute("https://example.com/1"),
-                        Names.string("plugin1")
-                )
+            "https://example.com/1 plugin1",
+            new TestPluginInfo(
+                Url.parseAbsolute("https://example.com/1"),
+                Names.string("plugin1")
+            )
         );
     }
 
     @Test
     public void testParseUrlIncludesCommaSpaceName() {
         this.parseStringAndCheck(
-                "https://example.com/1,2 plugin1",
-                new TestPluginInfo(
-                        Url.parseAbsolute("https://example.com/1,2"),
-                        Names.string("plugin1")
-                )
+            "https://example.com/1,2 plugin1",
+            new TestPluginInfo(
+                Url.parseAbsolute("https://example.com/1,2"),
+                Names.string("plugin1")
+            )
         );
     }
 
     @Test
     public void testParseSpaceUrlSpaceName() {
         this.parseStringAndCheck(
-                " https://example.com/1 plugin1",
-                new TestPluginInfo(
-                        Url.parseAbsolute("https://example.com/1"),
-                        Names.string("plugin1")
-                )
+            " https://example.com/1 plugin1",
+            new TestPluginInfo(
+                Url.parseAbsolute("https://example.com/1"),
+                Names.string("plugin1")
+            )
         );
     }
 
     @Test
     public void testParseSpaceSpaceUrlSpaceName() {
         this.parseStringAndCheck(
-                "  https://example.com/1 plugin1",
-                new TestPluginInfo(
-                        Url.parseAbsolute("https://example.com/1"),
-                        Names.string("plugin1")
-                )
+            "  https://example.com/1 plugin1",
+            new TestPluginInfo(
+                Url.parseAbsolute("https://example.com/1"),
+                Names.string("plugin1")
+            )
         );
     }
 
     @Test
     public void testParseSpaceSpaceUrlSpaceSpaceName() {
         this.parseStringAndCheck(
-                "  https://example.com/1  plugin1",
-                new TestPluginInfo(
-                        Url.parseAbsolute("https://example.com/1"),
-                        Names.string("plugin1")
-                )
+            "  https://example.com/1  plugin1",
+            new TestPluginInfo(
+                Url.parseAbsolute("https://example.com/1"),
+                Names.string("plugin1")
+            )
         );
     }
 
     @Test
     public void testParseSpaceSpaceUrlSpaceSpaceNameSpace() {
         this.parseStringAndCheck(
-                "  https://example.com/1  plugin1 ",
-                new TestPluginInfo(
-                        Url.parseAbsolute("https://example.com/1"),
-                        Names.string("plugin1")
-                )
+            "  https://example.com/1  plugin1 ",
+            new TestPluginInfo(
+                Url.parseAbsolute("https://example.com/1"),
+                Names.string("plugin1")
+            )
         );
     }
 
     @Test
     public void testParseSpaceSpaceUrlSpaceSpaceNameSpaceSpace() {
         this.parseStringAndCheck(
-                "  https://example.com/1  plugin1  ",
-                new TestPluginInfo(
-                        Url.parseAbsolute("https://example.com/1"),
-                        Names.string("plugin1")
-                )
+            "  https://example.com/1  plugin1  ",
+            new TestPluginInfo(
+                Url.parseAbsolute("https://example.com/1"),
+                Names.string("plugin1")
+            )
         );
     }
 
     @Test
     public void testParseUrlSpaceNameSpaceTokenFails() {
         this.parseStringInvalidCharacterFails(
-                " https://example.com/1 name X",
-                'X'
+            " https://example.com/1 name X",
+            'X'
         );
     }
 
@@ -215,8 +215,8 @@ public final class PluginInfoLikeTest implements PluginInfoLikeTesting<TestPlugi
     public TestPluginInfo unmarshall(final JsonNode json,
                                      final JsonNodeUnmarshallContext context) {
         return TestPluginInfo.unmarshall(
-                json,
-                context
+            json,
+            context
         );
     }
 }

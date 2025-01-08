@@ -30,7 +30,7 @@ public final class PluginProviders implements PublicStaticHelper {
      */
     @GwtIncompatible
     public static PluginProvider classLoader(final ClassLoader classLoader) throws IOException,
-            ClassNotFoundException {
+        ClassNotFoundException {
         return ClassLoaderPluginProvider.createFromManifest(classLoader);
     }
 

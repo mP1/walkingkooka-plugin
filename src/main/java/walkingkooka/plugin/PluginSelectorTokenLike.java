@@ -33,7 +33,7 @@ import java.util.Objects;
  * This interface defines properties and some marshalling helpers for a selector token.
  */
 public interface PluginSelectorTokenLike<A extends PluginSelectorTokenAlternativeLike> extends HasText,
-        TreePrintable {
+    TreePrintable {
 
     String label();
 
@@ -59,36 +59,36 @@ public interface PluginSelectorTokenLike<A extends PluginSelectorTokenAlternativ
 
     default JsonNode marshall(final JsonNodeMarshallContext context) {
         Objects.requireNonNull(context, "context");
-        
+
         final List<JsonNode> children = Lists.array();
-        
+
         final String label = this.label();
-        if(false == label.isEmpty()) {
+        if (false == label.isEmpty()) {
             children.add(
-                    JsonNode.string(label)
-                            .setName(PluginSelectorTokenLikeJsonConstants.LABEL_PROPERTY)
+                JsonNode.string(label)
+                    .setName(PluginSelectorTokenLikeJsonConstants.LABEL_PROPERTY)
             );
         }
 
         final String text = this.text();
-        if(false == text.isEmpty()) {
+        if (false == text.isEmpty()) {
             children.add(
-                    JsonNode.string(text)
-                            .setName(PluginSelectorTokenLikeJsonConstants.TEXT_PROPERTY)
+                JsonNode.string(text)
+                    .setName(PluginSelectorTokenLikeJsonConstants.TEXT_PROPERTY)
             );
         }
 
         final List<?> alternatives = this.alternatives();
-        if(false == alternatives.isEmpty()) {
+        if (false == alternatives.isEmpty()) {
             children.add(
-                    context.marshallCollection(
-                            alternatives
-                    ).setName(PluginSelectorTokenLikeJsonConstants.ALTERNATIVES_PROPERTY)
+                context.marshallCollection(
+                    alternatives
+                ).setName(PluginSelectorTokenLikeJsonConstants.ALTERNATIVES_PROPERTY)
             );
         }
 
         return JsonNode.object()
-                .setChildren(children);
+            .setChildren(children);
     }
 
     /**
@@ -118,8 +118,8 @@ public interface PluginSelectorTokenLike<A extends PluginSelectorTokenAlternativ
                     break;
                 case PluginSelectorTokenLikeJsonConstants.ALTERNATIVES_PROPERTY_STRING:
                     alternatives = context.unmarshallList(
-                            child,
-                            alternativesType
+                        child,
+                        alternativesType
                     );
                     break;
                 default:
@@ -128,9 +128,9 @@ public interface PluginSelectorTokenLike<A extends PluginSelectorTokenAlternativ
         }
 
         return factory.create(
-                label,
-                text,
-                alternatives
+            label,
+            text,
+            alternatives
         );
     }
 }

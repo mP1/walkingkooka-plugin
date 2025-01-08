@@ -32,17 +32,17 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginNameSetTest implements ImmutableSortedSetTesting<PluginNameSet, PluginName>,
-        HasTextTesting,
-        ParseStringTesting<PluginNameSet>,
-        TreePrintableTesting,
-        JsonNodeMarshallingTesting<PluginNameSet>,
-        HasUrlFragmentTesting {
+    HasTextTesting,
+    ParseStringTesting<PluginNameSet>,
+    TreePrintableTesting,
+    JsonNodeMarshallingTesting<PluginNameSet>,
+    HasUrlFragmentTesting {
 
     @Test
     public void testWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginNameSet.with(null)
+            NullPointerException.class,
+            () -> PluginNameSet.with(null)
         );
     }
 
@@ -51,20 +51,20 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
         final PluginName name = PluginName.with("Plugin111");
 
         assertSame(
-                PluginNameSet.EMPTY,
-                PluginNameSet.with(
-                        SortedSets.of(name)
-                ).delete(name)
+            PluginNameSet.EMPTY,
+            PluginNameSet.with(
+                SortedSets.of(name)
+            ).delete(name)
         );
     }
 
     @Override
     public PluginNameSet createSet() {
         return PluginNameSet.with(
-                SortedSets.of(
-                        PluginName.with("Plugin111"),
-                        PluginName.with("Plugin222")
-                )
+            SortedSets.of(
+                PluginName.with("Plugin111"),
+                PluginName.with("Plugin222")
+            )
         );
     }
 
@@ -78,54 +78,54 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
     @Test
     public void testParseInvalidCharacterFails() {
         this.parseStringInvalidCharacterFails(
-                "plugin!1, plugin2",
-                '!'
+            "plugin!1, plugin2",
+            '!'
         );
     }
 
     @Test
     public void testParseInvalidCharacterSecondPluginNameFails() {
         this.parseStringInvalidCharacterFails(
-                "plugin1, plugin2!",
-                '!'
+            "plugin1, plugin2!",
+            '!'
         );
     }
 
     @Test
     public void testParseEmpty() {
         assertSame(
-                PluginNameSet.EMPTY,
-                this.parseStringAndCheck(
-                        "",
-                        PluginNameSet.EMPTY
-                )
+            PluginNameSet.EMPTY,
+            this.parseStringAndCheck(
+                "",
+                PluginNameSet.EMPTY
+            )
         );
     }
 
     @Test
     public void testParseSpaces() {
         assertSame(
-                PluginNameSet.EMPTY,
-                this.parseStringAndCheck(
-                        "   ",
-                        PluginNameSet.EMPTY
-                )
+            PluginNameSet.EMPTY,
+            this.parseStringAndCheck(
+                "   ",
+                PluginNameSet.EMPTY
+            )
         );
     }
 
     @Test
     public void testParse() {
         this.parseStringAndCheck(
-                "Plugin111,Plugin222",
-                this.createSet()
+            "Plugin111,Plugin222",
+            this.createSet()
         );
     }
 
     @Test
     public void testParseWithExtraSpaces() {
         this.parseStringAndCheck(
-                " Plugin111 , Plugin222 ",
-                this.createSet()
+            " Plugin111 , Plugin222 ",
+            this.createSet()
         );
     }
 
@@ -149,8 +149,8 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
     @Test
     public void testText() {
         this.textAndCheck(
-                this.createSet(),
-                "Plugin111,Plugin222"
+            this.createSet(),
+            "Plugin111,Plugin222"
         );
     }
 
@@ -159,9 +159,9 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
     @Test
     public void testTreePrint() {
         this.treePrintAndCheck(
-                this.createSet(),
-                "Plugin111\n" +
-                        "Plugin222\n"
+            this.createSet(),
+            "Plugin111\n" +
+                "Plugin222\n"
         );
     }
 
@@ -170,8 +170,8 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
     @Test
     public void testMarshall() {
         this.marshallAndCheck(
-                this.createJsonNodeMarshallingValue(),
-                "\"Plugin111,Plugin222\""
+            this.createJsonNodeMarshallingValue(),
+            "\"Plugin111,Plugin222\""
         );
     }
 
@@ -179,8 +179,8 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
     public PluginNameSet unmarshall(final JsonNode jsonNode,
                                     final JsonNodeUnmarshallContext context) {
         return PluginNameSet.unmarshall(
-                jsonNode,
-                context
+            jsonNode,
+            context
         );
     }
 
@@ -194,8 +194,8 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
     @Test
     public void testUrlFragment() {
         this.urlFragmentAndCheck(
-                this.createSet(),
-                "Plugin111,Plugin222"
+            this.createSet(),
+            "Plugin111,Plugin222"
         );
     }
 

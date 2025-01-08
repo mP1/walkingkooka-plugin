@@ -33,15 +33,15 @@ import java.util.Set;
  * A {@link Set} that holds {@link PluginInfoLike} and a few related helpers.
  */
 public interface PluginInfoSetLike<N extends Name & Comparable<N>,
-        I extends PluginInfoLike<I, N>,
-        IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
-        S extends PluginSelectorLike<N>,
-        A extends PluginAliasLike<N, S, A>,
-        AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
-        extends ImmutableSet<I>,
-            HasText,
-            HasUrlFragment,
-            TreePrintable {
+    I extends PluginInfoLike<I, N>,
+    IS extends PluginInfoSetLike<N, I, IS, S, A, AS>,
+    S extends PluginSelectorLike<N>,
+    A extends PluginAliasLike<N, S, A>,
+    AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
+    extends ImmutableSet<I>,
+    HasText,
+    HasUrlFragment,
+    TreePrintable {
 
     /**
      * The character that separates multiple {@link PluginInfoLike}.
@@ -89,7 +89,7 @@ public interface PluginInfoSetLike<N extends Name & Comparable<N>,
 
     @Override
     IS replace(final I newInfo,
-              final I oldInfo);
+               final I oldInfo);
 
     @Override
     IS setElements(final Set<I> newElements);

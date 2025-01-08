@@ -28,12 +28,12 @@ import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 public interface PluginAliasLikeTesting<N extends Name & Comparable<N>, S extends PluginSelectorLike<N>, A extends PluginAliasLike<N, S, A>> extends ComparableTesting2<A>,
-        HasNameTesting<N>,
-        ParseStringTesting<A>,
-        HasTextTesting,
-        TreePrintableTesting,
-        ToStringTesting<A>,
-        ClassTesting<A> {
+    HasNameTesting<N>,
+    ParseStringTesting<A>,
+    HasTextTesting,
+    TreePrintableTesting,
+    ToStringTesting<A>,
+    ClassTesting<A> {
 
     // parseString......................................................................................................
 
@@ -53,8 +53,8 @@ public interface PluginAliasLikeTesting<N extends Name & Comparable<N>, S extend
     default void testToString() {
         final A alias = this.createObject();
         this.toStringAndCheck(
-                alias,
-                alias.text()
+            alias,
+            alias.text()
         );
     }
 }

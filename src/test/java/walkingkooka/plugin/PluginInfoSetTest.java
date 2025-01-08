@@ -38,20 +38,20 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSet<StringName, TestPluginInfo>, TestPluginInfo>,
-        IteratorTesting,
-        ParseStringTesting<PluginInfoSet<StringName, TestPluginInfo>>,
-        HasTextTesting,
-        TreePrintableTesting,
-        ToStringTesting<PluginInfoSet<StringName, TestPluginInfo>>,
-        HashCodeEqualsDefinedTesting2<PluginInfoSet<StringName, TestPluginInfo>> {
+    IteratorTesting,
+    ParseStringTesting<PluginInfoSet<StringName, TestPluginInfo>>,
+    HasTextTesting,
+    TreePrintableTesting,
+    ToStringTesting<PluginInfoSet<StringName, TestPluginInfo>>,
+    HashCodeEqualsDefinedTesting2<PluginInfoSet<StringName, TestPluginInfo>> {
 
     private final static AbsoluteUrl URL1 = Url.parseAbsolute("https://example.com/a1");
 
     private final static StringName NAME1 = Names.string("a1");
 
     private final static TestPluginInfo INFO1 = new TestPluginInfo(
-            URL1,
-            NAME1
+        URL1,
+        NAME1
     );
 
     private final static AbsoluteUrl URL2 = Url.parseAbsolute("https://example.com/b2");
@@ -59,8 +59,8 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
     private final static StringName NAME2 = Names.string("b2");
 
     private final static TestPluginInfo INFO2 = new TestPluginInfo(
-            URL2,
-            NAME2
+        URL2,
+        NAME2
     );
 
     // with.............................................................................................................
@@ -68,80 +68,80 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
     @Test
     public void testWithNullFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginInfoSet.with(null)
+            NullPointerException.class,
+            () -> PluginInfoSet.with(null)
         );
     }
 
     @Test
     public void testWithDuplicateUrlFails() {
         final IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
-                () -> PluginInfoSet.with(
-                        Sets.of(
-                                INFO1,
-                                INFO2,
-                                new TestPluginInfo(
-                                        INFO1.url(),
-                                        Names.string("c3")
-                                )
-                        )
+            IllegalArgumentException.class,
+            () -> PluginInfoSet.with(
+                Sets.of(
+                    INFO1,
+                    INFO2,
+                    new TestPluginInfo(
+                        INFO1.url(),
+                        Names.string("c3")
+                    )
                 )
+            )
         );
 
         this.checkEquals(
-                "Duplicate url \"" + URL1 + "\"",
-                thrown.getMessage()
+            "Duplicate url \"" + URL1 + "\"",
+            thrown.getMessage()
         );
     }
 
     @Test
     public void testWithDuplicateNameFails() {
         final IllegalArgumentException thrown = assertThrows(
-                IllegalArgumentException.class,
-                () -> PluginInfoSet.with(
-                        Sets.of(
-                                INFO1,
-                                INFO2,
-                                new TestPluginInfo(
-                                        Url.parseAbsolute("https://example.com/3c"),
-                                        NAME1
-                                )
-                        )
+            IllegalArgumentException.class,
+            () -> PluginInfoSet.with(
+                Sets.of(
+                    INFO1,
+                    INFO2,
+                    new TestPluginInfo(
+                        Url.parseAbsolute("https://example.com/3c"),
+                        NAME1
+                    )
                 )
+            )
         );
 
         this.checkEquals(
-                "Duplicate name \"a1\"",
-                thrown.getMessage()
+            "Duplicate name \"a1\"",
+            thrown.getMessage()
         );
     }
 
     @Test
     public void testWith() {
         final PluginInfoSet<StringName, TestPluginInfo> infos = PluginInfoSet.with(
-                Sets.of(
-                        INFO1,
-                        INFO2
-                )
+            Sets.of(
+                INFO1,
+                INFO2
+            )
         );
 
         this.checkEquals(
-                Sets.of(
-                        URL1,
-                        URL2
-                ),
-                infos.url(),
-                () -> "urls " + infos
+            Sets.of(
+                URL1,
+                URL2
+            ),
+            infos.url(),
+            () -> "urls " + infos
         );
 
         this.checkEquals(
-                Sets.of(
-                        NAME1,
-                        NAME2
-                ),
-                infos.names(),
-                () -> "names " + infos
+            Sets.of(
+                NAME1,
+                NAME2
+            ),
+            infos.names(),
+            () -> "names " + infos
         );
     }
 
@@ -156,11 +156,11 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
         set.clear();
 
         this.checkEquals(
-                Sets.of(
-                        INFO1,
-                        INFO2
-                ),
-                infos
+            Sets.of(
+                INFO1,
+                INFO2
+            ),
+            infos
         );
     }
 
@@ -169,16 +169,16 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
     @Test
     public void testContains() {
         this.containsAndCheck(
-                this.createSet(),
-                INFO1
+            this.createSet(),
+            INFO1
         );
     }
 
     @Test
     public void testContainsAbsent() {
         this.containsAndCheckAbsent(
-                this.createSet(),
-                TestPluginInfo.parse("https://example.com/absent Z")
+            this.createSet(),
+            TestPluginInfo.parse("https://example.com/absent Z")
         );
     }
 
@@ -187,20 +187,20 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
     @Test
     public void testIterator() {
         this.iterateAndCheck(
-                this.createSet()
-                        .iterator(),
-                INFO1,
-                INFO2
+            this.createSet()
+                .iterator(),
+            INFO1,
+            INFO2
         );
     }
 
     @Test
     public void testIteratorHasNext() {
         this.iterateUsingHasNextAndCheck(
-                this.createSet()
-                        .iterator(),
-                INFO1,
-                INFO2
+            this.createSet()
+                .iterator(),
+            INFO1,
+            INFO2
         );
     }
 
@@ -209,18 +209,18 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
     @Test
     public void testRemoveFails() {
         this.removeFails(
-                this.createSet(),
-                INFO1
+            this.createSet(),
+            INFO1
         );
     }
 
     @Override
     public PluginInfoSet<StringName, TestPluginInfo> createSet() {
         return PluginInfoSet.with(
-                Sets.of(
-                        INFO1,
-                        INFO2
-                )
+            Sets.of(
+                INFO1,
+                INFO2
+            )
         );
     }
 
@@ -229,11 +229,11 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
     @Test
     public void testParseNullInfoParserFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> PluginInfoSet.parse(
-                        "",
-                        null
-                )
+            NullPointerException.class,
+            () -> PluginInfoSet.parse(
+                "",
+                null
+            )
         );
     }
 
@@ -245,66 +245,66 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
     @Test
     public void testParseEmpty() {
         this.parseStringAndCheck(
-                "",
-                new PluginInfoSet<StringName, TestPluginInfo>(
-                        SortedSets.empty(), // infos
-                        Sets.empty(), // urls
-                        Sets.empty() // names
-                )
+            "",
+            new PluginInfoSet<StringName, TestPluginInfo>(
+                SortedSets.empty(), // infos
+                Sets.empty(), // urls
+                Sets.empty() // names
+            )
         );
     }
 
     @Test
     public void testParseInfo() {
         this.parseStringAndCheck(
-                "" + INFO1,
-                PluginInfoSet.with(
-                        Sets.of(INFO1)
-                )
+            "" + INFO1,
+            PluginInfoSet.with(
+                Sets.of(INFO1)
+            )
         );
     }
 
     @Test
     public void testParseSpaceInfoSpace() {
         this.parseStringAndCheck(
-                " " + INFO1 + " ",
-                PluginInfoSet.with(
-                        Sets.of(INFO1)
-                )
+            " " + INFO1 + " ",
+            PluginInfoSet.with(
+                Sets.of(INFO1)
+            )
         );
     }
 
     @Test
     public void testParseInfoCommaInfo() {
         this.parseStringAndCheck(
-                "" + INFO1 + "," + INFO2,
-                PluginInfoSet.with(
-                        Sets.of(
-                                INFO1,
-                                INFO2
-                        )
+            "" + INFO1 + "," + INFO2,
+            PluginInfoSet.with(
+                Sets.of(
+                    INFO1,
+                    INFO2
                 )
+            )
         );
     }
 
     @Test
     public void testParseInfoSpaceCommaSpaceInfo() {
         this.parseStringAndCheck(
-                "" + INFO1 + " , " + INFO2,
-                PluginInfoSet.with(
-                        Sets.of(
-                                INFO1,
-                                INFO2
-                        )
+            "" + INFO1 + " , " + INFO2,
+            PluginInfoSet.with(
+                Sets.of(
+                    INFO1,
+                    INFO2
                 )
+            )
         );
     }
 
     @Override
     public PluginInfoSet<StringName, TestPluginInfo> parseString(final String text) {
         return PluginInfoSet.parse(
-                text,
-                TestPluginHelper.INSTANCE::parseInfo
+            text,
+            TestPluginHelper.INSTANCE::parseInfo
         );
     }
 
@@ -323,25 +323,25 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
     @Test
     public void testText() {
         this.textAndCheck(
-                PluginInfoSet.with(
-                        Sets.of(
-                                INFO1
-                        )
-                ),
-                "https://example.com/a1 a1"
+            PluginInfoSet.with(
+                Sets.of(
+                    INFO1
+                )
+            ),
+            "https://example.com/a1 a1"
         );
     }
 
     @Test
     public void testText2() {
         this.textAndCheck(
-                PluginInfoSet.with(
-                        Sets.of(
-                                INFO1,
-                                INFO2
-                        )
-                ),
-                "https://example.com/a1 a1,https://example.com/b2 b2"
+            PluginInfoSet.with(
+                Sets.of(
+                    INFO1,
+                    INFO2
+                )
+            ),
+            "https://example.com/a1 a1,https://example.com/b2 b2"
         );
     }
 
@@ -350,14 +350,14 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
     @Test
     public void testTreePrint() {
         this.treePrintAndCheck(
-                PluginInfoSet.with(
-                        Sets.of(
-                                INFO1,
-                                INFO2
-                        )
-                ),
-                        "https://example.com/a1 a1\n" +
-                        "https://example.com/b2 b2\n"
+            PluginInfoSet.with(
+                Sets.of(
+                    INFO1,
+                    INFO2
+                )
+            ),
+            "https://example.com/a1 a1\n" +
+                "https://example.com/b2 b2\n"
         );
     }
 
@@ -366,27 +366,27 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
     @Test
     public void testEqualsDifferent() {
         this.checkNotEquals(
-                PluginInfoSet.with(
-                        Sets.of(
-                                INFO1
-                        )
-                ),
-                PluginInfoSet.with(
-                        Sets.of(
-                                INFO1,
-                                INFO2
-                        )
+            PluginInfoSet.with(
+                Sets.of(
+                    INFO1
                 )
+            ),
+            PluginInfoSet.with(
+                Sets.of(
+                    INFO1,
+                    INFO2
+                )
+            )
         );
     }
 
     @Override
     public PluginInfoSet<StringName, TestPluginInfo> createObject() {
         return PluginInfoSet.with(
-                Sets.of(
-                        INFO1,
-                        INFO2
-                )
+            Sets.of(
+                INFO1,
+                INFO2
+            )
         );
     }
 
@@ -395,13 +395,13 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
     @Test
     public void testToString() {
         this.toStringAndCheck(
-                PluginInfoSet.with(
-                        Sets.of(
-                                INFO1,
-                                INFO2
-                        )
-                ),
-                "[https://example.com/a1 a1, https://example.com/b2 b2]"
+            PluginInfoSet.with(
+                Sets.of(
+                    INFO1,
+                    INFO2
+                )
+            ),
+            "[https://example.com/a1 a1, https://example.com/b2 b2]"
         );
     }
 

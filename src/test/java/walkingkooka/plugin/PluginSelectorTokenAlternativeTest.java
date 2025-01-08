@@ -21,14 +21,14 @@ import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 
 public final class PluginSelectorTokenAlternativeTest implements PluginSelectorTokenAlternativeLikeTesting<PluginSelectorTokenAlternative>,
-        ClassTesting2<PluginSelectorTokenAlternative> {
+    ClassTesting2<PluginSelectorTokenAlternative> {
 
     @Override
     public PluginSelectorTokenAlternative createPluginSelectorTokenAlternativeLike(final String label,
-                                                                                           final String text) {
+                                                                                   final String text) {
         return PluginSelectorTokenAlternative.with(
-                label,
-                text
+            label,
+            text
         );
     }
 

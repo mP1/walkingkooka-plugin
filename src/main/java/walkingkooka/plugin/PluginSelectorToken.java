@@ -41,11 +41,11 @@ public final class PluginSelectorToken<T extends PluginSelectorTokenAlternativeL
                                                                                              final String text,
                                                                                              final List<T> alternatives) {
         return new PluginSelectorToken<>(
-                Objects.requireNonNull(label, "label"),
-                Objects.requireNonNull(text, "text"),
-                Lists.immutable(
-                        Objects.requireNonNull(alternatives, "alternatives")
-                )
+            Objects.requireNonNull(label, "label"),
+            Objects.requireNonNull(text, "text"),
+            Lists.immutable(
+                Objects.requireNonNull(alternatives, "alternatives")
+            )
         );
     }
 
@@ -83,32 +83,32 @@ public final class PluginSelectorToken<T extends PluginSelectorTokenAlternativeL
     @Override
     public int hashCode() {
         return Objects.hash(
-                this.label,
-                this.text,
-                this.alternatives
+            this.label,
+            this.text,
+            this.alternatives
         );
     }
 
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-                other instanceof PluginSelectorToken &&
-                        this.equals0(Cast.to(other));
+            other instanceof PluginSelectorToken &&
+                this.equals0(Cast.to(other));
     }
 
     private boolean equals0(final PluginSelectorToken<?> other) {
         return this.label.equals(other.label) &&
-                this.text.equals(other.text) &&
-                this.alternatives.equals(other.alternatives);
+            this.text.equals(other.text) &&
+            this.alternatives.equals(other.alternatives);
     }
 
     @Override
     public String toString() {
         return CharSequences.quoteAndEscape(this.label) +
-                " " +
-                CharSequences.quoteAndEscape(this.text) +
-                " " +
-                this.alternatives;
+            " " +
+            CharSequences.quoteAndEscape(this.text) +
+            " " +
+            this.alternatives;
     }
 
     // TreePrintable....................................................................................................

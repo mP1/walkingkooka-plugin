@@ -33,10 +33,10 @@ import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 final public class PluginProviderName implements Name, Comparable<PluginProviderName> {
 
     final static CharPredicate INITIAL = CharPredicates.range('A', 'Z')
-            .or(CharPredicates.range('a', 'z'));
+        .or(CharPredicates.range('a', 'z'));
 
     final static CharPredicate PART = INITIAL.or(CharPredicates.range('0', '9'))
-            .or(CharPredicates.is('-'));
+        .or(CharPredicates.is('-'));
 
     /**
      * The maximum valid length
@@ -48,10 +48,10 @@ final public class PluginProviderName implements Name, Comparable<PluginProvider
      */
     public static PluginProviderName with(final String name) {
         CharPredicates.failIfNullOrEmptyOrInitialAndPartFalse(
-                name,
-                PluginProviderName.class.getSimpleName(),
-                INITIAL,
-                PART
+            name,
+            PluginProviderName.class.getSimpleName(),
+            INITIAL,
+            PART
         );
 
         final int length = name.length();
@@ -87,8 +87,8 @@ final public class PluginProviderName implements Name, Comparable<PluginProvider
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-                other instanceof PluginProviderName &&
-                        this.equals0(Cast.to(other));
+            other instanceof PluginProviderName &&
+                this.equals0(Cast.to(other));
     }
 
     private boolean equals0(final PluginProviderName other) {
@@ -105,10 +105,10 @@ final public class PluginProviderName implements Name, Comparable<PluginProvider
     @Override
     public int compareTo(final PluginProviderName other) {
         return CASE_SENSITIVITY.comparator()
-                .compare(
-                        this.name,
-                        other.name
-                );
+            .compare(
+                this.name,
+                other.name
+            );
     }
 
     // HasCaseSensitivity................................................................................................
@@ -133,10 +133,10 @@ final public class PluginProviderName implements Name, Comparable<PluginProvider
 
     static {
         JsonNodeContext.register(
-                JsonNodeContext.computeTypeName(PluginProviderName.class),
-                PluginProviderName::unmarshall,
-                PluginProviderName::marshall,
-                PluginProviderName.class
+            JsonNodeContext.computeTypeName(PluginProviderName.class),
+            PluginProviderName::unmarshall,
+            PluginProviderName::marshall,
+            PluginProviderName.class
         );
     }
 }

@@ -25,8 +25,8 @@ import walkingkooka.text.CaseSensitivity;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
 
 public interface PluginNameTesting<N extends PluginNameLike<N>> extends ClassTesting2<N>,
-        NameTesting2<N, N>,
-        JsonNodeMarshallingTesting<N> {
+    NameTesting2<N, N>,
+    JsonNodeMarshallingTesting<N> {
 
     // Comparator ......................................................................................................
 
@@ -38,8 +38,8 @@ public interface PluginNameTesting<N extends PluginNameLike<N>> extends ClassTes
         final N d = this.createName("month-of-year");
 
         this.compareToArraySortAndCheck(
-                a, b, c, d,
-                a, b, d, c
+            a, b, c, d,
+            a, b, d, c
         );
     }
 
@@ -76,8 +76,8 @@ public interface PluginNameTesting<N extends PluginNameLike<N>> extends ClassTes
     @Override
     default String possibleValidChars(final int position) {
         return 0 == position ?
-                ASCII_LETTERS :
-                ASCII_LETTERS_DIGITS + "-";
+            ASCII_LETTERS :
+            ASCII_LETTERS_DIGITS + "-";
     }
 
     @Override

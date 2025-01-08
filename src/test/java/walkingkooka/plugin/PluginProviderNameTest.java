@@ -27,8 +27,8 @@ import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 final public class PluginProviderNameTest implements ClassTesting2<PluginProviderName>,
-        NameTesting2<PluginProviderName, PluginProviderName>,
-        JsonNodeMarshallingTesting<PluginProviderName> {
+    NameTesting2<PluginProviderName, PluginProviderName>,
+    JsonNodeMarshallingTesting<PluginProviderName> {
 
     // Comparator ......................................................................................................
 
@@ -40,8 +40,8 @@ final public class PluginProviderNameTest implements ClassTesting2<PluginProvide
         final PluginProviderName d = PluginProviderName.with("month-of-year");
 
         this.compareToArraySortAndCheck(
-                a, b, c, d,
-                a, b, d, c
+            a, b, c, d,
+            a, b, d, c
         );
     }
 
@@ -83,8 +83,8 @@ final public class PluginProviderNameTest implements ClassTesting2<PluginProvide
     @Override
     public String possibleValidChars(final int position) {
         return 0 == position ?
-                ASCII_LETTERS :
-                ASCII_LETTERS_DIGITS + "-";
+            ASCII_LETTERS :
+            ASCII_LETTERS_DIGITS + "-";
     }
 
     @Override

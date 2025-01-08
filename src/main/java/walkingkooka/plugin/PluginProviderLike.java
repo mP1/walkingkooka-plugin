@@ -26,5 +26,5 @@ import walkingkooka.net.HasAbsoluteUrl;
  * Describes a provider and includes a {@link Name} and {@link AbsoluteUrl}.
  */
 public interface PluginProviderLike<N extends Name> extends HasName<N>,
-        HasAbsoluteUrl {
+    HasAbsoluteUrl {
 }

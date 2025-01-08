@@ -49,9 +49,9 @@ import java.util.stream.Collectors;
  * A {@link Set} of {@link PluginInfoLike}. Instances are intended to be wrapped.
  */
 public final class PluginInfoSet<N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>> extends AbstractSet<I> implements ImmutableSetDefaults<PluginInfoSet<N, I>, I>,
-        HasText,
-        HasUrlFragment,
-        TreePrintable {
+    HasText,
+    HasUrlFragment,
+    TreePrintable {
 
     /**
      * Parses the text into a {@link PluginInfoSet}.
@@ -64,8 +64,8 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
         final SortedSet<I> infos = SortedSets.tree();
 
         final PluginInfoSetLikeParser<N, I> parser = PluginInfoSetLikeParser.with(
-                text,
-                infoParser
+            text,
+            infoParser
         );
 
         parser.spaces();
@@ -105,14 +105,14 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
         Objects.requireNonNull(infos, "infos");
 
         return prepare(
-                copy(infos)
+            copy(infos)
         );
     }
 
     private static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>> SortedSet<I> copy(final Set<I> infos) {
         return infos instanceof SortedSet ?
-                SortedSets.immutable((SortedSet<I>) infos) :
-                new TreeSet<>(infos);
+            SortedSets.immutable((SortedSet<I>) infos) :
+            new TreeSet<>(infos);
     }
 
     private static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>> PluginInfoSet<N, I> prepare(final SortedSet<I> infos) {
@@ -137,9 +137,9 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
         }
 
         return new PluginInfoSet<>(
-                infosCopy,
-                Sets.readOnly(urls),
-                Sets.readOnly(names)
+            infosCopy,
+            Sets.readOnly(urls),
+            Sets.readOnly(names)
         );
     }
 
@@ -181,9 +181,9 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
         final Set<AbsoluteUrl> infoUrls = infos.url();
 
         return this.setElements(
-                this.stream()
-                        .filter(i -> infoUrls.contains(i.url()))
-                        .collect(Collectors.toSet())
+            this.stream()
+                .filter(i -> infoUrls.contains(i.url()))
+                .collect(Collectors.toSet())
         );
     }
 
@@ -199,8 +199,8 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
 
         for (final I info : this) {
             urlToInfo.put(
-                    info.url(),
-                    info
+                info.url(),
+                info
             );
         }
 
@@ -209,8 +209,8 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
             final I info = urlToInfo.get(renameInfoUrl);
             if (null != info) {
                 urlToInfo.put(
-                        renameInfoUrl,
-                        renameInfo
+                    renameInfoUrl,
+                    renameInfo
                 );
             }
         }
@@ -225,7 +225,7 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
     @Override
     public Iterator<I> iterator() {
         return Iterators.readOnly(
-                this.infos.iterator()
+            this.infos.iterator()
         );
     }
 
@@ -237,14 +237,14 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
     @Override
     public PluginInfoSet<N, I> setElements(final Set<I> infos) {
         return this.setElements0(
-                copy(infos)
+            copy(infos)
         );
     }
 
     private PluginInfoSet<N, I> setElements0(final SortedSet<I> infos) {
         return this.infos.equals(infos) ?
-                this :
-                prepare(infos);
+            this :
+            prepare(infos);
     }
 
     @Override
@@ -259,8 +259,8 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
     @Override
     public String text() {
         return SEPARATOR.toSeparatedString(
-                this,
-                Object::toString
+            this,
+            Object::toString
         );
     }
 
@@ -273,7 +273,7 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
     @Override
     public UrlFragment urlFragment() {
         return UrlFragment.with(
-                this.text()
+            this.text()
         );
     }
 
@@ -283,8 +283,8 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
     public void printTree(final IndentingPrinter printer) {
         for (final I info : this) {
             TreePrintable.printTreeOrToString(
-                    info,
-                    printer
+                info,
+                printer
             );
             printer.lineStart();
         }
@@ -300,8 +300,8 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
                                                                                                                   final Function<String, I> infoParser,
                                                                                                                   final JsonNodeUnmarshallContext context) {
         return parse(
-                json.stringOrFail(),
-                infoParser
+            json.stringOrFail(),
+            infoParser
         );
     }
 }
