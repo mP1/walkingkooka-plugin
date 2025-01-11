@@ -18,6 +18,7 @@
 package walkingkooka.plugin;
 
 import walkingkooka.Cast;
+import walkingkooka.InvalidTextLengthException;
 import walkingkooka.naming.Name;
 import walkingkooka.predicate.character.CharPredicate;
 import walkingkooka.predicate.character.CharPredicates;
@@ -88,7 +89,7 @@ final public class PluginName implements PluginNameLike<PluginName> {
      * Note MIN/MAX length is not tested in the ctor, wrappers should invoke this method after calling new with their label.
      */
     public PluginName checkLength(final String label) {
-        Name.checkLength(
+        InvalidTextLengthException.throwIfFail(
             label,
             this.value(),
             MIN_LENGTH,
