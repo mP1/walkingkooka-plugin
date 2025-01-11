@@ -144,12 +144,4 @@ final class PluginInfoSetParser<N extends Name & Comparable<N>, I extends Plugin
                 cause.position()
         );
     }
-
-    void invalidCharacterException() {
-        throw new InvalidCharacterException(
-            this.text,
-            this.cursor.lineInfo()
-                .textOffset()
-        );
-    }
 }
