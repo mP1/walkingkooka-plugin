@@ -18,7 +18,6 @@
 package walkingkooka.plugin;
 
 import walkingkooka.CanBeEmpty;
-import walkingkooka.InvalidCharacterException;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.math.DecimalNumberContexts;
@@ -28,7 +27,6 @@ import walkingkooka.net.Url;
 import walkingkooka.predicate.character.CharPredicates;
 import walkingkooka.text.CaseSensitivity;
 import walkingkooka.text.cursor.TextCursor;
-import walkingkooka.text.cursor.TextCursorLineInfo;
 import walkingkooka.text.cursor.TextCursorSavePoint;
 import walkingkooka.text.cursor.TextCursors;
 import walkingkooka.text.cursor.parser.DoubleParserToken;
@@ -248,20 +246,9 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
     /**
      * Helper that reports an invalid character.
      */
-    InvalidCharacterException invalidCharacter() {
-        final TextCursorLineInfo lineInfo = this.cursor.lineInfo();
-
-        final String text = lineInfo.text()
-            .toString();
-        int pos = lineInfo.textOffset();
-        if (pos >= text.length()) {
-            pos--;
-        }
-
-        return new InvalidCharacterException(
-            text,
-            pos
-        );
+    IllegalArgumentException invalidCharacter() {
+        return this.cursor.lineInfo()
+            .emptyTextOrInvalidCharacterExceptionOrLast("text");
     }
 
     @Override

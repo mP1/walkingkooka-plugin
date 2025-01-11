@@ -106,10 +106,8 @@ final class PluginNameSetParser implements CanBeEmpty {
     }
 
     void invalidCharacterException() {
-        throw new InvalidCharacterException(
-            this.text,
-            this.cursor.lineInfo()
-                .textOffset()
-        );
+        throw this.cursor.lineInfo()
+            .invalidCharacterException()
+            .get();
     }
 }

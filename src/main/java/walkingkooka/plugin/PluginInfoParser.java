@@ -139,10 +139,8 @@ final class PluginInfoParser<N extends Name & Comparable<N>> implements CanBeEmp
     }
 
     void invalidCharacterException() {
-        throw new InvalidCharacterException(
-            this.text,
-            this.cursor.lineInfo()
-                .textOffset()
-        );
+        throw this.cursor.lineInfo()
+            .invalidCharacterException()
+            .get();
     }
 }
