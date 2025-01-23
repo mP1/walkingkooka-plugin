@@ -56,7 +56,7 @@ final class TestPluginHelper implements PluginHelper<StringName, TestPluginInfo,
         Objects.requireNonNull(cursor, "cursor");
         Objects.requireNonNull(context, "context");
 
-        return Parsers.stringInitialAndPartCharPredicate(
+        return Parsers.initialAndPartCharPredicateString(
             (i) -> i >= 'a' && i <= 'z',
             (i) -> i >= 'a' && i <= 'z' || i >= '0' && i <= '9' || i == '-',
             1, // minLength

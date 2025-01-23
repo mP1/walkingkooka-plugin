@@ -212,7 +212,7 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
         .required(
             Parsers.string("$", CaseSensitivity.SENSITIVE)
         ).required(
-            Parsers.stringInitialAndPartCharPredicate(
+            Parsers.initialAndPartCharPredicateString(
                 EnvironmentValueName.INITIAL,
                 EnvironmentValueName.PART,
                 2,
