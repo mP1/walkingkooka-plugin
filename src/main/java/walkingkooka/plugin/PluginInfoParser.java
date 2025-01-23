@@ -62,7 +62,7 @@ final class PluginInfoParser<N extends Name & Comparable<N>> implements CanBeEmp
             .orElse("");
     }
 
-    private final static Parser<ParserContext> SKIP_SPACES = Parsers.stringCharPredicate(
+    private final static Parser<ParserContext> SKIP_SPACES = Parsers.charPredicateString(
         CharPredicates.is(' '),
         1,
         Character.MAX_VALUE
@@ -110,7 +110,7 @@ final class PluginInfoParser<N extends Name & Comparable<N>> implements CanBeEmp
             .orElse("");
     }
 
-    private final static Parser<ParserContext> SKIP_NOT_SPACES = Parsers.stringCharPredicate(
+    private final static Parser<ParserContext> SKIP_NOT_SPACES = Parsers.charPredicateString(
         CharPredicates.is(' ').negate(),
         1,
         Character.MAX_VALUE
