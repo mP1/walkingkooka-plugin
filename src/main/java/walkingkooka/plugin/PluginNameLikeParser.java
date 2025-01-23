@@ -59,7 +59,7 @@ final class PluginNameLikeParser<N extends Name & Comparable<N>> implements CanB
             .orElse("");
     }
 
-    private final static Parser<ParserContext> SPACES = Parsers.stringCharPredicate(
+    private final static Parser<ParserContext> SPACES = Parsers.charPredicateString(
         CharPredicates.is(' '),
         1,
         Character.MAX_VALUE
@@ -88,7 +88,7 @@ final class PluginNameLikeParser<N extends Name & Comparable<N>> implements CanB
 
     private final Function<String, N> nameParser;
 
-    private final static Parser<ParserContext> NAME = Parsers.stringCharPredicate(
+    private final static Parser<ParserContext> NAME = Parsers.charPredicateString(
         CharPredicates.any(" " + PluginInfoSetLike.SEPARATOR.character()).negate(),
         1,
         Character.MAX_VALUE

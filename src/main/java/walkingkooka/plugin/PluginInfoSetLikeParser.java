@@ -56,7 +56,7 @@ final class PluginInfoSetLikeParser<N extends Name & Comparable<N>, I extends Pl
             .orElse("");
     }
 
-    private final static Parser<ParserContext> SPACES = Parsers.stringCharPredicate(
+    private final static Parser<ParserContext> SPACES = Parsers.charPredicateString(
         CharPredicates.is(' '),
         1,
         Character.MAX_VALUE
@@ -91,7 +91,7 @@ final class PluginInfoSetLikeParser<N extends Name & Comparable<N>, I extends Pl
             .orElse("");
     }
 
-    private final static Parser<ParserContext> URL = Parsers.stringCharPredicate(
+    private final static Parser<ParserContext> URL = Parsers.charPredicateString(
         CharPredicates.any(" ").negate(),
         1,
         Character.MAX_VALUE
@@ -105,7 +105,7 @@ final class PluginInfoSetLikeParser<N extends Name & Comparable<N>, I extends Pl
             .orElse("");
     }
 
-    private final static Parser<ParserContext> NAME = Parsers.stringCharPredicate(
+    private final static Parser<ParserContext> NAME = Parsers.charPredicateString(
         CharPredicates.any(" " + PluginInfoSetLike.SEPARATOR.character()).negate(),
         1,
         Character.MAX_VALUE

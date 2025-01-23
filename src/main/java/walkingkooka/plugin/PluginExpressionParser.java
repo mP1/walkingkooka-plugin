@@ -184,7 +184,7 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
     /**
      * Parsers a token being terminated by whitespace
      */
-    private final static Parser<ParserContext> NON_SPACE_TOKEN = Parsers.stringCharPredicate(
+    private final static Parser<ParserContext> NON_SPACE_TOKEN = Parsers.charPredicateString(
         CharPredicates.whitespace().negate(),
         1,
         Integer.MAX_VALUE
