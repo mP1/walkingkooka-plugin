@@ -414,7 +414,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
 
     private final static BiFunction<TextCursor, ParserContext, Optional<StringName>> NAME_PARSER_AND_FACTORY = (final TextCursor text,
                                                                                                                 final ParserContext context) ->
-        Parsers.stringInitialAndPartCharPredicate(
+        Parsers.initialAndPartCharPredicateString(
             (i) -> i >= 'a' && i <= 'z',
             (i) -> i >= 'a' && i <= 'z' || i >= '0' && i <= '9' || i == '-',
             1, // minLength
@@ -636,7 +636,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     public void testEvaluateValueTextStringUnclosedFail() {
         this.evaluateValueTextFails(
             NAME + " (\"unclosed",
-            "Missing terminating '\"'"
+            "Missing closing '\"'"
         );
     }
 

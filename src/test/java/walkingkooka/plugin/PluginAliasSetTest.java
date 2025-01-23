@@ -234,7 +234,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     public void testParseWithIncompleteSelectorFails2() {
         this.parseStringFails(
             "alias111 plugin111( \"Hello",
-            new ParserException("Missing terminating '\"'")
+            new ParserException("Missing closing '\"'")
         );
     }
 
