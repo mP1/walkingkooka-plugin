@@ -21,6 +21,8 @@ import walkingkooka.naming.HasName;
 import walkingkooka.naming.Name;
 import walkingkooka.net.HasAbsoluteUrl;
 import walkingkooka.net.http.server.hateos.HateosResource;
+import walkingkooka.text.printer.IndentingPrinter;
+import walkingkooka.text.printer.TreePrintable;
 
 import java.util.Optional;
 
@@ -35,7 +37,8 @@ public interface PluginInfoLike<I extends PluginInfoLike<I, N>, N extends Name &
     HasName<N>,
     HasAbsoluteUrl,
     Comparable<I>,
-    HateosResource<N> {
+    HateosResource<N>,
+    TreePrintable {
 
     I setName(final N name);
 
@@ -51,5 +54,12 @@ public interface PluginInfoLike<I extends PluginInfoLike<I, N>, N extends Name &
         return Optional.of(
             this.name()
         );
+    }
+
+    // TreePrintable....................................................................................................
+
+    @Override
+    default void printTree(final IndentingPrinter printer) {
+        printer.println(this.toString());
     }
 }
