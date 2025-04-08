@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin.store;
 
+import walkingkooka.convert.ConverterContexts;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.plugin.ProviderContext;
@@ -48,6 +49,7 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
         @Override
         public ProviderContext providerContext() {
             return ProviderContexts.basic(
+                ConverterContexts.fake(),
                 EnvironmentContexts.empty(
                     LocalDateTime::now,
                     EnvironmentContext.ANONYMOUS

@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.convert.CanConvert;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.reflect.PublicStaticHelper;
@@ -29,9 +30,11 @@ public final class ProviderContexts implements PublicStaticHelper {
     /**
      * {@see BasicProviderContext}
      */
-    public static ProviderContext basic(final EnvironmentContext environmentContext,
+    public static ProviderContext basic(final CanConvert canConvert,
+                                        final EnvironmentContext environmentContext,
                                         final PluginStore pluginStore) {
         return BasicProviderContext.with(
+            canConvert,
             environmentContext,
             pluginStore
         );

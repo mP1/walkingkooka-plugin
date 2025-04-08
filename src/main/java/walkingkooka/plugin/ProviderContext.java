@@ -17,13 +17,15 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.convert.CanConvert;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.plugin.store.PluginStore;
 
 /**
  * A {@link walkingkooka.Context} that should be passed to all {@link Provider} public methods.
  */
-public interface ProviderContext extends EnvironmentContext {
+public interface ProviderContext extends EnvironmentContext,
+    CanConvert {
 
     /**
      * A {@link PluginStore} holding plugins.
