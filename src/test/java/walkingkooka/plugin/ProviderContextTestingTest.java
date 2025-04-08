@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.Either;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.net.email.EmailAddress;
@@ -47,6 +48,18 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
     }
 
     final static class TestProviderContext implements ProviderContext {
+
+        @Override
+        public boolean canConvert(final Object value,
+                                  final Class<?> type) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public <T> Either<T, String> convert(final Object value,
+                                             final Class<T> type) {
+            throw new UnsupportedOperationException();
+        }
 
         @Override
         public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {

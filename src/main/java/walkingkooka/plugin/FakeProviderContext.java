@@ -17,12 +17,25 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.Either;
 import walkingkooka.environment.FakeEnvironmentContext;
 import walkingkooka.plugin.store.PluginStore;
 
 public class FakeProviderContext extends FakeEnvironmentContext implements ProviderContext {
     @Override
     public PluginStore pluginStore() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean canConvert(final Object value,
+                              final Class<?> type) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public <T> Either<T, String> convert(final Object value,
+                                         final Class<T> type) {
         throw new UnsupportedOperationException();
     }
 }

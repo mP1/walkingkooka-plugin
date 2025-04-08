@@ -17,6 +17,8 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.convert.CanConvert;
+import walkingkooka.convert.CanConvertDelegator;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.plugin.store.PluginStore;
@@ -26,21 +28,34 @@ import java.util.Objects;
 /**
  * A {@link ProviderContext} that delegates to a {@link EnvironmentContext}.
  */
-final class BasicProviderContext implements ProviderContext, EnvironmentContextDelegator {
+final class BasicProviderContext implements ProviderContext,
+    CanConvertDelegator,
+    EnvironmentContextDelegator {
 
-    static BasicProviderContext with(final EnvironmentContext environmentContext,
+    static BasicProviderContext with(final CanConvert canConvert,
+                                     final EnvironmentContext environmentContext,
                                      final PluginStore pluginStore) {
         return new BasicProviderContext(
+            Objects.requireNonNull(canConvert, "canConvert"),
             Objects.requireNonNull(environmentContext, "environmentContext"),
             Objects.requireNonNull(pluginStore, "pluginStore")
         );
     }
 
-    private BasicProviderContext(final EnvironmentContext environmentContext,
+    private BasicProviderContext(final CanConvert canConvert,
+                                 final EnvironmentContext environmentContext,
                                  final PluginStore pluginStore) {
+        this.canConvert = canConvert;
         this.environmentContext = environmentContext;
         this.pluginStore = pluginStore;
     }
+
+    @Override
+    public CanConvert canConvert() {
+        return this.canConvert;
+    }
+
+    private final CanConvert canConvert;
 
     @Override
     public EnvironmentContext environmentContext() {

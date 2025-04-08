@@ -17,17 +17,15 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.convert.CanConvert;
+import walkingkooka.convert.CanConvertDelegator;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.plugin.store.PluginStore;
 
 public interface ProviderContextDelegator extends ProviderContext,
-    EnvironmentContextDelegator {
-
-    @Override
-    default EnvironmentContext environmentContext() {
-        return this.providerContext();
-    }
+    EnvironmentContextDelegator,
+    CanConvertDelegator {
 
     @Override
     default PluginStore pluginStore() {
@@ -36,4 +34,18 @@ public interface ProviderContextDelegator extends ProviderContext,
     }
 
     ProviderContext providerContext();
+
+    // EnvironmentContext...............................................................................................
+
+    @Override
+    default EnvironmentContext environmentContext() {
+        return this.providerContext();
+    }
+
+    // CanConvert.......................................................................................................
+
+    @Override
+    default CanConvert canConvert() {
+        return this.providerContext();
+    }
 }
