@@ -15,16 +15,13 @@
  *
  */
 
-package walkingkooka.plugin.store;
+package walkingkooka.plugin;
 
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
-import walkingkooka.plugin.ProviderContext;
-import walkingkooka.plugin.ProviderContextDelegator;
-import walkingkooka.plugin.ProviderContextTesting;
-import walkingkooka.plugin.ProviderContexts;
-import walkingkooka.plugin.store.ProviderContextDelegatorTest.TestProviderContextDelegator;
+import walkingkooka.plugin.ProviderContextDelegatorTest.TestProviderContextDelegator;
+import walkingkooka.plugin.store.PluginStores;
 
 import java.time.LocalDateTime;
 
