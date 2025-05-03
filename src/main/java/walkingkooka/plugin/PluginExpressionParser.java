@@ -31,6 +31,7 @@ import walkingkooka.text.cursor.TextCursorSavePoint;
 import walkingkooka.text.cursor.TextCursors;
 import walkingkooka.text.cursor.parser.DoubleParserToken;
 import walkingkooka.text.cursor.parser.DoubleQuotedParserToken;
+import walkingkooka.text.cursor.parser.InvalidCharacterExceptionFactory;
 import walkingkooka.text.cursor.parser.Parser;
 import walkingkooka.text.cursor.parser.ParserContext;
 import walkingkooka.text.cursor.parser.ParserContexts;
@@ -237,6 +238,7 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
      * Singleton which can be reused.
      */
     private final static ParserContext PARSER_CONTEXT = ParserContexts.basic(
+        InvalidCharacterExceptionFactory.POSITION,
         DateTimeContexts.fake(), // dates are not supported
         DecimalNumberContexts.american(MathContext.UNLIMITED) // only the decimal char is actually required.
     );
