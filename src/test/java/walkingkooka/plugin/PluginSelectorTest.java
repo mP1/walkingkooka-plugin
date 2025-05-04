@@ -593,7 +593,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     public void testEvaluateValueTextOpenParensFail() {
         this.evaluateValueTextFails(
             NAME + "(",
-            "Invalid character '(' at 16 in \"magic-plugin-123(\""
+            "Invalid character '(' at 16"
         );
     }
 
@@ -628,7 +628,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     public void testEvaluateValueTextDoubleMissingClosingParensFail() {
         this.evaluateValueTextFails(
             "super-magic-converter123(1",
-            "Invalid character '1' at 25 in \"super-magic-converter123(1\""
+            "Invalid character '1' at 25"
         );
     }
 
