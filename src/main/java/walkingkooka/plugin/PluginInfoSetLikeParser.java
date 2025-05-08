@@ -48,27 +48,27 @@ final class PluginInfoSetLikeParser<N extends Name & Comparable<N>, I extends Pl
         this.infoParser = infoParser;
     }
 
-    String spaces() {
-        return SPACES.parse(
+    String whitespace() {
+        return WHITESPACE.parse(
                 this.cursor,
                 CONTEXT
             ).map(ParserToken::text)
             .orElse("");
     }
 
-    private final static Parser<ParserContext> SPACES = Parsers.charPredicateString(
-        CharPredicates.is(' '),
+    private final static Parser<ParserContext> WHITESPACE = Parsers.charPredicateString(
+        CharPredicates.whitespace(),
         1,
         Character.MAX_VALUE
     );
 
     I info() {
         final String url = this.url();
-        final String spaces = this.spaces();
+        final String whitespace = this.whitespace();
         final String name = this.name();
 
         final String token = url +
-            spaces +
+            whitespace +
             name;
 
         try {
@@ -105,10 +105,11 @@ final class PluginInfoSetLikeParser<N extends Name & Comparable<N>, I extends Pl
             .orElse("");
     }
 
-    private final static Parser<ParserContext> NAME = Parsers.charPredicateString(
-        CharPredicates.any(" " + PluginInfoSetLike.SEPARATOR.character()).negate(),
-        1,
-        Character.MAX_VALUE
+    private final static Parser<ParserContext> NAME = Parsers.initialAndPartCharPredicateString(
+        PluginName.INITIAL,
+        PluginName.PART,
+        PluginName.MIN_LENGTH,
+        PluginName.MAX_LENGTH
     );
 
     String comma() {
