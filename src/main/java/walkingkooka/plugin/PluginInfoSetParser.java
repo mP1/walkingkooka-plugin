@@ -106,8 +106,8 @@ final class PluginInfoSetParser<N extends Name & Comparable<N>, I extends Plugin
 
     private final static Parser<ParserContext> NAME = Parsers.charPredicateString(
         CharPredicates.any(" " + PluginInfoSetLike.SEPARATOR.character()).negate(),
-        1,
-        Character.MAX_VALUE
+        PluginName.MIN_LENGTH,
+        PluginName.MAX_LENGTH
     );
 
     String comma() {
