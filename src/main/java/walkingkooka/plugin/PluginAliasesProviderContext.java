@@ -30,7 +30,7 @@ import java.util.Set;
 
 /**
  * A {@link ProviderContext} that always returns a dummy value for any given {@link EnvironmentValueName}.
- * This is necessary because {@link PluginInfoSetParser} will attempt to resolve environment names into values when asked to consume a selector.
+ * This is necessary because {@link PluginInfoSetLikeParser} will attempt to resolve environment names into values when asked to consume a selector.
  * Validating values exist for any name is not a goal of {@link PluginAlias#parse(String, PluginHelper)}.
  */
 final class PluginAliasesProviderContext implements ProviderContext {
