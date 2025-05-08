@@ -110,24 +110,6 @@ final class PluginInfoSetParser<N extends Name & Comparable<N>, I extends Plugin
         PluginName.MAX_LENGTH
     );
 
-    String comma() {
-        return COMMA.parse(
-                this.cursor,
-                CONTEXT
-            ).map(ParserToken::text)
-            .orElse("");
-    }
-
-    private final static Parser<ParserContext> COMMA = Parsers.character(
-        CharPredicates.is(
-            PluginInfoSetLike.SEPARATOR.character()
-        )
-    );
-
-    boolean isEmpty() {
-        return this.cursor.isEmpty();
-    }
-
     private final static ParserContext CONTEXT = ParserContexts.fake();
 
     private final String text;
