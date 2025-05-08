@@ -88,6 +88,7 @@ final class TestPluginAliasSet extends AbstractSet<TestPluginAlias>
         return this.pluginAliasSet.containsAliasOrName(nameOrAlias);
     }
 
+    @Override
     public TestPluginAliasSet concatOrReplace(final TestPluginAlias alias) {
         return this.setElements(
             this.pluginAliasSet.concatOrReplace(alias)

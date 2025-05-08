@@ -32,6 +32,7 @@ public final class PluginSelectorTokenTest implements PluginSelectorTokenLikeTes
     );
 
     @Test
+    @Override
     public void testWithNullLabelFails() {
         assertThrows(
             NullPointerException.class,
@@ -56,6 +57,7 @@ public final class PluginSelectorTokenTest implements PluginSelectorTokenLikeTes
     }
 
     @Test
+    @Override
     public void testWith() {
         final PluginSelectorToken<PluginSelectorTokenAlternative> component = PluginSelectorToken.with(
             LABEL,
@@ -123,6 +125,7 @@ public final class PluginSelectorTokenTest implements PluginSelectorTokenLikeTes
     // hashCode/equals..................................................................................................
 
     @Test
+    @Override
     public void testEqualsDifferentLabel() {
         this.checkNotEquals(
             PluginSelectorToken.with(
@@ -134,6 +137,7 @@ public final class PluginSelectorTokenTest implements PluginSelectorTokenLikeTes
     }
 
     @Test
+    @Override
     public void testEqualsDifferentText() {
         this.checkNotEquals(
             PluginSelectorToken.with(
@@ -145,6 +149,7 @@ public final class PluginSelectorTokenTest implements PluginSelectorTokenLikeTes
     }
 
     @Test
+    @Override
     public void testEqualsDifferentAlternatives() {
         this.checkNotEquals(
             PluginSelectorToken.with(

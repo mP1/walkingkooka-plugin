@@ -179,6 +179,7 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
     // ALL classes/constants below must be public to prevent IllegalAccessErrors from created ClassLoader
     public static class TestPluginProviderImpl implements TestPluginProvider {
 
+        @Override
         public <T> Optional<T> plugin(final PluginName name,
                                       final Class<T> type) {
             Objects.requireNonNull(name, "name");
@@ -195,6 +196,7 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
             throw new IllegalArgumentException("Unknown plugin with name " + CharSequences.quoteAndEscape(name.value()));
         }
 
+        @Override
         public <T> Set<T> plugins(final Class<T> type) {
             Objects.requireNonNull(type, "type");
 

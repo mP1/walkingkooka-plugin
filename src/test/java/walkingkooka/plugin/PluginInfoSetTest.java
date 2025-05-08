@@ -175,6 +175,7 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
     }
 
     @Test
+    @Override
     public void testContainsAbsent() {
         this.containsAndCheckAbsent(
             this.createSet(),
