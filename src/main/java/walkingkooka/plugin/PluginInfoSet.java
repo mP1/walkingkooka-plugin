@@ -68,15 +68,15 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
             infoParser
         );
 
-        parser.spaces();
+        parser.whitespace();
 
         if (parser.isNotEmpty()) {
             for (; ; ) {
-                parser.spaces();
+                parser.whitespace();
 
                 infos.add(parser.info());
 
-                parser.spaces();
+                parser.whitespace();
 
                 if (SEPARATOR.string().equals(parser.comma())) {
                     continue;

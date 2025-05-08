@@ -275,6 +275,16 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
     }
 
     @Test
+    public void testParseWhitespaceInfoWhitespace() {
+        this.parseStringAndCheck(
+            "\t" + INFO1 + "\t",
+            PluginInfoSet.with(
+                Sets.of(INFO1)
+            )
+        );
+    }
+
+    @Test
     public void testParseInfoCommaInfo() {
         this.parseStringAndCheck(
             "" + INFO1 + "," + INFO2,
@@ -291,6 +301,19 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
     public void testParseInfoSpaceCommaSpaceInfo() {
         this.parseStringAndCheck(
             "" + INFO1 + " , " + INFO2,
+            PluginInfoSet.with(
+                Sets.of(
+                    INFO1,
+                    INFO2
+                )
+            )
+        );
+    }
+
+    @Test
+    public void testParseInfoWhitespaceCommaWhitespaceInfo() {
+        this.parseStringAndCheck(
+            "\r" + INFO1 + "\t,\t" + INFO2,
             PluginInfoSet.with(
                 Sets.of(
                     INFO1,
