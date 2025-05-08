@@ -184,6 +184,7 @@ public final class PluginInfoSetLikeTestingTest implements PluginInfoSetLikeTest
         );
     }
 
+    @Override
     public TestPluginInfo info() {
         return new TestPluginInfo(
             "https://example.com/test-plugin-111",

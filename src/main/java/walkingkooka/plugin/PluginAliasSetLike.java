@@ -123,7 +123,6 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
 
     // ImmutableSortedSet...............................................................................................
 
-
     @Override
     AS subSet(final A from,
               final A to);
@@ -137,6 +136,7 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
     @Override
     AS concat(final A alias);
 
+    @Override
     AS concatAll(final Collection<A> aliases);
 
     @Override
@@ -154,11 +154,14 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
         return this.setElements((SortedSet<A>) aliases);
     }
 
-    AS setElements(final SortedSet<A> var1);
+    @Override
+    AS setElements(final SortedSet<A> set);
 
+    @Override
     default AS setElementsFailIfDifferent(final Set<A> aliases) {
         return this.setElementsFailIfDifferent((SortedSet<A>) aliases);
     }
 
+    @Override
     AS setElementsFailIfDifferent(final SortedSet<A> aliases);
 }

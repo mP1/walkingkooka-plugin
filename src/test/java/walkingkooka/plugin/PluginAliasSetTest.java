@@ -1407,6 +1407,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     // PluginAlias......................................................................................................
 
     @Test
+    @Override
     public void testContainsAliasOrNameWithNullFails() {
         assertThrows(
             NullPointerException.class,
@@ -1707,6 +1708,7 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     // deleteAliasOrName................................................................................................
 
     @Test
+    @Override
     public void testDeleteAliasOrNameWithNullFails() {
         assertThrows(
             NullPointerException.class,

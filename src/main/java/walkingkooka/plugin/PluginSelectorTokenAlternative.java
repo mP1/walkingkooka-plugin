@@ -26,6 +26,7 @@ public final class PluginSelectorTokenAlternative implements PluginSelectorToken
         this.text = text;
     }
 
+    @Override
     public String label() {
         return this.label;
     }
