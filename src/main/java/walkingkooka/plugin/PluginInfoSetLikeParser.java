@@ -105,11 +105,15 @@ final class PluginInfoSetLikeParser<N extends Name & Comparable<N>, I extends Pl
             .orElse("");
     }
 
-    private final static Parser<ParserContext> NAME = Parsers.initialAndPartCharPredicateString(
-        PluginName.INITIAL,
-        PluginName.PART,
+    // Consume any text that is not whitespace or separator
+    // This will allow the later name.parse to fail with InvalidCharacterException etc
+    private final static Parser<ParserContext> NAME = Parsers.charPredicateString(
+        CharPredicates.whitespace()
+            .or(
+                CharPredicates.is(PluginInfoSetLike.SEPARATOR.character())
+            ).negate(),
         PluginName.MIN_LENGTH,
-        PluginName.MAX_LENGTH
+        Character.MAX_VALUE
     );
 
     String comma() {
