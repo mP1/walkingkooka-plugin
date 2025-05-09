@@ -650,6 +650,16 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
             copy;
     }
 
+    /**
+     * Getter that returns the {@link PluginHelper}.<br>
+     * This is especially helpful for ExpressionFunction to get the ExpressionFunction {@link walkingkooka.text.CaseSensitivity}
+     */
+    public <H extends PluginHelper<N, I, IS, S, A, AS>> H helper() {
+        return (H)this.helper;
+    }
+
+    private final PluginHelper<N, I, IS, S, A, AS> helper;
+
     // TreePrintable....................................................................................................
 
     @Override
@@ -660,6 +670,4 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     }
 
     private final SortedSet<A> pluginAliasLikes;
-
-    private final PluginHelper<N, I, IS, S, A, AS> helper;
 }
