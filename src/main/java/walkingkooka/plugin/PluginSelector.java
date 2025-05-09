@@ -247,21 +247,21 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
      * </pre>
      * The <code>provider</code> will be used to fetch <code>plugin</code>> with any parameters.
      */
-    public <N extends Name & Comparable<N>, T> T evaluateValueText(final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
-                                                                   final PluginSelectorEvaluateValueTextProvider<N, T> provider,
-                                                                   final ProviderContext context) {
+    public <NN extends Name & Comparable<NN>, T> T evaluateValueText(final BiFunction<TextCursor, ParserContext, Optional<NN>> nameParserAndFactory,
+                                                                     final PluginSelectorEvaluateValueTextProvider<NN, T> provider,
+                                                                     final ProviderContext context) {
         Objects.requireNonNull(nameParserAndFactory, "nameParserAndFactory");
         Objects.requireNonNull(provider, "provider");
         Objects.requireNonNull(context, "context");
 
         final String nameText = this.name()
             .value();
-        final PluginExpressionParser<N> nameParser = PluginExpressionParser.with(
+        final PluginExpressionParser<NN> nameParser = PluginExpressionParser.with(
             nameText,
             nameParserAndFactory
         );
 
-        final Optional<N> name = nameParser.name();
+        final Optional<NN> name = nameParser.name();
         if (false == name.isPresent() || false == nameParser.isEmpty()) {
             throw new IllegalArgumentException(
                 "Unable to parse name in " +
@@ -269,7 +269,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
             );
         }
 
-        final PluginExpressionParser<N> parser = PluginExpressionParser.with(
+        final PluginExpressionParser<NN> parser = PluginExpressionParser.with(
             this.valueText(),
             nameParserAndFactory
         );
