@@ -79,6 +79,50 @@ public final class PluginAliasSetLikeTest implements ClassTesting<PluginAliasSet
         );
     }
 
+    @Test
+    public void testSetElementsFailIfDifferentSetWithSet() {
+        final TestPluginAlias alias = TestPluginAlias.with(
+            Names.string("Name"),
+            Optional.empty(), // selector
+            Optional.empty() // url
+        );
+
+        final TestPluginAliasSet test = TestPluginAliasSet.with(
+            SortedSets.of(alias)
+        );
+
+        this.checkEquals(
+            TestPluginAliasSet.with(
+                SortedSets.of(alias)
+            ),
+            test.setElementsFailIfDifferent(
+                Sets.of(alias)
+            )
+        );
+    }
+
+    @Test
+    public void testSetElementsFailIfDifferentSetWithSortedSet() {
+        final TestPluginAlias alias = TestPluginAlias.with(
+            Names.string("Name"),
+            Optional.empty(), // selector
+            Optional.empty() // url
+        );
+
+        final TestPluginAliasSet test = TestPluginAliasSet.with(
+            SortedSets.of(alias)
+        );
+
+        this.checkEquals(
+            TestPluginAliasSet.with(
+                SortedSets.of(alias)
+            ),
+            test.setElementsFailIfDifferent(
+                SortedSets.of(alias)
+            )
+        );
+    }
+
     // class............................................................................................................
 
     @Override
