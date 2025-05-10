@@ -166,7 +166,13 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
 
     @Override
     default AS setElementsFailIfDifferent(final Set<A> aliases) {
-        return this.setElementsFailIfDifferent((SortedSet<A>) aliases);
+        Objects.requireNonNull(aliases, "aliases");
+
+        return this.setElementsFailIfDifferent(
+            aliases instanceof SortedSet ?
+                (SortedSet<A>) aliases :
+                new TreeSet<>(aliases)
+        );
     }
 
     @Override
