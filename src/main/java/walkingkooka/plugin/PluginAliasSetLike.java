@@ -30,6 +30,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
@@ -151,7 +152,13 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
 
     @Override
     default AS setElements(final Set<A> aliases) {
-        return this.setElements((SortedSet<A>) aliases);
+        Objects.requireNonNull(aliases, "aliases");
+
+        return this.setElements(
+            aliases instanceof SortedSet ?
+                (SortedSet<A>) aliases :
+                new TreeSet<>(aliases)
+        );
     }
 
     @Override
