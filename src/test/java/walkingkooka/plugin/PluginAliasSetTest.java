@@ -1807,6 +1807,15 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
     // ImmutableSet.....................................................................................................
 
     @Test
+    public void testConcatNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createSet()
+                .concat(null)
+        );
+    }
+
+    @Test
     public void testConcatDuplicateAliasFails() {
         final IllegalArgumentException thrown = assertThrows(
             IllegalArgumentException.class,
@@ -1853,6 +1862,45 @@ public final class PluginAliasSetTest implements PluginAliasSetLikeTesting<Strin
             "Duplicate url: https://example.com/1",
             thrown.getMessage(),
             "message"
+        );
+    }
+
+    // delete...........................................................................................................
+
+    @Test
+    public void testDeleteNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createSet()
+                .delete(
+                    null
+                )
+        );
+    }
+
+    // replace..........................................................................................................
+
+    @Test
+    public void testReplaceNullOldElementFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createSet()
+                .replace(
+                    null,
+                    ALIAS2
+                )
+        );
+    }
+
+    @Test
+    public void testReplaceNullNewElementFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createSet()
+                .replace(
+                    ALIAS1,
+                    null
+                )
         );
     }
 

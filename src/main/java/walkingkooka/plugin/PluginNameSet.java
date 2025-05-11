@@ -192,6 +192,11 @@ public final class PluginNameSet extends AbstractSet<PluginName>
             copy;
     }
 
+    @Override
+    public void elementCheck(final PluginName name) {
+        Objects.requireNonNull(name, "name");
+    }
+
     private final SortedSet<PluginName> names;
 
     // HasText..........................................................................................................

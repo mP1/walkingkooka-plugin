@@ -211,6 +211,11 @@ final class TestPluginAliasSet extends AbstractSet<TestPluginAlias>
     }
 
     @Override
+    public void elementCheck(final TestPluginAlias testPluginAlias) {
+        this.pluginAliasSet.elementCheck(testPluginAlias);
+    }
+
+    @Override
     public String text() {
         return this.pluginAliasSet.text();
     }

@@ -32,6 +32,7 @@ import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet, Plugin>,
     JsonNodeMarshallingTesting<PluginSet> {
@@ -45,6 +46,73 @@ public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet,
             )
         );
     }
+    // concat...........................................................................................................
+
+    @Test
+    public void testConcatNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createSet()
+                .concat(null)
+        );
+    }
+
+    // delete...........................................................................................................
+
+    @Test
+    public void testDeleteNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createSet()
+                .delete(
+                    null
+                )
+        );
+    }
+
+    // replace..........................................................................................................
+
+    @Test
+    public void testReplaceNullOldElementFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createSet()
+                .replace(
+                    null,
+                    plugin()
+                )
+        );
+    }
+
+    @Test
+    public void testReplaceNullNewElementFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createSet()
+                .replace(
+                    plugin(),
+                    null
+                )
+        );
+    }
+
+    private static Plugin plugin() {
+        return Plugin.with(
+            PluginName.with("TestPlugin111"),
+            "test-plugin-111.jar",
+            Binary.with("content".getBytes(Charset.defaultCharset())),
+            EmailAddress.parse("user1@example.com"),
+            LocalDateTime.of(
+                1999,
+                12,
+                31,
+                12,
+                58,
+                59
+            )
+        );
+    }
+
 
     @Test
     public void testDeleteBecomesEmpty() {
