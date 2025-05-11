@@ -225,6 +225,26 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
         );
     }
 
+    // setElements......................................................................................................
+
+    @Test
+    public void testSetElementsIncludesNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> PluginInfoSet.with(
+                Sets.of(
+                    INFO1,
+                    INFO2
+                )
+            ).setElements(
+                Sets.of(
+                    INFO1,
+                    null
+                )
+            )
+        );
+    }
+
     // parseString......................................................................................................
 
     @Test
