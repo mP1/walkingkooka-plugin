@@ -235,6 +235,11 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
     }
 
     @Override
+    public void elementCheck(final I info) {
+        Objects.requireNonNull(info, "info");
+    }
+
+    @Override
     public PluginInfoSet<N, I> setElements(final Set<I> infos) {
         return this.setElements0(
             copy(infos)
