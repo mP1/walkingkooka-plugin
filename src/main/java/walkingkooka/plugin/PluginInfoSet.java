@@ -123,6 +123,10 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
         final Set<N> names = SortedSets.tree();
 
         for (final I info : infos) {
+            if (null == info) {
+                throw new NullPointerException("Null info");
+            }
+
             final AbsoluteUrl url = info.url();
             if (false == urls.add(url)) {
                 throw new IllegalArgumentException("Duplicate url " + CharSequences.quoteAndEscape(url.toString()));
