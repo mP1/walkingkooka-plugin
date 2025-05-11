@@ -650,6 +650,11 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
             copy;
     }
 
+    @Override
+    public void elementCheck(final A alias) {
+        Objects.requireNonNull(alias, "alias");
+    }
+
     /**
      * Getter that returns the {@link PluginHelper}.<br>
      * This is especially helpful for ExpressionFunction to get the ExpressionFunction {@link walkingkooka.text.CaseSensitivity}

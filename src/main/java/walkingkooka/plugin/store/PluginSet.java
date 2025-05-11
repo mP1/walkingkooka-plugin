@@ -126,6 +126,11 @@ public final class PluginSet extends AbstractSet<Plugin> implements ImmutableSor
         return this.set.last();
     }
 
+    @Override
+    public void elementCheck(final Plugin plugin) {
+        Objects.requireNonNull(plugin, "plugin");
+    }
+
     private final SortedSet<Plugin> set;
 
     // extra............................................................................................................

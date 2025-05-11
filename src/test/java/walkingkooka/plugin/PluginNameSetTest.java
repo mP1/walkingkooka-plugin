@@ -46,6 +46,30 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
         );
     }
 
+    // concat...........................................................................................................
+
+    @Test
+    public void testConcatNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createSet()
+                .concat(null)
+        );
+    }
+
+    // delete...........................................................................................................
+
+    @Test
+    public void testDeleteNullFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createSet()
+                .delete(
+                    null
+                )
+        );
+    }
+
     @Test
     public void testDeleteBecomesEmpty() {
         final PluginName name = PluginName.with("Plugin111");
@@ -55,6 +79,32 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
             PluginNameSet.with(
                 SortedSets.of(name)
             ).delete(name)
+        );
+    }
+
+    // replace..........................................................................................................
+
+    @Test
+    public void testReplaceNullOldElementFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createSet()
+                .replace(
+                    null,
+                    PluginName.with("Plugin222")
+                )
+        );
+    }
+
+    @Test
+    public void testReplaceNullNewElementFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> this.createSet()
+                .replace(
+                    PluginName.with("Plugin111"),
+                    null
+                )
         );
     }
 
