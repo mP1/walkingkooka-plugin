@@ -113,6 +113,9 @@ public final class PluginNameSet extends AbstractSet<PluginName>
     }
 
     private static PluginNameSet withCopy(final SortedSet<PluginName> names) {
+        for(final PluginName name : names) {
+            Objects.requireNonNull(name, "includes null name");
+        }
         return names.isEmpty() ?
             EMPTY :
             new PluginNameSet(names);
