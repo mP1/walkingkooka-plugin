@@ -24,6 +24,7 @@ import walkingkooka.net.UrlFragment;
 import walkingkooka.text.HasText;
 import walkingkooka.text.printer.TreePrintable;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -32,6 +33,13 @@ import java.util.List;
 public interface PluginSelectorLike<N extends Name & Comparable<N>> extends HasName<N>, HasText,
     HasUrlFragment,
     TreePrintable {
+
+    /**
+     * {@see PluginSelectorLikeNameOnlyComparator}
+     */
+    static <N extends Name & Comparable<N>> Comparator<? extends PluginSelectorLike<N>> nameOnlyComparator() {
+        return PluginSelectorLikeNameOnlyComparator.instance();
+    }
 
     /**
      * Would be setter that returns a selector with the given {@link Name}.
