@@ -37,7 +37,7 @@ public interface PluginSelectorLike<N extends Name & Comparable<N>> extends HasN
     /**
      * {@see PluginSelectorLikeNameOnlyComparator}
      */
-    static <N extends Name & Comparable<N>> Comparator<? extends PluginSelectorLike<N>> nameOnlyComparator() {
+    static <P extends PluginSelectorLike<N>, N extends Name & Comparable<N>> Comparator<P> nameOnlyComparator() {
         return PluginSelectorLikeNameOnlyComparator.instance();
     }
 
