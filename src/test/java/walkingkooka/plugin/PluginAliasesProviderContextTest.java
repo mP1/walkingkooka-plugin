@@ -20,7 +20,7 @@ package walkingkooka.plugin;
 public final class PluginAliasesProviderContextTest implements ProviderContextTesting<PluginAliasesProviderContext> {
 
     @Override
-    public void testUser() {
+    public void testUserNotNull() {
         throw new UnsupportedOperationException();
     }
 
