@@ -19,6 +19,8 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.naming.NameTesting2;
+import walkingkooka.net.HasUrlFragmentTesting;
+import walkingkooka.net.UrlFragment;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.CaseSensitivity;
@@ -26,7 +28,8 @@ import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
 
 public interface PluginNameTesting<N extends PluginNameLike<N>> extends ClassTesting2<N>,
     NameTesting2<N, N>,
-    JsonNodeMarshallingTesting<N> {
+    JsonNodeMarshallingTesting<N>,
+    HasUrlFragmentTesting {
 
     // Comparator ......................................................................................................
 
@@ -95,5 +98,16 @@ public interface PluginNameTesting<N extends PluginNameLike<N>> extends ClassTes
     @Override
     default N createJsonNodeMarshallingValue() {
         return this.createObject();
+    }
+
+    // HasUrlFragment...................................................................................................
+
+    @Test
+    default void testUrlFragment() {
+        final N name = this.createObject();
+        this.urlFragmentAndCheck(
+            name,
+            UrlFragment.with(name.value())
+        );
     }
 }
