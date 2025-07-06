@@ -19,6 +19,8 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.collect.list.Lists;
+import walkingkooka.net.HasUrlFragmentTesting;
+import walkingkooka.net.UrlFragment;
 import walkingkooka.plugin.PluginNameLikeTest.TestPluginNameLike;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
@@ -28,6 +30,7 @@ import walkingkooka.text.CaseSensitivity;
 import java.util.List;
 
 final class PluginNameLikeTest implements ParseStringTesting<List<PluginName>>,
+    HasUrlFragmentTesting,
     ClassTesting<TestPluginNameLike> {
 
     // parse............................................................................................................
@@ -105,6 +108,18 @@ final class PluginNameLikeTest implements ParseStringTesting<List<PluginName>>,
     @Override
     public RuntimeException parseStringFailedExpected(final RuntimeException thrown) {
         return thrown;
+    }
+
+    // HasUrlFragment...................................................................................................
+
+    @Test
+    public void testUrlFragment() {
+        final String name = "TestPluginNameLike";
+
+        this.urlFragmentAndCheck(
+            new TestPluginNameLike(name),
+            UrlFragment.with(name)
+        );
     }
 
     // class............................................................................................................

@@ -20,6 +20,8 @@ package walkingkooka.plugin;
 import walkingkooka.collect.list.ImmutableList;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.naming.Name;
+import walkingkooka.net.HasUrlFragment;
+import walkingkooka.net.UrlFragment;
 import walkingkooka.text.CaseSensitivity;
 
 import java.util.List;
@@ -29,7 +31,9 @@ import java.util.function.Function;
 /**
  * Used to tag {@link Name} of components, and also adds a few useful helpers.
  */
-public interface PluginNameLike<N extends Name & Comparable<N>> extends Name, Comparable<N> {
+public interface PluginNameLike<N extends Name & Comparable<N>> extends Name,
+    Comparable<N>,
+    HasUrlFragment {
 
     /**
      * Helper that may be used to verify if the given character at the position is valid.
@@ -115,4 +119,11 @@ public interface PluginNameLike<N extends Name & Comparable<N>> extends Name, Co
     }
 
     final static CaseSensitivity CASE_SENSITIVITY = CaseSensitivity.SENSITIVE;
+
+    // HasUrlFragment...................................................................................................
+
+    @Override
+    default UrlFragment urlFragment() {
+        return UrlFragment.with(this.value());
+    }
 }
