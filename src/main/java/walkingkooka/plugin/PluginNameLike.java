@@ -22,6 +22,7 @@ import walkingkooka.collect.list.Lists;
 import walkingkooka.naming.Name;
 import walkingkooka.net.HasUrlFragment;
 import walkingkooka.net.UrlFragment;
+import walkingkooka.net.UrlPathName;
 import walkingkooka.text.CaseSensitivity;
 
 import java.util.List;
@@ -98,6 +99,13 @@ public interface PluginNameLike<N extends Name & Comparable<N>> extends Name,
         }
 
         return listFactory.apply(names);
+    }
+
+    /**
+     * Returns the {@link UrlPathName} for this plugin. This is useful when building a {@link walkingkooka.net.UrlPath}.
+     */
+    default UrlPathName toUrlPathName() {
+        return UrlPathName.with(this.value());
     }
 
     // Comparable ......................................................................................................
