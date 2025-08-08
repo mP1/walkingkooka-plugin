@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import walkingkooka.convert.CanConvert;
 import walkingkooka.environment.EnvironmentContext;
+import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.plugin.store.PluginStore;
 
 /**
@@ -26,6 +27,10 @@ import walkingkooka.plugin.store.PluginStore;
  */
 public interface ProviderContext extends EnvironmentContext,
     CanConvert {
+
+    @Override
+    <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,
+                                            final T value);
 
     /**
      * A {@link PluginStore} holding plugins.

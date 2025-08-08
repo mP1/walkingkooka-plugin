@@ -18,10 +18,18 @@
 package walkingkooka.plugin;
 
 import walkingkooka.Either;
+import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.FakeEnvironmentContext;
 import walkingkooka.plugin.store.PluginStore;
 
 public class FakeProviderContext extends FakeEnvironmentContext implements ProviderContext {
+
+    @Override
+    public <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,
+                                                   final T value) {
+        throw new UnsupportedOperationException();
+    }
+
     @Override
     public PluginStore pluginStore() {
         throw new UnsupportedOperationException();
