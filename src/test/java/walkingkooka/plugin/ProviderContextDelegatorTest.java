@@ -20,10 +20,12 @@ package walkingkooka.plugin;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
+import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.plugin.ProviderContextDelegatorTest.TestProviderContextDelegator;
 import walkingkooka.plugin.store.PluginStores;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public final class ProviderContextDelegatorTest implements ProviderContextTesting<TestProviderContextDelegator> {
 
@@ -53,6 +55,14 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
                 ),
                 PluginStores.treeMap()
             );
+        }
+
+        @Override
+        public <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,
+                                                       final T value) {
+            Objects.requireNonNull(name, "name");
+            Objects.requireNonNull(value, "value");
+            throw new UnsupportedOperationException();
         }
 
         @Override

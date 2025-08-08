@@ -21,6 +21,7 @@ import walkingkooka.convert.CanConvert;
 import walkingkooka.convert.CanConvertDelegator;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
+import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.plugin.store.PluginStore;
 
 import java.util.Objects;
@@ -51,11 +52,22 @@ final class BasicProviderContext implements ProviderContext,
     }
 
     @Override
+    public PluginStore pluginStore() {
+        return this.pluginStore;
+    }
+
+    private final PluginStore pluginStore;
+
+    // CanConvertDelegator..............................................................................................
+
+    @Override
     public CanConvert canConvert() {
         return this.canConvert;
     }
 
     private final CanConvert canConvert;
+
+    // EnvironmentContextDelegator......................................................................................
 
     @Override
     public EnvironmentContext environmentContext() {
@@ -65,11 +77,16 @@ final class BasicProviderContext implements ProviderContext,
     private final EnvironmentContext environmentContext;
 
     @Override
-    public PluginStore pluginStore() {
-        return this.pluginStore;
+    public <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,
+                                                   final T value) {
+        this.environmentContext.setEnvironmentValue(
+            name,
+            value
+        );
+        return this;
     }
 
-    private final PluginStore pluginStore;
+    // Object...........................................................................................................
 
     @Override
     public String toString() {
