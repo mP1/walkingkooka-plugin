@@ -29,6 +29,17 @@ public interface ProviderContextDelegator extends ProviderContext,
     CanConvertDelegator {
 
     @Override
+    default <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,
+                                                    final T value) {
+        this.environmentContext()
+            .setEnvironmentValue(
+                name,
+                value
+            );
+        return this;
+    }
+
+    @Override
     default ProviderContext removeEnvironmentValue(final EnvironmentValueName<?> name) {
         this.environmentContext()
             .removeEnvironmentValue(name);
