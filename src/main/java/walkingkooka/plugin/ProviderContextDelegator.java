@@ -21,11 +21,19 @@ import walkingkooka.convert.CanConvert;
 import walkingkooka.convert.CanConvertDelegator;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
+import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.plugin.store.PluginStore;
 
 public interface ProviderContextDelegator extends ProviderContext,
     EnvironmentContextDelegator,
     CanConvertDelegator {
+
+    @Override
+    default ProviderContext removeEnvironmentValue(final EnvironmentValueName<?> name) {
+        this.environmentContext()
+            .removeEnvironmentValue(name);
+        return this;
+    }
 
     @Override
     default PluginStore pluginStore() {

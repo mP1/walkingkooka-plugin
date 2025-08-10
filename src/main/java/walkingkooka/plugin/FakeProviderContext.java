@@ -31,6 +31,11 @@ public class FakeProviderContext extends FakeEnvironmentContext implements Provi
     }
 
     @Override
+    public ProviderContext removeEnvironmentValue(final EnvironmentValueName<?> name) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public PluginStore pluginStore() {
         throw new UnsupportedOperationException();
     }

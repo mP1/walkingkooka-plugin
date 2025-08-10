@@ -74,6 +74,12 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         }
 
         @Override
+        public ProviderContext removeEnvironmentValue(final EnvironmentValueName<?> name) {
+            Objects.requireNonNull(name, "name");
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
         public LocalDateTime now() {
             return LocalDateTime.now();
         }

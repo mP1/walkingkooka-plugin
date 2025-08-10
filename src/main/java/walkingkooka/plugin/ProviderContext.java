@@ -32,6 +32,9 @@ public interface ProviderContext extends EnvironmentContext,
     <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,
                                             final T value);
 
+    @Override
+    ProviderContext removeEnvironmentValue(final EnvironmentValueName<?> name);
+
     /**
      * A {@link PluginStore} holding plugins.
      */
