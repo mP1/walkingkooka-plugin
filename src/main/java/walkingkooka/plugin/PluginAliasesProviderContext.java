@@ -51,6 +51,14 @@ final class PluginAliasesProviderContext implements ProviderContext {
     }
 
     @Override
+    public ProviderContext setLocale(final Locale locale) {
+        return this.setEnvironmentValue(
+            EnvironmentValueName.LOCALE,
+            locale
+        );
+    }
+
+    @Override
     public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
         Objects.requireNonNull(name, "name");
 

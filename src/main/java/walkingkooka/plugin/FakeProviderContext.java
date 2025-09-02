@@ -22,7 +22,14 @@ import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.FakeEnvironmentContext;
 import walkingkooka.plugin.store.PluginStore;
 
+import java.util.Locale;
+
 public class FakeProviderContext extends FakeEnvironmentContext implements ProviderContext {
+
+    @Override
+    public ProviderContext setLocale(final Locale locale) {
+        throw new UnsupportedOperationException();
+    }
 
     @Override
     public <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,
