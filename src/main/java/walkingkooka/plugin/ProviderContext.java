@@ -22,11 +22,16 @@ import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.plugin.store.PluginStore;
 
+import java.util.Locale;
+
 /**
  * A {@link walkingkooka.Context} that should be passed to all {@link Provider} public methods.
  */
 public interface ProviderContext extends EnvironmentContext,
     CanConvert {
+
+    @Override
+    ProviderContext setLocale(final Locale locale);
 
     @Override
     <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,

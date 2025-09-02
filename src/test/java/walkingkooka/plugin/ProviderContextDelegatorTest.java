@@ -60,6 +60,14 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
         }
 
         @Override
+        public ProviderContext setLocale(final Locale locale) {
+            return this.setEnvironmentValue(
+                EnvironmentValueName.LOCALE,
+                locale
+            );
+        }
+
+        @Override
         public <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,
                                                        final T value) {
             Objects.requireNonNull(name, "name");
