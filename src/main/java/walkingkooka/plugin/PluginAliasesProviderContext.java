@@ -24,6 +24,7 @@ import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -42,6 +43,11 @@ final class PluginAliasesProviderContext implements ProviderContext {
 
     private PluginAliasesProviderContext() {
         super();
+    }
+
+    @Override
+    public Locale locale() {
+        return this.environmentValueOrFail(EnvironmentValueName.LOCALE);
     }
 
     @Override
