@@ -26,6 +26,7 @@ import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.plugin.store.PluginStores;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -59,6 +60,11 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
         public <T> Either<T, String> convert(final Object value,
                                              final Class<T> type) {
             throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public Locale locale() {
+            return Locale.ENGLISH;
         }
 
         @Override

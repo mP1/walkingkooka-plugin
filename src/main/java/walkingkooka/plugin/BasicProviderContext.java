@@ -24,6 +24,7 @@ import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.plugin.store.PluginStore;
 
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -75,6 +76,11 @@ final class BasicProviderContext implements ProviderContext,
     }
 
     private final EnvironmentContext environmentContext;
+
+    @Override
+    public Locale locale() {
+        return this.environmentContext.locale();
+    }
 
     @Override
     public <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,

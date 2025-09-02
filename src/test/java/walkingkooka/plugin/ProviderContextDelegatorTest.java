@@ -25,6 +25,7 @@ import walkingkooka.plugin.ProviderContextDelegatorTest.TestProviderContextDeleg
 import walkingkooka.plugin.store.PluginStores;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.Objects;
 
 public final class ProviderContextDelegatorTest implements ProviderContextTesting<TestProviderContextDelegator> {
@@ -50,6 +51,7 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
             return ProviderContexts.basic(
                 ConverterContexts.fake(),
                 EnvironmentContexts.empty(
+                    Locale.FRANCE,
                     LocalDateTime::now,
                     EnvironmentContext.ANONYMOUS
                 ),
