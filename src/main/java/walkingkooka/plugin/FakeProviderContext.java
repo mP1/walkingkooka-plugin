@@ -27,6 +27,11 @@ import java.util.Locale;
 public class FakeProviderContext extends FakeEnvironmentContext implements ProviderContext {
 
     @Override
+    public ProviderContext cloneEnvironment() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public ProviderContext setLocale(final Locale locale) {
         throw new UnsupportedOperationException();
     }
