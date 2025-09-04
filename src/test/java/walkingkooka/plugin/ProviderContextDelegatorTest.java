@@ -46,6 +46,7 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
     }
 
     final static class TestProviderContextDelegator implements ProviderContextDelegator {
+
         @Override
         public ProviderContext providerContext() {
             return ProviderContexts.basic(
@@ -65,6 +66,11 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
                 EnvironmentValueName.LOCALE,
                 locale
             );
+        }
+
+        @Override
+        public ProviderContext cloneEnvironment() {
+            throw new UnsupportedOperationException();
         }
 
         @Override

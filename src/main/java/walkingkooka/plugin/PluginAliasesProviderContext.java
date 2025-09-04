@@ -46,6 +46,11 @@ final class PluginAliasesProviderContext implements ProviderContext {
     }
 
     @Override
+    public ProviderContext cloneEnvironment() {
+        return this;
+    }
+
+    @Override
     public Locale locale() {
         return this.environmentValueOrFail(EnvironmentValueName.LOCALE);
     }

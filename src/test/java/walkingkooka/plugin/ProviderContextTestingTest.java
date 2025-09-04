@@ -76,6 +76,11 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
         }
 
         @Override
+        public ProviderContext cloneEnvironment() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
         public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
             Objects.requireNonNull(name, "name");
 

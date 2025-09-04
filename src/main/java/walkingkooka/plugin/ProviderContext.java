@@ -31,6 +31,9 @@ public interface ProviderContext extends EnvironmentContext,
     CanConvert {
 
     @Override
+    ProviderContext cloneEnvironment();
+
+    @Override
     ProviderContext setLocale(final Locale locale);
 
     @Override

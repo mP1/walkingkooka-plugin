@@ -68,6 +68,22 @@ final class BasicProviderContext implements ProviderContext,
 
     private final CanConvert canConvert;
 
+    // EnvironmentContext...............................................................................................
+
+    @Override
+    public ProviderContext cloneEnvironment() {
+        final EnvironmentContext environmentContext = this.environmentContext;
+        final EnvironmentContext cloned = environmentContext.cloneEnvironment();
+
+        return environmentContext.equals(cloned) ?
+            this :
+            with(
+                this.canConvert,
+                cloned,
+                this.pluginStore
+            );
+    }
+
     // EnvironmentContextDelegator......................................................................................
 
     @Override
