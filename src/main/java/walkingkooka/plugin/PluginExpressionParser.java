@@ -238,6 +238,7 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
      * Singleton which can be reused.
      */
     private final static ParserContext PARSER_CONTEXT = ParserContexts.basic(
+        false, // isGroupSeparatorWithinNumbersSupported
         InvalidCharacterExceptionFactory.POSITION,
         DateTimeContexts.fake(), // dates are not supported
         DecimalNumberContexts.american(MathContext.UNLIMITED) // only the decimal char is actually required.
