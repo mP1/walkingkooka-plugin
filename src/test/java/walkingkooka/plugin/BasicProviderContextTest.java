@@ -42,6 +42,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     private final static CanConvert CAN_CONVERT = ConverterContexts.basic(
         false, // canNumbersHaveGroupSeparator
         Converters.EXCEL_1900_DATE_SYSTEM_OFFSET, // dateOffset
+        ',', // valueSeparator
         Converters.stringToLocalDate(
             (x) -> DateTimeFormatter.ofPattern("yyyy MM dd")
         ), // converter
