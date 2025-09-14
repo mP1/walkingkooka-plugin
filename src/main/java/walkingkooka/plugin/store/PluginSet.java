@@ -17,7 +17,6 @@
 
 package walkingkooka.plugin.store;
 
-import walkingkooka.collect.set.ImmutableSortedSet;
 import walkingkooka.collect.set.ImmutableSortedSetDefaults;
 import walkingkooka.collect.set.SortedSets;
 import walkingkooka.plugin.PluginName;
@@ -28,6 +27,7 @@ import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.AbstractSet;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Objects;
@@ -45,7 +45,7 @@ public final class PluginSet extends AbstractSet<Plugin> implements ImmutableSor
 
     public static PluginSet with(final SortedSet<Plugin> set) {
         return withCopy(
-            SortedSets.immutable(
+            new TreeSet<>(
                 Objects.requireNonNull(set, "set")
             )
         );
@@ -72,8 +72,8 @@ public final class PluginSet extends AbstractSet<Plugin> implements ImmutableSor
     }
 
     @Override
-    public PluginSet setElements(final SortedSet<Plugin> set) {
-        final ImmutableSortedSet<Plugin> copy = SortedSets.immutable(
+    public PluginSet setElements(final Collection<Plugin> set) {
+        final SortedSet<Plugin> copy = new TreeSet<>(
             Objects.requireNonNull(set, "set")
         );
         return this.equals(copy) ?

@@ -92,7 +92,7 @@ public interface PluginInfoSetLike<N extends Name & Comparable<N>,
                final I oldInfo);
 
     @Override
-    IS setElements(final Set<I> newElements);
+    IS setElements(final Collection<I> newElements);
 
     // HasUrlFragment...................................................................................................
 

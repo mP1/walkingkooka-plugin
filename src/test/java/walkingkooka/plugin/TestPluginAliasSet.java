@@ -149,7 +149,7 @@ final class TestPluginAliasSet extends AbstractSet<TestPluginAlias>
     }
 
     @Override
-    public TestPluginAliasSet setElements(final SortedSet<TestPluginAlias> aliases) {
+    public TestPluginAliasSet setElements(final Collection<TestPluginAlias> aliases) {
         // no need to take a defensive copy before testing for equality
         return aliases.equals(this) ?
             this :
@@ -159,7 +159,7 @@ final class TestPluginAliasSet extends AbstractSet<TestPluginAlias>
     }
 
     @Override
-    public TestPluginAliasSet setElementsFailIfDifferent(final SortedSet<TestPluginAlias> aliases) {
+    public TestPluginAliasSet setElementsFailIfDifferent(final Collection<TestPluginAlias> aliases) {
         return new TestPluginAliasSet(
             this.pluginAliasSet.setElementsFailIfDifferent(aliases)
         );
