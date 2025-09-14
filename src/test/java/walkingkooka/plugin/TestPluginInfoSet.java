@@ -17,7 +17,6 @@
 
 package walkingkooka.plugin;
 
-import walkingkooka.collect.set.ImmutableSet;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.StringName;
 import walkingkooka.net.AbsoluteUrl;
@@ -137,7 +136,7 @@ final class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements Plu
     }
 
     @Override
-    public ImmutableSet<TestPluginInfo> setElementsFailIfDifferent(final Collection<TestPluginInfo> infos) {
+    public TestPluginInfoSet setElementsFailIfDifferent(final Collection<TestPluginInfo> infos) {
         return this.setElements(
             this.pluginInfoSet.setElementsFailIfDifferent(
                 infos
