@@ -102,7 +102,7 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
     /**
      * Factory that creates a {@link PluginInfoSet} after taking a copy.
      */
-    public static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>> PluginInfoSet<N, I> with(final Set<I> infos) {
+    public static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>> PluginInfoSet<N, I> with(final Collection<I> infos) {
         Objects.requireNonNull(infos, "infos");
 
         return prepare(
