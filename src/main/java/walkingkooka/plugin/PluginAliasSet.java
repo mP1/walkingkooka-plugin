@@ -38,6 +38,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
@@ -131,7 +132,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         S extends PluginSelectorLike<N>,
         A extends PluginAliasLike<N, S, A>,
         AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
-    PluginAliasSet<N, I, IS, S, A, AS> with(final SortedSet<A> aliases,
+    PluginAliasSet<N, I, IS, S, A, AS> with(final Collection<A> aliases,
                                             final PluginHelper<N, I, IS, S, A, AS> helper) {
         Objects.requireNonNull(aliases, "aliases");
         Objects.requireNonNull(helper, "helper");
@@ -139,7 +140,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
         return aliases instanceof PluginAliasSet ?
             Cast.to(aliases) :
             prepare(
-                SortedSets.immutable(aliases),
+                new TreeSet<>(aliases),
                 helper
             );
     }
@@ -639,7 +640,7 @@ public final class PluginAliasSet<N extends Name & Comparable<N>,
     }
 
     @Override
-    public PluginAliasSet<N, I, IS, S, A, AS> setElements(final SortedSet<A> pluginAliasLikes) {
+    public PluginAliasSet<N, I, IS, S, A, AS> setElements(final Collection<A> pluginAliasLikes) {
         final PluginAliasSet<N, I, IS, S, A, AS> copy = with(
             pluginAliasLikes,
             this.helper

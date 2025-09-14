@@ -36,6 +36,7 @@ import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.AbstractSet;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
@@ -109,13 +110,13 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
         );
     }
 
-    private static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>> SortedSet<I> copy(final Set<I> infos) {
+    private static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>> SortedSet<I> copy(final Collection<I> infos) {
         return infos instanceof SortedSet ?
             SortedSets.immutable((SortedSet<I>) infos) :
             new TreeSet<>(infos);
     }
 
-    private static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>> PluginInfoSet<N, I> prepare(final SortedSet<I> infos) {
+    private static <N extends Name & Comparable<N>, I extends PluginInfoLike<I, N>> PluginInfoSet<N, I> prepare(final Collection<I> infos) {
         Objects.requireNonNull(infos, "infos");
 
         final SortedSet<I> infosCopy = SortedSets.tree();
@@ -244,7 +245,7 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
     }
 
     @Override
-    public PluginInfoSet<N, I> setElements(final Set<I> infos) {
+    public PluginInfoSet<N, I> setElements(final Collection<I> infos) {
         return this.setElements0(
             copy(infos)
         );

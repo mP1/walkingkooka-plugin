@@ -28,9 +28,6 @@ import walkingkooka.text.printer.TreePrintable;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
@@ -98,7 +95,9 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
                                         .orElse(null)
                                 )
                         )
-                ).collect(Collectors.toCollection(SortedSets::tree))
+                ).collect(
+                    Collectors.toCollection(SortedSets::tree)
+                )
         );
     }
 
@@ -151,30 +150,8 @@ public interface PluginAliasSetLike<N extends Name & Comparable<N>,
                final A newAlias);
 
     @Override
-    default AS setElements(final Set<A> aliases) {
-        Objects.requireNonNull(aliases, "aliases");
-
-        return this.setElements(
-            aliases instanceof SortedSet ?
-                (SortedSet<A>) aliases :
-                new TreeSet<>(aliases)
-        );
-    }
+    AS setElements(final Collection<A> aliases);
 
     @Override
-    AS setElements(final SortedSet<A> set);
-
-    @Override
-    default AS setElementsFailIfDifferent(final Set<A> aliases) {
-        Objects.requireNonNull(aliases, "aliases");
-
-        return this.setElementsFailIfDifferent(
-            aliases instanceof SortedSet ?
-                (SortedSet<A>) aliases :
-                new TreeSet<>(aliases)
-        );
-    }
-
-    @Override
-    AS setElementsFailIfDifferent(final SortedSet<A> aliases);
+    AS setElementsFailIfDifferent(final Collection<A> aliases);
 }

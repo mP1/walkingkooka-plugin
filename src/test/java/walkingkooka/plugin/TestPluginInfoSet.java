@@ -137,7 +137,7 @@ final class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements Plu
     }
 
     @Override
-    public ImmutableSet<TestPluginInfo> setElementsFailIfDifferent(final Set<TestPluginInfo> infos) {
+    public ImmutableSet<TestPluginInfo> setElementsFailIfDifferent(final Collection<TestPluginInfo> infos) {
         return this.setElements(
             this.pluginInfoSet.setElementsFailIfDifferent(
                 infos
@@ -146,7 +146,7 @@ final class TestPluginInfoSet extends AbstractSet<TestPluginInfo> implements Plu
     }
 
     @Override
-    public TestPluginInfoSet setElements(final Set<TestPluginInfo> infos) {
+    public TestPluginInfoSet setElements(final Collection<TestPluginInfo> infos) {
         final TestPluginInfoSet after = new TestPluginInfoSet(
             this.pluginInfoSet.setElements(infos)
         );

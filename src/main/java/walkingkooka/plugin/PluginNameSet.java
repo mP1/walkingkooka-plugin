@@ -32,10 +32,12 @@ import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.AbstractSet;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * An immutable {@link SortedSet} of {@link PluginName}.
@@ -104,11 +106,11 @@ public final class PluginNameSet extends AbstractSet<PluginName>
     /**
      * Factory that creates a {@link PluginNameSet} after taking a copy.
      */
-    public static PluginNameSet with(final SortedSet<PluginName> names) {
+    public static PluginNameSet with(final Collection<PluginName> names) {
         Objects.requireNonNull(names, "names");
 
         return withCopy(
-            SortedSets.immutable(names)
+            new TreeSet<>(names)
         );
     }
 
@@ -187,7 +189,7 @@ public final class PluginNameSet extends AbstractSet<PluginName>
     }
 
     @Override
-    public PluginNameSet setElements(final SortedSet<PluginName> names) {
+    public PluginNameSet setElements(final Collection<PluginName> names) {
         final PluginNameSet copy = with(names);
 
         return this.equals(copy) ?
