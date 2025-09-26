@@ -20,9 +20,11 @@ package walkingkooka.plugin;
 import walkingkooka.convert.CanConvert;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
 
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * A {@link walkingkooka.Context} that should be passed to all {@link Provider} public methods.
@@ -35,6 +37,9 @@ public interface ProviderContext extends EnvironmentContext,
 
     @Override
     ProviderContext setLocale(final Locale locale);
+
+    @Override
+    ProviderContext setUser(final Optional<EmailAddress> user);
 
     @Override
     <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,

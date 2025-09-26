@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.convert.ConverterContexts;
+import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.net.email.EmailAddress;
@@ -121,6 +122,19 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
                 )
             ),
             PluginStores.fake()
+        );
+    }
+
+    // setUser..........................................................................................................
+
+    @Test
+    public void testSetUserFails() {
+        assertThrows(
+            UnsupportedOperationException.class,
+            () -> this.createContext()
+                .setUser(
+                    EnvironmentContext.ANONYMOUS
+                )
         );
     }
 

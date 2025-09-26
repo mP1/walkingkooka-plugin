@@ -76,6 +76,18 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
         }
 
         @Override
+        public ProviderContext setUser(final Optional<EmailAddress> user) {
+            return user.isPresent() ?
+                this.setEnvironmentValue(
+                    EnvironmentValueName.USER,
+                    user.orElse(null)
+                ) :
+                this.removeEnvironmentValue(
+                    EnvironmentValueName.USER
+                );
+        }
+
+        @Override
         public ProviderContext cloneEnvironment() {
             throw new UnsupportedOperationException();
         }

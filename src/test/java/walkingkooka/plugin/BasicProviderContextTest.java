@@ -23,6 +23,7 @@ import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.environment.EnvironmentContext;
+import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.FakeEnvironmentContext;
 import walkingkooka.math.DecimalNumberContexts;
@@ -32,6 +33,7 @@ import walkingkooka.plugin.store.PluginStores;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -129,6 +131,37 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
                 ENVIRONMENT_CONTEXT,
                 null
             )
+        );
+    }
+
+    // setUser..........................................................................................................
+
+    @Test
+    public void testSetUser() {
+        final EnvironmentContext environmentContext = EnvironmentContexts.map(
+            EnvironmentContexts.empty(
+                Locale.ENGLISH,
+                LocalDateTime::now,
+                EnvironmentContext.ANONYMOUS
+            )
+        );
+
+        final BasicProviderContext context = BasicProviderContext.with(
+            CAN_CONVERT,
+            environmentContext,
+            PLUGIN_STORE
+        );
+
+        final EmailAddress different = EmailAddress.parse("different@example.com");
+
+        this.setUserAndCheck(
+            context,
+            different
+        );
+
+        this.userAndCheck(
+            environmentContext,
+            different
         );
     }
 
