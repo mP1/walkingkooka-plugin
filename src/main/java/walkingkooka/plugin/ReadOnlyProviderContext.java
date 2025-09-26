@@ -111,6 +111,13 @@ final class ReadOnlyProviderContext implements ProviderContext {
     }
 
     @Override
+    public ProviderContext setUser(final Optional<EmailAddress> user) {
+        Objects.requireNonNull(user, "user");
+
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public LocalDateTime now() {
         return this.context.now();
     }

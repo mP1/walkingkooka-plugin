@@ -22,11 +22,21 @@ import walkingkooka.convert.CanConvertDelegator;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
+
+import java.util.Optional;
 
 public interface ProviderContextDelegator extends ProviderContext,
     EnvironmentContextDelegator,
     CanConvertDelegator {
+
+    @Override
+    default ProviderContext setUser(final Optional<EmailAddress> user) {
+        this.environmentContext()
+            .setUser(user);
+        return this;
+    }
 
     @Override
     default <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,

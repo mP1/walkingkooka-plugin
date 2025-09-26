@@ -64,6 +64,18 @@ final class PluginAliasesProviderContext implements ProviderContext {
     }
 
     @Override
+    public ProviderContext setUser(final Optional<EmailAddress> user) {
+        return user.isPresent() ?
+            this.setEnvironmentValue(
+                EnvironmentValueName.USER,
+                user.orElse(null)
+            ) :
+            this.removeEnvironmentValue(
+                EnvironmentValueName.USER
+            );
+    }
+
+    @Override
     public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
         Objects.requireNonNull(name, "name");
 

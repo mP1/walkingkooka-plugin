@@ -22,10 +22,12 @@ import walkingkooka.convert.CanConvertDelegator;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
 
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A {@link ProviderContext} that delegates to a {@link EnvironmentContext}.
@@ -104,6 +106,18 @@ final class BasicProviderContext implements ProviderContext,
             EnvironmentValueName.LOCALE,
             locale
         );
+    }
+
+    @Override
+    public ProviderContext setUser(final Optional<EmailAddress> user) {
+        return user.isPresent() ?
+            this.setEnvironmentValue(
+                EnvironmentValueName.USER,
+                user.orElse(null)
+            ) :
+            this.removeEnvironmentValue(
+                EnvironmentValueName.USER
+            );
     }
 
     @Override
