@@ -29,8 +29,8 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * A {@link ProviderContext} that blocks all mutator methods such as {@link #setEnvironmentValue(EnvironmentValueName, Object)}
- * and {@link #removeEnvironmentValue(EnvironmentValueName)}, with both throwing {@link UnsupportedOperationException}.
+ * A {@link ProviderContext} where all setXXX and removeXXX methods throw {@link UnsupportedOperationException}.
+ * Note the {@link #cloneEnvironment()} returns a clone of the wrapped {@link ProviderContext}.
  */
 final class ReadOnlyProviderContext implements ProviderContext {
 
@@ -72,11 +72,7 @@ final class ReadOnlyProviderContext implements ProviderContext {
 
     @Override
     public ProviderContext cloneEnvironment() {
-        final ProviderContext before = this.context;
-        final ProviderContext after = before.cloneEnvironment();
-        return before.equals(after) ?
-            this :
-            new ReadOnlyProviderContext(after);
+        return this.context.cloneEnvironment();
     }
 
     @Override
