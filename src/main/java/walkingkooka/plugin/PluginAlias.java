@@ -53,7 +53,7 @@ public final class PluginAlias<N extends Name & Comparable<N>, S extends PluginS
             PluginAliasesProviderContext.INSTANCE
         );
 
-        if (false == parser.cursor.isEmpty()) {
+        if (parser.cursor.isNotEmpty()) {
             throw parser.invalidCharacter();
         }
 
