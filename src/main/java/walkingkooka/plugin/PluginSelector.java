@@ -392,7 +392,10 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
             }
         }
 
-        return Lists.immutable(parameters);
+        return PluginSelectorParameterList.with(
+            parameters,
+            this.name
+        );
     }
 
     /**
