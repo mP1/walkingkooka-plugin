@@ -262,7 +262,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
         );
 
         final Optional<NN> name = nameParser.name();
-        if (false == name.isPresent() || false == nameParser.isEmpty()) {
+        if (false == name.isPresent() || nameParser.isNotEmpty()) {
             throw new IllegalArgumentException(
                 "Unable to parse name in " +
                     CharSequences.quoteAndEscape(nameText)
