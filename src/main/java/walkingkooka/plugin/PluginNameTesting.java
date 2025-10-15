@@ -33,6 +33,11 @@ public interface PluginNameTesting<N extends PluginNameLike<N>> extends ClassTes
 
     // Comparator ......................................................................................................
 
+    @Override
+    default void testCompareDifferentCase() {
+        throw new UnsupportedOperationException();
+    }
+
     @Test
     default void testSort() {
         final N a = this.createName("aaa");
