@@ -46,11 +46,6 @@ final public class PluginNameTest implements PluginNameTesting<PluginName> {
         );
     }
 
-    @Override
-    public void testCompareDifferentCase() {
-        throw new UnsupportedOperationException();
-    }
-
     // Name.............................................................................................................
 
     @Override
