@@ -98,7 +98,7 @@ public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet,
 
     private static Plugin plugin() {
         return Plugin.with(
-            PluginName.with("TestPlugin111"),
+            PluginName.with("test-plugin-111"),
             "test-plugin-111.jar",
             Binary.with("content".getBytes(Charset.defaultCharset())),
             EmailAddress.parse("user1@example.com"),
@@ -117,7 +117,7 @@ public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet,
     @Test
     public void testDeleteBecomesEmpty() {
         final Plugin plugin = Plugin.with(
-            PluginName.with("TestPlugin111"),
+            PluginName.with("test-plugin-111"),
             "test-plugin-111.jar",
             Binary.with("content".getBytes(Charset.defaultCharset())),
             EmailAddress.parse("user1@example.com"),
@@ -144,7 +144,7 @@ public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet,
         return PluginSet.with(
             SortedSets.of(
                 Plugin.with(
-                    PluginName.with("TestPlugin111"),
+                    PluginName.with("test-plugin-111"),
                     "test-plugin-111.jar",
                     Binary.with("content".getBytes(Charset.defaultCharset())),
                     EmailAddress.parse("user1@example.com"),
@@ -158,7 +158,7 @@ public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet,
                     )
                 ),
                 Plugin.with(
-                    PluginName.with("TestPlugin222"),
+                    PluginName.with("test-plugin-222"),
                     "test-plugin-222.jar",
                     Binary.with("content".getBytes(Charset.defaultCharset())),
                     EmailAddress.parse("user2@example.com"),
@@ -182,8 +182,8 @@ public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet,
         this.checkEquals(
             PluginNameSet.with(
                 SortedSets.of(
-                    PluginName.with("TestPlugin111"),
-                    PluginName.with("TestPlugin222")
+                    PluginName.with("test-plugin-111"),
+                    PluginName.with("test-plugin-222")
                 )
             ),
             this.createSet().names()
@@ -198,14 +198,14 @@ public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet,
             this.createJsonNodeMarshallingValue(),
             "[\n" +
                 "  {\n" +
-                "    \"name\": \"TestPlugin111\",\n" +
+                "    \"name\": \"test-plugin-111\",\n" +
                 "    \"filename\": \"test-plugin-111.jar\",\n" +
                 "    \"archive\": \"Y29udGVudA==\",\n" +
                 "    \"user\": \"user1@example.com\",\n" +
                 "    \"timestamp\": \"1999-12-31T12:58:59\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"name\": \"TestPlugin222\",\n" +
+                "    \"name\": \"test-plugin-222\",\n" +
                 "    \"filename\": \"test-plugin-222.jar\",\n" +
                 "    \"archive\": \"Y29udGVudA==\",\n" +
                 "    \"user\": \"user1@example.com\",\n" +
@@ -220,14 +220,14 @@ public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet,
         this.unmarshallAndCheck(
             "[\n" +
                 "  {\n" +
-                "    \"name\": \"TestPlugin111\",\n" +
+                "    \"name\": \"test-plugin-111\",\n" +
                 "    \"filename\": \"test-plugin-111.jar\",\n" +
                 "    \"archive\": \"Y29udGVudA==\",\n" +
                 "    \"user\": \"user1@example.com\",\n" +
                 "    \"timestamp\": \"1999-12-31T12:58:59\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"name\": \"TestPlugin222\",\n" +
+                "    \"name\": \"test-plugin-222\",\n" +
                 "    \"filename\": \"test-plugin-222.jar\",\n" +
                 "    \"archive\": \"Y29udGVudA==\",\n" +
                 "    \"user\": \"user1@example.com\",\n" +
@@ -252,7 +252,7 @@ public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet,
         return PluginSet.with(
             SortedSets.of(
                 Plugin.with(
-                    PluginName.with("TestPlugin111"),
+                    PluginName.with("test-plugin-111"),
                     "test-plugin-111.jar",
                     Binary.with("content".getBytes(Charset.defaultCharset())),
                     EmailAddress.parse("user1@example.com"),
@@ -266,7 +266,7 @@ public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet,
                     )
                 ),
                 Plugin.with(
-                    PluginName.with("TestPlugin222"),
+                    PluginName.with("test-plugin-222"),
                     "test-plugin-222.jar",
                     Binary.with("content".getBytes(Charset.defaultCharset())),
                     EmailAddress.parse("user1@example.com"),

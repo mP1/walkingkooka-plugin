@@ -35,7 +35,7 @@ public interface PluginNameTesting<N extends PluginNameLike<N>> extends ClassTes
 
     @Test
     default void testSort() {
-        final N a = this.createName("STRING");
+        final N a = this.createName("aaa");
         final N b = this.createName("date-of-month");
         final N c = this.createName("text-case-insensitive");
         final N d = this.createName("month-of-year");
@@ -79,8 +79,8 @@ public interface PluginNameTesting<N extends PluginNameLike<N>> extends ClassTes
     @Override
     default String possibleValidChars(final int position) {
         return 0 == position ?
-            ASCII_LETTERS :
-            ASCII_LETTERS_DIGITS + "-";
+            ASCII_LETTERS.toLowerCase() :
+            ASCII_LETTERS_DIGITS.toLowerCase() + "-";
     }
 
     @Override

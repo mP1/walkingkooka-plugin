@@ -29,7 +29,9 @@ import walkingkooka.tree.json.marshall.JsonNodeMarshallContext;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 /**
- * The {@link Name} of a component. Note component names are case-sensitive.
+ * The {@link Name} of a component. Note component names are case-sensitive and must be lower-cased and kebab-case,
+ * eg:
+ * magic-plugin-123
  */
 final public class PluginName implements PluginNameLike<PluginName> {
 
@@ -43,8 +45,7 @@ final public class PluginName implements PluginNameLike<PluginName> {
         return PluginNameLike.isChar(pos, c);
     }
 
-    final static CharPredicate INITIAL = CharPredicates.range('A', 'Z')
-        .or(CharPredicates.range('a', 'z'));
+    final static CharPredicate INITIAL = CharPredicates.range('a', 'z');
 
     final static CharPredicate PART = INITIAL.or(CharPredicates.range('0', '9'))
         .or(CharPredicates.is('-'));

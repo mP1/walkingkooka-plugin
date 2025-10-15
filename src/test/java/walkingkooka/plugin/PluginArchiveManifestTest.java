@@ -44,7 +44,7 @@ public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTes
     public void testFromArchive() throws IOException {
         final String manifest = (
             "Manifest-Version: 1.0\r\n" +
-                "plugin-name: TestPluginName111\r\n" +
+                "plugin-name: test-plugin-name-111\r\n" +
                 "plugin-provider-factory-className: example.TestPluginName111\r\n"
         );
 
@@ -90,7 +90,7 @@ public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTes
     public void testFromManifestManifestMissingPluginProviderFactoryClassNameFails() {
         final IllegalArgumentException thrown = assertThrows(
             IllegalArgumentException.class,
-            () -> this.createPluginArchiveManifest("plugin-name: TestPlugin123\n")
+            () -> this.createPluginArchiveManifest("plugin-name: test-plugin-123\n")
         );
 
         this.checkEquals(
@@ -125,7 +125,7 @@ public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTes
         assertThrows(
             NullPointerException.class,
             () -> PluginArchiveManifest.with(
-                PluginName.with("TestPlugin111"),
+                PluginName.with("test-plugin-111"),
                 null
             )
         );
@@ -133,7 +133,7 @@ public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTes
 
     @Test
     public void testWith() {
-        final PluginName pluginName = PluginName.with("TestPlugin123");
+        final PluginName pluginName = PluginName.with("test-plugin-123");
         final ClassName className = ClassName.with(this.getClass().getCanonicalName());
 
         final PluginArchiveManifest manifest = PluginArchiveManifest.with(
@@ -157,7 +157,7 @@ public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTes
     public void testEqualsDifferentClassName() {
         this.checkNotEquals(
             this.createPluginArchiveManifest(
-                "plugin-name: TestPlugin123\n" +
+                "plugin-name: test-plugin-123\n" +
                     "plugin-provider-factory-className: example.DifferentPluginProvider\n"
             )
         );
@@ -166,7 +166,7 @@ public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTes
     @Override
     public PluginArchiveManifest createObject() {
         return this.createPluginArchiveManifest(
-            "plugin-name: TestPlugin123\n" +
+            "plugin-name: test-plugin-123\n" +
                 "plugin-provider-factory-className: example.TestPluginProvider123\n"
         );
     }

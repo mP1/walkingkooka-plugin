@@ -31,7 +31,7 @@ final public class PluginNameTest implements PluginNameTesting<PluginName> {
         assertThrows(
             InvalidCharacterException.class,
             () -> PluginName.with(
-                PluginName.SEPARATOR + "Hello"
+                PluginName.SEPARATOR + "hello"
             )
         );
     }
@@ -41,9 +41,14 @@ final public class PluginNameTest implements PluginNameTesting<PluginName> {
         assertThrows(
             InvalidCharacterException.class,
             () -> PluginName.with(
-                "Hello" + PluginName.SEPARATOR + "123"
+                "hello" + PluginName.SEPARATOR + "123"
             )
         );
+    }
+
+    @Override
+    public void testCompareDifferentCase() {
+        throw new UnsupportedOperationException();
     }
 
     // Name.............................................................................................................

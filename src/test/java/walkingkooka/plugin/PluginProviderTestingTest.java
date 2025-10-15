@@ -31,9 +31,9 @@ public final class PluginProviderTestingTest implements PluginProviderTesting<Te
 
     private final static AbsoluteUrl PLUGIN_PROVIDER_URL = Url.parseAbsolute("https://example.com/PluginProviderTestingTest");
 
-    private final static PluginName PLUGIN_NAME1 = PluginName.with("Plugin-1");
+    private final static PluginName PLUGIN_NAME1 = PluginName.with("plugin-1");
 
-    private final static PluginName PLUGIN_NAME2 = PluginName.with("Plugin-2");
+    private final static PluginName PLUGIN_NAME2 = PluginName.with("plugin-2");
 
     private final static PluginInfo<PluginName> PLUGIN_INFO1 = PluginInfo.with(
         Url.parseAbsolute("https://example.com/plugin-1"),
