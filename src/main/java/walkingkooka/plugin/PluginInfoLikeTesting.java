@@ -78,7 +78,7 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     default I createPluginInfoLike() {
         return this.createPluginInfoLike(
             Url.parseAbsolute("https://example.com/123"),
-            this.createName("Test123")
+            this.createName("test-123")
         );
     }
 
@@ -251,7 +251,7 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     @Test
     default void testParse() {
         final String url = "https://example.com/123";
-        final String name = "TestName123";
+        final String name = "test-name-123";
 
         this.parseStringAndCheck(
             url + " " + name,
