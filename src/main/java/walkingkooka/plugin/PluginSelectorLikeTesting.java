@@ -306,7 +306,7 @@ public interface PluginSelectorLikeTesting<S extends PluginSelectorLike<N>, N ex
     @Test
     default void testParseInvalidNameFails() {
         this.parseStringInvalidCharacterFails(
-            "A!34",
+            "a!34",
             '!'
         );
     }
