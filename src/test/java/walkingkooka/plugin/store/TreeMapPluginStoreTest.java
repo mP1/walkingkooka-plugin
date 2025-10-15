@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 
 public final class TreeMapPluginStoreTest implements PluginStoreTesting<TreeMapPluginStore> {
 
-    private final static PluginName PLUGIN_NAME = PluginName.with("TestPlugin123");
+    private final static PluginName PLUGIN_NAME = PluginName.with("test-plugin-123");
 
     @Override
     public void testAddSaveWatcherAndSaveTwiceFiresOnce() {
@@ -53,7 +53,7 @@ public final class TreeMapPluginStoreTest implements PluginStoreTesting<TreeMapP
 
     @Test
     public void testFilterWithEmptyQuery() {
-        final Plugin plugin1 = plugin("Plugin111");
+        final Plugin plugin1 = plugin("plugin-111");
 
         final TreeMapPluginStore store = TreeMapPluginStore.empty();
         store.save(plugin1);
@@ -68,8 +68,8 @@ public final class TreeMapPluginStoreTest implements PluginStoreTesting<TreeMapP
 
     @Test
     public void testFilterWithMatchesAllQuery() {
-        final Plugin plugin1 = plugin("Plugin111");
-        final Plugin plugin2 = plugin("Plugin222");
+        final Plugin plugin1 = plugin("plugin-111");
+        final Plugin plugin2 = plugin("plugin-222");
 
         final TreeMapPluginStore store = TreeMapPluginStore.empty();
         store.save(plugin1);
@@ -87,8 +87,8 @@ public final class TreeMapPluginStoreTest implements PluginStoreTesting<TreeMapP
 
     @Test
     public void testFilterWithMatchesAllOffset() {
-        final Plugin plugin1 = plugin("Plugin111");
-        final Plugin plugin2 = plugin("Plugin222");
+        final Plugin plugin1 = plugin("plugin-111");
+        final Plugin plugin2 = plugin("plugin-222");
 
         final TreeMapPluginStore store = TreeMapPluginStore.empty();
         store.save(plugin1);
@@ -105,8 +105,8 @@ public final class TreeMapPluginStoreTest implements PluginStoreTesting<TreeMapP
 
     @Test
     public void testFilterWithMatchesAllCount() {
-        final Plugin plugin1 = plugin("Plugin111");
-        final Plugin plugin2 = plugin("Plugin222");
+        final Plugin plugin1 = plugin("plugin-111");
+        final Plugin plugin2 = plugin("plugin-222");
 
         final TreeMapPluginStore store = TreeMapPluginStore.empty();
         store.save(plugin1);
@@ -123,12 +123,12 @@ public final class TreeMapPluginStoreTest implements PluginStoreTesting<TreeMapP
 
     @Test
     public void testFilterWithFilteringQueryOffsetCount() {
-        final Plugin plugin1 = plugin("Plugin111");
-        final Plugin plugin2 = plugin("Plugin222");
-        final Plugin plugin3 = plugin("Plugin333");
-        final Plugin plugin4 = plugin("Plugin444");
-        final Plugin plugin5 = plugin("Plugin555");
-        final Plugin plugin6 = plugin("Plugin666");
+        final Plugin plugin1 = plugin("plugin-111");
+        final Plugin plugin2 = plugin("plugin-222");
+        final Plugin plugin3 = plugin("plugin-333");
+        final Plugin plugin4 = plugin("plugin-444");
+        final Plugin plugin5 = plugin("plugin-555");
+        final Plugin plugin6 = plugin("plugin-666");
 
         final TreeMapPluginStore store = TreeMapPluginStore.empty();
         store.save(plugin1);

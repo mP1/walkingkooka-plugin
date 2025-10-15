@@ -43,7 +43,7 @@ public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
     JsonNodeMarshallingTesting<Plugin>,
     HateosResourceTesting<Plugin, PluginName> {
 
-    private final static PluginName NAME = PluginName.with("TestPlugin123");
+    private final static PluginName NAME = PluginName.with("test-plugin-123");
 
     private final static String FILENAME = "file.jar";
 
@@ -180,7 +180,7 @@ public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
     @Test
     public void testCompareSort() {
         final Plugin a1 = Plugin.with(
-            PluginName.with("A1"),
+            PluginName.with("a1"),
             FILENAME,
             ARCHIVE,
             USER,
@@ -188,7 +188,7 @@ public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
         );
 
         final Plugin b2 = Plugin.with(
-            PluginName.with("B2"),
+            PluginName.with("b2"),
             FILENAME,
             ARCHIVE,
             USER,
@@ -196,7 +196,7 @@ public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
         );
 
         final Plugin c3 = Plugin.with(
-            PluginName.with("C3"),
+            PluginName.with("c3"),
             FILENAME,
             ARCHIVE,
             USER,
@@ -224,7 +224,7 @@ public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
     public void testEqualsDifferentId() {
         this.checkNotEquals(
             Plugin.with(
-                PluginName.with("Different"),
+                PluginName.with("different"),
                 FILENAME,
                 ARCHIVE,
                 USER,
@@ -310,7 +310,7 @@ public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
                 USER,
                 TIMESTAMP
             ),
-            "TestPlugin123 \"file.jar\" user@example.com 1999-12-31T12:58"
+            "test-plugin-123 \"file.jar\" user@example.com 1999-12-31T12:58"
         );
     }
 

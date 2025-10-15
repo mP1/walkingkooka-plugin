@@ -92,7 +92,7 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
             //   TestPluginImpl
             final byte[] jar = JarFileTesting.jarFile(
                 "Manifest-Version: 1.0\r\n" +
-                    "plugin-name: TestPlugin123\r\n" +
+                    "plugin-name: test-plugin-123\r\n" +
                     "plugin-provider-factory-className: walkingkooka.plugin.ClassLoaderPluginProviderTest$TestPluginProviderImpl\r\n",
                 Maps.of(
                     "resource123.txt", // ignored!
@@ -229,10 +229,10 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
 
     public final static AbsoluteUrl PLUGIN_PROVIDER_URL = Url.parseAbsolute("https://example.com/TestPluginProvider123");
 
-    public final static PluginName PLUGIN_NAME = PluginName.with("PluginName123");
+    public final static PluginName PLUGIN_NAME = PluginName.with("plugin-name-123");
 
     public final static PluginInfo PLUGIN_INFO = PluginInfo.with(
-        Url.parseAbsolute("https://example.com/Plugin123"),
+        Url.parseAbsolute("https://example.com/plugin-123"),
         PLUGIN_NAME
     );
 

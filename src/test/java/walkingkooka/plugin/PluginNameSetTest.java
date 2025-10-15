@@ -84,7 +84,7 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
 
     @Test
     public void testDeleteBecomesEmpty() {
-        final PluginName name = PluginName.with("Plugin111");
+        final PluginName name = PluginName.with("plugin-111");
 
         assertSame(
             PluginNameSet.EMPTY,
@@ -103,7 +103,7 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
             () -> this.createSet()
                 .replace(
                     null,
-                    PluginName.with("Plugin222")
+                    PluginName.with("plugin-222")
                 )
         );
     }
@@ -114,7 +114,7 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
             NullPointerException.class,
             () -> this.createSet()
                 .replace(
-                    PluginName.with("Plugin111"),
+                    PluginName.with("plugin-111"),
                     null
                 )
         );
@@ -137,8 +137,8 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
     public PluginNameSet createSet() {
         return PluginNameSet.with(
             SortedSets.of(
-                PluginName.with("Plugin111"),
-                PluginName.with("Plugin222")
+                PluginName.with("plugin-111"),
+                PluginName.with("plugin-222")
             )
         );
     }
@@ -191,7 +191,7 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
     @Test
     public void testParse() {
         this.parseStringAndCheck(
-            "Plugin111,Plugin222",
+            "plugin-111,plugin-222",
             this.createSet()
         );
     }
@@ -199,7 +199,7 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
     @Test
     public void testParseWithExtraSpaces() {
         this.parseStringAndCheck(
-            " Plugin111 , Plugin222 ",
+            " plugin-111 , plugin-222 ",
             this.createSet()
         );
     }
@@ -225,7 +225,7 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
     public void testText() {
         this.textAndCheck(
             this.createSet(),
-            "Plugin111,Plugin222"
+            "plugin-111,plugin-222"
         );
     }
 
@@ -235,8 +235,8 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
     public void testTreePrint() {
         this.treePrintAndCheck(
             this.createSet(),
-            "Plugin111\n" +
-                "Plugin222\n"
+            "plugin-111\n" +
+                "plugin-222\n"
         );
     }
 
@@ -246,7 +246,7 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
     public void testMarshall() {
         this.marshallAndCheck(
             this.createJsonNodeMarshallingValue(),
-            "\"Plugin111,Plugin222\""
+            "\"plugin-111,plugin-222\""
         );
     }
 
@@ -270,7 +270,7 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
     public void testUrlFragment() {
         this.urlFragmentAndCheck(
             this.createSet(),
-            "Plugin111,Plugin222"
+            "plugin-111,plugin-222"
         );
     }
 

@@ -43,7 +43,7 @@ public final class PluginStartup implements PublicStaticHelper {
         }
 
         // register json marshallers/unmarshallers.
-        final PluginName pluginName = PluginName.with("Hello");
+        final PluginName pluginName = PluginName.with("hello");
 
         PluginInfo.with(
             Url.parseAbsolute("https://example.com/Hello"),
