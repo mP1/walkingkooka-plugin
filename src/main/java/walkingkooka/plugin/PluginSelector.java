@@ -247,21 +247,21 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
      * </pre>
      * The <code>provider</code> will be used to fetch <code>plugin</code>> with any parameters.
      */
-    public <NN extends Name & Comparable<NN>, T> T evaluateValueText(final BiFunction<TextCursor, ParserContext, Optional<NN>> nameParserAndFactory,
-                                                                     final PluginSelectorEvaluateValueTextProvider<NN, T> provider,
-                                                                     final ProviderContext context) {
+    public <T> T evaluateValueText(final BiFunction<TextCursor, ParserContext, Optional<N>> nameParserAndFactory,
+                                   final PluginSelectorEvaluateValueTextProvider<N, T> provider,
+                                   final ProviderContext context) {
         Objects.requireNonNull(nameParserAndFactory, "nameParserAndFactory");
         Objects.requireNonNull(provider, "provider");
         Objects.requireNonNull(context, "context");
 
         final String nameText = this.name()
             .value();
-        final PluginExpressionParser<NN> nameParser = PluginExpressionParser.with(
+        final PluginExpressionParser<N> nameParser = PluginExpressionParser.with(
             nameText,
             nameParserAndFactory
         );
 
-        final Optional<NN> name = nameParser.name();
+        final Optional<N> name = nameParser.name();
         if (false == name.isPresent() || nameParser.isNotEmpty()) {
             throw new IllegalArgumentException(
                 "Unable to parse name in " +
@@ -269,7 +269,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
             );
         }
 
-        final PluginExpressionParser<NN> parser = PluginExpressionParser.with(
+        final PluginExpressionParser<N> parser = PluginExpressionParser.with(
             this.valueText(),
             nameParserAndFactory
         );
@@ -296,16 +296,16 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
     /**
      * Attempts to parse an optional plugin including its parameters which must be within parens.
      */
-    private <N extends Name & Comparable<N>, T> Optional<T> parseNameAndParameters(final PluginExpressionParser<N> parser,
-                                                                                   final PluginSelectorEvaluateValueTextProvider<N, T> provider,
-                                                                                   final ProviderContext context) {
+    private <T> Optional<T> parseNameAndParameters(final PluginExpressionParser<N> parser,
+                                                   final PluginSelectorEvaluateValueTextProvider<N, T> provider,
+                                                   final ProviderContext context) {
         final Optional<N> name = parser.name();
 
         final T plugin;
         if (name.isPresent()) {
             plugin = provider.get(
                 name.get(),
-                parseParameters(
+                this.parseParameters(
                     parser,
                     provider,
                     context
@@ -325,9 +325,9 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
      * ( 1.23, "string-literal", $environmental-variable, plugin-name )
      * </pre>
      */
-    private <N extends Name & Comparable<N>, T> List<Object> parseParameters(final PluginExpressionParser<N> parser,
-                                                                             final PluginSelectorEvaluateValueTextProvider<N, T> provider,
-                                                                             final ProviderContext context) {
+    private <T> List<Object> parseParameters(final PluginExpressionParser<N> parser,
+                                             final PluginSelectorEvaluateValueTextProvider<N, T> provider,
+                                             final ProviderContext context) {
         parser.spaces();
 
         final List<Object> parameters = Lists.array();
