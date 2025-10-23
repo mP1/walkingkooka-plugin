@@ -274,7 +274,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
             nameParserAndFactory
         );
 
-        final List<?> parameters = parseParameters(
+        final List<?> parameters = this.parseParameters(
             parser,
             provider,
             context
@@ -346,7 +346,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
 
                 // try parsing for a plugin with or without parameters
                 {
-                    final Optional<T> plugin = parseNameAndParameters(
+                    final Optional<T> plugin = this.parseNameAndParameters(
                         parser,
                         provider,
                         context
