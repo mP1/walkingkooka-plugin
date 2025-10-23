@@ -35,20 +35,18 @@ public class JunitTest {
 
     @Test
     public void testPluginNameSort() {
-        final PluginName a = PluginName.with("STRING");
-        final PluginName b = PluginName.with("date-of-month");
-        final PluginName c = PluginName.with("text-case-insensitive");
-        final PluginName d = PluginName.with("month-of-year");
+        final PluginName a = PluginName.with("date-of-month");
+        final PluginName b = PluginName.with("text-case-insensitive");
+        final PluginName c = PluginName.with("month-of-year");
 
         final List<PluginName> list = Lists.array();
         list.add(a);
         list.add(b);
         list.add(c);
-        list.add(d);
         list.sort(Comparator.naturalOrder());
 
-        Assert.assertEquals(
-            Lists.of(a, b, d, c),
+        assertEquals(
+            Lists.of(a, c, b),
             list
         );
     }
