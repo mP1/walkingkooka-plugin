@@ -119,10 +119,13 @@ final class TreeMapPluginStore implements PluginStore {
             throw new IllegalArgumentException("Invalid count " + count + " < 0");
         }
 
-        final Predicate<CharSequence> globPattern = Predicates.globPatterns(
-            query,
-            CaseSensitivity.INSENSITIVE
-        );
+        // an empty query matches ALL, equivalent to "*"
+        final Predicate<CharSequence> globPattern = query.isEmpty() ?
+            Predicates.always() :
+            Predicates.globPatterns(
+                query,
+                CaseSensitivity.INSENSITIVE
+            );
 
         return this.store.all()
             .stream()
