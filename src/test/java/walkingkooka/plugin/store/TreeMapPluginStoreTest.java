@@ -54,15 +54,19 @@ public final class TreeMapPluginStoreTest implements PluginStoreTesting<TreeMapP
     @Test
     public void testFilterWithEmptyQuery() {
         final Plugin plugin1 = plugin("plugin-111");
+        final Plugin plugin2 = plugin("plugin-222");
 
         final TreeMapPluginStore store = TreeMapPluginStore.empty();
         store.save(plugin1);
+        store.save(plugin2);
 
         this.filterAndCheck(
             store,
             "",
             0,
-            2
+            2,
+            plugin1,
+            plugin2
         );
     }
 
