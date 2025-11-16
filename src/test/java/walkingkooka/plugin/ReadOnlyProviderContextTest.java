@@ -170,6 +170,11 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     }
 
     @Override
+    public void testSetLocaleWithDifferent() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public ReadOnlyProviderContext createContext() {
         return ReadOnlyProviderContext.with(
             this.createWrappedContext()

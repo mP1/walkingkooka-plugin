@@ -34,6 +34,21 @@ import java.util.Set;
 public final class ProviderContextTestingTest implements ProviderContextTesting<TestProviderContext> {
 
     @Override
+    public void testEnvironmentValueLocaleEqualsLocale() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testEnvironmentValueUserEqualsUser() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetLocaleWithDifferent() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public TestProviderContext createContext() {
         return new TestProviderContext();
     }

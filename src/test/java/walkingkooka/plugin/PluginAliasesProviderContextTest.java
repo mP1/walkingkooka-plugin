@@ -20,6 +20,21 @@ package walkingkooka.plugin;
 public final class PluginAliasesProviderContextTest implements ProviderContextTesting<PluginAliasesProviderContext> {
 
     @Override
+    public void testEnvironmentValueLocaleEqualsLocale() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testEnvironmentValueUserEqualsUser() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetLocaleWithDifferent() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testUserNotNull() {
         throw new UnsupportedOperationException();
     }

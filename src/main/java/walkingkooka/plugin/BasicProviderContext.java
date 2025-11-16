@@ -102,22 +102,14 @@ final class BasicProviderContext implements ProviderContext,
 
     @Override
     public ProviderContext setLocale(final Locale locale) {
-        return this.setEnvironmentValue(
-            EnvironmentValueName.LOCALE,
-            locale
-        );
+        this.environmentContext.setLocale(locale);
+        return this;
     }
 
     @Override
     public ProviderContext setUser(final Optional<EmailAddress> user) {
-        return user.isPresent() ?
-            this.setEnvironmentValue(
-                EnvironmentValueName.USER,
-                user.orElse(null)
-            ) :
-            this.removeEnvironmentValue(
-                EnvironmentValueName.USER
-            );
+        this.environmentContext.setUser(user);
+        return this;
     }
 
     @Override

@@ -18,6 +18,7 @@
 package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.Cast;
 import walkingkooka.convert.CanConvert;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
@@ -34,7 +35,6 @@ import walkingkooka.plugin.store.PluginStores;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -56,43 +56,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
 
     private final static String VAR_VALUE = "MagicValue123";
 
-    private final static EnvironmentContext ENVIRONMENT_CONTEXT = new FakeEnvironmentContext() {
-
-        @Override
-        public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
-            Objects.requireNonNull(name, "name");
-
-            return Optional.ofNullable(
-                VAR.equals(name) ?
-                    (T) VAR_VALUE :
-                    null
-            );
-        }
-
-        @Override
-        public <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,
-                                                       final T value) {
-            Objects.requireNonNull(name, "name");
-            Objects.requireNonNull(value, "value");
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public ProviderContext removeEnvironmentValue(final EnvironmentValueName<?> name) {
-            Objects.requireNonNull(name, "name");
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public LocalDateTime now() {
-            return LocalDateTime.now();
-        }
-
-        @Override
-        public Optional<EmailAddress> user() {
-            return EnvironmentContext.ANONYMOUS;
-        }
-    };
+    private final static EnvironmentContext ENVIRONMENT_CONTEXT = EnvironmentContexts.fake();
 
     private final static PluginStore PLUGIN_STORE = PluginStores.fake();
 
@@ -170,7 +134,19 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     @Test
     public void testEnvironmentValue() {
         this.environmentValueAndCheck(
-            this.createContext(),
+            BasicProviderContext.with(
+                CAN_CONVERT,
+                new FakeEnvironmentContext() {
+                    @Override
+                    public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
+                        checkEquals(VAR, name);
+                        return Cast.to(
+                            Optional.of(VAR_VALUE)
+                        );
+                    }
+                },
+                PLUGIN_STORE
+            ),
             VAR,
             VAR_VALUE
         );
@@ -199,7 +175,11 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     public BasicProviderContext createContext() {
         return BasicProviderContext.with(
             CAN_CONVERT,
-            ENVIRONMENT_CONTEXT,
+            EnvironmentContexts.empty(
+                Locale.ENGLISH,
+                LocalDateTime::now,
+                EnvironmentContext.ANONYMOUS
+            ),
             PLUGIN_STORE
         );
     }
@@ -209,7 +189,11 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     @Test
     public void testToString() {
         this.toStringAndCheck(
-            this.createContext(),
+            BasicProviderContext.with(
+                CAN_CONVERT,
+                ENVIRONMENT_CONTEXT,
+                PLUGIN_STORE
+            ),
             ENVIRONMENT_CONTEXT.toString()
         );
     }
