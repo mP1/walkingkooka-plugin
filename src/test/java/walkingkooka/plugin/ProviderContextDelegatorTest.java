@@ -36,6 +36,11 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
     }
 
     @Override
+    public void testSetLocaleWithDifferent() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public TestProviderContextDelegator createContext() {
         return new TestProviderContextDelegator();
     }
@@ -78,6 +83,7 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
                                                        final T value) {
             Objects.requireNonNull(name, "name");
             Objects.requireNonNull(value, "value");
+
             throw new UnsupportedOperationException();
         }
 
