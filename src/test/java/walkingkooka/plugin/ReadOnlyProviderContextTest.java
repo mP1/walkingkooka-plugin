@@ -24,6 +24,7 @@ import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStores;
+import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -34,6 +35,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class ReadOnlyProviderContextTest implements ProviderContextTesting<ReadOnlyProviderContext> {
+
+    private final static LineEnding LINE_ENDING = LineEnding.NL;
 
     private final static Locale LOCALE = Locale.forLanguageTag("en-AU");
 
@@ -186,6 +189,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
             ConverterContexts.fake(),
             EnvironmentContexts.map(
                 EnvironmentContexts.empty(
+                    LINE_ENDING,
                     LOCALE,
                     () -> NOW,
                     Optional.of(USER)

@@ -22,6 +22,7 @@ import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
+import walkingkooka.text.LineEnding;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -34,6 +35,9 @@ public interface ProviderContext extends EnvironmentContext,
 
     @Override
     ProviderContext cloneEnvironment();
+
+    @Override
+    ProviderContext setLineEnding(final LineEnding lineEnding);
 
     @Override
     ProviderContext setLocale(final Locale locale);

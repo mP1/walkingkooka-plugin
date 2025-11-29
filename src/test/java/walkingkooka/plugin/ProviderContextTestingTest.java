@@ -24,6 +24,7 @@ import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.ProviderContextTestingTest.TestProviderContext;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.plugin.store.PluginStores;
+import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -77,6 +78,19 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
             throw new UnsupportedOperationException();
         }
 
+        @Override
+        public LineEnding lineEnding() {
+            return LineEnding.NL;
+        }
+
+        @Override
+        public ProviderContext setLineEnding(final LineEnding lineEnding) {
+            return this.setEnvironmentValue(
+                LINE_ENDING,
+                lineEnding
+            );
+        }
+        
         @Override
         public Locale locale() {
             return Locale.ENGLISH;

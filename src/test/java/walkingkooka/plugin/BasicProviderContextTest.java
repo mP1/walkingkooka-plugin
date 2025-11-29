@@ -31,6 +31,7 @@ import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.plugin.store.PluginStores;
+import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -104,6 +105,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     public void testSetUser() {
         final EnvironmentContext environmentContext = EnvironmentContexts.map(
             EnvironmentContexts.empty(
+                LineEnding.NL,
                 Locale.ENGLISH,
                 LocalDateTime::now,
                 EnvironmentContext.ANONYMOUS
@@ -176,6 +178,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         return BasicProviderContext.with(
             CAN_CONVERT,
             EnvironmentContexts.empty(
+                LineEnding.NL,
                 Locale.ENGLISH,
                 LocalDateTime::now,
                 EnvironmentContext.ANONYMOUS

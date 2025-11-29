@@ -23,6 +23,7 @@ import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.plugin.ProviderContextDelegatorTest.TestProviderContextDelegator;
 import walkingkooka.plugin.store.PluginStores;
+import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -57,6 +58,7 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
             return ProviderContexts.basic(
                 ConverterContexts.fake(),
                 EnvironmentContexts.empty(
+                    LineEnding.NL,
                     Locale.FRANCE,
                     LocalDateTime::now,
                     EnvironmentContext.ANONYMOUS
