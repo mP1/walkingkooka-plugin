@@ -21,6 +21,7 @@ import walkingkooka.Either;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
+import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -118,6 +119,18 @@ final class ReadOnlyProviderContext implements ProviderContext {
         return this.context.now();
     }
 
+    @Override
+    public LineEnding lineEnding() {
+        return this.context.lineEnding();
+    }
+
+    @Override
+    public ProviderContext setLineEnding(final LineEnding lineEnding) {
+        Objects.requireNonNull(lineEnding, "lineEnding");
+
+        throw new UnsupportedOperationException();
+    }
+    
     @Override
     public Locale locale() {
         return this.context.locale();

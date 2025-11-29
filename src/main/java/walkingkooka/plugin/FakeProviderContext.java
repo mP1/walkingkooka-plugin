@@ -22,6 +22,7 @@ import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.FakeEnvironmentContext;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
+import walkingkooka.text.LineEnding;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -30,6 +31,11 @@ public class FakeProviderContext extends FakeEnvironmentContext implements Provi
 
     @Override
     public ProviderContext cloneEnvironment() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ProviderContext setLineEnding(final LineEnding lineEnding) {
         throw new UnsupportedOperationException();
     }
 

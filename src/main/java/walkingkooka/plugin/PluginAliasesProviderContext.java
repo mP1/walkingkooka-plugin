@@ -22,6 +22,7 @@ import walkingkooka.Either;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
+import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -50,6 +51,19 @@ final class PluginAliasesProviderContext implements ProviderContext {
         return this;
     }
 
+    @Override
+    public LineEnding lineEnding() {
+        return this.environmentValueOrFail(LINE_ENDING);
+    }
+
+    @Override
+    public ProviderContext setLineEnding(final LineEnding lineEnding) {
+        return this.setEnvironmentValue(
+            LINE_ENDING,
+            Objects.requireNonNull(lineEnding, "lineEnding")
+        );
+    }
+    
     @Override
     public Locale locale() {
         return this.environmentValueOrFail(EnvironmentValueName.LOCALE);
