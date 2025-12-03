@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import walkingkooka.Cast;
 import walkingkooka.Either;
+import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
@@ -49,6 +50,13 @@ final class PluginAliasesProviderContext implements ProviderContext {
     @Override
     public ProviderContext cloneEnvironment() {
         return this;
+    }
+
+    // setEnvironmentContext............................................................................................
+
+    @Override
+    public ProviderContext setEnvironmentContext(final EnvironmentContext environmentContext) {
+        throw new UnsupportedOperationException();
     }
 
     @Override

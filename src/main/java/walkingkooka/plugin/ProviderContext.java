@@ -37,6 +37,9 @@ public interface ProviderContext extends EnvironmentContext,
     ProviderContext cloneEnvironment();
 
     @Override
+    ProviderContext setEnvironmentContext(EnvironmentContext environmentContext);
+
+    @Override
     ProviderContext setLineEnding(final LineEnding lineEnding);
 
     @Override

@@ -18,6 +18,7 @@
 package walkingkooka.plugin;
 
 import walkingkooka.Either;
+import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
@@ -74,6 +75,15 @@ final class ReadOnlyProviderContext implements ProviderContext {
     @Override
     public ProviderContext cloneEnvironment() {
         return this.context.cloneEnvironment();
+    }
+
+    @Override
+    public ProviderContext setEnvironmentContext(final EnvironmentContext environmentContext) {
+        final ProviderContext before = this.context;
+        final ProviderContext after = before.setEnvironmentContext(environmentContext);
+        return before.equals(after) ?
+            this :
+            with(after);
     }
 
     @Override
@@ -151,6 +161,22 @@ final class ReadOnlyProviderContext implements ProviderContext {
     private final ProviderContext context;
 
     // Object...........................................................................................................
+
+    @Override
+    public int hashCode() {
+        return this.context.hashCode();
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        return this == other ||
+            (other instanceof ReadOnlyProviderContext &&
+                this.equals0((ReadOnlyProviderContext) other));
+    }
+
+    private boolean equals0(final ReadOnlyProviderContext other) {
+        return this.context.equals(other.context);
+    }
 
     @Override
     public String toString() {

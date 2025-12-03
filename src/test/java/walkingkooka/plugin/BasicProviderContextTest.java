@@ -19,10 +19,12 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
+import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.convert.CanConvert;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.Converters;
 import walkingkooka.datetime.DateTimeContexts;
+import walkingkooka.datetime.HasNow;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.environment.EnvironmentValueName;
@@ -40,7 +42,16 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class BasicProviderContextTest implements ProviderContextTesting<BasicProviderContext> {
+public final class BasicProviderContextTest implements ProviderContextTesting<BasicProviderContext>,
+    HashCodeEqualsDefinedTesting2<BasicProviderContext> {
+
+    private final static LineEnding LINE_ENDING = LineEnding.NL;
+
+    private final static Locale LOCALE = Locale.ENGLISH;
+
+    private final static EmailAddress USER = EmailAddress.parse("user@example.com");
+
+    private final static HasNow HAS_NOW = LocalDateTime::now;
 
     private final static CanConvert CAN_CONVERT = ConverterContexts.basic(
         false, // canNumbersHaveGroupSeparator
@@ -99,6 +110,42 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         );
     }
 
+    // setEnvironmentContext............................................................................................
+
+    @Test
+    public void testSetEnvironmentContext() {
+        final BasicProviderContext context = this.createContext();
+
+        final EnvironmentContext environmentContext = EnvironmentContexts.empty(
+            LineEnding.CR,
+            Locale.FRENCH,
+            HAS_NOW,
+            EnvironmentContext.ANONYMOUS
+        );
+
+        final ProviderContext different = ProviderContexts.basic(
+            CAN_CONVERT,
+            environmentContext,
+            PLUGIN_STORE
+        );
+
+        this.checkNotEquals(
+            context,
+            different
+        );
+
+        final ProviderContext set = context.setEnvironmentContext(environmentContext);
+
+        this.checkEquals(
+            ProviderContexts.basic(
+                CAN_CONVERT,
+                environmentContext,
+                PLUGIN_STORE
+            ),
+            set
+        );
+    }
+
     // setUser..........................................................................................................
 
     @Test
@@ -107,7 +154,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
             EnvironmentContexts.empty(
                 LineEnding.NL,
                 Locale.ENGLISH,
-                LocalDateTime::now,
+                HAS_NOW,
                 EnvironmentContext.ANONYMOUS
             )
         );
@@ -178,13 +225,42 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         return BasicProviderContext.with(
             CAN_CONVERT,
             EnvironmentContexts.empty(
-                LineEnding.NL,
-                Locale.ENGLISH,
-                LocalDateTime::now,
+                LINE_ENDING,
+                LOCALE,
+                HAS_NOW,
                 EnvironmentContext.ANONYMOUS
             ),
             PLUGIN_STORE
         );
+    }
+
+    // hashCode/equals..................................................................................................
+
+    @Test
+    public void testEqualsDifferentContext() {
+        final LineEnding lineEnding = LineEnding.CRNL;
+        this.checkNotEquals(
+            lineEnding,
+            LINE_ENDING
+        );
+
+        this.checkNotEquals(
+            ProviderContexts.basic(
+                CAN_CONVERT,
+                EnvironmentContexts.empty(
+                    lineEnding,
+                    LOCALE,
+                    HAS_NOW,
+                    Optional.of(USER)
+                ),
+                PLUGIN_STORE
+            )
+        );
+    }
+
+    @Override
+    public BasicProviderContext createObject() {
+        return this.createContext();
     }
 
     // toString.........................................................................................................

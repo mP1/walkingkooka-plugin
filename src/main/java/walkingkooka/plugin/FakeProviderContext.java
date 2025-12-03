@@ -18,6 +18,7 @@
 package walkingkooka.plugin;
 
 import walkingkooka.Either;
+import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.FakeEnvironmentContext;
 import walkingkooka.net.email.EmailAddress;
@@ -31,6 +32,11 @@ public class FakeProviderContext extends FakeEnvironmentContext implements Provi
 
     @Override
     public ProviderContext cloneEnvironment() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ProviderContext setEnvironmentContext(final EnvironmentContext environmentContext) {
         throw new UnsupportedOperationException();
     }
 

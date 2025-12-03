@@ -30,6 +30,11 @@ public final class PluginAliasesProviderContextTest implements ProviderContextTe
     }
 
     @Override
+    public void testSetEnvironmentContextWithNullFails() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testSetLocaleWithDifferent() {
         throw new UnsupportedOperationException();
     }

@@ -87,6 +87,21 @@ final class BasicProviderContext implements ProviderContext,
             );
     }
 
+    // setEnvironmentContext............................................................................................
+
+    @Override
+    public ProviderContext setEnvironmentContext(final EnvironmentContext environmentContext) {
+        final EnvironmentContext before = this.environmentContext;
+        final EnvironmentContext after = before.setEnvironmentContext(environmentContext);
+        return before.equals(after) ?
+            this :
+            with(
+                this.canConvert,
+                after,
+                this.pluginStore
+            );
+    }
+
     // EnvironmentContextDelegator......................................................................................
 
     @Override
@@ -141,6 +156,28 @@ final class BasicProviderContext implements ProviderContext,
     }
 
     // Object...........................................................................................................
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+            this.canConvert,
+            this.environmentContext,
+            this.pluginStore
+        );
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        return this == other ||
+            (other instanceof BasicProviderContext &&
+                this.equals0((BasicProviderContext) other));
+    }
+
+    private boolean equals0(final BasicProviderContext other) {
+        return this.canConvert.equals(other.canConvert) &&
+            this.environmentContext.equals(other.environmentContext) &&
+            this.pluginStore.equals(other.pluginStore);
+    }
 
     @Override
     public String toString() {
