@@ -122,6 +122,12 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
         }
 
         @Override
+        public ProviderContext setEnvironmentContext(final EnvironmentContext environmentContext) {
+            Objects.requireNonNull(environmentContext, "environmentContext");
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
         public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
             Objects.requireNonNull(name, "name");
 

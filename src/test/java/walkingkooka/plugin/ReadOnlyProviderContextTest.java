@@ -18,11 +18,15 @@
 package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.HashCodeEqualsDefinedTesting2;
+import walkingkooka.convert.CanConvert;
 import walkingkooka.convert.ConverterContexts;
+import walkingkooka.datetime.HasNow;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.net.email.EmailAddress;
+import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.plugin.store.PluginStores;
 import walkingkooka.text.LineEnding;
 
@@ -34,7 +38,10 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class ReadOnlyProviderContextTest implements ProviderContextTesting<ReadOnlyProviderContext> {
+public final class ReadOnlyProviderContextTest implements ProviderContextTesting<ReadOnlyProviderContext>,
+    HashCodeEqualsDefinedTesting2<ReadOnlyProviderContext> {
+
+    private final static CanConvert CAN_CONVERT = ConverterContexts.fake();
 
     private final static LineEnding LINE_ENDING = LineEnding.NL;
 
@@ -49,7 +56,11 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         59
     );
 
+    private final static HasNow HAS_NOW = () -> NOW;
+
     private final static EmailAddress USER = EmailAddress.parse("user@example.com");
+
+    private final static PluginStore PLUGIN_STORE = PluginStores.fake();
 
     @Test
     public void testWithNullContextFails() {
@@ -140,6 +151,38 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         );
     }
 
+    // setEnvironmentContext............................................................................................
+
+    @Test
+    public void testSetEnvironmentContext() {
+        final ReadOnlyProviderContext context = this.createContext();
+
+        final EnvironmentContext different = EnvironmentContexts.empty(
+                LineEnding.CR,
+                Locale.FRENCH,
+                HAS_NOW,
+                Optional.of(USER)
+            );
+
+        final ProviderContext set = context.setEnvironmentContext(different);
+
+        assertNotSame(
+            context,
+            set
+        );
+
+        this.checkEquals(
+            ReadOnlyProviderContext.with(
+                BasicProviderContext.with(
+                    CAN_CONVERT,
+                    different,
+                    PLUGIN_STORE
+                )
+            ),
+            set
+        );
+    }
+
     // setEnvironmentValue..............................................................................................
 
     @Test
@@ -186,16 +229,16 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
 
     private ProviderContext createWrappedContext() {
         return ProviderContexts.basic(
-            ConverterContexts.fake(),
+            CAN_CONVERT,
             EnvironmentContexts.map(
                 EnvironmentContexts.empty(
                     LINE_ENDING,
                     LOCALE,
-                    () -> NOW,
+                    HAS_NOW,
                     Optional.of(USER)
                 )
             ),
-            PluginStores.fake()
+            PLUGIN_STORE
         );
     }
 
@@ -210,6 +253,31 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
                     EnvironmentContext.ANONYMOUS
                 )
         );
+    }
+
+    // hashCode/equals..................................................................................................
+
+    @Test
+    public void testEqualsDifferentContext() {
+        this.checkNotEquals(
+            ReadOnlyProviderContext.with(
+                ProviderContexts.basic(
+                    CAN_CONVERT,
+                    EnvironmentContexts.empty(
+                            LINE_ENDING,
+                            LOCALE,
+                            HAS_NOW,
+                            Optional.of(USER)
+                        ),
+                    PLUGIN_STORE
+                )
+            )
+        );
+    }
+    
+    @Override
+    public ReadOnlyProviderContext createObject() {
+        return this.createContext();
     }
 
     // toString.........................................................................................................

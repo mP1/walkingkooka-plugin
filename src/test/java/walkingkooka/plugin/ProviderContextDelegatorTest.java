@@ -81,6 +81,12 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
         }
 
         @Override
+        public ProviderContext setEnvironmentContext(final EnvironmentContext environmentContext) {
+            Objects.requireNonNull(environmentContext, "environmentContext");
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
         public <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,
                                                        final T value) {
             Objects.requireNonNull(name, "name");
