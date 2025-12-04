@@ -81,7 +81,7 @@ final class ReadOnlyProviderContext implements ProviderContext {
     public ProviderContext setEnvironmentContext(final EnvironmentContext environmentContext) {
         final ProviderContext before = this.context;
         final ProviderContext after = before.setEnvironmentContext(environmentContext);
-        return before.equals(after) ?
+        return before == after ?
             this :
             with(after);
     }
