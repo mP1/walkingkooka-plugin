@@ -90,67 +90,6 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         );
     }
 
-    @Test
-    public void testCloneEnvironmentAndSetLocale() {
-        final ReadOnlyProviderContext context = this.createContext();
-
-        final Locale locale = Locale.forLanguageTag("en-NZ");
-
-        this.checkNotEquals(
-            locale,
-            context.locale()
-        );
-
-        this.localeAndCheck(
-            context.cloneEnvironment()
-                .setLocale(locale),
-            locale
-        );
-    }
-
-    @Test
-    public void testCloneEnvironmentAndSetUser() {
-        final ReadOnlyProviderContext context = this.createContext();
-
-        final EmailAddress user = EmailAddress.parse("different@example.com");
-
-        this.checkNotEquals(
-            user,
-            context.user()
-        );
-
-        this.userAndCheck(
-            context.cloneEnvironment()
-                .setUser(
-                    Optional.of(user)
-                ),
-            user
-        );
-    }
-
-    @Test
-    public void testCloneEnvironmentAndSetEnvironmentValue() {
-        final ReadOnlyProviderContext context = this.createContext();
-
-        final ProviderContext cloned = context.cloneEnvironment();
-        assertNotSame(
-            context,
-            cloned
-        );
-
-        final EnvironmentValueName<String> name = EnvironmentValueName.with("hello");
-        final String value = "World123";
-
-        this.environmentValueAndCheck(
-            cloned.setEnvironmentValue(
-                name,
-                value
-            ),
-            name,
-            value
-        );
-    }
-
     // setEnvironmentContext............................................................................................
 
     @Test

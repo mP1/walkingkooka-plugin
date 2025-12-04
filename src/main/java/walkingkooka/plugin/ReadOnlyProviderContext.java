@@ -74,7 +74,9 @@ final class ReadOnlyProviderContext implements ProviderContext {
 
     @Override
     public ProviderContext cloneEnvironment() {
-        return this.context.cloneEnvironment();
+        return this.setEnvironmentContext(
+            this.context.cloneEnvironment()
+        );
     }
 
     @Override
