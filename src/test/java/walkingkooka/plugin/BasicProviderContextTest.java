@@ -40,6 +40,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class BasicProviderContextTest implements ProviderContextTesting<BasicProviderContext>,
@@ -107,6 +108,41 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
                 ENVIRONMENT_CONTEXT,
                 null
             )
+        );
+    }
+
+    // cloneEnvironment.................................................................................................
+
+    @Test
+    public void testCloneEnvironment() {
+        final EnvironmentContext environmentContext = EnvironmentContexts.empty(
+            LineEnding.CR,
+            Locale.FRENCH,
+            HAS_NOW,
+            EnvironmentContext.ANONYMOUS
+        );
+
+        assertNotSame(
+            environmentContext.cloneEnvironment(),
+            environmentContext
+        );
+
+        final ProviderContext before = ProviderContexts.basic(
+            CAN_CONVERT,
+            environmentContext,
+            PLUGIN_STORE
+        );
+
+        final ProviderContext after = before.cloneEnvironment();
+
+        assertNotSame(
+            before,
+            after
+        );
+
+        this.checkEquals(
+            before,
+            after
         );
     }
 
