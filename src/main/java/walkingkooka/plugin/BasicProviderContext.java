@@ -75,14 +75,14 @@ final class BasicProviderContext implements ProviderContext,
 
     @Override
     public ProviderContext cloneEnvironment() {
-        final EnvironmentContext environmentContext = this.environmentContext;
-        final EnvironmentContext cloned = environmentContext.cloneEnvironment();
+        final EnvironmentContext before = this.environmentContext;
+        final EnvironmentContext after = before.cloneEnvironment();
 
-        return environmentContext.equals(cloned) ?
+        return before == after ?
             this :
             with(
                 this.canConvert,
-                cloned,
+                after,
                 this.pluginStore
             );
     }
