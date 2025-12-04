@@ -90,35 +90,175 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         );
     }
 
+    @Test
+    public void testCloneEnvironmentAndSetLineEnding() {
+        final ReadOnlyProviderContext context = this.createContext();
+
+        final LineEnding lineEnding = LineEnding.CRNL;
+        this.checkNotEquals(
+            LINE_ENDING,
+            lineEnding
+        );
+
+        this.lineEndingAndCheck(
+            context.cloneEnvironment()
+                .setLineEnding(lineEnding),
+            lineEnding
+        );
+    }
+
+    @Test
+    public void testCloneEnvironmentAndSetLocale() {
+        final ReadOnlyProviderContext context = this.createContext();
+
+        final Locale locale = Locale.FRANCE;
+        this.checkNotEquals(
+            LOCALE,
+            locale
+        );
+
+        this.localeAndCheck(
+            context.cloneEnvironment()
+                .setLocale(locale),
+            locale
+        );
+    }
+
+    @Test
+    public void testCloneEnvironmentAndSetUser() {
+        final ReadOnlyProviderContext context = this.createContext();
+
+        final EmailAddress user = EmailAddress.parse("different@example.com");
+
+        this.checkNotEquals(
+            user,
+            context.user()
+        );
+
+        this.userAndCheck(
+            context.cloneEnvironment()
+                .setUser(
+                    Optional.of(user)
+                ),
+            user
+        );
+    }
+
+    @Test
+    public void testCloneEnvironmentAndSetEnvironmentValue() {
+        final ReadOnlyProviderContext context = this.createContext();
+
+        final ProviderContext cloned = context.cloneEnvironment();
+        assertNotSame(
+            context,
+            cloned
+        );
+
+        final EnvironmentValueName<String> name = EnvironmentValueName.with("hello");
+        final String value = "World123";
+
+        this.environmentValueAndCheck(
+            cloned.setEnvironmentValue(
+                name,
+                value
+            ),
+            name,
+            value
+        );
+    }
+
     // setEnvironmentContext............................................................................................
 
     @Test
     public void testSetEnvironmentContext() {
-        final ReadOnlyProviderContext context = this.createContext();
+        final ReadOnlyProviderContext before = this.createContext();
 
         final EnvironmentContext different = EnvironmentContexts.empty(
-                LineEnding.CR,
-                Locale.FRENCH,
-                HAS_NOW,
-                Optional.of(USER)
-            );
+            LineEnding.CR,
+            Locale.FRENCH,
+            HAS_NOW,
+            Optional.of(USER)
+        );
 
-        final ProviderContext set = context.setEnvironmentContext(different);
+        final ProviderContext after = before.setEnvironmentContext(different);
 
         assertNotSame(
-            context,
-            set
+            before,
+            after
         );
 
         this.checkEquals(
-            ReadOnlyProviderContext.with(
-                BasicProviderContext.with(
-                    CAN_CONVERT,
-                    different,
-                    PLUGIN_STORE
+            BasicProviderContext.with(
+                CAN_CONVERT,
+                different,
+                PLUGIN_STORE
+            ),
+            after
+        );
+    }
+
+    @Test
+    public void testSetEnvironmentContextAndSetLineEnding() {
+        final ReadOnlyProviderContext context = this.createContext();
+
+        final LineEnding lineEnding = LineEnding.CRNL;
+
+        this.lineEndingAndCheck(
+            context.setEnvironmentContext(
+                EnvironmentContexts.empty(
+                    lineEnding,
+                    Locale.FRENCH,
+                    HAS_NOW,
+                    Optional.of(USER)
                 )
             ),
-            set
+            lineEnding
+        );
+    }
+
+    @Test
+    public void testSetEnvironmentContextAndSetLocale() {
+        final ReadOnlyProviderContext context = this.createContext();
+
+        final Locale locale = Locale.GERMAN;
+
+        this.localeAndCheck(
+            context.setEnvironmentContext(
+                EnvironmentContexts.empty(
+                    LINE_ENDING,
+                    locale,
+                    HAS_NOW,
+                    Optional.of(USER)
+                )
+            ),
+            locale
+        );
+    }
+
+    @Test
+    public void testSetEnvironmentContextAndSetUser() {
+        final ReadOnlyProviderContext context = this.createContext();
+
+        final Optional<EmailAddress> user = Optional.of(
+            EmailAddress.parse("different@example.com")
+        );
+
+        this.checkNotEquals(
+            Optional.of(USER),
+            user
+        );
+
+        this.userAndCheck(
+            context.setEnvironmentContext(
+                    EnvironmentContexts.empty(
+                        LINE_ENDING,
+                        LOCALE,
+                        HAS_NOW,
+                        Optional.of(USER)
+                    )
+                ).cloneEnvironment()
+                .setUser(user),
+            user
         );
     }
 

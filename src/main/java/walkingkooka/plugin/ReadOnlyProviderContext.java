@@ -85,7 +85,7 @@ final class ReadOnlyProviderContext implements ProviderContext {
         final ProviderContext after = before.setEnvironmentContext(environmentContext);
         return before == after ?
             this :
-            with(after);
+            after;
     }
 
     @Override
