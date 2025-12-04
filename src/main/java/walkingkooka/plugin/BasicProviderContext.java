@@ -91,11 +91,15 @@ final class BasicProviderContext implements ProviderContext,
 
     @Override
     public ProviderContext setEnvironmentContext(final EnvironmentContext environmentContext) {
-        return with(
-            this.canConvert,
-            environmentContext,
-            this.pluginStore
-        );
+        final EnvironmentContext before = this.environmentContext;
+
+        return before == environmentContext ?
+            this :
+            with(
+                this.canConvert,
+                environmentContext,
+                this.pluginStore
+            );
     }
 
     // EnvironmentContextDelegator......................................................................................

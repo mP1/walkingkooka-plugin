@@ -35,7 +35,7 @@ public final class PluginAliasesProviderContextTest implements ProviderContextTe
     }
 
     @Override
-    public void testSetEnvironmentContextWithSame() {
+    public void testSetEnvironmentContextWithEqualEnvironmentContext() {
         throw new UnsupportedOperationException();
     }
 

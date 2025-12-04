@@ -41,6 +41,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class BasicProviderContextTest implements ProviderContextTesting<BasicProviderContext>,
@@ -147,6 +148,27 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     }
 
     // setEnvironmentContext............................................................................................
+
+    @Test
+    public void testSetEnvironmentContextWithSame() {
+        final EnvironmentContext environmentContext = EnvironmentContexts.empty(
+            LineEnding.CR,
+            Locale.FRENCH,
+            HAS_NOW,
+            EnvironmentContext.ANONYMOUS
+        );
+
+        final ProviderContext providerContext = ProviderContexts.basic(
+            CAN_CONVERT,
+            environmentContext,
+            PLUGIN_STORE
+        );
+
+        assertSame(
+            providerContext,
+            providerContext.setEnvironmentContext(environmentContext)
+        );
+    }
 
     @Test
     public void testSetEnvironmentContext() {
