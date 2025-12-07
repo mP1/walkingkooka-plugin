@@ -26,6 +26,7 @@ import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.text.LineEnding;
 
+import java.util.Locale;
 import java.util.Optional;
 
 public interface ProviderContextDelegator extends ProviderContext,
@@ -36,6 +37,13 @@ public interface ProviderContextDelegator extends ProviderContext,
     default ProviderContext setLineEnding(final LineEnding lineEnding) {
         this.environmentContext()
             .setLineEnding(lineEnding);
+        return this;
+    }
+
+    @Override
+    default ProviderContext setLocale(final Locale locale) {
+        this.environmentContext()
+            .setLocale(locale);
         return this;
     }
 
