@@ -21,6 +21,7 @@ import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.environment.EnvironmentValueWatcher;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.text.LineEnding;
@@ -138,6 +139,18 @@ final class PluginAliasesProviderContext implements ProviderContext {
 
     @Override
     public Optional<EmailAddress> user() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Runnable addEventValueWatcher(final EnvironmentValueWatcher watcher) {
+        Objects.requireNonNull(watcher, "watcher");
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Runnable addEventValueWatcherOnce(final EnvironmentValueWatcher watcher) {
+        Objects.requireNonNull(watcher, "watcher");
         throw new UnsupportedOperationException();
     }
 

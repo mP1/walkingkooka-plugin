@@ -20,6 +20,7 @@ package walkingkooka.plugin;
 import walkingkooka.Either;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.environment.EnvironmentValueWatcher;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.ProviderContextTestingTest.TestProviderContext;
 import walkingkooka.plugin.store.PluginStore;
@@ -45,7 +46,22 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
     }
 
     @Override
+    public void testSetLineEndingWithDifferentAndWatcher() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testSetLocaleWithDifferent() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetLocaleWithDifferentAndWatcher() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetUserWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }
 
@@ -166,6 +182,18 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
         @Override
         public PluginStore pluginStore() {
             return PluginStores.fake();
+        }
+
+        @Override
+        public Runnable addEventValueWatcher(final EnvironmentValueWatcher watcher) {
+            Objects.requireNonNull(watcher, "watcher");
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public Runnable addEventValueWatcherOnce(final EnvironmentValueWatcher watcher) {
+            Objects.requireNonNull(watcher, "watcher");
+            throw new UnsupportedOperationException();
         }
 
         @Override
