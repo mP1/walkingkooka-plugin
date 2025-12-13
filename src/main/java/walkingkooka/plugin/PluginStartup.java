@@ -18,7 +18,6 @@
 package walkingkooka.plugin;
 
 import walkingkooka.collect.list.Lists;
-import walkingkooka.environment.EnvironmentStartup;
 import walkingkooka.net.NetStartup;
 import walkingkooka.net.Url;
 import walkingkooka.reflect.PublicStaticHelper;
@@ -30,7 +29,6 @@ import walkingkooka.tree.json.marshall.JsonNodeContext;
 public final class PluginStartup implements PublicStaticHelper {
 
     static {
-        EnvironmentStartup.init();
         NetStartup.init();
 
         try {
