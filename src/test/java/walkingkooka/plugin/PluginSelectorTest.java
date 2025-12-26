@@ -437,9 +437,9 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
             return Cast.to(
                 Optional.ofNullable(
-                    ENVIRONMENT_VALUE_NAME_1.equals(name) ?
+                    ENVIRONMENT_VALUE_NAME_1.value().equals(name.value()) ?
                         ENVIRONMENT_VALUE_1 :
-                        ENVIRONMENT_VALUE_NAME_2.equals(name) ?
+                        ENVIRONMENT_VALUE_NAME_2.value().equals(name.value()) ?
                             ENVIRONMENT_VALUE_2 :
                             null
                 )
@@ -688,11 +688,17 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         );
     }
 
-    private final static EnvironmentValueName<String> ENVIRONMENT_VALUE_NAME_1 = EnvironmentValueName.with("environment-value-name-1");
+    private final static EnvironmentValueName<String> ENVIRONMENT_VALUE_NAME_1 = EnvironmentValueName.with(
+        "environment-value-name-1",
+        String.class
+    );
 
     private final static String ENVIRONMENT_VALUE_1 = "environment-value-1";
 
-    private final static EnvironmentValueName<Double> ENVIRONMENT_VALUE_NAME_2 = EnvironmentValueName.with("environment-value-name-2");
+    private final static EnvironmentValueName<Double> ENVIRONMENT_VALUE_NAME_2 = EnvironmentValueName.with(
+        "environment-value-name-2",
+        Double.class
+    );
 
     private final static double ENVIRONMENT_VALUE_2 = 2.5;
 

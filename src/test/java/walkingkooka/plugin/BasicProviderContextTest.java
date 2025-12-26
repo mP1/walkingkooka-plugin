@@ -66,7 +66,10 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         DecimalNumberContexts.fake()
     );
 
-    private final static EnvironmentValueName<String> VAR = EnvironmentValueName.with("magic");
+    private final static EnvironmentValueName<String> VAR = EnvironmentValueName.with(
+        "magic",
+        String.class
+    );
 
     private final static String VAR_VALUE = "MagicValue123";
 
@@ -263,7 +266,10 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     public void testEnvironmentValueUnknown() {
         this.environmentValueAndCheck(
             this.createContext(),
-            EnvironmentValueName.with("Unknown")
+            EnvironmentValueName.with(
+                "Unknown",
+                Void.class
+            )
         );
     }
 

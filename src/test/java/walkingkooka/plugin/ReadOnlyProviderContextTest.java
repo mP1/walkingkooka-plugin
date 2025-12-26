@@ -154,7 +154,10 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
             cloned
         );
 
-        final EnvironmentValueName<String> name = EnvironmentValueName.with("hello");
+        final EnvironmentValueName<String> name = EnvironmentValueName.with(
+            "hello",
+            String.class
+        );
         final String value = "World123";
 
         this.environmentValueAndCheck(

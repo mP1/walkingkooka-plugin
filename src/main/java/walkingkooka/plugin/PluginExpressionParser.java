@@ -200,7 +200,8 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
             s -> context.environmentValueOrFail(
                 EnvironmentValueName.with(
                     s.text()
-                        .substring(1) // skip leading DOLLAR-SIGN
+                        .substring(1), // skip leading DOLLAR-SIGN
+                    Object.class // no way of guessing actual value type
                 )
             )
         );
