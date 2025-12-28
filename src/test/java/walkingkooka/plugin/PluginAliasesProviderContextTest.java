@@ -30,6 +30,16 @@ public final class PluginAliasesProviderContextTest implements ProviderContextTe
     }
 
     @Override
+    public void testRemoveEnvironmentValueWithNowFails() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetEnvironmentValueWithNowFails() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testSetEnvironmentContextWithNullFails() {
         throw new UnsupportedOperationException();
     }

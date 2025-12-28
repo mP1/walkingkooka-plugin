@@ -46,6 +46,11 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
     }
 
     @Override
+    public void testRemoveEnvironmentValueWithNowFails() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testSetLineEndingWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }
@@ -57,6 +62,11 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
 
     @Override
     public void testSetLocaleWithDifferentAndWatcher() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetEnvironmentValueWithNowFails() {
         throw new UnsupportedOperationException();
     }
 
