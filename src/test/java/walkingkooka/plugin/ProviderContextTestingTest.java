@@ -36,6 +36,11 @@ import java.util.Set;
 public final class ProviderContextTestingTest implements ProviderContextTesting<TestProviderContext> {
 
     @Override
+    public void testEnvironmentValueLineEndingEqualsLineEnding() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testEnvironmentValueLocaleEqualsLocale() {
         throw new UnsupportedOperationException();
     }
