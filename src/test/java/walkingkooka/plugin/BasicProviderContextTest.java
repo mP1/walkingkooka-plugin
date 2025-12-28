@@ -288,11 +288,13 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     public BasicProviderContext createContext() {
         return BasicProviderContext.with(
             CAN_CONVERT,
-            EnvironmentContexts.empty(
-                LINE_ENDING,
-                LOCALE,
-                HAS_NOW,
-                EnvironmentContext.ANONYMOUS
+            EnvironmentContexts.map(
+                EnvironmentContexts.empty(
+                    LINE_ENDING,
+                    LOCALE,
+                    HAS_NOW,
+                    EnvironmentContext.ANONYMOUS
+                )
             ),
             PLUGIN_STORE
         );

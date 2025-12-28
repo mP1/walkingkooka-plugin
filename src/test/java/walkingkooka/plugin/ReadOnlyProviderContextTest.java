@@ -279,6 +279,11 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         );
     }
 
+    @Override
+    public void testSetEnvironmentValueWithNowFails() {
+        throw new UnsupportedOperationException();
+    }
+
     @Test
     public void testRemoveEnvironmentWithLocaleFails() {
         assertThrows(
@@ -286,6 +291,11 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
             () -> this.createContext()
                 .removeEnvironmentValue(EnvironmentValueName.LOCALE)
         );
+    }
+
+    @Override
+    public void testRemoveEnvironmentValueWithNowFails() {
+        throw new UnsupportedOperationException();
     }
 
     @Test
