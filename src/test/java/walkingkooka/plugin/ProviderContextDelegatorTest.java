@@ -85,7 +85,7 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
                 EnvironmentContexts.empty(
                     LineEnding.NL,
                     Locale.FRANCE,
-                    LocalDateTime::now,
+                    () -> LocalDateTime.MIN,
                     EnvironmentContext.ANONYMOUS
                 ),
                 PluginStores.treeMap()
