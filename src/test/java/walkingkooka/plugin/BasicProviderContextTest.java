@@ -53,7 +53,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
 
     private final static EmailAddress USER = EmailAddress.parse("user@example.com");
 
-    private final static HasNow HAS_NOW = LocalDateTime::now;
+    private final static HasNow HAS_NOW = () -> LocalDateTime.MIN;
 
     private final static CanConvert CAN_CONVERT = ConverterContexts.basic(
         false, // canNumbersHaveGroupSeparator

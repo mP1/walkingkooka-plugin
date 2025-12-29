@@ -46,6 +46,11 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
     }
 
     @Override
+    public void testEnvironmentValueNowEqualsNow() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testEnvironmentValueUserEqualsUser() {
         throw new UnsupportedOperationException();
     }

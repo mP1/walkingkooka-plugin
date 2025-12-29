@@ -30,6 +30,11 @@ public final class PluginAliasesProviderContextTest implements ProviderContextTe
     }
 
     @Override
+    public void testEnvironmentValueNowEqualsNow() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testEnvironmentValueUserEqualsUser() {
         throw new UnsupportedOperationException();
     }
