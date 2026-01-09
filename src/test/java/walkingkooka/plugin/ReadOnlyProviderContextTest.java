@@ -19,8 +19,8 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
-import walkingkooka.convert.CanConvert;
 import walkingkooka.convert.ConverterContexts;
+import walkingkooka.convert.ConverterLike;
 import walkingkooka.datetime.HasNow;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class ReadOnlyProviderContextTest implements ProviderContextTesting<ReadOnlyProviderContext>,
     HashCodeEqualsDefinedTesting2<ReadOnlyProviderContext> {
 
-    private final static CanConvert CAN_CONVERT = ConverterContexts.fake();
+    private final static ConverterLike CAN_CONVERT = ConverterContexts.fake();
 
     private final static LineEnding LINE_ENDING = LineEnding.NL;
 

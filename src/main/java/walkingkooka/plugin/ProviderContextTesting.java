@@ -18,14 +18,14 @@
 package walkingkooka.plugin;
 
 import walkingkooka.ContextTesting;
-import walkingkooka.convert.CanConvertTesting;
+import walkingkooka.convert.ConverterLikeTesting;
 import walkingkooka.environment.EnvironmentContextTesting2;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 public interface ProviderContextTesting<C extends ProviderContext> extends ContextTesting<C>,
     EnvironmentContextTesting2<C>,
-    CanConvertTesting<C>,
+    ConverterLikeTesting<C>,
     TreePrintableTesting {
 
     // pluginStore......................................................................................................
@@ -39,10 +39,10 @@ public interface ProviderContextTesting<C extends ProviderContext> extends Conte
         );
     }
 
-    // CanConvert.......................................................................................................
+    // ConverterLike.......................................................................................................
 
     @Override
-    default C createCanConvert() {
+    default C createConverterLike() {
         return this.createContext();
     }
 

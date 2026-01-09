@@ -17,7 +17,7 @@
 
 package walkingkooka.plugin;
 
-import walkingkooka.convert.CanConvert;
+import walkingkooka.convert.ConverterLike;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.net.email.EmailAddress;
@@ -31,7 +31,7 @@ import java.util.Optional;
  * A {@link walkingkooka.Context} that should be passed to all {@link Provider} public methods.
  */
 public interface ProviderContext extends EnvironmentContext,
-    CanConvert {
+    ConverterLike {
 
     @Override
     ProviderContext cloneEnvironment();

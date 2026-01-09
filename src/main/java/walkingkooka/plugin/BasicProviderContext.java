@@ -17,8 +17,8 @@
 
 package walkingkooka.plugin;
 
-import walkingkooka.convert.CanConvert;
-import walkingkooka.convert.CanConvertDelegator;
+import walkingkooka.convert.ConverterLike;
+import walkingkooka.convert.ConverterLikeDelegator;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.environment.EnvironmentValueName;
@@ -34,23 +34,23 @@ import java.util.Optional;
  * A {@link ProviderContext} that delegates to a {@link EnvironmentContext}.
  */
 final class BasicProviderContext implements ProviderContext,
-    CanConvertDelegator,
+    ConverterLikeDelegator,
     EnvironmentContextDelegator {
 
-    static BasicProviderContext with(final CanConvert canConvert,
+    static BasicProviderContext with(final ConverterLike converterLike,
                                      final EnvironmentContext environmentContext,
                                      final PluginStore pluginStore) {
         return new BasicProviderContext(
-            Objects.requireNonNull(canConvert, "canConvert"),
+            Objects.requireNonNull(converterLike, "converterLike"),
             Objects.requireNonNull(environmentContext, "environmentContext"),
             Objects.requireNonNull(pluginStore, "pluginStore")
         );
     }
 
-    private BasicProviderContext(final CanConvert canConvert,
+    private BasicProviderContext(final ConverterLike converterLike,
                                  final EnvironmentContext environmentContext,
                                  final PluginStore pluginStore) {
-        this.canConvert = canConvert;
+        this.converterLike = converterLike;
         this.environmentContext = environmentContext;
         this.pluginStore = pluginStore;
     }
@@ -62,14 +62,14 @@ final class BasicProviderContext implements ProviderContext,
 
     private final PluginStore pluginStore;
 
-    // CanConvertDelegator..............................................................................................
+    // ConverterLikeDelegator...........................................................................................
 
     @Override
-    public CanConvert canConvert() {
-        return this.canConvert;
+    public ConverterLike converterLike() {
+        return this.converterLike;
     }
 
-    private final CanConvert canConvert;
+    private final ConverterLike converterLike;
 
     // EnvironmentContext...............................................................................................
 
@@ -89,7 +89,7 @@ final class BasicProviderContext implements ProviderContext,
         return before == environmentContext ?
             this :
             with(
-                this.canConvert,
+                this.converterLike,
                 environmentContext,
                 this.pluginStore
             );
@@ -153,7 +153,7 @@ final class BasicProviderContext implements ProviderContext,
     @Override
     public int hashCode() {
         return Objects.hash(
-            this.canConvert,
+            this.converterLike,
             this.environmentContext,
             this.pluginStore
         );
@@ -167,7 +167,7 @@ final class BasicProviderContext implements ProviderContext,
     }
 
     private boolean equals0(final BasicProviderContext other) {
-        return this.canConvert.equals(other.canConvert) &&
+        return this.converterLike.equals(other.converterLike) &&
             this.environmentContext.equals(other.environmentContext) &&
             this.pluginStore.equals(other.pluginStore);
     }
