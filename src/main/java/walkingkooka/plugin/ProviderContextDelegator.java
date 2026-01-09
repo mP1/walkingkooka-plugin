@@ -17,8 +17,8 @@
 
 package walkingkooka.plugin;
 
-import walkingkooka.convert.CanConvert;
-import walkingkooka.convert.CanConvertDelegator;
+import walkingkooka.convert.ConverterLike;
+import walkingkooka.convert.ConverterLikeDelegator;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.environment.EnvironmentValueName;
@@ -31,7 +31,7 @@ import java.util.Optional;
 
 public interface ProviderContextDelegator extends ProviderContext,
     EnvironmentContextDelegator,
-    CanConvertDelegator {
+    ConverterLikeDelegator {
 
     @Override
     default ProviderContext setLineEnding(final LineEnding lineEnding) {
@@ -87,10 +87,10 @@ public interface ProviderContextDelegator extends ProviderContext,
         return this.providerContext();
     }
 
-    // CanConvert.......................................................................................................
+    // ConverterLike....................................................................................................
 
     @Override
-    default CanConvert canConvert() {
+    default ConverterLike converterLike() {
         return this.providerContext();
     }
 }

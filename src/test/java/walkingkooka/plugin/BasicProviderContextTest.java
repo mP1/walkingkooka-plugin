@@ -20,8 +20,8 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
-import walkingkooka.convert.CanConvert;
 import walkingkooka.convert.ConverterContexts;
+import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.Converters;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.datetime.HasNow;
@@ -55,9 +55,10 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
 
     private final static HasNow HAS_NOW = () -> LocalDateTime.MIN;
 
-    private final static CanConvert CAN_CONVERT = ConverterContexts.basic(
+    private final static ConverterLike CAN_CONVERT = ConverterContexts.basic(
         false, // canNumbersHaveGroupSeparator
         Converters.EXCEL_1900_DATE_SYSTEM_OFFSET, // dateOffset
+        LINE_ENDING,
         ',', // valueSeparator
         Converters.stringToLocalDate(
             (x) -> DateTimeFormatter.ofPattern("yyyy MM dd")
@@ -80,7 +81,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     // with.............................................................................................................
 
     @Test
-    public void testWithNullCanConvertFails() {
+    public void testWithNullConverterLikeFails() {
         assertThrows(
             NullPointerException.class,
             () -> BasicProviderContext.with(
