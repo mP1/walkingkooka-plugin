@@ -25,7 +25,6 @@ import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.text.LineEnding;
 
-import java.util.Locale;
 import java.util.Optional;
 
 public class FakeProviderContext extends FakeEnvironmentContext implements ProviderContext {
@@ -42,11 +41,6 @@ public class FakeProviderContext extends FakeEnvironmentContext implements Provi
 
     @Override
     public ProviderContext setLineEnding(final LineEnding lineEnding) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public ProviderContext setLocale(final Locale locale) {
         throw new UnsupportedOperationException();
     }
 
