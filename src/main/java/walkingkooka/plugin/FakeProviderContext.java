@@ -19,13 +19,8 @@ package walkingkooka.plugin;
 
 import walkingkooka.Either;
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.FakeEnvironmentContext;
-import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
-import walkingkooka.text.LineEnding;
-
-import java.util.Optional;
 
 public class FakeProviderContext extends FakeEnvironmentContext implements ProviderContext {
 
@@ -36,27 +31,6 @@ public class FakeProviderContext extends FakeEnvironmentContext implements Provi
 
     @Override
     public ProviderContext setEnvironmentContext(final EnvironmentContext environmentContext) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public ProviderContext setLineEnding(final LineEnding lineEnding) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public ProviderContext setUser(final Optional<EmailAddress> user) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,
-                                                   final T value) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public ProviderContext removeEnvironmentValue(final EnvironmentValueName<?> name) {
         throw new UnsupportedOperationException();
     }
 

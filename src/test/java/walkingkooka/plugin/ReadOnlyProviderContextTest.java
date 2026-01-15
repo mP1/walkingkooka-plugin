@@ -100,9 +100,8 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
             lineEnding
         );
 
-        this.lineEndingAndCheck(
-            context.cloneEnvironment()
-                .setLineEnding(lineEnding),
+        this.setLineEndingAndCheck(
+            context.cloneEnvironment(),
             lineEnding
         );
     }
@@ -137,12 +136,9 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
             context.user()
         );
 
-        this.userAndCheck(
-            context.cloneEnvironment()
-                .setUser(
-                    Optional.of(user)
-                ),
-            user
+        this.setUserAndCheck(
+            context.cloneEnvironment(),
+            Optional.of(user)
         );
     }
 
@@ -162,11 +158,8 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         );
         final String value = "World123";
 
-        this.environmentValueAndCheck(
-            cloned.setEnvironmentValue(
-                name,
-                value
-            ),
+        this.setEnvironmentValueAndCheck(
+            cloned,
             name,
             value
         );
@@ -253,16 +246,15 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
             user
         );
 
-        this.userAndCheck(
+        this.setUserAndCheck(
             context.setEnvironmentContext(
-                    EnvironmentContexts.empty(
-                        LINE_ENDING,
-                        LOCALE,
-                        HAS_NOW,
-                        Optional.of(USER)
-                    )
-                ).cloneEnvironment()
-                .setUser(user),
+                EnvironmentContexts.empty(
+                    LINE_ENDING,
+                    LOCALE,
+                    HAS_NOW,
+                    Optional.of(USER)
+                )
+            ).cloneEnvironment(),
             user
         );
     }

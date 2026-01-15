@@ -100,8 +100,8 @@ final class ReadOnlyProviderContext implements ProviderContext {
     }
 
     @Override
-    public <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,
-                                                   final T value) {
+    public <T> void setEnvironmentValue(final EnvironmentValueName<T> name,
+                                        final T value) {
         Objects.requireNonNull(name, "name");
         Objects.requireNonNull(value, "value");
 
@@ -109,7 +109,7 @@ final class ReadOnlyProviderContext implements ProviderContext {
     }
 
     @Override
-    public ProviderContext removeEnvironmentValue(final EnvironmentValueName<?> name) {
+    public void removeEnvironmentValue(final EnvironmentValueName<?> name) {
         Objects.requireNonNull(name, "name");
 
         throw new UnsupportedOperationException();
@@ -121,7 +121,7 @@ final class ReadOnlyProviderContext implements ProviderContext {
     }
 
     @Override
-    public ProviderContext setUser(final Optional<EmailAddress> user) {
+    public void setUser(final Optional<EmailAddress> user) {
         Objects.requireNonNull(user, "user");
 
         throw new UnsupportedOperationException();
@@ -138,7 +138,7 @@ final class ReadOnlyProviderContext implements ProviderContext {
     }
 
     @Override
-    public ProviderContext setLineEnding(final LineEnding lineEnding) {
+    public void setLineEnding(final LineEnding lineEnding) {
         Objects.requireNonNull(lineEnding, "lineEnding");
 
         throw new UnsupportedOperationException();

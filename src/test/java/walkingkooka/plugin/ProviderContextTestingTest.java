@@ -120,8 +120,8 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
         }
 
         @Override
-        public ProviderContext setLineEnding(final LineEnding lineEnding) {
-            return this.setEnvironmentValue(
+        public void setLineEnding(final LineEnding lineEnding) {
+            this.setEnvironmentValue(
                 LINE_ENDING,
                 lineEnding
             );
@@ -141,15 +141,17 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
         }
 
         @Override
-        public ProviderContext setUser(final Optional<EmailAddress> user) {
-            return user.isPresent() ?
+        public void setUser(final Optional<EmailAddress> user) {
+            if (user.isPresent()) {
                 this.setEnvironmentValue(
                     EnvironmentValueName.USER,
                     user.orElse(null)
-                ) :
+                );
+            } else {
                 this.removeEnvironmentValue(
                     EnvironmentValueName.USER
                 );
+            }
         }
 
         @Override
@@ -176,15 +178,15 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
         }
 
         @Override
-        public <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,
-                                                       final T value) {
+        public <T> void setEnvironmentValue(final EnvironmentValueName<T> name,
+                                            final T value) {
             Objects.requireNonNull(name, "name");
             Objects.requireNonNull(value, "value");
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public ProviderContext removeEnvironmentValue(final EnvironmentValueName<?> name) {
+        public void removeEnvironmentValue(final EnvironmentValueName<?> name) {
             Objects.requireNonNull(name, "name");
             throw new UnsupportedOperationException();
         }

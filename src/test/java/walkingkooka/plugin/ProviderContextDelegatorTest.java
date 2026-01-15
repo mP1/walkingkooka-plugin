@@ -105,8 +105,8 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
         }
 
         @Override
-        public <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,
-                                                       final T value) {
+        public <T> void setEnvironmentValue(final EnvironmentValueName<T> name,
+                                            final T value) {
             Objects.requireNonNull(name, "name");
             Objects.requireNonNull(value, "value");
 

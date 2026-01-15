@@ -19,12 +19,7 @@ package walkingkooka.plugin;
 
 import walkingkooka.convert.ConverterLike;
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentValueName;
-import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
-import walkingkooka.text.LineEnding;
-
-import java.util.Optional;
 
 /**
  * A {@link walkingkooka.Context} that should be passed to all {@link Provider} public methods.
@@ -37,19 +32,6 @@ public interface ProviderContext extends EnvironmentContext,
 
     @Override
     ProviderContext setEnvironmentContext(EnvironmentContext environmentContext);
-
-    @Override
-    ProviderContext setLineEnding(final LineEnding lineEnding);
-
-    @Override
-    ProviderContext setUser(final Optional<EmailAddress> user);
-
-    @Override
-    <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,
-                                            final T value);
-
-    @Override
-    ProviderContext removeEnvironmentValue(final EnvironmentValueName<?> name);
 
     /**
      * A {@link PluginStore} holding plugins.
