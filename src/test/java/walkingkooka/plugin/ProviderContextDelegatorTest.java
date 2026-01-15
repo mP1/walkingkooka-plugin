@@ -93,14 +93,6 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
         }
 
         @Override
-        public ProviderContext setLocale(final Locale locale) {
-            return this.setEnvironmentValue(
-                EnvironmentValueName.LOCALE,
-                locale
-            );
-        }
-
-        @Override
         public ProviderContext cloneEnvironment() {
             throw new UnsupportedOperationException();
         }

@@ -117,9 +117,11 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
             locale
         );
 
+        final ProviderContext clone = context.cloneEnvironment();
+        clone.setLocale(locale);
+
         this.localeAndCheck(
-            context.cloneEnvironment()
-                .setLocale(locale),
+            clone,
             locale
         );
     }

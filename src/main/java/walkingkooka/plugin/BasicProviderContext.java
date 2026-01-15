@@ -26,7 +26,6 @@ import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.text.LineEnding;
 
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -112,17 +111,6 @@ final class BasicProviderContext implements ProviderContext,
     @Override
     public ProviderContext setLineEnding(final LineEnding lineEnding) {
         this.environmentContext.setLineEnding(lineEnding);
-        return this;
-    }
-    
-    @Override
-    public Locale locale() {
-        return this.environmentContext.locale();
-    }
-
-    @Override
-    public ProviderContext setLocale(final Locale locale) {
-        this.environmentContext.setLocale(locale);
         return this;
     }
 

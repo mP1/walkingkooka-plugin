@@ -133,8 +133,8 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
         }
 
         @Override
-        public ProviderContext setLocale(final Locale locale) {
-            return this.setEnvironmentValue(
+        public void setLocale(final Locale locale) {
+            this.setEnvironmentValue(
                 EnvironmentValueName.LOCALE,
                 locale
             );
