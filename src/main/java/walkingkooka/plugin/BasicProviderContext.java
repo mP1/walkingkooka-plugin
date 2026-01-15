@@ -21,13 +21,9 @@ import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.ConverterLikeDelegator;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
-import walkingkooka.environment.EnvironmentValueName;
-import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
-import walkingkooka.text.LineEnding;
 
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * A {@link ProviderContext} that delegates to a {@link EnvironmentContext}.
@@ -102,39 +98,6 @@ final class BasicProviderContext implements ProviderContext,
     }
 
     private final EnvironmentContext environmentContext;
-
-    @Override
-    public LineEnding lineEnding() {
-        return this.environmentContext.lineEnding();
-    }
-
-    @Override
-    public ProviderContext setLineEnding(final LineEnding lineEnding) {
-        this.environmentContext.setLineEnding(lineEnding);
-        return this;
-    }
-
-    @Override
-    public ProviderContext setUser(final Optional<EmailAddress> user) {
-        this.environmentContext.setUser(user);
-        return this;
-    }
-
-    @Override
-    public <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,
-                                                   final T value) {
-        this.environmentContext.setEnvironmentValue(
-            name,
-            value
-        );
-        return this;
-    }
-
-    @Override
-    public ProviderContext removeEnvironmentValue(final EnvironmentValueName<?> name) {
-        this.environmentContext.removeEnvironmentValue(name);
-        return this;
-    }
 
     // Object...........................................................................................................
 

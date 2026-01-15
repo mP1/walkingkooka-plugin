@@ -21,48 +21,11 @@ import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.ConverterLikeDelegator;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContextDelegator;
-import walkingkooka.environment.EnvironmentValueName;
-import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
-import walkingkooka.text.LineEnding;
-
-import java.util.Optional;
 
 public interface ProviderContextDelegator extends ProviderContext,
     EnvironmentContextDelegator,
     ConverterLikeDelegator {
-
-    @Override
-    default ProviderContext setLineEnding(final LineEnding lineEnding) {
-        this.environmentContext()
-            .setLineEnding(lineEnding);
-        return this;
-    }
-
-    @Override
-    default ProviderContext setUser(final Optional<EmailAddress> user) {
-        this.environmentContext()
-            .setUser(user);
-        return this;
-    }
-
-    @Override
-    default <T> ProviderContext setEnvironmentValue(final EnvironmentValueName<T> name,
-                                                    final T value) {
-        this.environmentContext()
-            .setEnvironmentValue(
-                name,
-                value
-            );
-        return this;
-    }
-
-    @Override
-    default ProviderContext removeEnvironmentValue(final EnvironmentValueName<?> name) {
-        this.environmentContext()
-            .removeEnvironmentValue(name);
-        return this;
-    }
 
     @Override
     default PluginStore pluginStore() {
