@@ -33,6 +33,7 @@ import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.plugin.store.PluginStores;
+import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
@@ -58,6 +59,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     private final static ConverterLike CAN_CONVERT = ConverterContexts.basic(
         false, // canNumbersHaveGroupSeparator
         Converters.EXCEL_1900_DATE_SYSTEM_OFFSET, // dateOffset
+        Indentation.SPACES2,
         LINE_ENDING,
         ',', // valueSeparator
         Converters.stringToLocalDate(
