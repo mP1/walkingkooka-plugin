@@ -172,6 +172,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         final ReadOnlyProviderContext before = this.createContext();
 
         final EnvironmentContext different = EnvironmentContexts.empty(
+            INDENTATION,
             LineEnding.CR,
             Locale.FRENCH,
             HAS_NOW,
@@ -204,6 +205,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         this.lineEndingAndCheck(
             context.setEnvironmentContext(
                 EnvironmentContexts.empty(
+                    INDENTATION,
                     lineEnding,
                     Locale.FRENCH,
                     HAS_NOW,
@@ -223,6 +225,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         this.localeAndCheck(
             context.setEnvironmentContext(
                 EnvironmentContexts.empty(
+                    INDENTATION,
                     LINE_ENDING,
                     locale,
                     HAS_NOW,
@@ -249,6 +252,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         this.setUserAndCheck(
             context.setEnvironmentContext(
                 EnvironmentContexts.empty(
+                    INDENTATION,
                     LINE_ENDING,
                     LOCALE,
                     HAS_NOW,
@@ -289,6 +293,11 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
 
     @Override
     public void testRemoveEnvironmentValueWithNowFails() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetIndentationWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }
 
@@ -333,6 +342,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
             CAN_CONVERT,
             EnvironmentContexts.map(
                 EnvironmentContexts.empty(
+                    INDENTATION,
                     LINE_ENDING,
                     LOCALE,
                     HAS_NOW,
@@ -365,11 +375,12 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
                 ProviderContexts.basic(
                     CAN_CONVERT,
                     EnvironmentContexts.empty(
-                            LINE_ENDING,
-                            LOCALE,
-                            HAS_NOW,
-                            Optional.of(USER)
-                        ),
+                        INDENTATION,
+                        LINE_ENDING,
+                        LOCALE,
+                        HAS_NOW,
+                        Optional.of(USER)
+                    ),
                     PLUGIN_STORE
                 )
             )
