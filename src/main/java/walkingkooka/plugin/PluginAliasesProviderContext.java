@@ -24,6 +24,7 @@ import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.EnvironmentValueWatcher;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
+import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
@@ -60,6 +61,19 @@ final class PluginAliasesProviderContext implements ProviderContext {
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public Indentation indentation() {
+        return this.environmentValueOrFail(INDENTATION);
+    }
+
+    @Override
+    public void setIndentation(final Indentation indentation) {
+        this.setEnvironmentValue(
+            INDENTATION,
+            Objects.requireNonNull(indentation, "indentation")
+        );
+    }
+    
     @Override
     public LineEnding lineEnding() {
         return this.environmentValueOrFail(LINE_ENDING);

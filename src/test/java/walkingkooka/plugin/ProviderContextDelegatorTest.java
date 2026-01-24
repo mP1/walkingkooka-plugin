@@ -23,6 +23,7 @@ import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.plugin.ProviderContextDelegatorTest.TestProviderContextDelegator;
 import walkingkooka.plugin.store.PluginStores;
+import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
@@ -43,6 +44,11 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
 
     @Override
     public void testSetEnvironmentValueWithNowFails() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetIndentationWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }
 
@@ -83,6 +89,7 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
             return ProviderContexts.basic(
                 ConverterContexts.fake(),
                 EnvironmentContexts.empty(
+                    Indentation.SPACES4,
                     LineEnding.NL,
                     Locale.FRANCE,
                     () -> LocalDateTime.MIN,

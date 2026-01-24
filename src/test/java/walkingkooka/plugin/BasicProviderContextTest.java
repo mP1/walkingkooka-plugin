@@ -123,6 +123,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     @Test
     public void testCloneEnvironment() {
         final EnvironmentContext environmentContext = EnvironmentContexts.empty(
+            INDENTATION,
             LineEnding.CR,
             Locale.FRENCH,
             HAS_NOW,
@@ -158,6 +159,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     @Test
     public void testSetEnvironmentContextWithSame() {
         final EnvironmentContext environmentContext = EnvironmentContexts.empty(
+            INDENTATION,
             LineEnding.CR,
             Locale.FRENCH,
             HAS_NOW,
@@ -181,6 +183,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         final BasicProviderContext context = this.createContext();
 
         final EnvironmentContext environmentContext = EnvironmentContexts.empty(
+            INDENTATION,
             LineEnding.CR,
             Locale.FRENCH,
             HAS_NOW,
@@ -216,6 +219,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     public void testSetUser() {
         final EnvironmentContext environmentContext = EnvironmentContexts.map(
             EnvironmentContexts.empty(
+                INDENTATION,
                 LineEnding.NL,
                 Locale.ENGLISH,
                 HAS_NOW,
@@ -293,6 +297,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
             CAN_CONVERT,
             EnvironmentContexts.map(
                 EnvironmentContexts.empty(
+                    INDENTATION,
                     LINE_ENDING,
                     LOCALE,
                     HAS_NOW,
@@ -317,6 +322,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
             ProviderContexts.basic(
                 CAN_CONVERT,
                 EnvironmentContexts.empty(
+                    INDENTATION,
                     lineEnding,
                     LOCALE,
                     HAS_NOW,

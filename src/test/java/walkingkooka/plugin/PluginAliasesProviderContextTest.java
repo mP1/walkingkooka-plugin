@@ -60,6 +60,11 @@ public final class PluginAliasesProviderContextTest implements ProviderContextTe
     }
 
     @Override
+    public void testSetIndentationWithDifferentAndWatcher() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testSetLineEndingWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }
