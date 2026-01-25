@@ -102,16 +102,10 @@ final class PluginAliasesProviderContext implements ProviderContext {
 
     @Override
     public void setUser(final Optional<EmailAddress> user) {
-        if (user.isPresent()) {
-            this.setEnvironmentValue(
-                EnvironmentValueName.USER,
-                user.orElse(null)
-            );
-        } else {
-            this.removeEnvironmentValue(
-                EnvironmentValueName.USER
-            );
-        }
+        this.setOrRemoveEnvironmentValue(
+            USER,
+            user
+        );
     }
 
     @Override
