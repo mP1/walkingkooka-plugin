@@ -28,6 +28,7 @@ import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
@@ -97,6 +98,19 @@ final class PluginAliasesProviderContext implements ProviderContext {
         this.setEnvironmentValue(
             EnvironmentValueName.LOCALE,
             locale
+        );
+    }
+
+    @Override
+    public ZoneOffset timeOffset() {
+        return this.environmentValueOrFail(EnvironmentValueName.TIME_OFFSET);
+    }
+
+    @Override
+    public void setTimeOffset(final ZoneOffset timeOffset) {
+        this.setEnvironmentValue(
+            EnvironmentValueName.TIME_OFFSET,
+            timeOffset
         );
     }
 

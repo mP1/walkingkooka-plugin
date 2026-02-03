@@ -27,6 +27,7 @@ import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
@@ -165,6 +166,18 @@ final class ReadOnlyProviderContext implements ProviderContext {
     @Override
     public void setLocale(final Locale locale) {
         Objects.requireNonNull(locale, "locale");
+
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ZoneOffset timeOffset() {
+        return this.context.timeOffset();
+    }
+
+    @Override
+    public void setTimeOffset(final ZoneOffset timeOffset) {
+        Objects.requireNonNull(timeOffset, "timeOffset");
 
         throw new UnsupportedOperationException();
     }

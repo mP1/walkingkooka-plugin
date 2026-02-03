@@ -68,6 +68,11 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
     }
 
     @Override
+    public void testSetTimeOffsetWithDifferentAndWatcher() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testSetUserWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }
