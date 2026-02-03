@@ -29,6 +29,7 @@ import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
@@ -78,6 +79,11 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
 
     @Override
     public void testSetLocaleWithDifferentAndWatcher() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetTimeOffsetWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }
 
@@ -156,6 +162,19 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
             this.setEnvironmentValue(
                 EnvironmentValueName.LOCALE,
                 locale
+            );
+        }
+
+        @Override
+        public ZoneOffset timeOffset() {
+            return ZoneOffset.ofHours(1);
+        }
+
+        @Override
+        public void setTimeOffset(final ZoneOffset timeOffset) {
+            this.setEnvironmentValue(
+                EnvironmentValueName.TIME_OFFSET,
+                timeOffset
             );
         }
 
