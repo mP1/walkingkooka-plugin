@@ -25,6 +25,7 @@ import walkingkooka.datetime.HasNow;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.environment.ReadOnlyEnvironmentValueException;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.plugin.store.PluginStores;
@@ -268,7 +269,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     @Test
     public void testSetEnvironmentValueWithLocaleFails() {
         assertThrows(
-            UnsupportedOperationException.class,
+            ReadOnlyEnvironmentValueException.class,
             () -> this.createContext()
                 .setEnvironmentValue(
                     EnvironmentValueName.LOCALE,
@@ -285,7 +286,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     @Test
     public void testRemoveEnvironmentWithLocaleFails() {
         assertThrows(
-            UnsupportedOperationException.class,
+            ReadOnlyEnvironmentValueException.class,
             () -> this.createContext()
                 .removeEnvironmentValue(EnvironmentValueName.LOCALE)
         );
@@ -304,7 +305,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     @Test
     public void testSetLocaleFails() {
         assertThrows(
-            UnsupportedOperationException.class,
+            ReadOnlyEnvironmentValueException.class,
             () -> this.createContext()
                 .setLocale(LOCALE)
         );
@@ -363,7 +364,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     @Test
     public void testSetUserFails() {
         assertThrows(
-            UnsupportedOperationException.class,
+            ReadOnlyEnvironmentValueException.class,
             () -> this.createContext()
                 .setUser(
                     EnvironmentContext.ANONYMOUS

@@ -107,14 +107,14 @@ final class ReadOnlyProviderContext implements ProviderContext {
         Objects.requireNonNull(name, "name");
         Objects.requireNonNull(value, "value");
 
-        throw new UnsupportedOperationException();
+        throw name.readOnlyEnvironmentValueException();
     }
 
     @Override
     public void removeEnvironmentValue(final EnvironmentValueName<?> name) {
         Objects.requireNonNull(name, "name");
 
-        throw new UnsupportedOperationException();
+        throw name.readOnlyEnvironmentValueException();
     }
 
     @Override
@@ -126,7 +126,7 @@ final class ReadOnlyProviderContext implements ProviderContext {
     public void setUser(final Optional<EmailAddress> user) {
         Objects.requireNonNull(user, "user");
 
-        throw new UnsupportedOperationException();
+        throw USER.readOnlyEnvironmentValueException();
     }
 
     @Override
@@ -143,7 +143,7 @@ final class ReadOnlyProviderContext implements ProviderContext {
     public void setIndentation(final Indentation indentation) {
         Objects.requireNonNull(indentation, "indentation");
 
-        throw new UnsupportedOperationException();
+        throw INDENTATION.readOnlyEnvironmentValueException();
     }
     
     @Override
@@ -155,7 +155,7 @@ final class ReadOnlyProviderContext implements ProviderContext {
     public void setLineEnding(final LineEnding lineEnding) {
         Objects.requireNonNull(lineEnding, "lineEnding");
 
-        throw new UnsupportedOperationException();
+        throw LINE_ENDING.readOnlyEnvironmentValueException();
     }
     
     @Override
@@ -167,7 +167,7 @@ final class ReadOnlyProviderContext implements ProviderContext {
     public void setLocale(final Locale locale) {
         Objects.requireNonNull(locale, "locale");
 
-        throw new UnsupportedOperationException();
+        throw LOCALE.readOnlyEnvironmentValueException();
     }
 
     @Override
@@ -179,7 +179,7 @@ final class ReadOnlyProviderContext implements ProviderContext {
     public void setTimeOffset(final ZoneOffset timeOffset) {
         Objects.requireNonNull(timeOffset, "timeOffset");
 
-        throw new UnsupportedOperationException();
+        throw TIME_OFFSET.readOnlyEnvironmentValueException();
     }
 
     @Override
