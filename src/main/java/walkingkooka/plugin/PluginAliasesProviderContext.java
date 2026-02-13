@@ -29,6 +29,7 @@ import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Currency;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
@@ -62,6 +63,19 @@ final class PluginAliasesProviderContext implements ProviderContext {
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public Currency currency() {
+        return this.environmentValueOrFail(CURRENCY);
+    }
+
+    @Override
+    public void setCurrency(final Currency currency) {
+        this.setEnvironmentValue(
+            CURRENCY,
+            Objects.requireNonNull(currency, "currency")
+        );
+    }
+    
     @Override
     public Indentation indentation() {
         return this.environmentValueOrFail(INDENTATION);

@@ -32,6 +32,7 @@ import walkingkooka.plugin.store.PluginStores;
 import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
+import java.util.Currency;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -43,6 +44,8 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     HashCodeEqualsDefinedTesting2<ReadOnlyProviderContext> {
 
     private final static ConverterLike CAN_CONVERT = ConverterContexts.fake();
+
+    private final static Currency CURRENCY = Currency.getInstance("AUD");
 
     private final static LineEnding LINE_ENDING = LineEnding.NL;
 
@@ -173,6 +176,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         final ReadOnlyProviderContext before = this.createContext();
 
         final EnvironmentContext different = EnvironmentContexts.empty(
+            CURRENCY,
             INDENTATION,
             LineEnding.CR,
             Locale.FRENCH,
@@ -198,6 +202,27 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     }
 
     @Test
+    public void testSetEnvironmentContextAndSetCurrency() {
+        final ReadOnlyProviderContext context = this.createContext();
+
+        final Currency currency = Currency.getInstance("NZD");
+
+        this.currencyAndCheck(
+            context.setEnvironmentContext(
+                EnvironmentContexts.empty(
+                    currency,
+                    INDENTATION,
+                    LINE_ENDING,
+                    Locale.FRENCH,
+                    HAS_NOW,
+                    Optional.of(USER)
+                )
+            ),
+            currency
+        );
+    }
+
+    @Test
     public void testSetEnvironmentContextAndSetLineEnding() {
         final ReadOnlyProviderContext context = this.createContext();
 
@@ -206,6 +231,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         this.lineEndingAndCheck(
             context.setEnvironmentContext(
                 EnvironmentContexts.empty(
+                    CURRENCY,
                     INDENTATION,
                     lineEnding,
                     Locale.FRENCH,
@@ -226,6 +252,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         this.localeAndCheck(
             context.setEnvironmentContext(
                 EnvironmentContexts.empty(
+                    CURRENCY,
                     INDENTATION,
                     LINE_ENDING,
                     locale,
@@ -253,6 +280,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         this.setUserAndCheck(
             context.setEnvironmentContext(
                 EnvironmentContexts.empty(
+                    CURRENCY,
                     INDENTATION,
                     LINE_ENDING,
                     LOCALE,
@@ -294,6 +322,11 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
 
     @Override
     public void testRemoveEnvironmentValueWithNowFails() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetCurrencyWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }
 
@@ -348,6 +381,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
             CAN_CONVERT,
             EnvironmentContexts.map(
                 EnvironmentContexts.empty(
+                    CURRENCY,
                     INDENTATION,
                     LINE_ENDING,
                     LOCALE,
@@ -381,6 +415,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
                 ProviderContexts.basic(
                     CAN_CONVERT,
                     EnvironmentContexts.empty(
+                        CURRENCY,
                         INDENTATION,
                         LINE_ENDING,
                         LOCALE,
