@@ -27,6 +27,7 @@ import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
+import java.util.Currency;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -44,6 +45,11 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
 
     @Override
     public void testSetEnvironmentValueWithNowFails() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetCurrencyWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }
 
@@ -94,6 +100,7 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
             return ProviderContexts.basic(
                 ConverterContexts.fake(),
                 EnvironmentContexts.empty(
+                    Currency.getInstance("AUD"),
                     Indentation.SPACES4,
                     LineEnding.NL,
                     Locale.FRANCE,

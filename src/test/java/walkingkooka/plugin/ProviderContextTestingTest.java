@@ -30,6 +30,7 @@ import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Currency;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
@@ -59,6 +60,11 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
 
     @Override
     public void testRemoveEnvironmentValueWithNowFails() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetCurrencyWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }
 
@@ -126,6 +132,19 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
             throw new UnsupportedOperationException();
         }
 
+        @Override
+        public Currency currency() {
+            return Currency.getInstance("AUD");
+        }
+
+        @Override
+        public void setCurrency(final Currency currency) {
+            this.setEnvironmentValue(
+                CURRENCY,
+                currency
+            );
+        }
+        
         @Override
         public Indentation indentation() {
             return Indentation.SPACES2;

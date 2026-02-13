@@ -28,6 +28,7 @@ import walkingkooka.text.LineEnding;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Currency;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
@@ -134,6 +135,18 @@ final class ReadOnlyProviderContext implements ProviderContext {
         return this.context.now();
     }
 
+    @Override
+    public Currency currency() {
+        return this.context.currency();
+    }
+
+    @Override
+    public void setCurrency(final Currency currency) {
+        Objects.requireNonNull(currency, "currency");
+
+        throw CURRENCY.readOnlyEnvironmentValueException();
+    }
+    
     @Override
     public Indentation indentation() {
         return this.context.indentation();
