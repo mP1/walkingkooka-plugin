@@ -90,6 +90,9 @@ public final class PluginSelectorMenuTest implements PluginSelectorMenuLikeTesti
             PluginSelectorMenu.unmarshall(
                 JSON,
                 JsonNodeUnmarshallContexts.basic(
+                    (String cc) -> {
+                        throw new UnsupportedOperationException();
+                    },
                     ExpressionNumberKind.BIG_DECIMAL,
                     MathContext.DECIMAL32
                 ),
