@@ -60,6 +60,13 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     private final static HasNow HAS_NOW = () -> LocalDateTime.MIN;
 
     private final static ConverterLike CAN_CONVERT = ConverterContexts.basic(
+        (l) -> {
+            throw new UnsupportedOperationException();
+        }, // canDateTimeSymbolsForLocale
+        (l) -> {
+            throw new UnsupportedOperationException();
+        }, // canDecimalNumberSymbolsForLocale
+
         false, // canNumbersHaveGroupSeparator
         Converters.EXCEL_1900_DATE_SYSTEM_OFFSET, // dateOffset
         Indentation.SPACES2,
