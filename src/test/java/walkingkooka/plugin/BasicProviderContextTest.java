@@ -65,6 +65,9 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         }, // canDateTimeSymbolsForLocale
         (l) -> {
             throw new UnsupportedOperationException();
+        }, // canDateTimeSymbolsForLocale
+        (l) -> {
+            throw new UnsupportedOperationException();
         }, // canDecimalNumberSymbolsForLocale
 
         false, // canNumbersHaveGroupSeparator
