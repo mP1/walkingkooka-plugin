@@ -93,6 +93,9 @@ public final class PluginSelectorMenuTest implements PluginSelectorMenuLikeTesti
                     (String cc) -> {
                         throw new UnsupportedOperationException();
                     },
+                    (String lt) -> {
+                        throw new UnsupportedOperationException();
+                    },
                     ExpressionNumberKind.BIG_DECIMAL,
                     MathContext.DECIMAL32
                 ),
