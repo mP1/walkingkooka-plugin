@@ -29,6 +29,7 @@ import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.FakeEnvironmentContext;
+import walkingkooka.locale.LocaleContexts;
 import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
@@ -63,15 +64,6 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         (l) -> {
             throw new UnsupportedOperationException();
         }, // canDateTimeSymbolsForLocale
-        (l) -> {
-            throw new UnsupportedOperationException();
-        }, // canDateTimeSymbolsForLocale
-        (l) -> {
-            throw new UnsupportedOperationException();
-        }, // canDecimalNumberSymbolsForLocale
-        (lt) -> {
-            throw new UnsupportedOperationException();
-        }, // canLocaleForLanguageTag
         false, // canNumbersHaveGroupSeparator
         Converters.EXCEL_1900_DATE_SYSTEM_OFFSET, // dateOffset
         Indentation.SPACES2,
@@ -81,7 +73,8 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
             (x) -> DateTimeFormatter.ofPattern("yyyy MM dd")
         ), // converter
         DateTimeContexts.fake(),
-        DecimalNumberContexts.fake()
+        DecimalNumberContexts.fake(),
+        LocaleContexts.fake()
     );
 
     private final static EnvironmentValueName<String> VAR = EnvironmentValueName.with(
