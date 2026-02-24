@@ -23,13 +23,13 @@ import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.Converters;
+import walkingkooka.currency.CurrencyLocaleContexts;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.datetime.HasNow;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.FakeEnvironmentContext;
-import walkingkooka.locale.LocaleContexts;
 import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
@@ -61,9 +61,6 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     private final static HasNow HAS_NOW = () -> LocalDateTime.MIN;
 
     private final static ConverterLike CAN_CONVERT = ConverterContexts.basic(
-        (l) -> {
-            throw new UnsupportedOperationException();
-        }, // canDateTimeSymbolsForLocale
         false, // canNumbersHaveGroupSeparator
         Converters.EXCEL_1900_DATE_SYSTEM_OFFSET, // dateOffset
         Indentation.SPACES2,
@@ -72,9 +69,9 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         Converters.stringToLocalDate(
             (x) -> DateTimeFormatter.ofPattern("yyyy MM dd")
         ), // converter
+        CurrencyLocaleContexts.fake(),
         DateTimeContexts.fake(),
-        DecimalNumberContexts.fake(),
-        LocaleContexts.fake()
+        DecimalNumberContexts.fake()
     );
 
     private final static EnvironmentValueName<String> VAR = EnvironmentValueName.with(
