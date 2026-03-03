@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
+import walkingkooka.currency.CurrencyLocaleContexts;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.reflect.JavaVisibility;
@@ -90,13 +91,8 @@ public final class PluginSelectorMenuTest implements PluginSelectorMenuLikeTesti
             PluginSelectorMenu.unmarshall(
                 JSON,
                 JsonNodeUnmarshallContexts.basic(
-                    (String cc) -> {
-                        throw new UnsupportedOperationException();
-                    },
-                    (String lt) -> {
-                        throw new UnsupportedOperationException();
-                    },
                     ExpressionNumberKind.BIG_DECIMAL,
+                    CurrencyLocaleContexts.fake(), // CurrencyCodeLanguageTagContext
                     MathContext.DECIMAL32
                 ),
                 TestPluginSelector.class
