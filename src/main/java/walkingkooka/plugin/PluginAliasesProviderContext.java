@@ -181,13 +181,13 @@ final class PluginAliasesProviderContext implements ProviderContext {
     }
 
     @Override
-    public Runnable addEventValueWatcher(final EnvironmentValueWatcher watcher) {
+    public Runnable addEnvironmentValueWatcher(final EnvironmentValueWatcher watcher) {
         Objects.requireNonNull(watcher, "watcher");
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Runnable addEventValueWatcherOnce(final EnvironmentValueWatcher watcher) {
+    public Runnable addEnvironmentValueWatcherOnce(final EnvironmentValueWatcher watcher) {
         Objects.requireNonNull(watcher, "watcher");
         throw new UnsupportedOperationException();
     }
