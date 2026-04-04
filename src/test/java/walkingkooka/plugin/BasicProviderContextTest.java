@@ -66,7 +66,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         Indentation.SPACES2,
         LINE_ENDING,
         ',', // valueSeparator
-        Converters.stringToLocalDate(
+        Converters.textToLocalDate(
             (x) -> DateTimeFormatter.ofPattern("yyyy MM dd")
         ), // converter
         CurrencyLocaleContexts.fake(),
