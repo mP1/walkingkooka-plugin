@@ -23,7 +23,6 @@ import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.Converters;
-import walkingkooka.currency.CurrencyExchangeRaters;
 import walkingkooka.currency.CurrencyLocaleContexts;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.datetime.HasNow;
@@ -70,7 +69,6 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         Converters.textToLocalDate(
             (x) -> DateTimeFormatter.ofPattern("yyyy MM dd")
         ), // converter
-        CurrencyExchangeRaters.fake(),
         CurrencyLocaleContexts.fake(),
         DateTimeContexts.fake(),
         DecimalNumberContexts.fake()
