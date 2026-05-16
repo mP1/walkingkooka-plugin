@@ -20,6 +20,7 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
+import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.Converters;
@@ -69,6 +70,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         Converters.textToLocalDate(
             (x) -> DateTimeFormatter.ofPattern("yyyy MM dd")
         ), // converter
+        BinaryNumberConverterFunctions.fake(), // multiplier
         CurrencyLocaleContexts.fake(),
         DateTimeContexts.fake(),
         DecimalNumberContexts.fake()
