@@ -19,6 +19,8 @@ package walkingkooka.plugin;
 
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
+import walkingkooka.net.header.HasContentType;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.text.printer.IndentingPrinter;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
@@ -27,6 +29,7 @@ import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 final class TestPluginSelector implements PluginSelectorLike<StringName> {
 
@@ -99,6 +102,15 @@ final class TestPluginSelector implements PluginSelectorLike<StringName> {
     }
 
     private final PluginSelector<StringName> pluginSelector;
+
+    // HasContentType...................................................................................................
+
+    @Override
+    public Optional<MediaType> contentType() {
+        return Optional.of(
+            HasContentType.json(this.getClass())
+        );
+    }
 
     // TreePrintable....................................................................................................
 

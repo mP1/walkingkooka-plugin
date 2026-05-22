@@ -22,13 +22,11 @@ import walkingkooka.naming.Name;
 import walkingkooka.net.HasUrlFragment;
 import walkingkooka.net.UrlFragment;
 import walkingkooka.net.header.HasContentType;
-import walkingkooka.net.header.MediaType;
 import walkingkooka.text.HasText;
 import walkingkooka.text.printer.TreePrintable;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Interface that should be implemented by all selectors.
@@ -66,15 +64,6 @@ public interface PluginSelectorLike<N extends Name & Comparable<N>> extends HasC
      * Would be setter that accepts values and eventually performs a setText
      */
     PluginSelectorLike<N> setValues(final List<?> values);
-
-    // HasContentType...................................................................................................
-
-    @Override
-    default Optional<MediaType> contentType() {
-        return Optional.of(
-            HasContentType.json(this.getClass())
-        );
-    }
 
     // HasText..........................................................................................................
 
