@@ -38,6 +38,7 @@ import walkingkooka.plugin.store.PluginStores;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Currency;
@@ -63,6 +64,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
 
     private final static ConverterLike CAN_CONVERT = ConverterContexts.basic(
         false, // canNumbersHaveGroupSeparator
+        StandardCharsets.UTF_8,
         Converters.EXCEL_1900_DATE_SYSTEM_OFFSET, // dateOffset
         Indentation.SPACES2,
         LINE_ENDING,
