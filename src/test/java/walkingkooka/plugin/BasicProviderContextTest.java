@@ -38,6 +38,7 @@ import walkingkooka.plugin.store.PluginStores;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -51,6 +52,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class BasicProviderContextTest implements ProviderContextTesting<BasicProviderContext>,
     HashCodeEqualsDefinedTesting2<BasicProviderContext> {
+
+    private final static Charset CHARSET = StandardCharsets.UTF_8;
 
     private final static Currency CURRENCY = Currency.getInstance("AUD");
 
@@ -132,6 +135,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     @Test
     public void testCloneEnvironment() {
         final EnvironmentContext environmentContext = EnvironmentContexts.empty(
+            CHARSET,
             CURRENCY,
             INDENTATION,
             LineEnding.CR,
@@ -169,6 +173,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     @Test
     public void testSetEnvironmentContextWithSame() {
         final EnvironmentContext environmentContext = EnvironmentContexts.empty(
+            CHARSET,
             CURRENCY,
             INDENTATION,
             LineEnding.CR,
@@ -194,6 +199,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         final BasicProviderContext context = this.createContext();
 
         final EnvironmentContext environmentContext = EnvironmentContexts.empty(
+            CHARSET,
             CURRENCY,
             INDENTATION,
             LineEnding.CR,
@@ -231,6 +237,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     public void testSetUser() {
         final EnvironmentContext environmentContext = EnvironmentContexts.map(
             EnvironmentContexts.empty(
+                CHARSET,
                 CURRENCY,
                 INDENTATION,
                 LineEnding.NL,
@@ -310,6 +317,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
             CAN_CONVERT,
             EnvironmentContexts.map(
                 EnvironmentContexts.empty(
+                    CHARSET,
                     CURRENCY,
                     INDENTATION,
                     LINE_ENDING,
@@ -336,6 +344,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
             ProviderContexts.basic(
                 CAN_CONVERT,
                 EnvironmentContexts.empty(
+                    CHARSET,
                     CURRENCY,
                     INDENTATION,
                     lineEnding,

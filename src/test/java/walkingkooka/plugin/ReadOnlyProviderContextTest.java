@@ -31,6 +31,8 @@ import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.plugin.store.PluginStores;
 import walkingkooka.text.LineEnding;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Locale;
@@ -45,6 +47,8 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
 
     private final static ConverterLike CAN_CONVERT = ConverterContexts.fake();
 
+    private final static Charset CHARSET = StandardCharsets.UTF_8;
+    
     private final static Currency CURRENCY = Currency.getInstance("AUD");
 
     private final static LineEnding LINE_ENDING = LineEnding.NL;
@@ -176,6 +180,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         final ReadOnlyProviderContext before = this.createContext();
 
         final EnvironmentContext different = EnvironmentContexts.empty(
+            CHARSET,
             CURRENCY,
             INDENTATION,
             LineEnding.CR,
@@ -202,6 +207,28 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     }
 
     @Test
+    public void testSetEnvironmentContextAndSetCharset() {
+        final ReadOnlyProviderContext context = this.createContext();
+
+        final Charset charset = StandardCharsets.US_ASCII;
+
+        this.charsetAndCheck(
+            context.setEnvironmentContext(
+                EnvironmentContexts.empty(
+                    charset,
+                    CURRENCY,
+                    INDENTATION,
+                    LINE_ENDING,
+                    Locale.FRENCH,
+                    HAS_NOW,
+                    Optional.of(USER)
+                )
+            ),
+            charset
+        );
+    }
+    
+    @Test
     public void testSetEnvironmentContextAndSetCurrency() {
         final ReadOnlyProviderContext context = this.createContext();
 
@@ -210,6 +237,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         this.currencyAndCheck(
             context.setEnvironmentContext(
                 EnvironmentContexts.empty(
+                    CHARSET,
                     currency,
                     INDENTATION,
                     LINE_ENDING,
@@ -231,6 +259,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         this.lineEndingAndCheck(
             context.setEnvironmentContext(
                 EnvironmentContexts.empty(
+                    CHARSET,
                     CURRENCY,
                     INDENTATION,
                     lineEnding,
@@ -252,6 +281,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         this.localeAndCheck(
             context.setEnvironmentContext(
                 EnvironmentContexts.empty(
+                    CHARSET,
                     CURRENCY,
                     INDENTATION,
                     LINE_ENDING,
@@ -280,6 +310,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         this.setUserAndCheck(
             context.setEnvironmentContext(
                 EnvironmentContexts.empty(
+                    CHARSET,
                     CURRENCY,
                     INDENTATION,
                     LINE_ENDING,
@@ -381,6 +412,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
             CAN_CONVERT,
             EnvironmentContexts.map(
                 EnvironmentContexts.empty(
+                    CHARSET,
                     CURRENCY,
                     INDENTATION,
                     LINE_ENDING,
@@ -415,6 +447,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
                 ProviderContexts.basic(
                     CAN_CONVERT,
                     EnvironmentContexts.empty(
+                        CHARSET,
                         CURRENCY,
                         INDENTATION,
                         LINE_ENDING,

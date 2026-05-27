@@ -26,6 +26,7 @@ import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
+import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Currency;
@@ -135,6 +136,18 @@ final class ReadOnlyProviderContext implements ProviderContext {
         return this.context.now();
     }
 
+    @Override
+    public Charset charset() {
+        return this.context.charset();
+    }
+
+    @Override
+    public void setCharset(final Charset charset) {
+        Objects.requireNonNull(charset, "charset");
+
+        throw CHARSET.readOnlyEnvironmentValueException();
+    }
+    
     @Override
     public Currency currency() {
         return this.context.currency();
