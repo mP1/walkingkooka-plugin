@@ -27,6 +27,7 @@ import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
+import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Currency;
@@ -63,6 +64,19 @@ final class PluginAliasesProviderContext implements ProviderContext {
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public Charset charset() {
+        return this.environmentValueOrFail(CHARSET);
+    }
+
+    @Override
+    public void setCharset(final Charset charset) {
+        this.setEnvironmentValue(
+            CHARSET,
+            Objects.requireNonNull(charset, "charset")
+        );
+    }
+    
     @Override
     public Currency currency() {
         return this.environmentValueOrFail(CURRENCY);

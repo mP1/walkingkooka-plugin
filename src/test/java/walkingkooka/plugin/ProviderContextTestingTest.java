@@ -28,6 +28,8 @@ import walkingkooka.plugin.store.PluginStores;
 import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Currency;
@@ -132,6 +134,19 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
             throw new UnsupportedOperationException();
         }
 
+        @Override
+        public Charset charset() {
+            return StandardCharsets.UTF_8;
+        }
+
+        @Override
+        public void setCharset(final Charset charset) {
+            this.setEnvironmentValue(
+                CHARSET,
+                charset
+            );
+        }
+        
         @Override
         public Currency currency() {
             return Currency.getInstance("AUD");
