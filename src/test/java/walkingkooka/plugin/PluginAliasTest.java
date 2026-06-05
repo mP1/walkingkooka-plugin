@@ -37,7 +37,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginAliasTest implements ComparableTesting2<PluginAlias<StringName, TestPluginSelector>>,
-    HasNameTesting<StringName>,
+    HasNameTesting,
     ParseStringTesting<PluginAlias<StringName, TestPluginSelector>>,
     HasTextTesting,
     TreePrintableTesting,

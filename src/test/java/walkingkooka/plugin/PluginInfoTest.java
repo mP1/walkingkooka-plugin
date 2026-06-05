@@ -31,7 +31,7 @@ import walkingkooka.reflect.JavaVisibility;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginInfoTest implements ClassTesting2<PluginInfo<PluginName>>,
-    HasNameTesting<PluginName>,
+    HasNameTesting,
     HasAbsoluteUrlTesting<PluginInfo<PluginName>>,
     HashCodeEqualsDefinedTesting2<PluginInfo<PluginName>>,
     ComparableTesting2<PluginInfo<PluginName>> {

@@ -56,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class PluginSelectorTest implements ClassTesting2<PluginSelector<StringName>>,
     ComparableTesting2<PluginSelector<StringName>>,
     HashCodeEqualsDefinedTesting2<PluginSelector<StringName>>,
-    HasNameTesting<StringName>,
+    HasNameTesting,
     HasTextTesting,
     ToStringTesting<PluginSelector<StringName>>,
     ParseStringTesting<PluginSelector<StringName>>,
