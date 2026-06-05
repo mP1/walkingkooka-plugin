@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface PluginSelectorLikeTesting<S extends PluginSelectorLike<N>, N extends Name & Comparable<N>> extends TreePrintableTesting,
     HasContentTypeTesting,
-    HasNameTesting<N>,
+    HasNameTesting,
     HasTextTesting,
     HasUrlFragmentTesting,
     HashCodeEqualsDefinedTesting2<S>,
