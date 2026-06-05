@@ -28,7 +28,7 @@ import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 public interface PluginAliasLikeTesting<N extends Name & Comparable<N>, S extends PluginSelectorLike<N>, A extends PluginAliasLike<N, S, A>> extends ComparableTesting2<A>,
-    HasNameTesting<N>,
+    HasNameTesting,
     ParseStringTesting<A>,
     HasTextTesting,
     TreePrintableTesting,
