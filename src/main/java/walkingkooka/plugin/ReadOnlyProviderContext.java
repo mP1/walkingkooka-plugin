@@ -20,7 +20,7 @@ package walkingkooka.plugin;
 import walkingkooka.Either;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
-import walkingkooka.environment.EnvironmentValueWatcher;
+import walkingkooka.environment.EnvironmentWatcher;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.text.Indentation;
@@ -214,13 +214,13 @@ final class ReadOnlyProviderContext implements ProviderContext {
     }
 
     @Override
-    public Runnable addEnvironmentValueWatcher(final EnvironmentValueWatcher watcher) {
+    public Runnable addEnvironmentWatcher(final EnvironmentWatcher watcher) {
         Objects.requireNonNull(watcher, "watcher");
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Runnable addEnvironmentValueWatcherOnce(final EnvironmentValueWatcher watcher) {
+    public Runnable addEnvironmentWatcherOnce(final EnvironmentWatcher watcher) {
         Objects.requireNonNull(watcher, "watcher");
         throw new UnsupportedOperationException();
     }
