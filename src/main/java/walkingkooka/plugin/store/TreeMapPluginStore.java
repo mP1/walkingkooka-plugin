@@ -20,6 +20,7 @@ package walkingkooka.plugin.store;
 import walkingkooka.plugin.PluginName;
 import walkingkooka.predicate.Predicates;
 import walkingkooka.store.Store;
+import walkingkooka.store.StoreWatcher;
 import walkingkooka.store.Stores;
 import walkingkooka.text.CaseSensitivity;
 
@@ -28,7 +29,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -61,18 +61,8 @@ final class TreeMapPluginStore implements PluginStore {
     }
 
     @Override
-    public Runnable addSaveWatcher(final Consumer<Plugin> watcher) {
-        return this.store.addSaveWatcher(watcher);
-    }
-
-    @Override
     public void delete(final PluginName id) {
         this.store.delete(id);
-    }
-
-    @Override
-    public Runnable addDeleteWatcher(final Consumer<PluginName> watcher) {
-        return this.store.addDeleteWatcher(watcher);
     }
 
     @Override
@@ -133,6 +123,11 @@ final class TreeMapPluginStore implements PluginStore {
             .skip(offset)
             .limit(count)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public Runnable addStoreWatcher(final StoreWatcher<Plugin> watcher) {
+        return this.store.addStoreWatcher(watcher);
     }
 
     private final Store<PluginName, Plugin> store;
