@@ -30,11 +30,6 @@ public final class TreeMapPluginStoreTest implements PluginStoreTesting<TreeMapP
     private final static PluginName PLUGIN_NAME = PluginName.with("test-plugin-123");
 
     @Override
-    public void testAddSaveWatcherAndSaveTwiceFiresOnce() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public TreeMapPluginStore createStore() {
         return TreeMapPluginStore.empty();
     }
