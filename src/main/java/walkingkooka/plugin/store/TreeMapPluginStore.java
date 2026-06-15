@@ -130,6 +130,11 @@ final class TreeMapPluginStore implements PluginStore {
         return this.store.addStoreWatcher(watcher);
     }
 
+    @Override
+    public Runnable addStoreWatcherOnce(final StoreWatcher<Plugin> watcher) {
+        return this.store.addStoreWatcherOnce(watcher);
+    }
+
     private final Store<PluginName, Plugin> store;
 
     @Override
