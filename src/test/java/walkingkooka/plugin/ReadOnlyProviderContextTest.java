@@ -47,8 +47,6 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
 
     private final static ConverterLike CAN_CONVERT = ConverterContexts.fake();
 
-    private final static Charset CHARSET = StandardCharsets.UTF_8;
-    
     private final static Currency CURRENCY = Currency.getInstance("AUD");
 
     private final static LineEnding LINE_ENDING = LineEnding.NL;
