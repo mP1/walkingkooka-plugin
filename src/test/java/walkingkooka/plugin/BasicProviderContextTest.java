@@ -35,8 +35,8 @@ import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.plugin.store.PluginStores;
-import walkingkooka.text.Indentation;
 import walkingkooka.text.LineEnding;
+import walkingkooka.text.TextPrinting;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -67,15 +67,16 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
 
     private final static ConverterLike CAN_CONVERT = ConverterContexts.basic(
         false, // canNumbersHaveGroupSeparator
-        StandardCharsets.UTF_8,
         Converters.EXCEL_1900_DATE_SYSTEM_OFFSET, // dateOffset
-        Indentation.SPACES2,
-        LINE_ENDING,
         ',', // valueSeparator
         Converters.textToLocalDate(
             (x) -> DateTimeFormatter.ofPattern("yyyy MM dd")
         ), // converter
         BinaryNumberConverterFunctions.fake(), // multiplier
+        TextPrinting.with(
+            INDENTATION,
+            LINE_ENDING
+        ).setCharset(StandardCharsets.UTF_8),
         CurrencyLocaleContexts.fake(),
         DateTimeContexts.fake(),
         DecimalNumberContexts.fake()
