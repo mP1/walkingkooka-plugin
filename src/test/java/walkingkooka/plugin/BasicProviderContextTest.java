@@ -38,7 +38,6 @@ import walkingkooka.plugin.store.PluginStores;
 import walkingkooka.text.LineEnding;
 import walkingkooka.text.TextPrinting;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -52,8 +51,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class BasicProviderContextTest implements ProviderContextTesting<BasicProviderContext>,
     HashCodeEqualsDefinedTesting2<BasicProviderContext> {
-
-    private final static Charset CHARSET = StandardCharsets.UTF_8;
 
     private final static Currency CURRENCY = Currency.getInstance("AUD");
 
