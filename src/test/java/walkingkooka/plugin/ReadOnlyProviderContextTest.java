@@ -47,8 +47,6 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
 
     private final static ConverterLike CAN_CONVERT = ConverterContexts.fake();
 
-    private final static Locale LOCALE = Locale.forLanguageTag("en-AU");
-
     private final static LocalDateTime NOW = LocalDateTime.of(
         1999,
         12,
