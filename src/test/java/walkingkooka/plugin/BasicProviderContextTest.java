@@ -49,8 +49,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class BasicProviderContextTest implements ProviderContextTesting<BasicProviderContext>,
     HashCodeEqualsDefinedTesting2<BasicProviderContext> {
 
-    private final static EmailAddress USER = EmailAddress.parse("user@example.com");
-
     private final static ConverterLike CAN_CONVERT = ConverterContexts.basic(
         false, // canNumbersHaveGroupSeparator
         Converters.EXCEL_1900_DATE_SYSTEM_OFFSET, // dateOffset
