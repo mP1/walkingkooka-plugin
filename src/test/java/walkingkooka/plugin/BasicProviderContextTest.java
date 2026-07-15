@@ -51,8 +51,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class BasicProviderContextTest implements ProviderContextTesting<BasicProviderContext>,
     HashCodeEqualsDefinedTesting2<BasicProviderContext> {
 
-    private final static LineEnding LINE_ENDING = LineEnding.NL;
-
     private final static Locale LOCALE = Locale.ENGLISH;
 
     private final static EmailAddress USER = EmailAddress.parse("user@example.com");
