@@ -41,7 +41,6 @@ import walkingkooka.text.TextPrinting;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Currency;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -51,8 +50,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class BasicProviderContextTest implements ProviderContextTesting<BasicProviderContext>,
     HashCodeEqualsDefinedTesting2<BasicProviderContext> {
-
-    private final static Currency CURRENCY = Currency.getInstance("AUD");
 
     private final static LineEnding LINE_ENDING = LineEnding.NL;
 
