@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.ConverterLike;
-import walkingkooka.datetime.HasNow;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.environment.EnvironmentValueName;
@@ -33,7 +32,6 @@ import walkingkooka.text.LineEnding;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Locale;
 import java.util.Optional;
@@ -46,17 +44,6 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     HashCodeEqualsDefinedTesting2<ReadOnlyProviderContext> {
 
     private final static ConverterLike CAN_CONVERT = ConverterContexts.fake();
-
-    private final static LocalDateTime NOW = LocalDateTime.of(
-        1999,
-        12,
-        31,
-        12,
-        58,
-        59
-    );
-
-    private final static HasNow HAS_NOW = () -> NOW;
 
     private final static EmailAddress USER = EmailAddress.parse("user@example.com");
 

@@ -26,7 +26,6 @@ import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.Converters;
 import walkingkooka.currency.CurrencyLocaleContexts;
 import walkingkooka.datetime.DateTimeContexts;
-import walkingkooka.datetime.HasNow;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.environment.EnvironmentValueName;
@@ -39,7 +38,6 @@ import walkingkooka.text.LineEnding;
 import walkingkooka.text.TextPrinting;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Optional;
@@ -52,8 +50,6 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     HashCodeEqualsDefinedTesting2<BasicProviderContext> {
 
     private final static EmailAddress USER = EmailAddress.parse("user@example.com");
-
-    private final static HasNow HAS_NOW = () -> LocalDateTime.MIN;
 
     private final static ConverterLike CAN_CONVERT = ConverterContexts.basic(
         false, // canNumbersHaveGroupSeparator
