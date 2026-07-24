@@ -34,12 +34,10 @@ import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.plugin.store.PluginStores;
-import walkingkooka.text.LineEnding;
 import walkingkooka.text.TextPrinting;
 
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -72,8 +70,6 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     );
 
     private final static String VAR_VALUE = "MagicValue123";
-
-    private final static EnvironmentContext ENVIRONMENT_CONTEXT = EnvironmentContexts.fake();
 
     private final static PluginStore PLUGIN_STORE = PluginStores.fake();
 
@@ -119,15 +115,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
 
     @Test
     public void testCloneEnvironment() {
-        final EnvironmentContext environmentContext = EnvironmentContexts.empty(
-            CHARSET,
-            CURRENCY,
-            INDENTATION,
-            LineEnding.CR,
-            Locale.FRENCH,
-            HAS_NOW,
-            EnvironmentContext.ANONYMOUS
-        );
+        final EnvironmentContext environmentContext = ENVIRONMENT_CONTEXT.cloneEnvironment();
 
         assertNotSame(
             environmentContext.cloneEnvironment(),
@@ -157,15 +145,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
 
     @Test
     public void testSetEnvironmentContextWithSame() {
-        final EnvironmentContext environmentContext = EnvironmentContexts.empty(
-            CHARSET,
-            CURRENCY,
-            INDENTATION,
-            LineEnding.CR,
-            Locale.FRENCH,
-            HAS_NOW,
-            EnvironmentContext.ANONYMOUS
-        );
+        final EnvironmentContext environmentContext = ENVIRONMENT_CONTEXT.cloneEnvironment();
 
         final ProviderContext providerContext = ProviderContexts.basic(
             CAN_CONVERT,
@@ -183,15 +163,8 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     public void testSetEnvironmentContext() {
         final BasicProviderContext context = this.createContext();
 
-        final EnvironmentContext environmentContext = EnvironmentContexts.empty(
-            CHARSET,
-            CURRENCY,
-            INDENTATION,
-            LineEnding.CR,
-            Locale.FRENCH,
-            HAS_NOW,
-            EnvironmentContext.ANONYMOUS
-        );
+        final EnvironmentContext environmentContext = ENVIRONMENT_CONTEXT.cloneEnvironment();
+        environmentContext.setLocale(DIFFERENT_LOCALE);
 
         final ProviderContext different = ProviderContexts.basic(
             CAN_CONVERT,
@@ -220,17 +193,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
 
     @Test
     public void testSetUser() {
-        final EnvironmentContext environmentContext = EnvironmentContexts.map(
-            EnvironmentContexts.empty(
-                CHARSET,
-                CURRENCY,
-                INDENTATION,
-                LineEnding.NL,
-                Locale.ENGLISH,
-                HAS_NOW,
-                EnvironmentContext.ANONYMOUS
-            )
-        );
+        final EnvironmentContext environmentContext = ENVIRONMENT_CONTEXT.cloneEnvironment();
 
         final BasicProviderContext context = BasicProviderContext.with(
             CAN_CONVERT,
@@ -238,7 +201,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
             PLUGIN_STORE
         );
 
-        final EmailAddress different = EmailAddress.parse("different@example.com");
+        final EmailAddress different = DIFFERENT_USER;
 
         this.setUserAndCheck(
             context,
@@ -300,17 +263,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     public BasicProviderContext createContext() {
         return BasicProviderContext.with(
             CAN_CONVERT,
-            EnvironmentContexts.map(
-                EnvironmentContexts.empty(
-                    CHARSET,
-                    CURRENCY,
-                    INDENTATION,
-                    LINE_ENDING,
-                    LOCALE,
-                    HAS_NOW,
-                    EnvironmentContext.ANONYMOUS
-                )
-            ),
+            ENVIRONMENT_CONTEXT.cloneEnvironment(),
             PLUGIN_STORE
         );
     }
@@ -319,12 +272,6 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
 
     @Test
     public void testEqualsDifferentContext() {
-        final LineEnding lineEnding = LineEnding.CRNL;
-        this.checkNotEquals(
-            lineEnding,
-            LINE_ENDING
-        );
-
         this.checkNotEquals(
             ProviderContexts.basic(
                 CAN_CONVERT,
@@ -332,7 +279,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
                     CHARSET,
                     CURRENCY,
                     INDENTATION,
-                    lineEnding,
+                    DIFFERENT_LINE_ENDING,
                     LOCALE,
                     HAS_NOW,
                     Optional.of(USER)

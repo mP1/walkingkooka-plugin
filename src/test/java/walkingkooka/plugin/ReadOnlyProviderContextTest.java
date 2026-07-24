@@ -30,9 +30,6 @@ import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.plugin.store.PluginStores;
 import walkingkooka.text.LineEnding;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Currency;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -44,8 +41,6 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     HashCodeEqualsDefinedTesting2<ReadOnlyProviderContext> {
 
     private final static ConverterLike CAN_CONVERT = ConverterContexts.fake();
-
-    private final static EmailAddress USER = EmailAddress.parse("user@example.com");
 
     private final static PluginStore PLUGIN_STORE = PluginStores.fake();
 
@@ -81,15 +76,9 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     public void testCloneEnvironmentAndSetLineEnding() {
         final ReadOnlyProviderContext context = this.createContext();
 
-        final LineEnding lineEnding = LineEnding.CRNL;
-        this.checkNotEquals(
-            LINE_ENDING,
-            lineEnding
-        );
-
         this.setLineEndingAndCheck(
             context.cloneEnvironment(),
-            lineEnding
+            DIFFERENT_LINE_ENDING
         );
     }
 
@@ -97,18 +86,12 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     public void testCloneEnvironmentAndSetLocale() {
         final ReadOnlyProviderContext context = this.createContext();
 
-        final Locale locale = Locale.FRANCE;
-        this.checkNotEquals(
-            LOCALE,
-            locale
-        );
-
         final ProviderContext clone = context.cloneEnvironment();
-        clone.setLocale(locale);
+        clone.setLocale(DIFFERENT_LOCALE);
 
         this.localeAndCheck(
             clone,
-            locale
+            DIFFERENT_LOCALE
         );
     }
 
@@ -187,118 +170,56 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
 
     @Test
     public void testSetEnvironmentContextAndSetCharset() {
-        final ReadOnlyProviderContext context = this.createContext();
-
-        final Charset charset = StandardCharsets.US_ASCII;
-
         this.charsetAndCheck(
-            context.setEnvironmentContext(
-                EnvironmentContexts.empty(
-                    charset,
-                    CURRENCY,
-                    INDENTATION,
-                    LINE_ENDING,
-                    Locale.FRENCH,
-                    HAS_NOW,
-                    Optional.of(USER)
-                )
-            ),
-            charset
+            this.createContext()
+                .setEnvironmentContext(
+                    ENVIRONMENT_CONTEXT.cloneEnvironment()
+                ),
+            CHARSET
         );
     }
     
     @Test
     public void testSetEnvironmentContextAndSetCurrency() {
-        final ReadOnlyProviderContext context = this.createContext();
-
-        final Currency currency = Currency.getInstance("NZD");
-
-        this.currencyAndCheck(
-            context.setEnvironmentContext(
-                EnvironmentContexts.empty(
-                    CHARSET,
-                    currency,
-                    INDENTATION,
-                    LINE_ENDING,
-                    Locale.FRENCH,
-                    HAS_NOW,
-                    Optional.of(USER)
-                )
+        this.setCurrencyAndCheck(
+            this.createContext()
+                .setEnvironmentContext(
+                ENVIRONMENT_CONTEXT.cloneEnvironment()
             ),
-            currency
+            DIFFERENT_CURRENCY
         );
     }
 
     @Test
     public void testSetEnvironmentContextAndSetLineEnding() {
-        final ReadOnlyProviderContext context = this.createContext();
-
-        final LineEnding lineEnding = LineEnding.CRNL;
-
-        this.lineEndingAndCheck(
-            context.setEnvironmentContext(
-                EnvironmentContexts.empty(
-                    CHARSET,
-                    CURRENCY,
-                    INDENTATION,
-                    lineEnding,
-                    Locale.FRENCH,
-                    HAS_NOW,
-                    Optional.of(USER)
-                )
+        this.setLineEndingAndCheck(
+            this.createContext()
+                .setEnvironmentContext(
+                    ENVIRONMENT_CONTEXT.cloneEnvironment()
             ),
-            lineEnding
+            DIFFERENT_LINE_ENDING
         );
     }
 
     @Test
     public void testSetEnvironmentContextAndSetLocale() {
-        final ReadOnlyProviderContext context = this.createContext();
-
-        final Locale locale = Locale.GERMAN;
-
-        this.localeAndCheck(
-            context.setEnvironmentContext(
-                EnvironmentContexts.empty(
-                    CHARSET,
-                    CURRENCY,
-                    INDENTATION,
-                    LINE_ENDING,
-                    locale,
-                    HAS_NOW,
-                    Optional.of(USER)
-                )
-            ),
-            locale
+        this.setLocaleAndCheck(
+            this.createContext()
+                .setEnvironmentContext(
+                    ENVIRONMENT_CONTEXT.cloneEnvironment()
+                ),
+            DIFFERENT_LOCALE
         );
     }
 
     @Test
     public void testSetEnvironmentContextAndSetUser() {
-        final ReadOnlyProviderContext context = this.createContext();
-
-        final Optional<EmailAddress> user = Optional.of(
-            EmailAddress.parse("different@example.com")
-        );
-
-        this.checkNotEquals(
-            Optional.of(USER),
-            user
-        );
-
         this.setUserAndCheck(
-            context.setEnvironmentContext(
-                EnvironmentContexts.empty(
-                    CHARSET,
-                    CURRENCY,
-                    INDENTATION,
-                    LINE_ENDING,
-                    LOCALE,
-                    HAS_NOW,
-                    Optional.of(USER)
-                )
-            ).cloneEnvironment(),
-            user
+            this.createContext()
+                .setEnvironmentContext(
+                    ENVIRONMENT_CONTEXT.cloneEnvironment()
+                ).cloneEnvironment(),
+            DIFFERENT_USER
         );
     }
 
@@ -389,17 +310,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     private ProviderContext createWrappedContext() {
         return ProviderContexts.basic(
             CAN_CONVERT,
-            EnvironmentContexts.map(
-                EnvironmentContexts.empty(
-                    CHARSET,
-                    CURRENCY,
-                    INDENTATION,
-                    LINE_ENDING,
-                    LOCALE,
-                    HAS_NOW,
-                    Optional.of(USER)
-                )
-            ),
+            ENVIRONMENT_CONTEXT.cloneEnvironment(),
             PLUGIN_STORE
         );
     }
@@ -432,7 +343,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
                         LINE_ENDING,
                         LOCALE,
                         HAS_NOW,
-                        Optional.of(USER)
+                        OPTIONAL_USER
                     ),
                     PLUGIN_STORE
                 )

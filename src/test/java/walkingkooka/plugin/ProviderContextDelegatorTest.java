@@ -19,17 +19,10 @@ package walkingkooka.plugin;
 
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.plugin.ProviderContextDelegatorTest.TestProviderContextDelegator;
 import walkingkooka.plugin.store.PluginStores;
-import walkingkooka.text.Indentation;
-import walkingkooka.text.LineEnding;
 
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.util.Currency;
-import java.util.Locale;
 import java.util.Objects;
 
 public final class ProviderContextDelegatorTest implements ProviderContextTesting<TestProviderContextDelegator> {
@@ -100,15 +93,7 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
         public ProviderContext providerContext() {
             return ProviderContexts.basic(
                 ConverterContexts.fake(),
-                EnvironmentContexts.empty(
-                    StandardCharsets.UTF_8,
-                    Currency.getInstance("AUD"),
-                    Indentation.SPACES4,
-                    LineEnding.NL,
-                    Locale.FRANCE,
-                    () -> LocalDateTime.MIN,
-                    EnvironmentContext.ANONYMOUS
-                ),
+                ENVIRONMENT_CONTEXT.cloneEnvironment(),
                 PluginStores.treeMap()
             );
         }
