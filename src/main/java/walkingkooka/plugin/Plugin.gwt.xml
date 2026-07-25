@@ -3,6 +3,7 @@
     <inherits name="walkingkooka.environment.Environment"/>
     <inherits name="walkingkooka.net.http.server.hateos.Hateos"/>
     <inherits name="walkingkooka.props.Props"/>
+    <inherits name="walkingkooka.storage.Storage"/>
 
     <source path="">
         <exclude name="super/**"/>
