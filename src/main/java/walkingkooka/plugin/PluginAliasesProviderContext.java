@@ -66,87 +66,87 @@ final class PluginAliasesProviderContext implements ProviderContext {
 
     @Override
     public Charset charset() {
-        return this.environmentValueOrFail(CHARSET);
+        return CHARSET.getEnvironmentValueOrFail(this);
     }
 
     @Override
     public void setCharset(final Charset charset) {
-        this.setEnvironmentValue(
-            CHARSET,
-            Objects.requireNonNull(charset, "charset")
+        CHARSET.setEnvironmentValue(
+            charset,
+            this
         );
     }
     
     @Override
     public Currency currency() {
-        return this.environmentValueOrFail(CURRENCY);
+        return CURRENCY.getEnvironmentValueOrFail(this);
     }
 
     @Override
     public void setCurrency(final Currency currency) {
-        this.setEnvironmentValue(
-            CURRENCY,
-            Objects.requireNonNull(currency, "currency")
+        CURRENCY.setEnvironmentValue(
+            currency,
+            this
         );
     }
     
     @Override
     public Indentation indentation() {
-        return this.environmentValueOrFail(INDENTATION);
+        return INDENTATION.getEnvironmentValueOrFail(this);
     }
 
     @Override
     public void setIndentation(final Indentation indentation) {
-        this.setEnvironmentValue(
-            INDENTATION,
-            Objects.requireNonNull(indentation, "indentation")
+        INDENTATION.setEnvironmentValue(
+            indentation,
+            this
         );
     }
     
     @Override
     public LineEnding lineEnding() {
-        return this.environmentValueOrFail(LINE_ENDING);
+        return LINE_ENDING.getEnvironmentValueOrFail(this);
     }
 
     @Override
     public void setLineEnding(final LineEnding lineEnding) {
-        this.setEnvironmentValue(
-            LINE_ENDING,
-            Objects.requireNonNull(lineEnding, "lineEnding")
+        LINE_ENDING.setEnvironmentValue(
+            lineEnding,
+            this
         );
     }
     
     @Override
     public Locale locale() {
-        return this.environmentValueOrFail(EnvironmentValueName.LOCALE);
+        return LOCALE.getEnvironmentValueOrFail(this);
     }
 
     @Override
     public void setLocale(final Locale locale) {
-        this.setEnvironmentValue(
-            EnvironmentValueName.LOCALE,
-            locale
+        LOCALE.setEnvironmentValue(
+            locale,
+            this
         );
     }
 
     @Override
     public ZoneOffset timeOffset() {
-        return this.environmentValueOrFail(EnvironmentValueName.TIME_OFFSET);
+        return TIME_OFFSET.getEnvironmentValueOrFail(this);
     }
 
     @Override
     public void setTimeOffset(final ZoneOffset timeOffset) {
-        this.setEnvironmentValue(
-            EnvironmentValueName.TIME_OFFSET,
-            timeOffset
+        TIME_OFFSET.setEnvironmentValue(
+            timeOffset,
+            this
         );
     }
 
     @Override
     public void setUser(final Optional<EmailAddress> user) {
-        this.setOrRemoveEnvironmentValue(
-            USER,
-            user
+        USER.setOrRemoveEnvironmentValue(
+            user,
+            this
         );
     }
 
