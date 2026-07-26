@@ -331,20 +331,12 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     // hashCode/equals..................................................................................................
 
     @Test
-    public void testEqualsDifferentContext() {
+    public void testEqualsDifferentEnvironmentContext() {
         this.checkNotEquals(
             ReadOnlyProviderContext.with(
                 ProviderContexts.basic(
                     CAN_CONVERT,
-                    EnvironmentContexts.empty(
-                        CHARSET,
-                        CURRENCY,
-                        INDENTATION,
-                        LINE_ENDING,
-                        LOCALE,
-                        HAS_NOW,
-                        OPTIONAL_USER
-                    ),
+                    DIFFERENT_ENVIRONMENT_CONTEXT,
                     PLUGIN_STORE
                 )
             )
