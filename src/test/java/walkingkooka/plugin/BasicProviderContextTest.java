@@ -27,7 +27,6 @@ import walkingkooka.convert.Converters;
 import walkingkooka.currency.CurrencyLocaleContexts;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.FakeEnvironmentContext;
 import walkingkooka.math.DecimalNumberContexts;
@@ -275,15 +274,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         this.checkNotEquals(
             ProviderContexts.basic(
                 CAN_CONVERT,
-                EnvironmentContexts.empty(
-                    CHARSET,
-                    CURRENCY,
-                    INDENTATION,
-                    DIFFERENT_LINE_ENDING,
-                    LOCALE,
-                    HAS_NOW,
-                    Optional.of(USER)
-                ),
+                DIFFERENT_ENVIRONMENT_CONTEXT,
                 PLUGIN_STORE
             )
         );
