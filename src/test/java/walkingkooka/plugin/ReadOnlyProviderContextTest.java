@@ -22,15 +22,12 @@ import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.convert.ConverterContexts;
 import walkingkooka.convert.ConverterLike;
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentContexts;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.ReadOnlyEnvironmentValueException;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.plugin.store.PluginStores;
-import walkingkooka.text.LineEnding;
 
-import java.util.Locale;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotSame;
@@ -140,18 +137,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     @Test
     public void testSetEnvironmentContext() {
         final ReadOnlyProviderContext before = this.createContext();
-
-        final EnvironmentContext different = EnvironmentContexts.empty(
-            CHARSET,
-            CURRENCY,
-            INDENTATION,
-            LineEnding.CR,
-            Locale.FRENCH,
-            HAS_NOW,
-            Optional.of(USER)
-        );
-
-        final ProviderContext after = before.setEnvironmentContext(different);
+        final ProviderContext after = before.setEnvironmentContext(DIFFERENT_ENVIRONMENT_CONTEXT);
 
         assertNotSame(
             before,
@@ -161,7 +147,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         this.checkEquals(
             BasicProviderContext.with(
                 CAN_CONVERT,
-                different,
+                DIFFERENT_ENVIRONMENT_CONTEXT,
                 PLUGIN_STORE
             ),
             after
