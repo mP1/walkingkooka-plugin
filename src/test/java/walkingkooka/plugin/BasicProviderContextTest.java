@@ -33,9 +33,7 @@ import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.plugin.store.PluginStores;
-import walkingkooka.text.TextPrinting;
 
-import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
@@ -54,10 +52,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
             (x) -> DateTimeFormatter.ofPattern("yyyy MM dd")
         ), // converter
         BinaryNumberConverterFunctions.fake(), // multiplier
-        TextPrinting.with(
-            INDENTATION,
-            LINE_ENDING
-        ).setCharset(StandardCharsets.UTF_8),
+        BINARY_TEXT_CONTEXT,
         CurrencyLocaleContexts.fake(),
         DateTimeContexts.fake(),
         DecimalNumberContexts.fake()
