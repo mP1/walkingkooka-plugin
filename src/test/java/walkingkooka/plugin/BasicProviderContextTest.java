@@ -18,7 +18,6 @@
 package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
-import walkingkooka.Cast;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
 import walkingkooka.convert.BinaryNumberConverterFunctions;
 import walkingkooka.convert.ConverterContexts;
@@ -28,14 +27,13 @@ import walkingkooka.currency.CurrencyLocaleContexts;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
-import walkingkooka.environment.FakeEnvironmentContext;
 import walkingkooka.math.DecimalNumberContexts;
-import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.plugin.store.PluginStores;
+import walkingkooka.storage.StorageContexts;
+import walkingkooka.storage.StorageEnvironmentContext;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -70,36 +68,22 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     // with.............................................................................................................
 
     @Test
-    public void testWithNullConverterLikeFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> BasicProviderContext.with(
-                null,
-                ENVIRONMENT_CONTEXT,
-                PLUGIN_STORE
-            )
-        );
-    }
-
-    @Test
-    public void testWithNullEnvironmentContextFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> BasicProviderContext.with(
-                CAN_CONVERT,
-                null,
-                PLUGIN_STORE
-            )
-        );
-    }
-
-    @Test
     public void testWithNullPluginStoreFails() {
         assertThrows(
             NullPointerException.class,
             () -> BasicProviderContext.with(
-                CAN_CONVERT,
-                ENVIRONMENT_CONTEXT,
+                null,
+                STORAGE_CONTEXT
+            )
+        );
+    }
+
+    @Test
+    public void testWithNullStorageContextFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> BasicProviderContext.with(
+                PLUGIN_STORE,
                 null
             )
         );
@@ -109,17 +93,15 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
 
     @Test
     public void testCloneEnvironment() {
-        final EnvironmentContext environmentContext = ENVIRONMENT_CONTEXT.cloneEnvironment();
-
-        assertNotSame(
-            environmentContext.cloneEnvironment(),
-            environmentContext
-        );
+        final StorageEnvironmentContext storageEnvironmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
 
         final ProviderContext before = ProviderContexts.basic(
-            CAN_CONVERT,
-            environmentContext,
-            PLUGIN_STORE
+            PLUGIN_STORE,
+            StorageContexts.basic(
+                CAN_CONVERT,
+                MEDIA_TYPE_DETECTOR,
+                storageEnvironmentContext
+            )
         );
 
         final ProviderContext after = before.cloneEnvironment();
@@ -139,17 +121,20 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
 
     @Test
     public void testSetEnvironmentContextWithSame() {
-        final EnvironmentContext environmentContext = ENVIRONMENT_CONTEXT.cloneEnvironment();
+        final StorageEnvironmentContext storageEnvironmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
 
         final ProviderContext providerContext = ProviderContexts.basic(
-            CAN_CONVERT,
-            environmentContext,
-            PLUGIN_STORE
+            PLUGIN_STORE,
+            StorageContexts.basic(
+                CAN_CONVERT,
+                MEDIA_TYPE_DETECTOR,
+                storageEnvironmentContext
+            )
         );
 
         assertSame(
             providerContext,
-            providerContext.setEnvironmentContext(environmentContext)
+            providerContext.setEnvironmentContext(storageEnvironmentContext)
         );
     }
 
@@ -157,27 +142,33 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     public void testSetEnvironmentContext() {
         final BasicProviderContext context = this.createContext();
 
-        final EnvironmentContext environmentContext = ENVIRONMENT_CONTEXT.cloneEnvironment();
-        environmentContext.setLocale(DIFFERENT_LOCALE);
+        final StorageEnvironmentContext differentStorageEnvironmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
+        differentStorageEnvironmentContext.setLocale(DIFFERENT_LOCALE);
 
-        final ProviderContext different = ProviderContexts.basic(
-            CAN_CONVERT,
-            environmentContext,
-            PLUGIN_STORE
+        final ProviderContext differentProviderContext = ProviderContexts.basic(
+            PLUGIN_STORE,
+            StorageContexts.basic(
+                CAN_CONVERT,
+                MEDIA_TYPE_DETECTOR,
+                differentStorageEnvironmentContext
+            )
         );
 
         this.checkNotEquals(
             context,
-            different
+            differentProviderContext
         );
 
-        final ProviderContext set = context.setEnvironmentContext(environmentContext);
+        final ProviderContext set = context.setEnvironmentContext(differentStorageEnvironmentContext);
 
         this.checkEquals(
             ProviderContexts.basic(
-                CAN_CONVERT,
-                environmentContext,
-                PLUGIN_STORE
+                PLUGIN_STORE,
+                StorageContexts.basic(
+                    CAN_CONVERT,
+                    MEDIA_TYPE_DETECTOR,
+                    differentStorageEnvironmentContext
+                )
             ),
             set
         );
@@ -187,24 +178,25 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
 
     @Test
     public void testSetUser() {
-        final EnvironmentContext environmentContext = ENVIRONMENT_CONTEXT.cloneEnvironment();
+        final StorageEnvironmentContext storageEnvironmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
 
         final BasicProviderContext context = BasicProviderContext.with(
-            CAN_CONVERT,
-            environmentContext,
-            PLUGIN_STORE
+            PLUGIN_STORE,
+            StorageContexts.basic(
+                CAN_CONVERT,
+                MEDIA_TYPE_DETECTOR,
+                storageEnvironmentContext
+            )
         );
-
-        final EmailAddress different = DIFFERENT_USER;
 
         this.setUserAndCheck(
             context,
-            different
+            DIFFERENT_USER
         );
 
         this.userAndCheck(
-            environmentContext,
-            different
+            storageEnvironmentContext,
+            DIFFERENT_USER
         );
     }
 
@@ -212,19 +204,20 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
 
     @Test
     public void testEnvironmentValue() {
+        final EnvironmentContext environmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
+        VAR.setEnvironmentValue(
+            VAR_VALUE,
+            environmentContext
+        );
+
         this.environmentValueAndCheck(
             BasicProviderContext.with(
-                CAN_CONVERT,
-                new FakeEnvironmentContext() {
-                    @Override
-                    public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
-                        checkEquals(VAR, name);
-                        return Cast.to(
-                            Optional.of(VAR_VALUE)
-                        );
-                    }
-                },
-                PLUGIN_STORE
+                PLUGIN_STORE,
+                StorageContexts.basic(
+                    CAN_CONVERT,
+                    MEDIA_TYPE_DETECTOR,
+                    environmentContext
+                )
             ),
             VAR,
             VAR_VALUE
@@ -256,9 +249,12 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     @Override
     public BasicProviderContext createContext() {
         return BasicProviderContext.with(
-            CAN_CONVERT,
-            ENVIRONMENT_CONTEXT.cloneEnvironment(),
-            PLUGIN_STORE
+            PLUGIN_STORE,
+            StorageContexts.basic(
+                CAN_CONVERT,
+                MEDIA_TYPE_DETECTOR,
+                STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment()
+            )
         );
     }
 
@@ -267,10 +263,13 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     @Test
     public void testEqualsDifferentContext() {
         this.checkNotEquals(
-            ProviderContexts.basic(
-                CAN_CONVERT,
-                DIFFERENT_ENVIRONMENT_CONTEXT,
-                PLUGIN_STORE
+            BasicProviderContext.with(
+                PLUGIN_STORE,
+                StorageContexts.basic(
+                    CAN_CONVERT,
+                    MEDIA_TYPE_DETECTOR,
+                    DIFFERENT_ENVIRONMENT_CONTEXT.cloneEnvironment()
+                )
             )
         );
     }
@@ -285,12 +284,8 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     @Test
     public void testToString() {
         this.toStringAndCheck(
-            BasicProviderContext.with(
-                CAN_CONVERT,
-                ENVIRONMENT_CONTEXT,
-                PLUGIN_STORE
-            ),
-            ENVIRONMENT_CONTEXT.toString()
+            this.createContext(),
+            MEDIA_TYPE_DETECTOR + " " + STORAGE_ENVIRONMENT_CONTEXT.toString()
         );
     }
 

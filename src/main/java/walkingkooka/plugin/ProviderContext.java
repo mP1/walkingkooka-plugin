@@ -20,12 +20,14 @@ package walkingkooka.plugin;
 import walkingkooka.convert.ConverterLike;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.plugin.store.PluginStore;
+import walkingkooka.storage.StorageContext;
 
 /**
  * A {@link walkingkooka.Context} that should be passed to all {@link Provider} public methods.
  */
 public interface ProviderContext extends EnvironmentContext,
-    ConverterLike {
+    ConverterLike,
+    StorageContext {
 
     @Override
     ProviderContext cloneEnvironment();

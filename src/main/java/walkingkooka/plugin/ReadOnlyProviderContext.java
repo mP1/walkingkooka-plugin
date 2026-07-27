@@ -17,12 +17,16 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.Binary;
 import walkingkooka.Either;
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentContextDelegator;
-import walkingkooka.environment.EnvironmentContexts;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.predicate.Predicates;
+import walkingkooka.storage.StorageEnvironmentContext;
+import walkingkooka.storage.StorageEnvironmentContextDelegator;
+import walkingkooka.storage.StorageEnvironmentContexts;
+import walkingkooka.storage.StoragePath;
 
 import java.util.Objects;
 
@@ -31,7 +35,7 @@ import java.util.Objects;
  * Note the {@link #cloneEnvironment()} returns a clone of the wrapped {@link ProviderContext}.
  */
 final class ReadOnlyProviderContext implements ProviderContext,
-    EnvironmentContextDelegator {
+    StorageEnvironmentContextDelegator {
 
     static ReadOnlyProviderContext with(final ProviderContext context) {
         ReadOnlyProviderContext readOnlyProviderContext;
@@ -50,10 +54,24 @@ final class ReadOnlyProviderContext implements ProviderContext,
     private ReadOnlyProviderContext(final ProviderContext context) {
         this.context = context;
 
-        this.readOnlyEnvironmentContext = EnvironmentContexts.readOnly(
+        this.readOnlyStorageEnvironmentContext = StorageEnvironmentContexts.readOnly(
             Predicates.always(), // all values are readonly
             context
         );
+    }
+
+    @Override
+    public MediaType detect(final String filename,
+                            final Binary binary) {
+        return this.context.detect(
+            filename,
+            binary
+        );
+    }
+
+    @Override
+    public StoragePath parseStoragePath(final String text) {
+        return this.context.parseStoragePath(text);
     }
 
     @Override
@@ -81,7 +99,7 @@ final class ReadOnlyProviderContext implements ProviderContext,
         );
     }
 
-    // EnvironmentContext...............................................................................................
+    // StorageEnvironmentContext........................................................................................
 
     @Override
     public ProviderContext cloneEnvironment() {
@@ -99,14 +117,14 @@ final class ReadOnlyProviderContext implements ProviderContext,
             after;
     }
 
-    // EnvironmentContextDelegator......................................................................................
+    // StorageEnvironmentContextDelegator...............................................................................
 
     @Override
-    public EnvironmentContext environmentContext() {
-        return this.readOnlyEnvironmentContext;
+    public StorageEnvironmentContext storageEnvironmentContext() {
+        return this.readOnlyStorageEnvironmentContext;
     }
 
-    private final EnvironmentContext readOnlyEnvironmentContext;
+    private final StorageEnvironmentContext readOnlyStorageEnvironmentContext;
 
     private final ProviderContext context;
 

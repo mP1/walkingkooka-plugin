@@ -17,26 +17,18 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.Binary;
 import walkingkooka.Either;
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentValueName;
-import walkingkooka.environment.EnvironmentWatcher;
-import walkingkooka.net.email.EmailAddress;
+import walkingkooka.net.header.MediaType;
 import walkingkooka.plugin.ProviderContextTestingTest.TestProviderContext;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.plugin.store.PluginStores;
-import walkingkooka.text.Indentation;
-import walkingkooka.text.LineEnding;
+import walkingkooka.storage.StorageEnvironmentContext;
+import walkingkooka.storage.StorageEnvironmentContextDelegator;
+import walkingkooka.storage.StoragePath;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Currency;
-import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 
 public final class ProviderContextTestingTest implements ProviderContextTesting<TestProviderContext> {
 
@@ -106,6 +98,11 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
     }
 
     @Override
+    public void testSetEnvironmentContextWithEqualEnvironmentContext() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public TestProviderContext createContext() {
         return new TestProviderContext();
     }
@@ -120,157 +117,25 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
         return TestProviderContext.class;
     }
 
-    final static class TestProviderContext implements ProviderContext {
+    final static class TestProviderContext implements ProviderContext,
+        StorageEnvironmentContextDelegator {
 
         @Override
         public boolean canConvert(final Object value,
                                   final Class<?> type) {
-            throw new UnsupportedOperationException();
+            return CONVERTER_LIKE.canConvert(
+                value,
+                type
+            );
         }
 
         @Override
         public <T> Either<T, String> convert(final Object value,
                                              final Class<T> type) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public Charset charset() {
-            return StandardCharsets.UTF_8;
-        }
-
-        @Override
-        public void setCharset(final Charset charset) {
-            this.setEnvironmentValue(
-                CHARSET,
-                charset
+            return CONVERTER_LIKE.convert(
+                value,
+                type
             );
-        }
-        
-        @Override
-        public Currency currency() {
-            return Currency.getInstance("AUD");
-        }
-
-        @Override
-        public void setCurrency(final Currency currency) {
-            this.setEnvironmentValue(
-                CURRENCY,
-                currency
-            );
-        }
-        
-        @Override
-        public Indentation indentation() {
-            return Indentation.SPACES2;
-        }
-
-        @Override
-        public void setIndentation(final Indentation indentation) {
-            this.setEnvironmentValue(
-                INDENTATION,
-                indentation
-            );
-        }
-        
-        @Override
-        public LineEnding lineEnding() {
-            return LineEnding.NL;
-        }
-
-        @Override
-        public void setLineEnding(final LineEnding lineEnding) {
-            this.setEnvironmentValue(
-                LINE_ENDING,
-                lineEnding
-            );
-        }
-        
-        @Override
-        public Locale locale() {
-            return Locale.ENGLISH;
-        }
-
-        @Override
-        public void setLocale(final Locale locale) {
-            this.setEnvironmentValue(
-                EnvironmentValueName.LOCALE,
-                locale
-            );
-        }
-
-        @Override
-        public ZoneOffset timeOffset() {
-            return ZoneOffset.ofHours(1);
-        }
-
-        @Override
-        public void setTimeOffset(final ZoneOffset timeOffset) {
-            this.setEnvironmentValue(
-                EnvironmentValueName.TIME_OFFSET,
-                timeOffset
-            );
-        }
-
-        @Override
-        public void setUser(final Optional<EmailAddress> user) {
-            if (user.isPresent()) {
-                this.setEnvironmentValue(
-                    EnvironmentValueName.USER,
-                    user.orElse(null)
-                );
-            } else {
-                this.removeEnvironmentValue(
-                    EnvironmentValueName.USER
-                );
-            }
-        }
-
-        @Override
-        public ProviderContext cloneEnvironment() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public ProviderContext setEnvironmentContext(final EnvironmentContext environmentContext) {
-            Objects.requireNonNull(environmentContext, "environmentContext");
-            return new TestProviderContext();
-        }
-
-        @Override
-        public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
-            Objects.requireNonNull(name, "name");
-
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public Set<EnvironmentValueName<?>> environmentValueNames() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public <T> void setEnvironmentValue(final EnvironmentValueName<T> name,
-                                            final T value) {
-            Objects.requireNonNull(name, "name");
-            Objects.requireNonNull(value, "value");
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void removeEnvironmentValue(final EnvironmentValueName<?> name) {
-            Objects.requireNonNull(name, "name");
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public LocalDateTime now() {
-            return LocalDateTime.now();
-        }
-
-        @Override
-        public Optional<EmailAddress> user() {
-            return EnvironmentContext.ANONYMOUS;
         }
 
         @Override
@@ -279,16 +144,36 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
         }
 
         @Override
-        public Runnable addEnvironmentWatcher(final EnvironmentWatcher watcher) {
-            Objects.requireNonNull(watcher, "watcher");
+        public MediaType detect(final String text,
+                                final Binary binary) {
+            return MEDIA_TYPE_DETECTOR.detect(
+                text,
+                binary
+            );
+        }
+
+        @Override
+        public StoragePath parseStoragePath(final String text) {
+            return StoragePath.parse(text);
+        }
+
+        @Override
+        public ProviderContext cloneEnvironment() {
+            return new TestProviderContext();
+        }
+
+        @Override
+        public ProviderContext setEnvironmentContext(final EnvironmentContext environmentContext) {
+            Objects.requireNonNull(environmentContext, "environmentContext");
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public Runnable addEnvironmentWatcherOnce(final EnvironmentWatcher watcher) {
-            Objects.requireNonNull(watcher, "watcher");
-            throw new UnsupportedOperationException();
+        public StorageEnvironmentContext storageEnvironmentContext() {
+            return this.storageEnvironmentContext;
         }
+
+        private final StorageEnvironmentContext storageEnvironmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
 
         @Override
         public String toString() {

@@ -19,10 +19,10 @@ package walkingkooka.plugin;
 
 import walkingkooka.Either;
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.FakeEnvironmentContext;
 import walkingkooka.plugin.store.PluginStore;
+import walkingkooka.storage.FakeStorageContext;
 
-public class FakeProviderContext extends FakeEnvironmentContext implements ProviderContext {
+public class FakeProviderContext extends FakeStorageContext implements ProviderContext {
 
     @Override
     public ProviderContext cloneEnvironment() {

@@ -136,21 +136,20 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
 
     @Test
     public void testSetEnvironmentContext() {
-        final ReadOnlyProviderContext before = this.createContext();
-        final ProviderContext after = before.setEnvironmentContext(DIFFERENT_ENVIRONMENT_CONTEXT);
+        final ReadOnlyProviderContext readOnlyProviderContext = this.createContext();
+        final ProviderContext different = readOnlyProviderContext.setEnvironmentContext(DIFFERENT_ENVIRONMENT_CONTEXT);
 
         assertNotSame(
-            before,
-            after
+            readOnlyProviderContext,
+            different
         );
 
         this.checkEquals(
             BasicProviderContext.with(
-                CAN_CONVERT,
-                DIFFERENT_ENVIRONMENT_CONTEXT,
-                PLUGIN_STORE
+                PLUGIN_STORE,
+                DIFFERENT_STORAGE_CONTEXT
             ),
-            after
+            different
         );
     }
 
@@ -164,14 +163,14 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
             CHARSET
         );
     }
-    
+
     @Test
     public void testSetEnvironmentContextAndSetCurrency() {
         this.setCurrencyAndCheck(
             this.createContext()
                 .setEnvironmentContext(
-                ENVIRONMENT_CONTEXT.cloneEnvironment()
-            ),
+                    ENVIRONMENT_CONTEXT.cloneEnvironment()
+                ),
             DIFFERENT_CURRENCY
         );
     }
@@ -182,7 +181,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
             this.createContext()
                 .setEnvironmentContext(
                     ENVIRONMENT_CONTEXT.cloneEnvironment()
-            ),
+                ),
             DIFFERENT_LINE_ENDING
         );
     }
@@ -289,15 +288,10 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     @Override
     public ReadOnlyProviderContext createContext() {
         return ReadOnlyProviderContext.with(
-            this.createWrappedContext()
-        );
-    }
-
-    private ProviderContext createWrappedContext() {
-        return ProviderContexts.basic(
-            CAN_CONVERT,
-            ENVIRONMENT_CONTEXT.cloneEnvironment(),
-            PLUGIN_STORE
+            ProviderContexts.basic(
+                PLUGIN_STORE,
+                STORAGE_CONTEXT.cloneEnvironment()
+            )
         );
     }
 
@@ -321,14 +315,13 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         this.checkNotEquals(
             ReadOnlyProviderContext.with(
                 ProviderContexts.basic(
-                    CAN_CONVERT,
-                    DIFFERENT_ENVIRONMENT_CONTEXT,
-                    PLUGIN_STORE
+                    PLUGIN_STORE,
+                    DIFFERENT_STORAGE_CONTEXT.cloneEnvironment()
                 )
             )
         );
     }
-    
+
     @Override
     public ReadOnlyProviderContext createObject() {
         return this.createContext();
@@ -338,7 +331,8 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
 
     @Test
     public void testToString() {
-        final ProviderContext wrapped = this.createWrappedContext();
+        final ProviderContext wrapped = ProviderContexts.fake();
+
         final ReadOnlyProviderContext context = ReadOnlyProviderContext.with(wrapped);
 
         this.toStringContainsCheck(

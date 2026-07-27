@@ -17,14 +17,19 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.Either;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.EnvironmentWatcher;
+import walkingkooka.net.header.MediaType;
+import walkingkooka.net.header.MediaTypeDetectors;
 import walkingkooka.plugin.store.PluginStore;
+import walkingkooka.storage.StorageEnvironmentContext;
+import walkingkooka.storage.StorageEnvironmentContextDelegator;
+import walkingkooka.storage.StoragePath;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -36,7 +41,7 @@ import java.util.Set;
  * Validating values exist for any name is not a goal of {@link PluginAlias#parse(String, PluginHelper)}.
  */
 final class PluginAliasesProviderContext implements ProviderContext,
-    EnvironmentContextDelegator {
+    StorageEnvironmentContextDelegator {
 
     /**
      * Singleton
@@ -60,6 +65,21 @@ final class PluginAliasesProviderContext implements ProviderContext,
     }
 
     @Override
+    public MediaType detect(final String filename,
+                            final Binary binary) {
+        return MediaTypeDetectors.binary()
+            .detect(
+                filename,
+                binary
+            );
+    }
+
+    @Override
+    public StoragePath parseStoragePath(final String text) {
+        return StoragePath.parse(text);
+    }
+
+    @Override
     public PluginStore pluginStore() {
         throw new UnsupportedOperationException();
     }
@@ -76,7 +96,7 @@ final class PluginAliasesProviderContext implements ProviderContext,
         throw new UnsupportedOperationException();
     }
 
-    // EnvironmentContextDelegator......................................................................................
+    // StorageEnvironmentContextDelegator...............................................................................
 
     @Override
     public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
@@ -121,7 +141,7 @@ final class PluginAliasesProviderContext implements ProviderContext,
     }
 
     @Override
-    public EnvironmentContext environmentContext() {
+    public StorageEnvironmentContext storageEnvironmentContext() {
         return this;
     }
 
