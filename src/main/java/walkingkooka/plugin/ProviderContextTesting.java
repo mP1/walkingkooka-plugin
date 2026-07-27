@@ -18,14 +18,14 @@
 package walkingkooka.plugin;
 
 import walkingkooka.ContextTesting;
-import walkingkooka.convert.ConverterLikeTesting;
+import walkingkooka.convert.ConverterLikeTesting2;
 import walkingkooka.environment.EnvironmentContextTesting2;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.text.printer.TreePrintableTesting;
 
 public interface ProviderContextTesting<C extends ProviderContext> extends ContextTesting<C>,
     EnvironmentContextTesting2<C>,
-    ConverterLikeTesting<C>,
+    ConverterLikeTesting2<C>,
     TreePrintableTesting {
 
     // pluginStore......................................................................................................
