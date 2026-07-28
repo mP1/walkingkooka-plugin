@@ -218,7 +218,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
             () -> this.createContext()
                 .setEnvironmentValue(
                     EnvironmentValueName.LOCALE,
-                    LOCALE
+                    DIFFERENT_LOCALE
                 )
         );
     }
@@ -257,7 +257,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         assertThrows(
             ReadOnlyEnvironmentValueException.class,
             () -> this.createContext()
-                .setLocale(LOCALE)
+                .setLocale(DIFFERENT_LOCALE)
         );
     }
 
