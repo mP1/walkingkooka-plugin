@@ -19,19 +19,13 @@ package walkingkooka.plugin;
 
 import walkingkooka.Cast;
 import walkingkooka.Either;
+import walkingkooka.collect.set.Sets;
 import walkingkooka.environment.EnvironmentContext;
+import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.EnvironmentWatcher;
-import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.store.PluginStore;
-import walkingkooka.text.Indentation;
-import walkingkooka.text.LineEnding;
 
-import java.nio.charset.Charset;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Currency;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -41,7 +35,8 @@ import java.util.Set;
  * This is necessary because {@link PluginInfoSetLikeParser} will attempt to resolve environment names into values when asked to consume a selector.
  * Validating values exist for any name is not a goal of {@link PluginAlias#parse(String, PluginHelper)}.
  */
-final class PluginAliasesProviderContext implements ProviderContext {
+final class PluginAliasesProviderContext implements ProviderContext,
+    EnvironmentContextDelegator {
 
     /**
      * Singleton
@@ -50,160 +45,6 @@ final class PluginAliasesProviderContext implements ProviderContext {
 
     private PluginAliasesProviderContext() {
         super();
-    }
-
-    @Override
-    public ProviderContext cloneEnvironment() {
-        return this;
-    }
-
-    // setEnvironmentContext............................................................................................
-
-    @Override
-    public ProviderContext setEnvironmentContext(final EnvironmentContext environmentContext) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Charset charset() {
-        return CHARSET.getEnvironmentValueOrFail(this);
-    }
-
-    @Override
-    public void setCharset(final Charset charset) {
-        CHARSET.setEnvironmentValue(
-            charset,
-            this
-        );
-    }
-    
-    @Override
-    public Currency currency() {
-        return CURRENCY.getEnvironmentValueOrFail(this);
-    }
-
-    @Override
-    public void setCurrency(final Currency currency) {
-        CURRENCY.setEnvironmentValue(
-            currency,
-            this
-        );
-    }
-    
-    @Override
-    public Indentation indentation() {
-        return INDENTATION.getEnvironmentValueOrFail(this);
-    }
-
-    @Override
-    public void setIndentation(final Indentation indentation) {
-        INDENTATION.setEnvironmentValue(
-            indentation,
-            this
-        );
-    }
-    
-    @Override
-    public LineEnding lineEnding() {
-        return LINE_ENDING.getEnvironmentValueOrFail(this);
-    }
-
-    @Override
-    public void setLineEnding(final LineEnding lineEnding) {
-        LINE_ENDING.setEnvironmentValue(
-            lineEnding,
-            this
-        );
-    }
-    
-    @Override
-    public Locale locale() {
-        return LOCALE.getEnvironmentValueOrFail(this);
-    }
-
-    @Override
-    public void setLocale(final Locale locale) {
-        LOCALE.setEnvironmentValue(
-            locale,
-            this
-        );
-    }
-
-    @Override
-    public ZoneOffset timeOffset() {
-        return TIME_OFFSET.getEnvironmentValueOrFail(this);
-    }
-
-    @Override
-    public void setTimeOffset(final ZoneOffset timeOffset) {
-        TIME_OFFSET.setEnvironmentValue(
-            timeOffset,
-            this
-        );
-    }
-
-    @Override
-    public void setUser(final Optional<EmailAddress> user) {
-        USER.setOrRemoveEnvironmentValue(
-            user,
-            this
-        );
-    }
-
-    @Override
-    public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
-        Objects.requireNonNull(name, "name");
-
-        return Cast.to(DUMMY);
-    }
-
-    private final static Optional<?> DUMMY = Optional.of("Dummy");
-
-    @Override
-    public Set<EnvironmentValueName<?>> environmentValueNames() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public <T> void setEnvironmentValue(final EnvironmentValueName<T> name,
-                                        final T value) {
-        Objects.requireNonNull(name, "name");
-        Objects.requireNonNull(value, "value");
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void removeEnvironmentValue(final EnvironmentValueName<?> name) {
-        Objects.requireNonNull(name, "name");
-
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public LocalDateTime now() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public PluginStore pluginStore() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Optional<EmailAddress> user() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Runnable addEnvironmentWatcher(final EnvironmentWatcher watcher) {
-        Objects.requireNonNull(watcher, "watcher");
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Runnable addEnvironmentWatcherOnce(final EnvironmentWatcher watcher) {
-        Objects.requireNonNull(watcher, "watcher");
-        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -217,6 +58,74 @@ final class PluginAliasesProviderContext implements ProviderContext {
                                          final Class<T> type) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public PluginStore pluginStore() {
+        throw new UnsupportedOperationException();
+    }
+
+    // EnvironmentContext...............................................................................................
+
+    @Override
+    public ProviderContext cloneEnvironment() {
+        return this;
+    }
+
+    @Override
+    public ProviderContext setEnvironmentContext(final EnvironmentContext environmentContext) {
+        throw new UnsupportedOperationException();
+    }
+
+    // EnvironmentContextDelegator......................................................................................
+
+    @Override
+    public <T> Optional<T> environmentValue(final EnvironmentValueName<T> name) {
+        Objects.requireNonNull(name, "name");
+
+        return Cast.to(DUMMY);
+    }
+
+    private final static Optional<?> DUMMY = Optional.of("Dummy");
+
+    @Override
+    public void removeEnvironmentValue(final EnvironmentValueName<?> name) {
+        Objects.requireNonNull(name, "name");
+
+        // nop
+    }
+
+    @Override
+    public <T> void setEnvironmentValue(final EnvironmentValueName<T> name,
+                                        final T value) {
+        Objects.requireNonNull(name, "name");
+        Objects.requireNonNull(value, "value");
+
+        throw name.readOnlyEnvironmentValueException();
+    }
+
+    @Override
+    public Set<EnvironmentValueName<?>> environmentValueNames() {
+        return Sets.empty();
+    }
+
+    @Override
+    public Runnable addEnvironmentWatcherOnce(final EnvironmentWatcher watcher) {
+        Objects.requireNonNull(watcher, "watcher");
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Runnable addEnvironmentWatcher(final EnvironmentWatcher watcher) {
+        Objects.requireNonNull(watcher, "watcher");
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public EnvironmentContext environmentContext() {
+        return this;
+    }
+
+    // toString.........................................................................................................
 
     @Override
     public String toString() {
