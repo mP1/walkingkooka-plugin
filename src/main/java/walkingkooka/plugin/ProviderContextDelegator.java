@@ -18,14 +18,12 @@
 package walkingkooka.plugin;
 
 import walkingkooka.convert.ConverterLike;
-import walkingkooka.convert.ConverterLikeDelegator;
-import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.plugin.store.PluginStore;
+import walkingkooka.storage.StorageContext;
+import walkingkooka.storage.StorageContextDelegator;
 
 public interface ProviderContextDelegator extends ProviderContext,
-    EnvironmentContextDelegator,
-    ConverterLikeDelegator {
+    StorageContextDelegator {
 
     @Override
     default PluginStore pluginStore() {
@@ -35,10 +33,10 @@ public interface ProviderContextDelegator extends ProviderContext,
 
     ProviderContext providerContext();
 
-    // EnvironmentContext...............................................................................................
+    // StorageContextDelegator..........................................................................................
 
     @Override
-    default EnvironmentContext environmentContext() {
+    default StorageContext storageContext() {
         return this.providerContext();
     }
 

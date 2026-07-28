@@ -17,11 +17,10 @@
 
 package walkingkooka.plugin;
 
-import walkingkooka.convert.ConverterLike;
-import walkingkooka.convert.ConverterLikeDelegator;
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentContextDelegator;
 import walkingkooka.plugin.store.PluginStore;
+import walkingkooka.storage.StorageContext;
+import walkingkooka.storage.StorageContextDelegator;
 
 import java.util.Objects;
 
@@ -29,25 +28,21 @@ import java.util.Objects;
  * A {@link ProviderContext} that delegates to a {@link EnvironmentContext}.
  */
 final class BasicProviderContext implements ProviderContext,
-    ConverterLikeDelegator,
-    EnvironmentContextDelegator {
+    StorageContextDelegator {
 
-    static BasicProviderContext with(final ConverterLike converterLike,
-                                     final EnvironmentContext environmentContext,
-                                     final PluginStore pluginStore) {
+    static BasicProviderContext with(final PluginStore pluginStore,
+                                     final StorageContext storageContext) {
         return new BasicProviderContext(
-            Objects.requireNonNull(converterLike, "converterLike"),
-            Objects.requireNonNull(environmentContext, "environmentContext"),
-            Objects.requireNonNull(pluginStore, "pluginStore")
+            Objects.requireNonNull(pluginStore, "pluginStore"),
+            Objects.requireNonNull(storageContext, "storageContext")
         );
     }
 
-    private BasicProviderContext(final ConverterLike converterLike,
-                                 final EnvironmentContext environmentContext,
-                                 final PluginStore pluginStore) {
-        this.converterLike = converterLike;
-        this.environmentContext = environmentContext;
+    private BasicProviderContext(final PluginStore pluginStore,
+                                 final StorageContext storageContext) {
+        super();
         this.pluginStore = pluginStore;
+        this.storageContext = storageContext;
     }
 
     @Override
@@ -57,21 +52,12 @@ final class BasicProviderContext implements ProviderContext,
 
     private final PluginStore pluginStore;
 
-    // ConverterLikeDelegator...........................................................................................
-
-    @Override
-    public ConverterLike converterLike() {
-        return this.converterLike;
-    }
-
-    private final ConverterLike converterLike;
-
-    // EnvironmentContext...............................................................................................
+    // StorageEnvironmentContext........................................................................................
 
     @Override
     public ProviderContext cloneEnvironment() {
         return this.setEnvironmentContext(
-            this.environmentContext.cloneEnvironment()
+            this.storageContext.cloneEnvironment()
         );
     }
 
@@ -79,34 +65,33 @@ final class BasicProviderContext implements ProviderContext,
 
     @Override
     public ProviderContext setEnvironmentContext(final EnvironmentContext environmentContext) {
-        final EnvironmentContext before = this.environmentContext;
+        final StorageContext before = this.storageContext;
+        final StorageContext after = before.setEnvironmentContext(environmentContext);
 
-        return before == environmentContext ?
+        return before == after ?
             this :
             with(
-                this.converterLike,
-                environmentContext,
-                this.pluginStore
+                this.pluginStore,
+                after
             );
     }
 
-    // EnvironmentContextDelegator......................................................................................
+    // StorageContextDelegator..........................................................................................
 
     @Override
-    public EnvironmentContext environmentContext() {
-        return this.environmentContext;
+    public StorageContext storageContext() {
+        return this.storageContext;
     }
 
-    private final EnvironmentContext environmentContext;
+    private final StorageContext storageContext;
 
     // Object...........................................................................................................
 
     @Override
     public int hashCode() {
         return Objects.hash(
-            this.converterLike,
-            this.environmentContext,
-            this.pluginStore
+            this.pluginStore,
+            this.storageContext
         );
     }
 
@@ -118,13 +103,12 @@ final class BasicProviderContext implements ProviderContext,
     }
 
     private boolean equals0(final BasicProviderContext other) {
-        return this.converterLike.equals(other.converterLike) &&
-            this.environmentContext.equals(other.environmentContext) &&
-            this.pluginStore.equals(other.pluginStore);
+        return this.pluginStore.equals(other.pluginStore) &&
+            this.storageContext.equals(other.storageContext);
     }
 
     @Override
     public String toString() {
-        return this.environmentContext.toString();
+        return this.storageContext.toString();
     }
 }
