@@ -23,6 +23,7 @@ import walkingkooka.compare.Comparators;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.naming.HasName;
 import walkingkooka.naming.Name;
+import walkingkooka.storage.StoragePath;
 import walkingkooka.text.CharSequences;
 import walkingkooka.text.HasText;
 import walkingkooka.text.cursor.TextCursor;
@@ -351,6 +352,16 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
                     final Optional<?> environmentValue = parser.environmentValue(context);
                     if (environmentValue.isPresent()) {
                         parameters.add(environmentValue.get());
+                        continue;
+                    }
+                }
+
+                {
+                    final Optional<StoragePath> storagePath = parser.storagePath(context);
+                    if (storagePath.isPresent()) {
+                        parameters.add(
+                            storagePath.get()
+                        );
                         continue;
                     }
                 }

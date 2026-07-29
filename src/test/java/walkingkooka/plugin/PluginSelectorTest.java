@@ -31,6 +31,7 @@ import walkingkooka.naming.StringName;
 import walkingkooka.naming.StringPath;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.storage.StoragePath;
 import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.cursor.TextCursor;
@@ -497,6 +498,11 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                 )
             );
         }
+
+        @Override
+        public StoragePath parseStoragePath(final String text) {
+            return StoragePath.parse(text);
+        }
     };
 
     private static class TestProvided {
@@ -775,6 +781,29 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         this.evaluateValueTextAndCheck(
             NAME + "  ( $" + ENVIRONMENT_VALUE_NAME_1 + ",$" + ENVIRONMENT_VALUE_NAME_2 + ",\"string-literal-parameter-3\" )",
             new TestProvided(NAME, ENVIRONMENT_VALUE_1, ENVIRONMENT_VALUE_2, "string-literal-parameter-3")
+        );
+    }
+
+    @Test
+    public void testEvaluateValueTextWithStoragePath() {
+        this.evaluateValueTextAndCheck(
+            NAME + " ( /storage-path/hello/world)",
+            new TestProvided(
+                NAME,
+                StoragePath.parse("/storage-path/hello/world")
+            )
+        );
+    }
+
+    @Test
+    public void testEvaluateValueTextWithStoragePathAndStringLiteral() {
+        this.evaluateValueTextAndCheck(
+            NAME + " ( /storage-path/hello/world, \"string-literal-2\")",
+            new TestProvided(
+                NAME,
+                StoragePath.parse("/storage-path/hello/world"),
+                "string-literal-2"
+            )
         );
     }
 
