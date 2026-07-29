@@ -231,7 +231,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
                 continue;
             }
 
-            throw new IllegalArgumentException("Unsupported value " + CharSequences.quoteIfChars(value) + " " + value.getClass().getName() + " expected only double | String | PluginSelector");
+            throw new IllegalArgumentException("Unsupported value " + CharSequences.quoteIfChars(value) + " " + value.getClass().getName() + " expected only double | EnvironmentValueName | PluginSelector | StoragePath | String");
         }
 
         if (b.length() > 0) {
