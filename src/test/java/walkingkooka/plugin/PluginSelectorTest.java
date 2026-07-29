@@ -583,7 +583,13 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                     " " +
                     this.values.stream()
                         .map(Object::toString)
-                        .collect(Collectors.joining(",", "(", ")"))
+                        .collect(
+                            Collectors.joining(
+                                ",",
+                                "(",
+                                ")"
+                            )
+                        )
             ).toString();
         }
     }
@@ -761,7 +767,10 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     public void testEvaluateValueTextWithStringLiteral() {
         this.evaluateValueTextAndCheck(
             NAME + " (\"string-literal-parameter\")",
-            new TestProvided(NAME, "string-literal-parameter")
+            new TestProvided(
+                NAME,
+                "string-literal-parameter"
+            )
         );
     }
 
@@ -769,7 +778,11 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     public void testEvaluateValueTextWithStringLiteralStringLiteral() {
         this.evaluateValueTextAndCheck(
             NAME + " (\"string-literal-parameter-1\",\"string-literal-parameter-2\")",
-            new TestProvided(NAME, "string-literal-parameter-1", "string-literal-parameter-2")
+            new TestProvided(
+                NAME,
+                "string-literal-parameter-1",
+                "string-literal-parameter-2"
+            )
         );
     }
 
@@ -777,7 +790,11 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     public void testEvaluateValueTextWithStringLiteralStringLiteralWithExtraSpaceIgnored() {
         this.evaluateValueTextAndCheck(
             NAME + "  ( \"string-literal-parameter-1\" , \"string-literal-parameter-2\" )",
-            new TestProvided(NAME, "string-literal-parameter-1", "string-literal-parameter-2")
+            new TestProvided(
+                NAME,
+                "string-literal-parameter-1",
+                "string-literal-parameter-2"
+            )
         );
     }
 
@@ -807,7 +824,10 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     public void testEvaluateValueTextWithEnvironmentValueName() {
         this.evaluateValueTextAndCheck(
             NAME + "  ( $" + ENVIRONMENT_VALUE_NAME_1 + ")",
-            new TestProvided(NAME, ENVIRONMENT_VALUE_1)
+            new TestProvided(
+                NAME,
+                ENVIRONMENT_VALUE_1
+            )
         );
     }
 
@@ -815,7 +835,12 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     public void testEvaluateValueTextWithEnvironmentValueName2() {
         this.evaluateValueTextAndCheck(
             NAME + "  ( $" + ENVIRONMENT_VALUE_NAME_1 + ",$" + ENVIRONMENT_VALUE_NAME_2 + ",\"string-literal-parameter-3\" )",
-            new TestProvided(NAME, ENVIRONMENT_VALUE_1, ENVIRONMENT_VALUE_2, "string-literal-parameter-3")
+            new TestProvided(
+                NAME,
+                ENVIRONMENT_VALUE_1,
+                ENVIRONMENT_VALUE_2,
+                "string-literal-parameter-3"
+            )
         );
     }
 
