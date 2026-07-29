@@ -214,6 +214,14 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
                 continue;
             }
 
+            if(value instanceof StoragePath) {
+                final StoragePath storagePath = (StoragePath) value;
+                b.append(
+                    storagePath.value()
+                );
+                continue;
+            }
+
             if (value instanceof String) {
                 final String string = (String) value;
                 b.append(
