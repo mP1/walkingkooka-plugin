@@ -137,7 +137,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     @Test
     public void testSetEnvironmentContext() {
         final ReadOnlyProviderContext readOnlyProviderContext = this.createContext();
-        final ProviderContext different = readOnlyProviderContext.setEnvironmentContext(DIFFERENT_ENVIRONMENT_CONTEXT);
+        final ProviderContext different = readOnlyProviderContext.setEnvironmentContext(DIFFERENT_STORAGE_ENVIRONMENT_CONTEXT);
 
         assertNotSame(
             readOnlyProviderContext,
