@@ -25,7 +25,9 @@ import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.naming.Name;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.Url;
+import walkingkooka.predicate.character.CharPredicate;
 import walkingkooka.predicate.character.CharPredicates;
+import walkingkooka.storage.StoragePath;
 import walkingkooka.text.CaseSensitivity;
 import walkingkooka.text.cursor.TextCursor;
 import walkingkooka.text.cursor.TextCursorSavePoint;
@@ -228,6 +230,39 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
                 EnvironmentValueName.MAX_LENGTH
             ).optional()
         );
+
+    /**
+     * Supports parsing of {@link StoragePath} literals within a {@link PluginSelector}.
+     */
+    Optional<StoragePath> storagePath(final ProviderContext context) {
+        return this.token(
+            STORAGE_PATH,
+            (ParserToken parserToken) -> context.parseStoragePath(parserToken.text())
+        );
+    }
+
+    static {
+        final CharPredicate separator = CharPredicates.is(
+            StoragePath.SEPARATOR.character()
+        );
+
+        STORAGE_PATH = Parsers.initialAndPartCharPredicateString(
+            separator,
+            separator.or(
+                CharPredicates.asciiPrintable()
+                    .andNot(
+                        CharPredicates.any(",)")
+                    )
+            ),
+            StoragePath.MIN_LENGTH,
+            StoragePath.MAX_LENGTH
+        );
+    }
+
+    /**
+     * Identifies any token beginning with '/' as a {@link StoragePath}
+     */
+    private final static Parser<ParserContext> STORAGE_PATH;
 
     private Optional<String> text(final Parser<ParserContext> parser) {
         return this.token(
