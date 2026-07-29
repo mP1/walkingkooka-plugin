@@ -207,10 +207,12 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
         );
     }
 
+    final static String ENVIRONMENT_VALUE_NAME_PREFIX = "$";
+
     /**
      * Parses a DOLLAR-SIGN then {@link EnvironmentValueName}
      */
-    private final static Parser<ParserContext> ENVIRONMENT_VALUE_NAME = Parsers.string("$", CaseSensitivity.SENSITIVE)
+    private final static Parser<ParserContext> ENVIRONMENT_VALUE_NAME = Parsers.string(ENVIRONMENT_VALUE_NAME_PREFIX, CaseSensitivity.SENSITIVE)
         .and(
             Parsers.initialAndPartCharPredicateString(
                 EnvironmentValueName.INITIAL,
