@@ -305,6 +305,17 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     // parse............................................................................................................
 
     @Test
+    public void testParseWithNullNameFactoryFails() {
+        assertThrows(
+            NullPointerException.class,
+            () -> PluginSelector.parse(
+                "not empty",
+                null
+            )
+        );
+    }
+
+    @Test
     public void testParseStringFails() {
         this.parseStringInvalidCharacterFails(
             "hello/",
