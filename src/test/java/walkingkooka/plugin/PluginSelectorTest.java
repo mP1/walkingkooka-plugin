@@ -283,6 +283,27 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     }
 
     @Test
+    public void testSetValuesWithEnvironmentValueName() {
+        this.checkEquals(
+            PluginSelector.with(
+                NAME,
+                "($environmentValueName123)"
+            ),
+            PluginSelector.with(
+                NAME,
+                "$environmentValueName123"
+            ).setValues(
+                Lists.of(
+                    EnvironmentValueName.with(
+                        "environmentValueName123",
+                        String.class
+                    )
+                )
+            )
+        );
+    }
+
+    @Test
     public void testSetValuesWithWholeNumber() {
         this.checkEquals(
             PluginSelector.with(
@@ -367,6 +388,26 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
             PluginSelector.with(
                 Names.string(name),
                 patternText
+            )
+        );
+    }
+
+    @Test
+    public void testParseEnvironmentValueName() {
+        final String text = "plugin123($environmentValue123)";
+
+        this.parseStringAndCheck(
+            text,
+            PluginSelector.with(
+                Names.string("plugin123"),
+                ""
+            ).setValues(
+                Lists.of(
+                    EnvironmentValueName.with(
+                        "environmentValue123",
+                        String.class
+                    )
+                )
             )
         );
     }
@@ -712,6 +753,14 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     );
 
     private final static double ENVIRONMENT_VALUE_2 = 2.5;
+
+    @Test
+    public void testEvaluateValueTextWithEmptyEnvironmentValueNameFails() {
+        this.evaluateValueTextFails(
+            NAME + " ($)",
+            "Empty \"EnvironmentValueName\""
+        );
+    }
 
     @Test
     public void testEvaluateValueTextWithEnvironmentValueName() {

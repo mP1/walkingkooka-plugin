@@ -18,6 +18,7 @@
 package walkingkooka.plugin;
 
 import walkingkooka.CanBeEmpty;
+import walkingkooka.EmptyTextException;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.math.DecimalNumberContexts;
@@ -197,13 +198,18 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
     Optional<Object> environmentValue(final ProviderContext context) {
         return this.token(
             ENVIRONMENT_VALUE_NAME,
-            s -> context.environmentValueOrFail(
-                EnvironmentValueName.with(
-                    s.text()
-                        .substring(1), // skip leading DOLLAR-SIGN
-                    Object.class // no way of guessing actual value type
-                )
-            )
+            (ParserToken token) -> {
+                try {
+                    final EnvironmentValueName<?> environmentValueName = EnvironmentValueName.with(
+                        token.text()
+                            .substring(1), // skip leading DOLLAR-SIGN
+                        Object.class // no way of guessing actual value type
+                    );
+                    return context.environmentValueOrFail(environmentValueName);
+                } catch (final EmptyTextException cause) {
+                    throw new EmptyTextException(EnvironmentValueName.class.getSimpleName());
+                }
+            }
         );
     }
 
@@ -213,13 +219,14 @@ final class PluginExpressionParser<N extends Name & Comparable<N>> implements Ca
      * Parses a DOLLAR-SIGN then {@link EnvironmentValueName}
      */
     private final static Parser<ParserContext> ENVIRONMENT_VALUE_NAME = Parsers.string(ENVIRONMENT_VALUE_NAME_PREFIX, CaseSensitivity.SENSITIVE)
+        .required()
         .and(
             Parsers.initialAndPartCharPredicateString(
                 EnvironmentValueName.INITIAL,
                 EnvironmentValueName.PART,
-                2,
+                1,
                 EnvironmentValueName.MAX_LENGTH
-            )
+            ).optional()
         );
 
     private Optional<String> text(final Parser<ParserContext> parser) {

@@ -20,6 +20,7 @@ package walkingkooka.plugin;
 import walkingkooka.InvalidCharacterException;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.compare.Comparators;
+import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.naming.HasName;
 import walkingkooka.naming.Name;
 import walkingkooka.text.CharSequences;
@@ -200,6 +201,15 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
                 } else {
                     b.append(doubleValue);
                 }
+                continue;
+            }
+
+            if(value instanceof EnvironmentValueName) {
+                final EnvironmentValueName<?> environmentValueName = (EnvironmentValueName<?>) value;
+                b.append(PluginExpressionParser.ENVIRONMENT_VALUE_NAME_PREFIX);
+                b.append(
+                    environmentValueName.name()
+                );
                 continue;
             }
 
