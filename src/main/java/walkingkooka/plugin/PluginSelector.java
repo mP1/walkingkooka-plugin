@@ -214,6 +214,13 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
                 continue;
             }
 
+            if (value instanceof PluginSelectorLike) {
+                final PluginSelectorLike<?> pluginSelectorLike = (PluginSelectorLike<?>) value;
+                b.append(pluginSelectorLike.name())
+                    .append(pluginSelectorLike.valueText());
+                continue;
+            }
+
             if(value instanceof StoragePath) {
                 final StoragePath storagePath = (StoragePath) value;
                 b.append(
@@ -232,12 +239,6 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
                 continue;
             }
 
-            if (value instanceof PluginSelectorLike) {
-                final PluginSelectorLike<?> pluginSelectorLike = (PluginSelectorLike<?>) value;
-                b.append(pluginSelectorLike.name())
-                    .append(pluginSelectorLike.valueText());
-                continue;
-            }
 
             throw new IllegalArgumentException("Unsupported value " + CharSequences.quoteIfChars(value) + " " + value.getClass().getName() + " expected only double | EnvironmentValueName | PluginSelector | StoragePath | String");
         }
