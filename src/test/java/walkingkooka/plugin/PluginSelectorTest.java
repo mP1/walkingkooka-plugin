@@ -305,6 +305,24 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     }
 
     @Test
+    public void testSetValuesWithStoragePath() {
+        this.checkEquals(
+            PluginSelector.with(
+                NAME,
+                "(/storage-path/111)"
+            ),
+            PluginSelector.with(
+                NAME,
+                "/storage-path/111"
+            ).setValues(
+                Lists.of(
+                    StoragePath.parse("/storage-path/111")
+                )
+            )
+        );
+    }
+
+    @Test
     public void testSetValuesWithWholeNumber() {
         this.checkEquals(
             PluginSelector.with(
@@ -408,6 +426,23 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
                         "environmentValue123",
                         String.class
                     )
+                )
+            )
+        );
+    }
+
+    @Test
+    public void testParseStoragePath() {
+        final String text = "plugin123(/storage-path/111)";
+
+        this.parseStringAndCheck(
+            text,
+            PluginSelector.with(
+                Names.string("plugin123"),
+                ""
+            ).setValues(
+                Lists.of(
+                    StoragePath.parse("/storage-path/111")
                 )
             )
         );
