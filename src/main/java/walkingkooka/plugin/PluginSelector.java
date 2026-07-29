@@ -62,6 +62,7 @@ public final class PluginSelector<N extends Name & Comparable<N>> implements Has
     public static <N extends Name & Comparable<N>> PluginSelector<N> parse(final String text,
                                                                            final Function<String, N> nameFactory) {
         CharSequences.failIfNullOrEmpty(text, "text");
+        Objects.requireNonNull(nameFactory, "nameFactory");
 
         final String textAfter;
         final String nameText;
