@@ -104,6 +104,32 @@ public final class PluginSelectorParameterListTest implements ImmutableListTesti
         );
     }
 
+    // firstOrEmpty.....................................................................................................
+
+    @Test
+    public void testFirstOrEmptyWhenEmpty() {
+        this.firstOrEmptyAndCheck(
+            PluginSelectorParameterList.with(
+                Lists.empty(),
+                Names.string("HelloPlugin")
+            )
+        );
+    }
+
+    @Test
+    public void testFirstOrEmptyWhenNotEmpty() {
+        this.firstOrEmptyAndCheck(
+            PluginSelectorParameterList.with(
+                Lists.of(
+                    "111",
+                    "2222"
+                ),
+                Names.string("HelloPlugin")
+            ),
+            "111"
+        );
+    }
+
     // class............................................................................................................
 
     @Override
