@@ -273,7 +273,7 @@ public final class MergedProviderMapperTest implements TreePrintableTesting,
     public void testToString() {
         this.toStringAndCheck(
             MAPPER,
-            "https://example.com/NameBoth NameBoth,https://example.com/ProviderOnly ProviderOnlyName,https://example.com/RenamedName-RenamedProviderName RenameName,https://example.com/RenameOnly RenameOnlyName"
+            "https://example.com/NameBoth NameBoth, https://example.com/ProviderOnly ProviderOnlyName, https://example.com/RenamedName-RenamedProviderName RenameName, https://example.com/RenameOnly RenameOnlyName"
         );
     }
 

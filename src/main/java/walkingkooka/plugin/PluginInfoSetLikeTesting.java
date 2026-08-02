@@ -107,7 +107,7 @@ public interface PluginInfoSetLikeTesting<N extends Name & Comparable<N>,
             CharacterConstant.COMMA.toSeparatedString(
                 set,
                 Object::toString
-            )
+            ).replace(",", ", ")
         );
     }
 }

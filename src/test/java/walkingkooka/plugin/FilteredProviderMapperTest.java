@@ -255,7 +255,7 @@ public final class FilteredProviderMapperTest implements TreePrintableTesting,
     public void testToString() {
         this.toStringAndCheck(
             MAPPER,
-            "https://example.com/Name Name,https://example.com/RenamedRenameName1/RenamedProviderName1 RenamedRenameName1"
+            "https://example.com/Name Name, https://example.com/RenamedRenameName1/RenamedProviderName1 RenamedRenameName1"
         );
     }
 
