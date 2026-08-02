@@ -268,11 +268,19 @@ public final class PluginInfoSet<N extends Name & Comparable<N>, I extends Plugi
 
     @Override
     public String text() {
-        return SEPARATOR.toSeparatedString(
-            this,
-            Object::toString
-        );
+        if (null == this.text) {
+            this.text = this.infos.stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(SEPARATOR_SPACE))
+                .trim();
+        }
+
+        return this.text;
     }
+
+    private String text;
+
+    private final static String SEPARATOR_SPACE = SEPARATOR + " ";
 
     // HasUrlFragment...................................................................................................
 

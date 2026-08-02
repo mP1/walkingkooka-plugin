@@ -517,7 +517,7 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
                     "test-333"
                 )
             ),
-            "https://example.com/test-111 test-111,https://example.com/test-222 test-222"
+            "https://example.com/test-111 test-111, https://example.com/test-222 test-222"
         );
     }
 
@@ -546,7 +546,7 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
                     "test-333"
                 )
             ),
-            "https://example.com/test-111 test-111,https://example.com/test-222 test-222"
+            "https://example.com/test-111 test-111, https://example.com/test-222 test-222"
         );
     }
 
