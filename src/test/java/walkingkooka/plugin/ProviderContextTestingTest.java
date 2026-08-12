@@ -27,8 +27,12 @@ import walkingkooka.plugin.store.PluginStores;
 import walkingkooka.storage.StorageEnvironmentContext;
 import walkingkooka.storage.StorageEnvironmentContextDelegator;
 import walkingkooka.storage.StoragePath;
+import walkingkooka.storage.StorageValue;
+import walkingkooka.storage.StorageValueInfo;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public final class ProviderContextTestingTest implements ProviderContextTesting<TestProviderContext> {
 
@@ -150,6 +154,18 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
                 text,
                 binary
             );
+        }
+
+        @Override
+        public Optional<StorageValue> loadStorage(final StoragePath storagePath) {
+            return Optional.empty();
+        }
+
+        @Override
+        public List<StorageValueInfo> listStorage(final StoragePath storagePath,
+                                                  final int offset,
+                                                  final int count) {
+            return List.of();
         }
 
         @Override

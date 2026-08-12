@@ -21,7 +21,11 @@ import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.storage.StorageContext;
 import walkingkooka.storage.StorageContextDelegator;
+import walkingkooka.storage.StorageMountPoint;
+import walkingkooka.storage.StoragePath;
+import walkingkooka.storage.StorageValue;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -51,6 +55,31 @@ final class BasicProviderContext implements ProviderContext,
     }
 
     private final PluginStore pluginStore;
+
+    @Override
+    public StorageValue saveStorage(final StorageValue storageValue) {
+        return ProviderContext.super.saveStorage(storageValue);
+    }
+
+    @Override
+    public void deleteStorage(final StoragePath storagePath) {
+        ProviderContext.super.deleteStorage(storagePath);
+    }
+
+    @Override
+    public void mountStorage(final StorageMountPoint<?> storageMountPoint) {
+        ProviderContext.super.mountStorage(storageMountPoint);
+    }
+
+    @Override
+    public void unmountStorage(final StoragePath storagePath) {
+        ProviderContext.super.unmountStorage(storagePath);
+    }
+
+    @Override
+    public List<StorageMountPoint<?>> storageMountPoints() {
+        return ProviderContext.super.storageMountPoints();
+    }
 
     // StorageEnvironmentContext........................................................................................
 

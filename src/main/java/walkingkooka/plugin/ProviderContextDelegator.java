@@ -21,6 +21,11 @@ import walkingkooka.convert.ConverterLike;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.storage.StorageContext;
 import walkingkooka.storage.StorageContextDelegator;
+import walkingkooka.storage.StorageMountPoint;
+import walkingkooka.storage.StoragePath;
+import walkingkooka.storage.StorageValue;
+
+import java.util.List;
 
 public interface ProviderContextDelegator extends ProviderContext,
     StorageContextDelegator {
@@ -34,6 +39,31 @@ public interface ProviderContextDelegator extends ProviderContext,
     ProviderContext providerContext();
 
     // StorageContextDelegator..........................................................................................
+
+    @Override
+    default StorageValue saveStorage(final StorageValue storageValue) {
+        return ProviderContext.super.saveStorage(storageValue);
+    }
+
+    @Override
+    default void deleteStorage(final StoragePath storagePath) {
+        ProviderContext.super.deleteStorage(storagePath);
+    }
+
+    @Override
+    default void mountStorage(final StorageMountPoint<?> storageMountPoint) {
+        ProviderContext.super.mountStorage(storageMountPoint);
+    }
+
+    @Override
+    default void unmountStorage(final StoragePath storagePath) {
+        ProviderContext.super.unmountStorage(storagePath);
+    }
+
+    @Override
+    default List<StorageMountPoint<?>> storageMountPoints() {
+        return ProviderContext.super.storageMountPoints();
+    }
 
     @Override
     default StorageContext storageContext() {
