@@ -17,17 +17,54 @@
 
 package walkingkooka.plugin;
 
-import walkingkooka.convert.ConverterLike;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.storage.StorageContext;
+import walkingkooka.storage.StorageMountPoint;
+import walkingkooka.storage.StoragePath;
+import walkingkooka.storage.StorageValue;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * A {@link walkingkooka.Context} that should be passed to all {@link Provider} public methods.
+ * Note ALL {@link walkingkooka.storage.Storage} mutable methods from {@link StorageContext} should throw {@link UnsupportedOperationException}.
  */
-public interface ProviderContext extends EnvironmentContext,
-    ConverterLike,
-    StorageContext {
+public interface ProviderContext extends StorageContext {
+
+    @Override
+    default StorageValue saveStorage(final StorageValue storageValue) {
+        Objects.requireNonNull(storageValue, "storageValue");
+
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default void deleteStorage(final StoragePath storagePath) {
+        Objects.requireNonNull(storagePath, "storagePath");
+
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default void mountStorage(final StorageMountPoint<?> storageMountPoint) {
+        Objects.requireNonNull(storageMountPoint, "storageMountPoint");
+
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default void unmountStorage(final StoragePath storagePath) {
+        Objects.requireNonNull(storagePath, "storagePath");
+
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default List<StorageMountPoint<?>> storageMountPoints() {
+        throw new UnsupportedOperationException();
+    }
 
     @Override
     ProviderContext cloneEnvironment();

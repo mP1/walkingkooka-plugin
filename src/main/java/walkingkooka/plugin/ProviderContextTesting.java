@@ -17,14 +17,47 @@
 
 package walkingkooka.plugin;
 
+import org.junit.jupiter.api.Test;
 import walkingkooka.ContextTesting;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.storage.StorageContextTesting2;
+import walkingkooka.storage.StoragePath;
+import walkingkooka.storage.StorageValue;
 import walkingkooka.text.printer.TreePrintableTesting;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public interface ProviderContextTesting<C extends ProviderContext> extends ContextTesting<C>,
     StorageContextTesting2<C>,
     TreePrintableTesting {
+
+    @Test
+    default void testStorageSaveFails() {
+        assertThrows(
+            UnsupportedOperationException.class,
+            () -> this.createContext()
+                .saveStorage(
+                    StorageValue.with(
+                        StoragePath.parse("/hello")
+                    ).setValue(
+                        Optional.of("World")
+                    )
+                )
+        );
+    }
+
+    @Test
+    default void testStorageDeleteFails() {
+        assertThrows(
+            UnsupportedOperationException.class,
+            () -> this.createContext()
+                .deleteStorage(
+                    StoragePath.parse("/hello")
+                )
+        );
+    }
 
     // pluginStore......................................................................................................
 

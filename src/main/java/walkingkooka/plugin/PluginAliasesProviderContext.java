@@ -20,6 +20,7 @@ package walkingkooka.plugin;
 import walkingkooka.Binary;
 import walkingkooka.Cast;
 import walkingkooka.Either;
+import walkingkooka.collect.list.Lists;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
@@ -30,7 +31,10 @@ import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.storage.StorageEnvironmentContext;
 import walkingkooka.storage.StorageEnvironmentContextDelegator;
 import walkingkooka.storage.StoragePath;
+import walkingkooka.storage.StorageValue;
+import walkingkooka.storage.StorageValueInfo;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -72,6 +76,19 @@ final class PluginAliasesProviderContext implements ProviderContext,
                 filename,
                 binary
             );
+    }
+
+    @Override
+    public Optional<StorageValue> loadStorage(final StoragePath storagePath) {
+        Objects.requireNonNull(storagePath, "storagePath");
+        return Optional.empty();
+    }
+
+    @Override
+    public List<StorageValueInfo> listStorage(final StoragePath storagePath,
+                                              final int offset,
+                                              final int count) {
+        return Lists.empty();
     }
 
     @Override

@@ -21,8 +21,26 @@ import walkingkooka.Either;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.storage.FakeStorageContext;
+import walkingkooka.storage.StoragePath;
+import walkingkooka.storage.StorageValue;
+import walkingkooka.storage.StorageValueInfo;
+
+import java.util.List;
+import java.util.Optional;
 
 public class FakeProviderContext extends FakeStorageContext implements ProviderContext {
+
+    @Override
+    public Optional<StorageValue> loadStorage(final StoragePath path) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<StorageValueInfo> listStorage(final StoragePath parent,
+                                              final int offset,
+                                              final int count) {
+        throw new UnsupportedOperationException();
+    }
 
     @Override
     public ProviderContext cloneEnvironment() {

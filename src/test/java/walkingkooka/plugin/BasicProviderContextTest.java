@@ -27,19 +27,28 @@ import walkingkooka.currency.CurrencyLocaleContexts;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
+import walkingkooka.environment.HasAuditInfoTesting;
 import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.plugin.store.PluginStores;
+import walkingkooka.storage.Storage;
+import walkingkooka.storage.StorageContext;
 import walkingkooka.storage.StorageContexts;
 import walkingkooka.storage.StorageEnvironmentContext;
+import walkingkooka.storage.StoragePath;
+import walkingkooka.storage.StorageValue;
+import walkingkooka.storage.StorageValueInfo;
+import walkingkooka.storage.Storages;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class BasicProviderContextTest implements ProviderContextTesting<BasicProviderContext>,
+    HasAuditInfoTesting,
     HashCodeEqualsDefinedTesting2<BasicProviderContext> {
 
     private final static ConverterLike CAN_CONVERT = ConverterContexts.basic(
@@ -89,6 +98,62 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         );
     }
 
+    // loadStorage......................................................................................................
+
+    @Test
+    public void testLoadStorage() {
+        final Storage<StorageContext> storage = Storages.treeMapStore();
+
+        final StoragePath path = StoragePath.parse("/value111");
+        final StorageValue value = StorageValue.with(path)
+            .setValue(
+                Optional.of(111)
+            );
+
+        final BasicProviderContext context = this.createContext(storage);
+
+        storage.save(
+            value,
+            context
+        );
+
+        this.loadStorageAndCheck(
+            context,
+            path,
+            value
+        );
+    }
+
+    // listStorage......................................................................................................
+
+    @Test
+    public void testListStorage() {
+        final Storage<StorageContext> storage = Storages.treeMapStore();
+
+        final StoragePath path = StoragePath.parse("/value111");
+        final StorageValue value = StorageValue.with(path)
+            .setValue(
+                Optional.of(111)
+            );
+
+        final BasicProviderContext context = this.createContext(storage);
+
+        storage.save(
+            value,
+            context
+        );
+
+        this.listStorageAndCheck(
+            context,
+            StoragePath.ROOT,
+            0,
+            100,
+            StorageValueInfo.with(
+                path,
+                AUDIT_INFO
+            )
+        );
+    }
     // cloneEnvironment.................................................................................................
 
     @Test
@@ -100,6 +165,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
             StorageContexts.basic(
                 CAN_CONVERT,
                 MEDIA_TYPE_DETECTOR,
+                STORAGE,
                 storageEnvironmentContext
             )
         );
@@ -128,6 +194,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
             StorageContexts.basic(
                 CAN_CONVERT,
                 MEDIA_TYPE_DETECTOR,
+                STORAGE,
                 storageEnvironmentContext
             )
         );
@@ -150,6 +217,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
             StorageContexts.basic(
                 CAN_CONVERT,
                 MEDIA_TYPE_DETECTOR,
+                STORAGE,
                 differentStorageEnvironmentContext
             )
         );
@@ -167,6 +235,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
                 StorageContexts.basic(
                     CAN_CONVERT,
                     MEDIA_TYPE_DETECTOR,
+                    STORAGE,
                     differentStorageEnvironmentContext
                 )
             ),
@@ -185,6 +254,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
             StorageContexts.basic(
                 CAN_CONVERT,
                 MEDIA_TYPE_DETECTOR,
+                STORAGE,
                 storageEnvironmentContext
             )
         );
@@ -216,6 +286,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
                 StorageContexts.basic(
                     CAN_CONVERT,
                     MEDIA_TYPE_DETECTOR,
+                    STORAGE,
                     environmentContext
                 )
             ),
@@ -248,11 +319,16 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
 
     @Override
     public BasicProviderContext createContext() {
+        return this.createContext(STORAGE);
+    }
+
+    private BasicProviderContext createContext(final Storage<StorageContext> storage) {
         return BasicProviderContext.with(
             PLUGIN_STORE,
             StorageContexts.basic(
                 CAN_CONVERT,
                 MEDIA_TYPE_DETECTOR,
+                storage,
                 STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment()
             )
         );
@@ -268,6 +344,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
                 StorageContexts.basic(
                     CAN_CONVERT,
                     MEDIA_TYPE_DETECTOR,
+                    STORAGE,
                     DIFFERENT_ENVIRONMENT_CONTEXT.cloneEnvironment()
                 )
             )
@@ -285,7 +362,12 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     public void testToString() {
         this.toStringAndCheck(
             this.createContext(),
-            MEDIA_TYPE_DETECTOR + " " + STORAGE_ENVIRONMENT_CONTEXT.toString()
+            StorageContexts.basic(
+                CAN_CONVERT,
+                MEDIA_TYPE_DETECTOR,
+                STORAGE,
+                STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment()
+            ).toString()
         );
     }
 

@@ -27,8 +27,12 @@ import walkingkooka.storage.StorageEnvironmentContext;
 import walkingkooka.storage.StorageEnvironmentContextDelegator;
 import walkingkooka.storage.StorageEnvironmentContexts;
 import walkingkooka.storage.StoragePath;
+import walkingkooka.storage.StorageValue;
+import walkingkooka.storage.StorageValueInfo;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A {@link ProviderContext} where all setXXX and removeXXX methods throw {@link UnsupportedOperationException}.
@@ -96,6 +100,22 @@ final class ReadOnlyProviderContext implements ProviderContext,
         return this.context.convert(
             value,
             type
+        );
+    }
+
+    @Override
+    public Optional<StorageValue> loadStorage(final StoragePath path) {
+        return this.context.loadStorage(path);
+    }
+
+    @Override
+    public List<StorageValueInfo> listStorage(final StoragePath parent,
+                                              final int offset,
+                                              final int count) {
+        return this.context.listStorage(
+            parent,
+            offset,
+            count
         );
     }
 
