@@ -130,6 +130,13 @@ public final class PluginSelectorParameterListTest implements ImmutableListTesti
         );
     }
 
+    // reverse..........................................................................................................
+
+    @Override
+    public void testReversed() {
+        throw new UnsupportedOperationException();
+    }
+
     // class............................................................................................................
 
     @Override
