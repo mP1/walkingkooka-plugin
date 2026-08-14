@@ -19,6 +19,7 @@ package walkingkooka.plugin;
 
 import walkingkooka.Binary;
 import walkingkooka.Either;
+import walkingkooka.collect.list.Lists;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.plugin.ProviderContextTestingTest.TestProviderContext;
@@ -29,6 +30,7 @@ import walkingkooka.storage.StorageEnvironmentContextDelegator;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
 import walkingkooka.storage.StorageValueInfo;
+import walkingkooka.store.Store;
 
 import java.util.List;
 import java.util.Objects;
@@ -157,15 +159,39 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
         }
 
         @Override
-        public Optional<StorageValue> loadStorage(final StoragePath storagePath) {
+        public boolean canReadStorage(final StoragePath path) {
+            Objects.requireNonNull(path, "path");
+            return false;
+        }
+
+        @Override
+        public boolean canWriteStorage(final StoragePath path) {
+            Objects.requireNonNull(path, "path");
+            return false;
+        }
+
+        @Override
+        public Optional<StorageValue> loadStorage(final StoragePath path) {
+            Objects.requireNonNull(path, "path");
             return Optional.empty();
         }
 
         @Override
-        public List<StorageValueInfo> listStorage(final StoragePath storagePath,
+        public List<StorageValueInfo> listStorage(final StoragePath path,
                                                   final int offset,
                                                   final int count) {
-            return List.of();
+            Objects.requireNonNull(path, "path");
+            Store.checkOffsetAndCount(
+                offset,
+                count
+            );
+            return Lists.empty();
+        }
+
+        @Override
+        public void setAuditInfoStorage(final StorageValueInfo info) {
+            Objects.requireNonNull(info, "info");
+            throw new UnsupportedOperationException();
         }
 
         @Override
