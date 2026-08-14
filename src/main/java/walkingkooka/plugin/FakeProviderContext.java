@@ -31,6 +31,16 @@ import java.util.Optional;
 public class FakeProviderContext extends FakeStorageContext implements ProviderContext {
 
     @Override
+    public boolean canReadStorage(final StoragePath path) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean canWriteStorage(final StoragePath path) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public Optional<StorageValue> loadStorage(final StoragePath path) {
         throw new UnsupportedOperationException();
     }
@@ -39,6 +49,11 @@ public class FakeProviderContext extends FakeStorageContext implements ProviderC
     public List<StorageValueInfo> listStorage(final StoragePath parent,
                                               final int offset,
                                               final int count) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setAuditInfoStorage(final StorageValueInfo info) {
         throw new UnsupportedOperationException();
     }
 

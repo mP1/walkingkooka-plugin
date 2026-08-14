@@ -104,6 +104,17 @@ final class ReadOnlyProviderContext implements ProviderContext,
     }
 
     @Override
+    public boolean canReadStorage(final StoragePath path) {
+        return this.context.canReadStorage(path);
+    }
+
+    @Override
+    public boolean canWriteStorage(final StoragePath path) {
+        Objects.requireNonNull(path, "path");
+        return false;
+    }
+
+    @Override
     public Optional<StorageValue> loadStorage(final StoragePath path) {
         return this.context.loadStorage(path);
     }
@@ -117,6 +128,13 @@ final class ReadOnlyProviderContext implements ProviderContext,
             offset,
             count
         );
+    }
+
+    @Override
+    public void setAuditInfoStorage(final StorageValueInfo info) {
+        Objects.requireNonNull(info, "info");
+
+        throw new UnsupportedOperationException();
     }
 
     // StorageEnvironmentContext........................................................................................

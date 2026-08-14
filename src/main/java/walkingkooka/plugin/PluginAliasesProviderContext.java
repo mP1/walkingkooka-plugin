@@ -33,6 +33,7 @@ import walkingkooka.storage.StorageEnvironmentContextDelegator;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
 import walkingkooka.storage.StorageValueInfo;
+import walkingkooka.store.Store;
 
 import java.util.List;
 import java.util.Objects;
@@ -79,16 +80,39 @@ final class PluginAliasesProviderContext implements ProviderContext,
     }
 
     @Override
-    public Optional<StorageValue> loadStorage(final StoragePath storagePath) {
-        Objects.requireNonNull(storagePath, "storagePath");
+    public boolean canReadStorage(final StoragePath path) {
+        Objects.requireNonNull(path, "path");
+        return false;
+    }
+
+    @Override
+    public boolean canWriteStorage(final StoragePath path) {
+        Objects.requireNonNull(path, "path");
+        return false;
+    }
+
+    @Override
+    public Optional<StorageValue> loadStorage(final StoragePath path) {
+        Objects.requireNonNull(path, "path");
         return Optional.empty();
     }
 
     @Override
-    public List<StorageValueInfo> listStorage(final StoragePath storagePath,
+    public List<StorageValueInfo> listStorage(final StoragePath path,
                                               final int offset,
                                               final int count) {
+        Objects.requireNonNull(path, "path");
+        Store.checkOffsetAndCount(
+            offset,
+            count
+        );
         return Lists.empty();
+    }
+
+    @Override
+    public void setAuditInfoStorage(final StorageValueInfo info) {
+        Objects.requireNonNull(info, "info");
+        throw new UnsupportedOperationException();
     }
 
     @Override
