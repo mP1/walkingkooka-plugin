@@ -59,6 +59,16 @@ public interface ProviderContextTesting<C extends ProviderContext> extends Conte
         );
     }
 
+    @Override
+    default void testAddStorageWatcherWithNullFails() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default void testAddStorageWatcherOnceWithNullFails() {
+        throw new UnsupportedOperationException();
+    }
+
     // pluginStore......................................................................................................
 
     default void pluginStoreAndCheck(final ProviderContext providerContext,
