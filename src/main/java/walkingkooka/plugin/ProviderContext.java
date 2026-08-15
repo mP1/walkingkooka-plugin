@@ -23,6 +23,7 @@ import walkingkooka.storage.StorageContext;
 import walkingkooka.storage.StorageMountPoint;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
+import walkingkooka.storage.StorageWatcher;
 
 import java.util.List;
 import java.util.Objects;
@@ -63,6 +64,16 @@ public interface ProviderContext extends StorageContext {
 
     @Override
     default List<StorageMountPoint<?>> storageMountPoints() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default Runnable addStorageWatcher(final StorageWatcher watcher) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default Runnable addStorageWatcherOnce(final StorageWatcher watcher) {
         throw new UnsupportedOperationException();
     }
 
