@@ -186,6 +186,13 @@ final class PluginAliasesProviderContext implements ProviderContext,
         return this;
     }
 
+    @Override
+    public EnvironmentValueName<?> parseEnvironmentValueName(final String name) {
+        Objects.requireNonNull(name, "name");
+
+        throw new UnsupportedOperationException();
+    }
+
     // toString.........................................................................................................
 
     @Override
