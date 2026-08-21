@@ -25,7 +25,6 @@ import walkingkooka.convert.ConverterLike;
 import walkingkooka.convert.Converters;
 import walkingkooka.currency.CurrencyLocaleContexts;
 import walkingkooka.datetime.DateTimeContexts;
-import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.HasAuditInfoTesting;
 import walkingkooka.math.DecimalNumberContexts;
@@ -274,10 +273,10 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
 
     @Test
     public void testEnvironmentValue() {
-        final EnvironmentContext environmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
+        final StorageEnvironmentContext storageEnvironmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
         VAR.setEnvironmentValue(
             VAR_VALUE,
-            environmentContext
+            storageEnvironmentContext
         );
 
         this.environmentValueAndCheck(
@@ -287,7 +286,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
                     CAN_CONVERT,
                     MEDIA_TYPE_DETECTOR,
                     STORAGE,
-                    environmentContext
+                    storageEnvironmentContext
                 )
             ),
             VAR,
@@ -337,7 +336,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     // hashCode/equals..................................................................................................
 
     @Test
-    public void testEqualsDifferentContext() {
+    public void testEqualsDifferentStorageEnvironmentContext() {
         this.checkNotEquals(
             BasicProviderContext.with(
                 PLUGIN_STORE,
@@ -345,7 +344,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
                     CAN_CONVERT,
                     MEDIA_TYPE_DETECTOR,
                     STORAGE,
-                    DIFFERENT_ENVIRONMENT_CONTEXT.cloneEnvironment()
+                    DIFFERENT_STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment()
                 )
             )
         );

@@ -17,6 +17,8 @@
 
 package walkingkooka.plugin;
 
+import walkingkooka.storage.StorageEnvironmentContext;
+
 public final class PluginAliasesProviderContextTest implements ProviderContextTesting<PluginAliasesProviderContext> {
 
     @Override
@@ -50,8 +52,18 @@ public final class PluginAliasesProviderContextTest implements ProviderContextTe
     }
 
     @Override
+    public void testParseEnvironmentValueNameWithCurrentWorkingDirectory() {
+        this.parseEnvironmentValueNameAndCheck(StorageEnvironmentContext.CURRENT_WORKING_DIRECTORY);
+    }
+
+    @Override
     public void testParseEnvironmentValueNameWithCurrency() {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testParseEnvironmentValueNameWithHomeDirectory() {
+        this.parseEnvironmentValueNameAndCheck(StorageEnvironmentContext.HOME_DIRECTORY);
     }
 
     @Override
