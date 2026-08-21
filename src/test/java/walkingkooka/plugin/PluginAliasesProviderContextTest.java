@@ -40,6 +40,51 @@ public final class PluginAliasesProviderContextTest implements ProviderContextTe
     }
 
     @Override
+    public void testParseEnvironmentValueNameWithNullUnknownFails() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testParseEnvironmentValueNameWithCharset() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testParseEnvironmentValueNameWithCurrency() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testParseEnvironmentValueNameWithIndentation() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testParseEnvironmentValueNameWithLineEnding() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testParseEnvironmentValueNameWithLocale() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testParseEnvironmentValueNameWithNow() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testParseEnvironmentValueNameWithTimeOffset() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testParseEnvironmentValueNameWithUser() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testRemoveEnvironmentValueWithNowFails() {
         throw new UnsupportedOperationException();
     }
