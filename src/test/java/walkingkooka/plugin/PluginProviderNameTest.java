@@ -23,12 +23,12 @@ import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.CaseSensitivity;
 import walkingkooka.tree.json.JsonNode;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 final public class PluginProviderNameTest implements ClassTesting2<PluginProviderName>,
     NameTesting2<PluginProviderName, PluginProviderName>,
-    JsonNodeMarshallingTesting<PluginProviderName> {
+    JsonNodeMarshallerTesting<PluginProviderName> {
 
     // Comparator ......................................................................................................
 

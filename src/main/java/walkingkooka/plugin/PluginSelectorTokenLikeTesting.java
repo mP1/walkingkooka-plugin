@@ -23,7 +23,7 @@ import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.reflect.MethodAttributes;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public interface PluginSelectorTokenLikeTesting<T extends PluginSelectorTokenLike<A>, A extends PluginSelectorTokenAlternativeLike> extends HasTextTesting,
     TreePrintableTesting,
     HashCodeEqualsDefinedTesting2<T>,
-    JsonNodeMarshallingTesting<T> {
+    JsonNodeMarshallerTesting<T> {
 
     /**
      * Verify that the public with(String, String, List) is public and static.
