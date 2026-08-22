@@ -30,7 +30,7 @@ import walkingkooka.reflect.TypeNameTesting;
 import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
 
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -44,7 +44,7 @@ public interface PluginSelectorLikeTesting<S extends PluginSelectorLike<N>, N ex
     HashCodeEqualsDefinedTesting2<S>,
     ToStringTesting<S>,
     ParseStringTesting<S>,
-    JsonNodeMarshallingTesting<S>,
+    JsonNodeMarshallerTesting<S>,
     ClassTesting<S>,
     TypeNameTesting<S> {
 

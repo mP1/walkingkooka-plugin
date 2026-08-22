@@ -25,7 +25,7 @@ import walkingkooka.net.email.EmailAddress;
 import walkingkooka.plugin.PluginName;
 import walkingkooka.plugin.PluginNameSet;
 import walkingkooka.tree.json.JsonNode;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.nio.charset.Charset;
@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet, Plugin>,
-    JsonNodeMarshallingTesting<PluginSet> {
+    JsonNodeMarshallerTesting<PluginSet> {
 
     @Test
     public void testWithEmpty() {

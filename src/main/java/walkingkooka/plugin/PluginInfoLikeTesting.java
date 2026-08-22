@@ -29,7 +29,7 @@ import walkingkooka.net.http.server.hateos.HateosResourceTesting;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.test.ParseStringTesting;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
 
 import java.lang.reflect.Method;
 import java.util.Optional;
@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends Name & Comparable<N>> extends ClassTesting2<I>,
     HashCodeEqualsDefinedTesting2<I>,
     HateosResourceTesting<I, N>,
-    JsonNodeMarshallingTesting<I>,
+    JsonNodeMarshallerTesting<I>,
     ComparableTesting2<I>,
     HasAbsoluteUrlTesting<I>,
     ParseStringTesting<I>,

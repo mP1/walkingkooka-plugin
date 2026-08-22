@@ -24,11 +24,11 @@ import walkingkooka.net.UrlFragment;
 import walkingkooka.reflect.ClassTesting2;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.CaseSensitivity;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallingTesting;
+import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
 
 public interface PluginNameTesting<N extends PluginNameLike<N>> extends ClassTesting2<N>,
     NameTesting2<N, N>,
-    JsonNodeMarshallingTesting<N>,
+    JsonNodeMarshallerTesting<N>,
     HasUrlFragmentTesting {
 
     // Comparator ......................................................................................................
