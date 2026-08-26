@@ -305,6 +305,25 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         );
     }
 
+    @Test
+    @Override
+    public void testEnvironmentContext() {
+        final StorageContext storageContext = StorageContexts.basic(
+            CAN_CONVERT,
+            MEDIA_TYPE_DETECTOR,
+            STORAGE,
+            STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment()
+        );
+
+        this.environmentContextAndCheck(
+            BasicProviderContext.with(
+                PLUGIN_STORE,
+                storageContext
+            ),
+            storageContext
+        );
+    }
+
     // pluginStore.....................................................................................................
 
     @Test

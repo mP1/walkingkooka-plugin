@@ -77,6 +77,11 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
     }
 
     @Override
+    public void testEnvironmentContext() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public TestProviderContextDelegator createContext() {
         return new TestProviderContextDelegator();
     }
