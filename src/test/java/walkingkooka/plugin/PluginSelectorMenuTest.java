@@ -19,18 +19,15 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.Cast;
-import walkingkooka.currency.CurrencyLocaleContexts;
 import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.reflect.JavaVisibility;
-import walkingkooka.tree.expression.ExpressionNumberKind;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallContexts;
-import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContexts;
+import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContextTesting;
 
-import java.math.MathContext;
-
-public final class PluginSelectorMenuTest implements PluginSelectorMenuLikeTesting<PluginSelectorMenu<TestPluginSelector, StringName>, TestPluginSelector, StringName> {
+public final class PluginSelectorMenuTest implements PluginSelectorMenuLikeTesting<PluginSelectorMenu<TestPluginSelector, StringName>, TestPluginSelector, StringName>,
+    JsonNodeUnmarshallContextTesting {
 
     private final static String LABEL = "Label Short123";
 
@@ -90,11 +87,7 @@ public final class PluginSelectorMenuTest implements PluginSelectorMenuLikeTesti
             ),
             PluginSelectorMenu.unmarshall(
                 JSON,
-                JsonNodeUnmarshallContexts.basic(
-                    ExpressionNumberKind.BIG_DECIMAL,
-                    CurrencyLocaleContexts.fake(), // CurrencyCodeLanguageTagContext
-                    MathContext.DECIMAL32
-                ),
+                JSON_NODE_UNMARSHALL_CONTEXT,
                 TestPluginSelector.class
             )
         );
