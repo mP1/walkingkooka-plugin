@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin;
 
+import org.junit.jupiter.api.Test;
 import walkingkooka.Binary;
 import walkingkooka.Either;
 import walkingkooka.collect.list.Lists;
@@ -106,6 +107,17 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
     @Override
     public void testSetEnvironmentContextWithEqualEnvironmentContext() {
         throw new UnsupportedOperationException();
+    }
+
+    @Test
+    @Override
+    public void testEnvironmentContext() {
+        final TestProviderContext testProviderContext = new TestProviderContext();
+
+        this.environmentContextAndCheck(
+            testProviderContext,
+            testProviderContext.storageEnvironmentContext
+        );
     }
 
     @Override

@@ -286,6 +286,11 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     }
 
     @Override
+    public void testEnvironmentContext() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public ReadOnlyProviderContext createContext() {
         return ReadOnlyProviderContext.with(
             ProviderContexts.basic(
