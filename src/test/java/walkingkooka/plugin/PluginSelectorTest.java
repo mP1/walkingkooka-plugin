@@ -372,7 +372,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     }
 
     @Test
-    public void testParseStringName() {
+    public void testParseName() {
         final String text = "magic-plugin";
 
         this.parseStringAndCheck(
@@ -385,7 +385,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     }
 
     @Test
-    public void testParseStringNameSpace() {
+    public void testParseNameSpace() {
         final String text = "magic-plugin";
 
         this.parseStringAndCheck(
@@ -398,7 +398,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     }
 
     @Test
-    public void testParseStringNameSpacePatternText() {
+    public void testParseNameSpacePatternText() {
         final String name = "magic-plugin";
         final String patternText = "@@";
 
@@ -412,7 +412,29 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     }
 
     @Test
-    public void testParseEnvironmentValueName() {
+    public void testParseNameSpaceQuotedString() {
+        this.parseStringAndCheck(
+             "magic-plugin \"hello world\"",
+            PluginSelector.with(
+                Names.string("magic-plugin"),
+                "hello world"
+            )
+        );
+    }
+
+    @Test
+    public void testParseNameSpaceQuotedStringBackslashEscapedCharacters() {
+        this.parseStringAndCheck(
+            "magic-plugin \"hello world\\r\n\"",
+            PluginSelector.with(
+                Names.string("magic-plugin"),
+                "hello world\\r\n"
+            )
+        );
+    }
+
+    @Test
+    public void testParseOpenParenEnvironmentValueName() {
         final String text = "plugin123($environmentValue123)";
 
         this.parseStringAndCheck(
@@ -432,7 +454,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     }
 
     @Test
-    public void testParseStoragePath() {
+    public void testParseOpenParenStoragePath() {
         final String text = "plugin123(/storage-path/111)";
 
         this.parseStringAndCheck(
