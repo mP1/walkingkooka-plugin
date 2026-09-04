@@ -29,6 +29,7 @@ import walkingkooka.storage.StorageEnvironmentContexts;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
 import walkingkooka.storage.StorageValueInfo;
+import walkingkooka.storage.StorageWatcher;
 
 import java.util.List;
 import java.util.Objects;
@@ -135,6 +136,16 @@ final class ReadOnlyProviderContext implements ProviderContext,
         Objects.requireNonNull(info, "info");
 
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Runnable addStorageWatcher(final StorageWatcher watcher) {
+        return this.context.addStorageWatcher(watcher);
+    }
+
+    @Override
+    public Runnable addStorageWatcherOnce(final StorageWatcher watcher) {
+        return this.context.addStorageWatcherOnce(watcher);
     }
 
     // StorageEnvironmentContext........................................................................................
