@@ -24,6 +24,7 @@ import walkingkooka.storage.FakeStorageContext;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
 import walkingkooka.storage.StorageValueInfo;
+import walkingkooka.storage.StorageWatcher;
 
 import java.util.List;
 import java.util.Optional;
@@ -54,6 +55,16 @@ public class FakeProviderContext extends FakeStorageContext implements ProviderC
 
     @Override
     public void setAuditInfoStorage(final StorageValueInfo info) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Runnable addStorageWatcher(final StorageWatcher watcher) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Runnable addStorageWatcherOnce(final StorageWatcher watcher) {
         throw new UnsupportedOperationException();
     }
 

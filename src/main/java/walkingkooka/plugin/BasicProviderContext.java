@@ -24,7 +24,6 @@ import walkingkooka.storage.StorageContextDelegator;
 import walkingkooka.storage.StorageMountPoint;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
-import walkingkooka.storage.StorageWatcher;
 
 import java.util.List;
 import java.util.Objects;
@@ -80,16 +79,6 @@ final class BasicProviderContext implements ProviderContext,
     @Override
     public List<StorageMountPoint<?>> storageMountPoints() {
         return ProviderContext.super.storageMountPoints();
-    }
-
-    @Override
-    public Runnable addStorageWatcher(final StorageWatcher watcher) {
-        return ProviderContext.super.addStorageWatcher(watcher);
-    }
-
-    @Override
-    public Runnable addStorageWatcherOnce(final StorageWatcher watcher) {
-        return ProviderContext.super.addStorageWatcherOnce(watcher);
     }
 
     // StorageEnvironmentContext........................................................................................
