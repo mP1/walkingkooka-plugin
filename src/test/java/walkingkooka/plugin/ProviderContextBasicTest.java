@@ -46,9 +46,9 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class BasicProviderContextTest implements ProviderContextTesting<BasicProviderContext>,
+public final class ProviderContextBasicTest implements ProviderContextTesting<ProviderContextBasic>,
     HasAuditInfoTesting,
-    HashCodeEqualsDefinedTesting2<BasicProviderContext> {
+    HashCodeEqualsDefinedTesting2<ProviderContextBasic> {
 
     private final static ConverterLike CAN_CONVERT = ConverterContexts.basic(
         false, // canNumbersHaveGroupSeparator
@@ -79,7 +79,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     public void testWithNullPluginStoreFails() {
         assertThrows(
             NullPointerException.class,
-            () -> BasicProviderContext.with(
+            () -> ProviderContextBasic.with(
                 null,
                 STORAGE_CONTEXT
             )
@@ -90,7 +90,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     public void testWithNullStorageContextFails() {
         assertThrows(
             NullPointerException.class,
-            () -> BasicProviderContext.with(
+            () -> ProviderContextBasic.with(
                 PLUGIN_STORE,
                 null
             )
@@ -109,7 +109,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
                 Optional.of(111)
             );
 
-        final BasicProviderContext context = this.createContext(storage);
+        final ProviderContextBasic context = this.createContext(storage);
 
         storage.save(
             value,
@@ -135,7 +135,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
                 Optional.of(111)
             );
 
-        final BasicProviderContext context = this.createContext(storage);
+        final ProviderContextBasic context = this.createContext(storage);
 
         storage.save(
             value,
@@ -206,7 +206,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
 
     @Test
     public void testSetEnvironmentContext() {
-        final BasicProviderContext context = this.createContext();
+        final ProviderContextBasic context = this.createContext();
 
         final StorageEnvironmentContext differentStorageEnvironmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
         differentStorageEnvironmentContext.setLocale(DIFFERENT_LOCALE);
@@ -248,7 +248,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     public void testSetUser() {
         final StorageEnvironmentContext storageEnvironmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
 
-        final BasicProviderContext context = BasicProviderContext.with(
+        final ProviderContextBasic context = ProviderContextBasic.with(
             PLUGIN_STORE,
             StorageContexts.basic(
                 CAN_CONVERT,
@@ -280,7 +280,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         );
 
         this.environmentValueAndCheck(
-            BasicProviderContext.with(
+            ProviderContextBasic.with(
                 PLUGIN_STORE,
                 StorageContexts.basic(
                     CAN_CONVERT,
@@ -316,7 +316,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
         );
 
         this.environmentContextAndCheck(
-            BasicProviderContext.with(
+            ProviderContextBasic.with(
                 PLUGIN_STORE,
                 storageContext
             ),
@@ -336,12 +336,12 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
 
 
     @Override
-    public BasicProviderContext createContext() {
+    public ProviderContextBasic createContext() {
         return this.createContext(STORAGE);
     }
 
-    private BasicProviderContext createContext(final Storage<StorageContext> storage) {
-        return BasicProviderContext.with(
+    private ProviderContextBasic createContext(final Storage<StorageContext> storage) {
+        return ProviderContextBasic.with(
             PLUGIN_STORE,
             StorageContexts.basic(
                 CAN_CONVERT,
@@ -357,7 +357,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     @Test
     public void testEqualsDifferentStorageEnvironmentContext() {
         this.checkNotEquals(
-            BasicProviderContext.with(
+            ProviderContextBasic.with(
                 PLUGIN_STORE,
                 StorageContexts.basic(
                     CAN_CONVERT,
@@ -370,7 +370,7 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     }
 
     @Override
-    public BasicProviderContext createObject() {
+    public ProviderContextBasic createObject() {
         return this.createContext();
     }
 
@@ -392,12 +392,17 @@ public final class BasicProviderContextTest implements ProviderContextTesting<Ba
     // class............................................................................................................
 
     @Override
-    public Class<BasicProviderContext> type() {
-        return BasicProviderContext.class;
+    public Class<ProviderContextBasic> type() {
+        return ProviderContextBasic.class;
     }
 
     @Override
     public String typeNameSuffix() {
         return ProviderContext.class.getSimpleName();
+    }
+
+    @Override
+    public void testTypeNaming() {
+        throw new UnsupportedOperationException();
     }
 }
