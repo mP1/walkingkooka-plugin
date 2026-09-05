@@ -145,7 +145,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
         );
 
         this.checkEquals(
-            BasicProviderContext.with(
+            ProviderContextBasic.with(
                 PLUGIN_STORE,
                 DIFFERENT_STORAGE_CONTEXT
             ),

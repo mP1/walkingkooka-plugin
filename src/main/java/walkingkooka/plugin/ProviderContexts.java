@@ -31,7 +31,7 @@ public final class ProviderContexts implements PublicStaticHelper {
      */
     public static ProviderContext basic(final PluginStore pluginStore,
                                         final StorageContext storageContext) {
-        return BasicProviderContext.with(
+        return ProviderContextBasic.with(
             pluginStore,
             storageContext
         );

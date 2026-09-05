@@ -31,18 +31,18 @@ import java.util.Objects;
 /**
  * A {@link ProviderContext} that delegates to a {@link EnvironmentContext}.
  */
-final class BasicProviderContext implements ProviderContext,
+final class ProviderContextBasic implements ProviderContext,
     StorageContextDelegator {
 
-    static BasicProviderContext with(final PluginStore pluginStore,
+    static ProviderContextBasic with(final PluginStore pluginStore,
                                      final StorageContext storageContext) {
-        return new BasicProviderContext(
+        return new ProviderContextBasic(
             Objects.requireNonNull(pluginStore, "pluginStore"),
             Objects.requireNonNull(storageContext, "storageContext")
         );
     }
 
-    private BasicProviderContext(final PluginStore pluginStore,
+    private ProviderContextBasic(final PluginStore pluginStore,
                                  final StorageContext storageContext) {
         super();
         this.pluginStore = pluginStore;
@@ -128,11 +128,11 @@ final class BasicProviderContext implements ProviderContext,
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-            (other instanceof BasicProviderContext &&
-                this.equals0((BasicProviderContext) other));
+            (other instanceof ProviderContextBasic &&
+                this.equals0((ProviderContextBasic) other));
     }
 
-    private boolean equals0(final BasicProviderContext other) {
+    private boolean equals0(final ProviderContextBasic other) {
         return this.pluginStore.equals(other.pluginStore) &&
             this.storageContext.equals(other.storageContext);
     }
