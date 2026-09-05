@@ -19,8 +19,6 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.HashCodeEqualsDefinedTesting2;
-import walkingkooka.convert.ConverterContexts;
-import walkingkooka.convert.ConverterLike;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.ReadOnlyEnvironmentValueException;
@@ -36,8 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class ProviderContextReadOnlyTest implements ProviderContextTesting<ProviderContextReadOnly>,
     HashCodeEqualsDefinedTesting2<ProviderContextReadOnly> {
-
-    private final static ConverterLike CAN_CONVERT = ConverterContexts.fake();
 
     private final static PluginStore PLUGIN_STORE = PluginStores.fake();
 
