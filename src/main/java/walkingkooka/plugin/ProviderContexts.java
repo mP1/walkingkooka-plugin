@@ -48,7 +48,7 @@ public final class ProviderContexts implements PublicStaticHelper {
      * {@see ReadOnlyProviderContext}
      */
     public static ProviderContext readOnly(final ProviderContext context) {
-        return ReadOnlyProviderContext.with(context);
+        return ProviderContextReadOnly.with(context);
     }
 
     /**
