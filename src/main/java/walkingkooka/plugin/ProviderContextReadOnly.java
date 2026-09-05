@@ -39,16 +39,16 @@ import java.util.Optional;
  * A {@link ProviderContext} where all setXXX and removeXXX methods throw {@link UnsupportedOperationException}.
  * Note the {@link #cloneEnvironment()} returns a clone of the wrapped {@link ProviderContext}.
  */
-final class ReadOnlyProviderContext implements ProviderContext,
+final class ProviderContextReadOnly implements ProviderContext,
     StorageEnvironmentContextDelegator {
 
-    static ReadOnlyProviderContext with(final ProviderContext context) {
-        ReadOnlyProviderContext readOnlyProviderContext;
+    static ProviderContextReadOnly with(final ProviderContext context) {
+        ProviderContextReadOnly readOnlyProviderContext;
 
-        if (context instanceof ReadOnlyProviderContext) {
-            readOnlyProviderContext = (ReadOnlyProviderContext) context;
+        if (context instanceof ProviderContextReadOnly) {
+            readOnlyProviderContext = (ProviderContextReadOnly) context;
         } else {
-            readOnlyProviderContext = new ReadOnlyProviderContext(
+            readOnlyProviderContext = new ProviderContextReadOnly(
                 Objects.requireNonNull(context, "context")
             );
         }
@@ -56,7 +56,7 @@ final class ReadOnlyProviderContext implements ProviderContext,
         return readOnlyProviderContext;
     }
 
-    private ReadOnlyProviderContext(final ProviderContext context) {
+    private ProviderContextReadOnly(final ProviderContext context) {
         this.context = context;
 
         this.readOnlyStorageEnvironmentContext = StorageEnvironmentContexts.readOnly(
@@ -187,11 +187,11 @@ final class ReadOnlyProviderContext implements ProviderContext,
     @Override
     public boolean equals(final Object other) {
         return this == other ||
-            (other instanceof ReadOnlyProviderContext &&
-                this.equals0((ReadOnlyProviderContext) other));
+            (other instanceof ProviderContextReadOnly &&
+                this.equals0((ProviderContextReadOnly) other));
     }
 
-    private boolean equals0(final ReadOnlyProviderContext other) {
+    private boolean equals0(final ProviderContextReadOnly other) {
         return this.context.equals(other.context);
     }
 

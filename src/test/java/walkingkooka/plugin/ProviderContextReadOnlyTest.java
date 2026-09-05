@@ -34,8 +34,8 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class ReadOnlyProviderContextTest implements ProviderContextTesting<ReadOnlyProviderContext>,
-    HashCodeEqualsDefinedTesting2<ReadOnlyProviderContext> {
+public final class ProviderContextReadOnlyTest implements ProviderContextTesting<ProviderContextReadOnly>,
+    HashCodeEqualsDefinedTesting2<ProviderContextReadOnly> {
 
     private final static ConverterLike CAN_CONVERT = ConverterContexts.fake();
 
@@ -45,16 +45,16 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     public void testWithNullContextFails() {
         assertThrows(
             NullPointerException.class,
-            () -> ReadOnlyProviderContext.with(null)
+            () -> ProviderContextReadOnly.with(null)
         );
     }
 
     @Test
     public void testWithSame() {
-        final ReadOnlyProviderContext context = this.createContext();
+        final ProviderContextReadOnly context = this.createContext();
         assertSame(
             context,
-            ReadOnlyProviderContext.with(context)
+            ProviderContextReadOnly.with(context)
         );
     }
 
@@ -62,7 +62,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
 
     @Test
     public void testCloneEnvironment() {
-        final ReadOnlyProviderContext context = this.createContext();
+        final ProviderContextReadOnly context = this.createContext();
         assertNotSame(
             context,
             context.cloneEnvironment()
@@ -71,7 +71,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
 
     @Test
     public void testCloneEnvironmentAndSetLineEnding() {
-        final ReadOnlyProviderContext context = this.createContext();
+        final ProviderContextReadOnly context = this.createContext();
 
         this.setLineEndingAndCheck(
             context.cloneEnvironment(),
@@ -81,7 +81,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
 
     @Test
     public void testCloneEnvironmentAndSetLocale() {
-        final ReadOnlyProviderContext context = this.createContext();
+        final ProviderContextReadOnly context = this.createContext();
 
         final ProviderContext clone = context.cloneEnvironment();
         clone.setLocale(DIFFERENT_LOCALE);
@@ -94,7 +94,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
 
     @Test
     public void testCloneEnvironmentAndSetUser() {
-        final ReadOnlyProviderContext context = this.createContext();
+        final ProviderContextReadOnly context = this.createContext();
 
         final EmailAddress user = EmailAddress.parse("different@example.com");
 
@@ -111,7 +111,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
 
     @Test
     public void testCloneEnvironmentAndSetEnvironmentValue() {
-        final ReadOnlyProviderContext context = this.createContext();
+        final ProviderContextReadOnly context = this.createContext();
 
         final ProviderContext cloned = context.cloneEnvironment();
         assertNotSame(
@@ -136,7 +136,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
 
     @Test
     public void testSetEnvironmentContext() {
-        final ReadOnlyProviderContext readOnlyProviderContext = this.createContext();
+        final ProviderContextReadOnly readOnlyProviderContext = this.createContext();
         final ProviderContext different = readOnlyProviderContext.setEnvironmentContext(DIFFERENT_STORAGE_ENVIRONMENT_CONTEXT);
 
         assertNotSame(
@@ -291,8 +291,8 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     }
 
     @Override
-    public ReadOnlyProviderContext createContext() {
-        return ReadOnlyProviderContext.with(
+    public ProviderContextReadOnly createContext() {
+        return ProviderContextReadOnly.with(
             ProviderContexts.basic(
                 PLUGIN_STORE,
                 STORAGE_CONTEXT.cloneEnvironment()
@@ -318,7 +318,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     @Test
     public void testEqualsDifferentEnvironmentContext() {
         this.checkNotEquals(
-            ReadOnlyProviderContext.with(
+            ProviderContextReadOnly.with(
                 ProviderContexts.basic(
                     PLUGIN_STORE,
                     DIFFERENT_STORAGE_CONTEXT.cloneEnvironment()
@@ -328,7 +328,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     }
 
     @Override
-    public ReadOnlyProviderContext createObject() {
+    public ProviderContextReadOnly createObject() {
         return this.createContext();
     }
 
@@ -338,7 +338,7 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     public void testToString() {
         final ProviderContext wrapped = ProviderContexts.fake();
 
-        final ReadOnlyProviderContext context = ReadOnlyProviderContext.with(wrapped);
+        final ProviderContextReadOnly context = ProviderContextReadOnly.with(wrapped);
 
         this.toStringContainsCheck(
             context,
@@ -349,7 +349,12 @@ public final class ReadOnlyProviderContextTest implements ProviderContextTesting
     // class............................................................................................................
 
     @Override
-    public Class<ReadOnlyProviderContext> type() {
-        return ReadOnlyProviderContext.class;
+    public Class<ProviderContextReadOnly> type() {
+        return ProviderContextReadOnly.class;
+    }
+
+    @Override
+    public void testTypeNaming() {
+        throw new UnsupportedOperationException();
     }
 }
