@@ -19,8 +19,24 @@ package walkingkooka.plugin;
 
 import walkingkooka.naming.Name;
 
+import java.util.List;
+
 /**
  * A provider is a container that supports fetching components by some INPUT such as a {@link Name}, a selector or a {@link Name} with parameters.
  */
 public interface Provider {
+
+    static void noParameterCheck(final List<?> values) {
+        parameterCountCheck(
+            values,
+            0
+        );
+    }
+
+    static void parameterCountCheck(final List<?> values,
+                                    final int expected) {
+        if (expected != values.size()) {
+            throw new IllegalArgumentException("Expected " + expected + " values got " + values.size() + " " + values);
+        }
+    }
 }
