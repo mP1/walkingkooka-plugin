@@ -90,7 +90,7 @@ public final class PluginNameSet extends AbstractSet<PluginName>
             }
         }
 
-        return withCopy(names);
+        return with(names);
     }
 
     /**
@@ -103,18 +103,8 @@ public final class PluginNameSet extends AbstractSet<PluginName>
      */
     private final static CharacterConstant SEPARATOR = CharacterConstant.COMMA;
 
-    /**
-     * Factory that creates a {@link PluginNameSet} after taking a copy.
-     */
-    public static PluginNameSet with(final Collection<PluginName> names) {
-        Objects.requireNonNull(names, "names");
-
-        return withCopy(
-            new TreeSet<>(names)
-        );
-    }
-
-    private static PluginNameSet withCopy(final SortedSet<PluginName> names) {
+    // @VisibleForTesting
+    static PluginNameSet with(final SortedSet<PluginName> names) {
         for(final PluginName name : names) {
             Objects.requireNonNull(name, "includes null name");
         }
@@ -149,7 +139,7 @@ public final class PluginNameSet extends AbstractSet<PluginName>
     @Override
     public PluginNameSet subSet(final PluginName from,
                                 final PluginName to) {
-        return withCopy(
+        return with(
             this.names.subSet(
                 from,
                 to
@@ -159,14 +149,14 @@ public final class PluginNameSet extends AbstractSet<PluginName>
 
     @Override
     public PluginNameSet headSet(final PluginName alias) {
-        return withCopy(
+        return with(
             this.names.headSet(alias)
         );
     }
 
     @Override
     public PluginNameSet tailSet(final PluginName alias) {
-        return withCopy(
+        return with(
             this.names.tailSet(alias)
         );
     }
@@ -190,7 +180,11 @@ public final class PluginNameSet extends AbstractSet<PluginName>
 
     @Override
     public PluginNameSet setElements(final Collection<PluginName> names) {
-        final PluginNameSet copy = with(names);
+        Objects.requireNonNull(names, "names");
+
+        final PluginNameSet copy = with(
+            new TreeSet<>(names)
+        );
 
         return this.equals(copy) ?
             this :

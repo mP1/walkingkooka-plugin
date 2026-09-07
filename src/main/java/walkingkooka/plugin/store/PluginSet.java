@@ -139,7 +139,7 @@ public final class PluginSet extends AbstractSet<Plugin> implements ImmutableSor
      * Returns a {@link Set} containing all the {@link PluginName names}.
      */
     public PluginNameSet names() {
-        return PluginNameSet.with(
+        return PluginNameSet.EMPTY.setElements(
             this.set.stream()
                 .map(Plugin::name)
                 .collect(Collectors.toCollection(SortedSets::tree))

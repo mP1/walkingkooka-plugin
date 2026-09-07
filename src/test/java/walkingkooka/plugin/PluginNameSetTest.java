@@ -38,13 +38,6 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
     JsonNodeMarshallerTesting<PluginNameSet>,
     HasUrlFragmentTesting {
 
-    @Test
-    public void testWithNullFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> PluginNameSet.with(null)
-        );
-    }
 
     @Test
     public void testWithIncludesNullFails() {
