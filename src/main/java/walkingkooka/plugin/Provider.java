@@ -26,15 +26,15 @@ import java.util.List;
  */
 public interface Provider {
 
-    static void noParameterCheck(final List<?> values) {
+    default void noParameterCheck(final List<?> values) {
         parameterCountCheck(
             values,
             0
         );
     }
 
-    static void parameterCountCheck(final List<?> values,
-                                    final int expected) {
+    default void parameterCountCheck(final List<?> values,
+                                     final int expected) {
         if (expected != values.size()) {
             throw new IllegalArgumentException("Expected " + expected + " values got " + values.size() + " " + values);
         }
