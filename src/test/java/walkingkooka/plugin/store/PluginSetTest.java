@@ -180,7 +180,7 @@ public final class PluginSetTest implements ImmutableSortedSetTesting<PluginSet,
     @Test
     public void testNames() {
         this.checkEquals(
-            PluginNameSet.with(
+            PluginNameSet.EMPTY.setElements(
                 SortedSets.of(
                     PluginName.with("test-plugin-111"),
                     PluginName.with("test-plugin-222")

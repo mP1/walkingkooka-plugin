@@ -63,7 +63,7 @@ public final class PluginStartup implements PublicStaticHelper {
             // NOP
         }
 
-        PluginNameSet.with(
+        PluginNameSet.EMPTY.setElements(
             Lists.of(pluginName)
         );
 
