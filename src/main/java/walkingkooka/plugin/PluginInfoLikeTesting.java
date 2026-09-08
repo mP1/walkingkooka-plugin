@@ -82,13 +82,6 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
         );
     }
 
-    // Class............................................................................................................
-
-    @Override
-    default JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
-    }
-
     // Comparable.......................................................................................................
 
     @Test
