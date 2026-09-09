@@ -20,7 +20,7 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.collect.set.ImmutableSetTesting;
 import walkingkooka.naming.Name;
-import walkingkooka.net.http.server.hateos.HateosResourceSetTesting;
+import walkingkooka.net.http.server.hateos.HateosResourceSetTesting2;
 import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.HasTextTesting;
@@ -32,7 +32,7 @@ public interface PluginInfoSetLikeTesting<N extends Name & Comparable<N>,
     A extends PluginAliasLike<N, S, A>,
     AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
     extends ImmutableSetTesting<IS, I>,
-    HateosResourceSetTesting<IS, I, N>,
+    HateosResourceSetTesting2<IS, I, N>,
     ParseStringTesting<IS>,
     HasTextTesting {
 
