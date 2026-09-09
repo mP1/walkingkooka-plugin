@@ -31,6 +31,11 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
     }
 
     @Override
+    public void testTestNaming() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testRemoveEnvironmentValueWithNowFails() {
         throw new UnsupportedOperationException();
     }

@@ -134,6 +134,11 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
         return TestProviderContext.class;
     }
 
+    @Override
+    public void testTestNaming() {
+        throw new UnsupportedOperationException();
+    }
+
     final static class TestProviderContext implements ProviderContext,
         StorageEnvironmentContextDelegator {
 
