@@ -19,7 +19,6 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.ContextTesting;
-import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.storage.StorageContextTesting2;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
@@ -67,17 +66,6 @@ public interface ProviderContextTesting<C extends ProviderContext> extends Conte
     @Override
     default void testAddStorageWatcherOnceWithNullFails() {
         throw new UnsupportedOperationException();
-    }
-
-    // pluginStore......................................................................................................
-
-    default void pluginStoreAndCheck(final ProviderContext providerContext,
-                                     final PluginStore expected) {
-        this.checkEquals(
-            expected,
-            providerContext.pluginStore(),
-            "pluginStore"
-        );
     }
 
     // class............................................................................................................

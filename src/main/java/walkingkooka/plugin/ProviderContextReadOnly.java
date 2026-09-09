@@ -21,7 +21,6 @@ import walkingkooka.Binary;
 import walkingkooka.Either;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.net.header.MediaType;
-import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.predicate.Predicates;
 import walkingkooka.storage.StorageEnvironmentContext;
 import walkingkooka.storage.StorageEnvironmentContextDelegator;
@@ -77,11 +76,6 @@ final class ProviderContextReadOnly implements ProviderContext,
     @Override
     public StoragePath parseStoragePath(final String text) {
         return this.context.parseStoragePath(text);
-    }
-
-    @Override
-    public PluginStore pluginStore() {
-        return this.context.pluginStore();
     }
 
     // ConverterLike....................................................................................................

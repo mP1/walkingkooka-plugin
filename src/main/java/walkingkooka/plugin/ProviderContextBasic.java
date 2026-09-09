@@ -18,7 +18,6 @@
 package walkingkooka.plugin;
 
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.storage.StorageContext;
 import walkingkooka.storage.StorageContextDelegator;
 import walkingkooka.storage.StorageMountPoint;
@@ -34,27 +33,16 @@ import java.util.Objects;
 final class ProviderContextBasic implements ProviderContext,
     StorageContextDelegator {
 
-    static ProviderContextBasic with(final PluginStore pluginStore,
-                                     final StorageContext storageContext) {
+    static ProviderContextBasic with(final StorageContext storageContext) {
         return new ProviderContextBasic(
-            Objects.requireNonNull(pluginStore, "pluginStore"),
             Objects.requireNonNull(storageContext, "storageContext")
         );
     }
 
-    private ProviderContextBasic(final PluginStore pluginStore,
-                                 final StorageContext storageContext) {
+    private ProviderContextBasic(final StorageContext storageContext) {
         super();
-        this.pluginStore = pluginStore;
         this.storageContext = storageContext;
     }
-
-    @Override
-    public PluginStore pluginStore() {
-        return this.pluginStore;
-    }
-
-    private final PluginStore pluginStore;
 
     @Override
     public StorageValue saveStorage(final StorageValue storageValue) {
@@ -86,7 +74,6 @@ final class ProviderContextBasic implements ProviderContext,
     @Override
     public ProviderContext cloneEnvironment() {
         return with(
-            this.pluginStore,
             this.storageContext.cloneEnvironment()
         );
     }
@@ -100,10 +87,7 @@ final class ProviderContextBasic implements ProviderContext,
 
         return before == after ?
             this :
-            with(
-                this.pluginStore,
-                after
-            );
+            with(after);
     }
 
     // StorageContextDelegator..........................................................................................
@@ -119,10 +103,7 @@ final class ProviderContextBasic implements ProviderContext,
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-            this.pluginStore,
-            this.storageContext
-        );
+        return this.storageContext.hashCode();
     }
 
     @Override
@@ -133,8 +114,7 @@ final class ProviderContextBasic implements ProviderContext,
     }
 
     private boolean equals0(final ProviderContextBasic other) {
-        return this.pluginStore.equals(other.pluginStore) &&
-            this.storageContext.equals(other.storageContext);
+        return this.storageContext.equals(other.storageContext);
     }
 
     @Override

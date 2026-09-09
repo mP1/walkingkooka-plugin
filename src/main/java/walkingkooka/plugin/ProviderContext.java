@@ -18,7 +18,6 @@
 package walkingkooka.plugin;
 
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.storage.StorageContext;
 import walkingkooka.storage.StorageMountPoint;
 import walkingkooka.storage.StoragePath;
@@ -71,9 +70,4 @@ public interface ProviderContext extends StorageContext {
 
     @Override
     ProviderContext setEnvironmentContext(EnvironmentContext environmentContext);
-
-    /**
-     * A {@link PluginStore} holding plugins.
-     */
-    PluginStore pluginStore();
 }

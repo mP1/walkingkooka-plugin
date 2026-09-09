@@ -20,7 +20,6 @@ package walkingkooka.plugin;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.plugin.ProviderContextDelegatorTest.TestProviderContextDelegator;
-import walkingkooka.plugin.store.PluginStores;
 
 import java.util.Objects;
 
@@ -96,7 +95,6 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
         @Override
         public ProviderContext providerContext() {
             return ProviderContexts.basic(
-                PluginStores.treeMap(),
                 STORAGE_CONTEXT.cloneEnvironment()
             );
         }

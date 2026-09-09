@@ -15,11 +15,10 @@
  *
  */
 
-package walkingkooka.plugin.store;
+package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.collect.map.Maps;
-import walkingkooka.plugin.JarFileTesting;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

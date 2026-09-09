@@ -19,7 +19,6 @@ package walkingkooka.plugin;
 
 import walkingkooka.Either;
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.storage.FakeStorageContext;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
@@ -75,11 +74,6 @@ public class FakeProviderContext extends FakeStorageContext implements ProviderC
 
     @Override
     public ProviderContext setEnvironmentContext(final EnvironmentContext environmentContext) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public PluginStore pluginStore() {
         throw new UnsupportedOperationException();
     }
 

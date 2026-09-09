@@ -17,18 +17,13 @@
 
 package walkingkooka.plugin;
 
-import walkingkooka.Binary;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.net.Url;
-import walkingkooka.net.email.EmailAddress;
-import walkingkooka.plugin.store.Plugin;
-import walkingkooka.plugin.store.PluginSet;
 import walkingkooka.reflect.PublicStaticHelper;
 import walkingkooka.tree.json.TreeJsonStartup;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
 
-import java.nio.charset.Charset;
-import java.time.LocalDateTime;
+;
 
 /**
  * Used to force all values types to {@link JsonNodeContext#register}
@@ -70,20 +65,6 @@ public final class PluginStartup implements PublicStaticHelper {
         PluginSelector.with(
             pluginName,
             "Hello"
-        );
-
-        PluginSet.EMPTY.concat(
-            Plugin.with(
-                pluginName,
-                "filename123.jar",
-                Binary.with(
-                    "hello".getBytes(
-                        Charset.defaultCharset()
-                    )
-                ),
-                EmailAddress.parse("user@example.com"),
-                LocalDateTime.MIN
-            )
         );
     }
 
