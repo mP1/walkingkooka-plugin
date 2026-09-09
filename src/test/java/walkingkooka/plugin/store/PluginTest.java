@@ -25,10 +25,8 @@ import walkingkooka.compare.ComparableTesting2;
 import walkingkooka.net.email.EmailAddress;
 import walkingkooka.net.http.server.hateos.HateosResourceTesting2;
 import walkingkooka.plugin.PluginName;
-import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.tree.json.JsonNode;
-import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import java.nio.charset.Charset;
@@ -39,8 +37,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class PluginTest implements HashCodeEqualsDefinedTesting2<Plugin>,
     ToStringTesting<Plugin>,
     ComparableTesting2<Plugin>,
-    ClassTesting<Plugin>,
-    JsonNodeMarshallerTesting<Plugin>,
     HateosResourceTesting2<Plugin, PluginName> {
 
     private final static PluginName NAME = PluginName.with("test-plugin-123");
