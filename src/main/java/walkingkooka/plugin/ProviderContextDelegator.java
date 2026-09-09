@@ -18,7 +18,6 @@
 package walkingkooka.plugin;
 
 import walkingkooka.convert.ConverterLike;
-import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.storage.StorageContext;
 import walkingkooka.storage.StorageContextDelegator;
 import walkingkooka.storage.StorageMountPoint;
@@ -29,12 +28,6 @@ import java.util.List;
 
 public interface ProviderContextDelegator extends ProviderContext,
     StorageContextDelegator {
-
-    @Override
-    default PluginStore pluginStore() {
-        return this.providerContext()
-            .pluginStore();
-    }
 
     ProviderContext providerContext();
 

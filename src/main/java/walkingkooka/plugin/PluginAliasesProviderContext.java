@@ -27,7 +27,6 @@ import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.EnvironmentWatcher;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.net.header.MediaTypeDetectors;
-import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.storage.StorageEnvironmentContext;
 import walkingkooka.storage.StorageEnvironmentContextDelegator;
 import walkingkooka.storage.StoragePath;
@@ -133,11 +132,6 @@ final class PluginAliasesProviderContext implements ProviderContext,
     @Override
     public StoragePath parseStoragePath(final String text) {
         return StoragePath.parse(text);
-    }
-
-    @Override
-    public PluginStore pluginStore() {
-        throw new UnsupportedOperationException();
     }
 
     // EnvironmentContext...............................................................................................

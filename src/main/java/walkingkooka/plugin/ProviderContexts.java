@@ -17,7 +17,6 @@
 
 package walkingkooka.plugin;
 
-import walkingkooka.plugin.store.PluginStore;
 import walkingkooka.reflect.PublicStaticHelper;
 import walkingkooka.storage.StorageContext;
 
@@ -29,12 +28,8 @@ public final class ProviderContexts implements PublicStaticHelper {
     /**
      * {@see ProviderContextBasic}
      */
-    public static ProviderContext basic(final PluginStore pluginStore,
-                                        final StorageContext storageContext) {
-        return ProviderContextBasic.with(
-            pluginStore,
-            storageContext
-        );
+    public static ProviderContext basic(final StorageContext storageContext) {
+        return ProviderContextBasic.with(storageContext);
     }
 
     /**

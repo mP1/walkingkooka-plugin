@@ -28,8 +28,6 @@ import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.HasAuditInfoTesting;
 import walkingkooka.math.DecimalNumberContexts;
-import walkingkooka.plugin.store.PluginStore;
-import walkingkooka.plugin.store.PluginStores;
 import walkingkooka.storage.Storage;
 import walkingkooka.storage.StorageContext;
 import walkingkooka.storage.StorageContexts;
@@ -71,27 +69,13 @@ public final class ProviderContextBasicTest implements ProviderContextTesting<Pr
 
     private final static String VAR_VALUE = "MagicValue123";
 
-    private final static PluginStore PLUGIN_STORE = PluginStores.fake();
-
     // with.............................................................................................................
-
-    @Test
-    public void testWithNullPluginStoreFails() {
-        assertThrows(
-            NullPointerException.class,
-            () -> ProviderContextBasic.with(
-                null,
-                STORAGE_CONTEXT
-            )
-        );
-    }
 
     @Test
     public void testWithNullStorageContextFails() {
         assertThrows(
             NullPointerException.class,
             () -> ProviderContextBasic.with(
-                PLUGIN_STORE,
                 null
             )
         );
@@ -160,7 +144,6 @@ public final class ProviderContextBasicTest implements ProviderContextTesting<Pr
         final StorageEnvironmentContext storageEnvironmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
 
         final ProviderContext before = ProviderContexts.basic(
-            PLUGIN_STORE,
             StorageContexts.basic(
                 CAN_CONVERT,
                 MEDIA_TYPE_DETECTOR,
@@ -189,7 +172,6 @@ public final class ProviderContextBasicTest implements ProviderContextTesting<Pr
         final StorageEnvironmentContext storageEnvironmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
 
         final ProviderContext providerContext = ProviderContexts.basic(
-            PLUGIN_STORE,
             StorageContexts.basic(
                 CAN_CONVERT,
                 MEDIA_TYPE_DETECTOR,
@@ -212,7 +194,6 @@ public final class ProviderContextBasicTest implements ProviderContextTesting<Pr
         differentStorageEnvironmentContext.setLocale(DIFFERENT_LOCALE);
 
         final ProviderContext differentProviderContext = ProviderContexts.basic(
-            PLUGIN_STORE,
             StorageContexts.basic(
                 CAN_CONVERT,
                 MEDIA_TYPE_DETECTOR,
@@ -230,7 +211,6 @@ public final class ProviderContextBasicTest implements ProviderContextTesting<Pr
 
         this.checkEquals(
             ProviderContexts.basic(
-                PLUGIN_STORE,
                 StorageContexts.basic(
                     CAN_CONVERT,
                     MEDIA_TYPE_DETECTOR,
@@ -249,7 +229,6 @@ public final class ProviderContextBasicTest implements ProviderContextTesting<Pr
         final StorageEnvironmentContext storageEnvironmentContext = STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment();
 
         final ProviderContextBasic context = ProviderContextBasic.with(
-            PLUGIN_STORE,
             StorageContexts.basic(
                 CAN_CONVERT,
                 MEDIA_TYPE_DETECTOR,
@@ -281,7 +260,6 @@ public final class ProviderContextBasicTest implements ProviderContextTesting<Pr
 
         this.environmentValueAndCheck(
             ProviderContextBasic.with(
-                PLUGIN_STORE,
                 StorageContexts.basic(
                     CAN_CONVERT,
                     MEDIA_TYPE_DETECTOR,
@@ -317,23 +295,11 @@ public final class ProviderContextBasicTest implements ProviderContextTesting<Pr
 
         this.environmentContextAndCheck(
             ProviderContextBasic.with(
-                PLUGIN_STORE,
                 storageContext
             ),
             storageContext
         );
     }
-
-    // pluginStore.....................................................................................................
-
-    @Test
-    public void testPluginStore() {
-        this.pluginStoreAndCheck(
-            this.createContext(),
-            PLUGIN_STORE
-        );
-    }
-
 
     @Override
     public ProviderContextBasic createContext() {
@@ -342,7 +308,6 @@ public final class ProviderContextBasicTest implements ProviderContextTesting<Pr
 
     private ProviderContextBasic createContext(final Storage<StorageContext> storage) {
         return ProviderContextBasic.with(
-            PLUGIN_STORE,
             StorageContexts.basic(
                 CAN_CONVERT,
                 MEDIA_TYPE_DETECTOR,
@@ -358,7 +323,6 @@ public final class ProviderContextBasicTest implements ProviderContextTesting<Pr
     public void testEqualsDifferentStorageEnvironmentContext() {
         this.checkNotEquals(
             ProviderContextBasic.with(
-                PLUGIN_STORE,
                 StorageContexts.basic(
                     CAN_CONVERT,
                     MEDIA_TYPE_DETECTOR,

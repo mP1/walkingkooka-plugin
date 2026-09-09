@@ -23,8 +23,6 @@ import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.ReadOnlyEnvironmentValueException;
 import walkingkooka.net.email.EmailAddress;
-import walkingkooka.plugin.store.PluginStore;
-import walkingkooka.plugin.store.PluginStores;
 
 import java.util.Optional;
 
@@ -34,8 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class ProviderContextReadOnlyTest implements ProviderContextTesting<ProviderContextReadOnly>,
     HashCodeEqualsDefinedTesting2<ProviderContextReadOnly> {
-
-    private final static PluginStore PLUGIN_STORE = PluginStores.fake();
 
     @Test
     public void testWithNullContextFails() {
@@ -142,7 +138,6 @@ public final class ProviderContextReadOnlyTest implements ProviderContextTesting
 
         this.checkEquals(
             ProviderContextBasic.with(
-                PLUGIN_STORE,
                 DIFFERENT_STORAGE_CONTEXT
             ),
             different
@@ -290,7 +285,6 @@ public final class ProviderContextReadOnlyTest implements ProviderContextTesting
     public ProviderContextReadOnly createContext() {
         return ProviderContextReadOnly.with(
             ProviderContexts.basic(
-                PLUGIN_STORE,
                 STORAGE_CONTEXT.cloneEnvironment()
             )
         );
@@ -316,7 +310,6 @@ public final class ProviderContextReadOnlyTest implements ProviderContextTesting
         this.checkNotEquals(
             ProviderContextReadOnly.with(
                 ProviderContexts.basic(
-                    PLUGIN_STORE,
                     DIFFERENT_STORAGE_CONTEXT.cloneEnvironment()
                 )
             )

@@ -24,8 +24,6 @@ import walkingkooka.collect.list.Lists;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.plugin.ProviderContextTestingTest.TestProviderContext;
-import walkingkooka.plugin.store.PluginStore;
-import walkingkooka.plugin.store.PluginStores;
 import walkingkooka.storage.StorageEnvironmentContext;
 import walkingkooka.storage.StorageEnvironmentContextDelegator;
 import walkingkooka.storage.StoragePath;
@@ -155,11 +153,6 @@ public final class ProviderContextTestingTest implements ProviderContextTesting<
                 value,
                 type
             );
-        }
-
-        @Override
-        public PluginStore pluginStore() {
-            return PluginStores.fake();
         }
 
         @Override
