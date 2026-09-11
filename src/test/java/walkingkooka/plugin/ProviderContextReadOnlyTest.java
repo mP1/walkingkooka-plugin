@@ -267,6 +267,11 @@ public final class ProviderContextReadOnlyTest implements ProviderContextTesting
     }
 
     @Override
+    public void testSetLoggingLevelWithDifferentAndWatcher() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testSetTimeOffsetWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }

@@ -42,6 +42,11 @@ public final class PluginAliasesProviderContextTest implements ProviderContextTe
     }
 
     @Override
+    public void testLogWithNullLoggingLevelFails() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testParseEnvironmentValueNameWithNullUnknownFails() {
         throw new UnsupportedOperationException();
     }
@@ -138,6 +143,11 @@ public final class PluginAliasesProviderContextTest implements ProviderContextTe
 
     @Override
     public void testSetLocaleWithDifferentAndWatcher() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetLoggingLevelWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }
 
