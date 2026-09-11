@@ -71,6 +71,11 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
     }
 
     @Override
+    public void testSetLoggingLevelWithDifferentAndWatcher() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testSetTimeOffsetWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }
