@@ -27,15 +27,20 @@ import walkingkooka.currency.CurrencyLocaleContexts;
 import walkingkooka.datetime.DateTimeContexts;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.HasAuditInfoTesting;
+import walkingkooka.logging.CanLog;
+import walkingkooka.logging.CanLogs;
+import walkingkooka.logging.LoggingLevel;
 import walkingkooka.math.DecimalNumberContexts;
 import walkingkooka.storage.Storage;
 import walkingkooka.storage.StorageContext;
 import walkingkooka.storage.StorageContexts;
 import walkingkooka.storage.StorageEnvironmentContext;
+import walkingkooka.storage.StorageEnvironmentContexts;
 import walkingkooka.storage.StoragePath;
 import walkingkooka.storage.StorageValue;
 import walkingkooka.storage.StorageValueInfo;
 import walkingkooka.storage.Storages;
+import walkingkooka.text.printer.Printers;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -301,6 +306,72 @@ public final class ProviderContextBasicTest implements ProviderContextTesting<Pr
         );
     }
 
+    // logXXX...........................................................................................................
+
+    private final static String MESSAGE1 = "Message111";
+    private final static String MESSAGE2 = "Message222";
+    private final static String MESSAGE3 = "Message333";
+    private final static String MESSAGE4 = "Message444";
+
+    @Test
+    public void testLogDisabled() {
+        final ProviderContextBasic context = this.createContext(
+            CanLogs.fake()
+        );
+
+        this.isLoggingEnabledAndCheck(
+            context,
+            LoggingLevel.DEBUG,
+            false
+        );
+
+        context.debug(MESSAGE1);
+    }
+
+    @Test
+    public void testLogEnabled() {
+        final StringBuilder b = new StringBuilder();
+
+        final ProviderContextBasic context = this.createContext(b);
+        context.setLoggingLevel(LoggingLevel.DEBUG);
+
+        this.isLoggingEnabledAndCheck(
+            context,
+            LoggingLevel.DEBUG,
+            true
+        );
+
+        context.debug(MESSAGE1);
+
+        this.checkEquals(
+            MESSAGE1 + LINE_ENDING,
+            b.toString()
+        );
+    }
+
+    @Test
+    public void testLoggingLevelChanged() {
+        final StringBuilder b = new StringBuilder();
+
+        final ProviderContextBasic context = this.createContext(b);
+
+        context.setLoggingLevel(LoggingLevel.INFO);
+        context.debug(MESSAGE1);
+        context.info(MESSAGE2);
+
+        context.setLoggingLevel(LoggingLevel.WARN);
+        context.warn(MESSAGE3);
+
+        context.setLoggingLevel(LoggingLevel.NONE);
+        context.warn(MESSAGE4);
+
+        this.checkEquals(
+            MESSAGE2 + LINE_ENDING +
+                MESSAGE3 + LINE_ENDING,
+            b.toString()
+        );
+    }
+
     @Override
     public ProviderContextBasic createContext() {
         return this.createContext(STORAGE);
@@ -313,6 +384,33 @@ public final class ProviderContextBasicTest implements ProviderContextTesting<Pr
                 MEDIA_TYPE_DETECTOR,
                 storage,
                 STORAGE_ENVIRONMENT_CONTEXT.cloneEnvironment()
+            )
+        );
+    }
+
+    private ProviderContextBasic createContext(final StringBuilder b) {
+        return this.createContext(
+            CanLogs.printer(
+                Printers.stringBuilder(
+                    b,
+                    LINE_ENDING
+                )
+            )
+        );
+    }
+
+    private ProviderContextBasic createContext(final CanLog canLog) {
+        return ProviderContextBasic.with(
+            StorageContexts.basic(
+                CAN_CONVERT,
+                MEDIA_TYPE_DETECTOR,
+                STORAGE,
+                StorageEnvironmentContexts.basic(
+                ENVIRONMENT_CONTEXT.environment()
+                    .setCanLog(canLog)
+                    .environmentContext()
+                    .cloneEnvironment()
+                )
             )
         );
     }
