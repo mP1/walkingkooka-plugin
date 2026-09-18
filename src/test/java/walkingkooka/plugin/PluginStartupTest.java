@@ -17,7 +17,6 @@
 
 package walkingkooka.plugin;
 
-import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.reflect.PublicStaticHelperTesting;
 
 import java.lang.reflect.Method;
@@ -32,10 +31,5 @@ public final class PluginStartupTest implements PublicStaticHelperTesting<Plugin
     @Override
     public Class<PluginStartup> type() {
         return PluginStartup.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 }

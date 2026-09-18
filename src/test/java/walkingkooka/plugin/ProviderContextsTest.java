@@ -17,7 +17,6 @@
 
 package walkingkooka.plugin;
 
-import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.reflect.PublicStaticHelperTesting;
 
 import java.lang.reflect.Method;
@@ -27,11 +26,6 @@ public final class ProviderContextsTest implements PublicStaticHelperTesting<Pro
     @Override
     public Class<ProviderContexts> type() {
         return ProviderContexts.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 
     @Override
