@@ -25,6 +25,10 @@ import walkingkooka.collect.set.Sets;
 import walkingkooka.environment.EnvironmentContext;
 import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.environment.EnvironmentWatcher;
+import walkingkooka.logging.CanLogs;
+import walkingkooka.logging.LoggingContext;
+import walkingkooka.logging.LoggingContexts;
+import walkingkooka.logging.LoggingLevel;
 import walkingkooka.net.header.MediaType;
 import walkingkooka.net.header.MediaTypeDetectors;
 import walkingkooka.storage.StorageEnvironmentContext;
@@ -201,6 +205,18 @@ final class PluginAliasesProviderContext implements ProviderContext,
 
         throw new UnsupportedOperationException();
     }
+
+    // LoggingContextDelegator..........................................................................................
+
+    @Override
+    public LoggingContext loggingContext() {
+        return LOGGING_CONTEXT;
+    }
+
+    private final static LoggingContext LOGGING_CONTEXT = LoggingContexts.canLog(
+        LoggingLevel.NONE,
+        CanLogs.nullCanLog()
+    );
 
     // toString.........................................................................................................
 
