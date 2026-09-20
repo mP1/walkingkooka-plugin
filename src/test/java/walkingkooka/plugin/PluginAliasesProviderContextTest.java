@@ -17,6 +17,7 @@
 
 package walkingkooka.plugin;
 
+import org.junit.jupiter.api.Test;
 import walkingkooka.storage.StorageEnvironmentContext;
 
 public final class PluginAliasesProviderContextTest implements ProviderContextTesting<PluginAliasesProviderContext> {
@@ -164,6 +165,12 @@ public final class PluginAliasesProviderContextTest implements ProviderContextTe
     @Override
     public void testUserNotNull() {
         throw new UnsupportedOperationException();
+    }
+
+    @Test
+    public void testDebug() {
+        this.createContext()
+            .debug("Doesnt Stackoverflow");
     }
 
     @Override
