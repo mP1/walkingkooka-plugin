@@ -23,6 +23,16 @@ import walkingkooka.storage.StorageEnvironmentContext;
 public final class PluginAliasesProviderContextTest implements ProviderContextTesting<PluginAliasesProviderContext> {
 
     @Override
+    public void testCharset() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testCurrency() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testEnvironmentValueLineEndingEqualsLineEnding() {
         throw new UnsupportedOperationException();
     }
@@ -39,6 +49,21 @@ public final class PluginAliasesProviderContextTest implements ProviderContextTe
 
     @Override
     public void testEnvironmentValueUserEqualsUser() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testIndentation() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testLineEnding() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testLoggingLevel() {
         throw new UnsupportedOperationException();
     }
 
@@ -123,12 +148,32 @@ public final class PluginAliasesProviderContextTest implements ProviderContextTe
     }
 
     @Override
+    public void testSetCharset() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetCurrency() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testSetCurrencyWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    public void testSetIndentation() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testSetIndentationWithDifferentAndWatcher() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetLineEnding() {
         throw new UnsupportedOperationException();
     }
 
@@ -148,12 +193,22 @@ public final class PluginAliasesProviderContextTest implements ProviderContextTe
     }
 
     @Override
+    public void testSetLoggingLevel() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testSetLoggingLevelWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }
 
     @Override
     public void testSetTimeOffsetWithDifferentAndWatcher() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetTimeOffsetWithDifferent() {
         throw new UnsupportedOperationException();
     }
 

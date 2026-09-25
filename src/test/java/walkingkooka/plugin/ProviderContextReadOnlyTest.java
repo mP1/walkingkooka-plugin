@@ -233,7 +233,22 @@ public final class ProviderContextReadOnlyTest implements ProviderContextTesting
     }
 
     @Override
+    public void testSetCharset() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetCurrency() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testSetCurrencyWithDifferentAndWatcher() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetIndentation() {
         throw new UnsupportedOperationException();
     }
 
@@ -252,6 +267,11 @@ public final class ProviderContextReadOnlyTest implements ProviderContextTesting
     }
 
     @Override
+    public void testSetLineEnding() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testSetLineEndingWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }
@@ -267,7 +287,17 @@ public final class ProviderContextReadOnlyTest implements ProviderContextTesting
     }
 
     @Override
+    public void testSetLoggingLevel() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testSetLoggingLevelWithDifferentAndWatcher() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetTimeOffsetWithDifferent() {
         throw new UnsupportedOperationException();
     }
 

@@ -46,12 +46,32 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
     }
 
     @Override
+    public void testSetCharset() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetCurrency() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testSetCurrencyWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }
 
     @Override
+    public void testSetIndentation() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testSetIndentationWithDifferentAndWatcher() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetLineEnding() {
         throw new UnsupportedOperationException();
     }
 
@@ -71,7 +91,17 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
     }
 
     @Override
+    public void testSetLoggingLevel() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testSetLoggingLevelWithDifferentAndWatcher() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testSetTimeOffsetWithDifferent() {
         throw new UnsupportedOperationException();
     }
 
