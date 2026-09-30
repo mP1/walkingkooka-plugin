@@ -18,7 +18,6 @@
 package walkingkooka.plugin;
 
 import walkingkooka.environment.EnvironmentContext;
-import walkingkooka.environment.EnvironmentValueName;
 import walkingkooka.plugin.ProviderContextDelegatorTest.TestProviderContextDelegator;
 
 import java.util.Objects;
@@ -32,86 +31,6 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
 
     @Override
     public void testTestNaming() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void testRemoveEnvironmentValueWithNowFails() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void testSetEnvironmentValueWithNowFails() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void testSetCharset() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void testSetCurrency() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void testSetCurrencyWithDifferentAndWatcher() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void testSetIndentation() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void testSetIndentationWithDifferentAndWatcher() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void testSetLineEnding() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void testSetLineEndingWithDifferentAndWatcher() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void testSetLocaleWithDifferent() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void testSetLocaleWithDifferentAndWatcher() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void testSetLoggingLevel() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void testSetLoggingLevelWithDifferentAndWatcher() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void testSetTimeOffsetWithDifferent() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void testSetTimeOffsetWithDifferentAndWatcher() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void testSetUserWithDifferentAndWatcher() {
         throw new UnsupportedOperationException();
     }
 
@@ -152,12 +71,8 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
         }
 
         @Override
-        public <T> void setEnvironmentValue(final EnvironmentValueName<T> name,
-                                            final T value) {
-            this.environmentContext.setEnvironmentValue(
-                name,
-                value
-            );
+        public EnvironmentContext environmentContext() {
+            return this.environmentContext;
         }
 
         private final EnvironmentContext environmentContext = ENVIRONMENT_CONTEXT.cloneEnvironment();
