@@ -154,11 +154,13 @@ public final class ProviderContextDelegatorTest implements ProviderContextTestin
         @Override
         public <T> void setEnvironmentValue(final EnvironmentValueName<T> name,
                                             final T value) {
-            Objects.requireNonNull(name, "name");
-            Objects.requireNonNull(value, "value");
-
-            throw new UnsupportedOperationException();
+            this.environmentContext.setEnvironmentValue(
+                name,
+                value
+            );
         }
+
+        private final EnvironmentContext environmentContext = ENVIRONMENT_CONTEXT.cloneEnvironment();
 
         @Override
         public String toString() {
