@@ -101,7 +101,7 @@ public interface PluginSelectorMenuLikeTesting<M extends PluginSelectorMenuLike<
         final StringBuilder b = new StringBuilder();
         final IndentingPrinter printer = Printers.stringBuilder(
             b,
-            EOL
+            LINE_ENDING
         ).indenting(INDENTATION);
 
         printer.println(label);
