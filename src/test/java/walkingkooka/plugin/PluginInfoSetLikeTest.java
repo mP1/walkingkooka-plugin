@@ -720,4 +720,16 @@ public final class PluginInfoSetLikeTest implements PluginInfoSetLikeTesting<Str
             context
         );
     }
+
+    // class............................................................................................................
+
+    @Override
+    public void testTestNaming() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void testClassVisibility() {
+        throw new UnsupportedOperationException();
+    }
 }
