@@ -23,7 +23,6 @@ import walkingkooka.naming.Names;
 import walkingkooka.naming.StringName;
 import walkingkooka.net.AbsoluteUrl;
 import walkingkooka.net.Url;
-import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.cursor.TextCursors;
 import walkingkooka.text.cursor.parser.ParserContexts;
 
@@ -123,10 +122,5 @@ public final class PluginHelperTestingTest implements PluginHelperTesting<TestPl
     @Override
     public Class<TestPluginHelper> type() {
         return TestPluginHelper.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PACKAGE_PRIVATE;
     }
 }
