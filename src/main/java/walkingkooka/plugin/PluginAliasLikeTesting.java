@@ -22,7 +22,7 @@ import walkingkooka.ToStringTesting;
 import walkingkooka.compare.ComparableTesting2;
 import walkingkooka.naming.HasNameTesting;
 import walkingkooka.naming.Name;
-import walkingkooka.reflect.ClassTesting;
+import walkingkooka.reflect.PublicClassTesting;
 import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
@@ -33,7 +33,7 @@ public interface PluginAliasLikeTesting<N extends Name & Comparable<N>, S extend
     HasTextTesting,
     TreePrintableTesting,
     ToStringTesting<A>,
-    ClassTesting<A> {
+    PublicClassTesting<A> {
 
     // parseString......................................................................................................
 
