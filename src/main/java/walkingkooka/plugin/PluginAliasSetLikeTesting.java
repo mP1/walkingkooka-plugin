@@ -23,6 +23,7 @@ import walkingkooka.collect.set.ImmutableSortedSetTesting;
 import walkingkooka.collect.set.Sets;
 import walkingkooka.naming.Name;
 import walkingkooka.net.HasUrlFragmentTesting;
+import walkingkooka.reflect.PublicClassTesting;
 import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.HasTextTesting;
 import walkingkooka.text.printer.TreePrintableTesting;
@@ -45,6 +46,7 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
     HasTextTesting,
     TreePrintableTesting,
     ParseStringTesting<AS>,
+    PublicClassTesting<AS>,
     ToStringTesting<AS>,
     HasUrlFragmentTesting {
 
