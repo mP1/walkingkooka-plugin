@@ -19,7 +19,7 @@ package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.naming.Name;
-import walkingkooka.reflect.ClassTesting;
+import walkingkooka.reflect.PackagePrivateClassTesting;
 import walkingkooka.text.cursor.TextCursor;
 import walkingkooka.text.cursor.TextCursors;
 import walkingkooka.text.cursor.parser.ParserContext;
@@ -37,7 +37,7 @@ public interface PluginHelperTesting<H extends PluginHelper<N, I, IS, S, A, AS>,
     S extends PluginSelectorLike<N>,
     A extends PluginAliasLike<N, S, A>,
     AS extends PluginAliasSetLike<N, I, IS, S, A, AS>>
-    extends ClassTesting<H> {
+    extends PackagePrivateClassTesting<H> {
 
     // name.............................................................................................................
 
