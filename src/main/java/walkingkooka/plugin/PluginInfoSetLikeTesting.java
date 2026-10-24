@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.collect.set.ImmutableSetTesting;
 import walkingkooka.naming.Name;
 import walkingkooka.net.http.server.hateos.HateosResourceSetTesting2;
+import walkingkooka.reflect.PublicClassTesting;
 import walkingkooka.test.ParseStringTesting;
 import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.HasTextTesting;
@@ -34,6 +35,7 @@ public interface PluginInfoSetLikeTesting<N extends Name & Comparable<N>,
     extends ImmutableSetTesting<IS, I>,
     HateosResourceSetTesting2<IS, I, N>,
     ParseStringTesting<IS>,
+    PublicClassTesting<IS>,
     HasTextTesting {
 
     // empty............................................................................................................
