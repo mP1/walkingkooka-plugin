@@ -87,6 +87,11 @@ public final class PluginSelectorParameterListTest implements ImmutableListTesti
     }
 
     @Override
+    public void testSetElementsWithSameList() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void testSetElementsWithSameChildren() {
         throw new UnsupportedOperationException();
     }
