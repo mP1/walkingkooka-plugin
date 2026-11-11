@@ -20,7 +20,6 @@ package walkingkooka.plugin;
 import org.junit.jupiter.api.Test;
 import walkingkooka.naming.NameTesting2;
 import walkingkooka.reflect.ClassTesting2;
-import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.CaseSensitivity;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
@@ -97,11 +96,6 @@ final public class PluginProviderNameTest implements ClassTesting2<PluginProvide
     @Override
     public Class<PluginProviderName> type() {
         return PluginProviderName.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 
     // Json.............................................................................................................
