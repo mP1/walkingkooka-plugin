@@ -22,7 +22,6 @@ import walkingkooka.naming.NameTesting2;
 import walkingkooka.net.HasUrlFragmentTesting;
 import walkingkooka.net.UrlFragment;
 import walkingkooka.reflect.ClassTesting2;
-import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.text.CaseSensitivity;
 import walkingkooka.tree.json.marshall.JsonNodeMarshallerTesting;
 
@@ -91,11 +90,6 @@ public interface PluginNameTesting<N extends PluginNameLike<N>> extends ClassTes
     @Override
     default String possibleInvalidChars(final int position) {
         return CONTROL + BYTE_NON_ASCII;
-    }
-
-    @Override
-    default JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 
     // Json.............................................................................................................
