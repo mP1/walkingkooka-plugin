@@ -42,7 +42,7 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
     ParseStringTesting<PluginInfoSet<StringName, TestPluginInfo>>,
     HasTextTesting,
     TreePrintableTesting,
-    ToStringTesting<PluginInfoSet<StringName, TestPluginInfo>>,
+    ToStringTesting,
     HashCodeEqualsDefinedTesting2<PluginInfoSet<StringName, TestPluginInfo>> {
 
     private final static AbsoluteUrl URL1 = Url.parseAbsolute("https://example.com/a1");

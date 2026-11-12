@@ -37,7 +37,7 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class ProviderCollectionTest implements ClassTesting<ProviderCollection<TestProvider, StringName, TestPluginInfo, TestPluginSelector, TestService>>,
-    ToStringTesting<ProviderCollection<TestProvider, StringName, TestPluginInfo, TestPluginSelector, TestService>> {
+    ToStringTesting {
 
     private final static TestService SERVICE1 = new TestService();
 

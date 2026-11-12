@@ -41,7 +41,7 @@ public final class PluginAliasTest implements ComparableTesting2<PluginAlias<Str
     ParseStringTesting<PluginAlias<StringName, TestPluginSelector>>,
     HasTextTesting,
     TreePrintableTesting,
-    ToStringTesting<PluginAlias<StringName, TestPluginSelector>>,
+    ToStringTesting,
     ClassTesting<PluginAlias<StringName, TestPluginSelector>> {
 
     private final static StringName NAME = Names.string("Name123");

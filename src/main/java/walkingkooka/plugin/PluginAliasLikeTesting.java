@@ -32,7 +32,7 @@ public interface PluginAliasLikeTesting<N extends Name & Comparable<N>, S extend
     ParseStringTesting<A>,
     HasTextTesting,
     TreePrintableTesting,
-    ToStringTesting<A>,
+    ToStringTesting,
     PublicClassTesting<A> {
 
     // parseString......................................................................................................

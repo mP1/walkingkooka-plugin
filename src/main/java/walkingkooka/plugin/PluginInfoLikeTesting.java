@@ -44,7 +44,7 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     ComparableTesting2<I>,
     HasAbsoluteUrlTesting<I>,
     ParseStringTesting<I>,
-    ToStringTesting<I> {
+    ToStringTesting {
 
     // factory..........................................................................................................
 
