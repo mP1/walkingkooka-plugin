@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class FilteredProviderMapperTest implements TreePrintableTesting,
     ClassTesting2<FilteredProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias, TestPluginAliasSet>>,
-    ToStringTesting<FilteredProviderMapper<StringName, TestPluginInfo, TestPluginInfoSet, TestPluginSelector, TestPluginAlias, TestPluginAliasSet>> {
+    ToStringTesting {
 
     private final static StringName RENAMED_RENAME_NAME = Names.string("RenamedRenameName1");
 

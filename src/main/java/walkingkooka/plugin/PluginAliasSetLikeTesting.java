@@ -47,7 +47,7 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
     TreePrintableTesting,
     ParseStringTesting<AS>,
     PublicClassTesting<AS>,
-    ToStringTesting<AS>,
+    ToStringTesting,
     HasUrlFragmentTesting {
 
     // selector.........................................................................................................

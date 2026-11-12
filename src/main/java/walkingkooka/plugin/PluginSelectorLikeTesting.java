@@ -42,7 +42,7 @@ public interface PluginSelectorLikeTesting<S extends PluginSelectorLike<N>, N ex
     HasTextTesting,
     HasUrlFragmentTesting,
     HashCodeEqualsDefinedTesting2<S>,
-    ToStringTesting<S>,
+    ToStringTesting,
     ParseStringTesting<S>,
     JsonNodeMarshallerTesting<S>,
     PublicClassTesting<S>,

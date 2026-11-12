@@ -59,7 +59,7 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
     HashCodeEqualsDefinedTesting2<PluginSelector<StringName>>,
     HasNameTesting,
     HasTextTesting,
-    ToStringTesting<PluginSelector<StringName>>,
+    ToStringTesting,
     ParseStringTesting<PluginSelector<StringName>>,
     TreePrintableTesting {
 
