@@ -23,8 +23,9 @@ import walkingkooka.naming.Name;
 import walkingkooka.net.http.server.hateos.HateosResourceSetTesting2;
 import walkingkooka.reflect.PublicClassTesting;
 import walkingkooka.test.ParseStringTesting;
-import walkingkooka.text.CharacterConstant;
 import walkingkooka.text.HasTextTesting;
+
+import java.util.stream.Collectors;
 
 public interface PluginInfoSetLikeTesting<N extends Name & Comparable<N>,
     I extends PluginInfoLike<I, N>,
@@ -106,10 +107,9 @@ public interface PluginInfoSetLikeTesting<N extends Name & Comparable<N>,
 
         this.textAndCheck(
             set,
-            CharacterConstant.COMMA.toSeparatedString(
-                set,
-                Object::toString
-            ).replace(",", ", ")
+            set.stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(", "))
         );
     }
 }
