@@ -38,6 +38,7 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * An immutable {@link SortedSet} of {@link PluginName}.
@@ -202,9 +203,11 @@ public final class PluginNameSet extends AbstractSet<PluginName>
 
     @Override
     public String text() {
-        return SEPARATOR.toSeparatedString(
-            this,
-            Object::toString
+        return SEPARATOR.toDelimiteredString(
+            this.names.stream()
+                .map(PluginName::value)
+                .collect(Collectors.toList()),
+            SEPARATOR.constantSeparator()
         );
     }
 
