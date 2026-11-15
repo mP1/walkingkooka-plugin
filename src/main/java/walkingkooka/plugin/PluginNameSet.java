@@ -18,6 +18,7 @@
 package walkingkooka.plugin;
 
 import walkingkooka.InvalidCharacterException;
+import walkingkooka.collect.iterable.Iterables;
 import walkingkooka.collect.set.ImmutableSortedSetDefaults;
 import walkingkooka.collect.set.SortedSets;
 import walkingkooka.net.HasUrlFragment;
@@ -38,7 +39,6 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 /**
  * An immutable {@link SortedSet} of {@link PluginName}.
@@ -204,9 +204,10 @@ public final class PluginNameSet extends AbstractSet<PluginName>
     @Override
     public String text() {
         return SEPARATOR.toDelimiteredString(
-            this.names.stream()
-                .map(PluginName::value)
-                .collect(Collectors.toList()),
+            Iterables.mapping(
+                this.names,
+                PluginName::value
+            ),
             SEPARATOR.constantSeparator()
         );
     }
