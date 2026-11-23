@@ -38,6 +38,7 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
     JsonNodeMarshallerTesting<PluginNameSet>,
     HasUrlFragmentTesting {
 
+    private final static String PLUGIN_LABEL = PluginName.class.getSimpleName();
 
     @Test
     public void testWithIncludesNullFails() {
@@ -77,7 +78,10 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
 
     @Test
     public void testDeleteBecomesEmpty() {
-        final PluginName name = PluginName.with("plugin-111");
+        final PluginName name = PluginName.with(
+            PLUGIN_LABEL,
+            "plugin-111"
+        );
 
         assertSame(
             PluginNameSet.EMPTY,
@@ -96,7 +100,10 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
             () -> this.createSet()
                 .replace(
                     null,
-                    PluginName.with("plugin-222")
+                    PluginName.with(
+                        PLUGIN_LABEL,
+                        "plugin-222"
+                    )
                 )
         );
     }
@@ -107,7 +114,10 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
             NullPointerException.class,
             () -> this.createSet()
                 .replace(
-                    PluginName.with("plugin-111"),
+                    PluginName.with(
+                        PLUGIN_LABEL,
+                        "plugin-111"
+                    ),
                     null
                 )
         );
@@ -130,8 +140,14 @@ public final class PluginNameSetTest implements ImmutableSortedSetTesting<Plugin
     public PluginNameSet createSet() {
         return PluginNameSet.with(
             SortedSets.of(
-                PluginName.with("plugin-111"),
-                PluginName.with("plugin-222")
+                PluginName.with(
+                    PLUGIN_LABEL,
+                    "plugin-111"
+                ),
+                PluginName.with(
+                    PLUGIN_LABEL,
+                    "plugin-222"
+                )
             )
         );
     }

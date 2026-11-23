@@ -125,7 +125,10 @@ public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTes
         assertThrows(
             NullPointerException.class,
             () -> PluginArchiveManifest.with(
-                PluginName.with("test-plugin-111"),
+                PluginName.with(
+                    PluginName.class.getSimpleName(),
+                    "test-plugin-111"
+                ),
                 null
             )
         );
@@ -133,7 +136,10 @@ public final class PluginArchiveManifestTest implements HashCodeEqualsDefinedTes
 
     @Test
     public void testWith() {
-        final PluginName pluginName = PluginName.with("test-plugin-123");
+        final PluginName pluginName = PluginName.with(
+            PluginName.class.getSimpleName(),
+            "test-plugin-123"
+        );
         final ClassName className = ClassName.with(this.getClass().getCanonicalName());
 
         final PluginArchiveManifest manifest = PluginArchiveManifest.with(

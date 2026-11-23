@@ -60,7 +60,10 @@ public final class PluginArchiveManifest {
             attribute(
                 attributes,
                 PLUGIN_NAME,
-                PluginName::with
+                (String name) -> PluginName.with(
+                    PluginName.class.getSimpleName(),
+                    name
+                )
             ),
             attribute(
                 attributes,

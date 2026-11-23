@@ -33,6 +33,8 @@ final class PluginNameLikeTest implements ParseStringTesting<List<PluginName>>,
     HasUrlFragmentTesting,
     ClassTesting<TestPluginNameLike> {
 
+    private final static String LABEL = "PluginName123";
+
     // parse............................................................................................................
 
     @Override
@@ -68,7 +70,12 @@ final class PluginNameLikeTest implements ParseStringTesting<List<PluginName>>,
     public void testParseName() {
         this.parseStringAndCheck(
             "abc",
-            Lists.of(PluginName.with("abc"))
+            Lists.of(
+                PluginName.with(
+                    LABEL,
+                    "abc"
+                )
+            )
         );
     }
 
@@ -76,7 +83,12 @@ final class PluginNameLikeTest implements ParseStringTesting<List<PluginName>>,
     public void testParseNameSpaces() {
         this.parseStringAndCheck(
             "abc   ",
-            Lists.of(PluginName.with("abc"))
+            Lists.of(
+                PluginName.with(
+                    LABEL,
+                    "abc"
+                )
+            )
         );
     }
 
@@ -85,8 +97,14 @@ final class PluginNameLikeTest implements ParseStringTesting<List<PluginName>>,
         this.parseStringAndCheck(
             "abc , xyz",
             Lists.of(
-                PluginName.with("abc"),
-                PluginName.with("xyz")
+                PluginName.with(
+                    LABEL,
+                    "abc"
+                ),
+                PluginName.with(
+                    LABEL,
+                    "xyz"
+                )
             )
         );
     }
@@ -95,7 +113,10 @@ final class PluginNameLikeTest implements ParseStringTesting<List<PluginName>>,
     public List<PluginName> parseString(final String text) {
         return PluginNameLike.parse(
             text,
-            PluginName::with,
+            (final String name) -> PluginName.with(
+                LABEL,
+                name
+            ),
             Lists::immutable
         );
     }

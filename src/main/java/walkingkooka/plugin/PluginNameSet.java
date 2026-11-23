@@ -67,6 +67,7 @@ public final class PluginNameSet extends AbstractSet<PluginName>
                 try {
                     names.add(
                         PluginName.with(
+                            PluginName.class.getSimpleName(),
                             parser.name()
                         )
                     );
