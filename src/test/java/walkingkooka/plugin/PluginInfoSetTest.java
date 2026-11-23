@@ -352,16 +352,6 @@ public final class PluginInfoSetTest implements ImmutableSetTesting<PluginInfoSe
         );
     }
 
-    @Override
-    public Class<? extends RuntimeException> parseStringFailedExpected(final Class<? extends RuntimeException> thrown) {
-        return thrown;
-    }
-
-    @Override
-    public RuntimeException parseStringFailedExpected(final RuntimeException thrown) {
-        return thrown;
-    }
-
     // HasText..........................................................................................................
 
     @Test

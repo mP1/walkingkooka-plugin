@@ -80,18 +80,6 @@ public interface PluginInfoSetLikeTesting<N extends Name & Comparable<N>,
         );
     }
 
-    // parseString......................................................................................................
-
-    @Override
-    default Class<? extends RuntimeException> parseStringFailedExpected(final Class<? extends RuntimeException> type) {
-        return type;
-    }
-
-    @Override
-    default RuntimeException parseStringFailedExpected(final RuntimeException cause) {
-        return cause;
-    }
-
     // json.............................................................................................................
 
     @Override

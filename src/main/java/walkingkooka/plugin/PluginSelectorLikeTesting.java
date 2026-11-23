@@ -337,16 +337,6 @@ public interface PluginSelectorLikeTesting<S extends PluginSelectorLike<N>, N ex
         );
     }
 
-    @Override
-    default Class<? extends RuntimeException> parseStringFailedExpected(final Class<? extends RuntimeException> type) {
-        return type;
-    }
-
-    @Override
-    default RuntimeException parseStringFailedExpected(final RuntimeException thrown) {
-        return thrown;
-    }
-
     // TreePrintable....................................................................................................
 
     @Test

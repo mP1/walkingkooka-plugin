@@ -100,16 +100,6 @@ final class PluginNameLikeTest implements ParseStringTesting<List<PluginName>>,
         );
     }
 
-    @Override
-    public Class<? extends RuntimeException> parseStringFailedExpected(final Class<? extends RuntimeException> thrown) {
-        return thrown;
-    }
-
-    @Override
-    public RuntimeException parseStringFailedExpected(final RuntimeException thrown) {
-        return thrown;
-    }
-
     // HasUrlFragment...................................................................................................
 
     @Test
