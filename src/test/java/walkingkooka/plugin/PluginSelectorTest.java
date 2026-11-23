@@ -506,16 +506,6 @@ public final class PluginSelectorTest implements ClassTesting2<PluginSelector<St
         );
     }
 
-    @Override
-    public Class<? extends RuntimeException> parseStringFailedExpected(final Class<? extends RuntimeException> type) {
-        return type;
-    }
-
-    @Override
-    public RuntimeException parseStringFailedExpected(final RuntimeException thrown) {
-        return thrown;
-    }
-
     // EvaluateValueText................................................................................................
 
     private final static StringName NAME2 = Names.string("converter2");

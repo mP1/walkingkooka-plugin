@@ -335,16 +335,6 @@ public interface PluginAliasSetLikeTesting<N extends Name & Comparable<N>,
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    default Class<? extends RuntimeException> parseStringFailedExpected(final Class<? extends RuntimeException> thrown) {
-        return thrown;
-    }
-
-    @Override
-    default RuntimeException parseStringFailedExpected(final RuntimeException thrown) {
-        return thrown;
-    }
-
     // containsAliasOrName..............................................................................................
 
     @Test

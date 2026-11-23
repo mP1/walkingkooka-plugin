@@ -35,18 +35,6 @@ public interface PluginAliasLikeTesting<N extends Name & Comparable<N>, S extend
     ToStringTesting,
     PublicClassTesting<A> {
 
-    // parseString......................................................................................................
-
-    @Override
-    default Class<? extends RuntimeException> parseStringFailedExpected(final Class<? extends RuntimeException> thrown) {
-        return thrown;
-    }
-
-    @Override
-    default RuntimeException parseStringFailedExpected(final RuntimeException thrown) {
-        return thrown;
-    }
-
     // toString.........................................................................................................
 
     @Test
