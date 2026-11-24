@@ -42,7 +42,7 @@ public interface PluginInfoLikeTesting<I extends PluginInfoLike<I, N>, N extends
     HateosResourceTesting2<I, N>,
     JsonNodeMarshallerTesting<I>,
     ComparableTesting2<I>,
-    HasAbsoluteUrlTesting<I>,
+    HasAbsoluteUrlTesting,
     ParseStringTesting<I>,
     ToStringTesting {
 

@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginInfoTest implements ClassTesting2<PluginInfo<PluginName>>,
     HasNameTesting,
-    HasAbsoluteUrlTesting<PluginInfo<PluginName>>,
+    HasAbsoluteUrlTesting,
     HashCodeEqualsDefinedTesting2<PluginInfo<PluginName>>,
     ComparableTesting2<PluginInfo<PluginName>> {
 
