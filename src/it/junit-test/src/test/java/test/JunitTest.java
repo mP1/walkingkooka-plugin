@@ -35,9 +35,19 @@ public class JunitTest {
 
     @Test
     public void testPluginNameSort() {
-        final PluginName a = PluginName.with("date-of-month");
-        final PluginName b = PluginName.with("text-case-insensitive");
-        final PluginName c = PluginName.with("month-of-year");
+        final String label = "PluginName123";
+        final PluginName a = PluginName.with(
+            label,
+            "date-of-month"
+        );
+        final PluginName b = PluginName.with(
+            label,
+            "text-case-insensitive"
+        );
+        final PluginName c = PluginName.with(
+            label,
+            "month-of-year"
+        );
 
         final List<PluginName> list = Lists.array();
         list.add(a);
