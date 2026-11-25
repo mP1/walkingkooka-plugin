@@ -18,31 +18,72 @@
 package walkingkooka.plugin;
 
 import org.junit.jupiter.api.Test;
+import walkingkooka.EmptyTextException;
 import walkingkooka.InvalidCharacterException;
+import walkingkooka.reflect.ThrowableTesting;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeUnmarshallContext;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-final public class PluginNameTest implements PluginNameTesting<PluginName> {
+final public class PluginNameTest implements PluginNameTesting<PluginName>,
+    ThrowableTesting {
+    
+    private final static String LABEL = "PluginName123";
+
+    @Test
+    public void testWithNullLabelFails() {
+        this.getMessageAndCheck(
+            assertThrows(
+                NullPointerException.class,
+                () -> PluginName.with(
+                    null,
+                    PluginName.SEPARATOR + "hello"
+                )
+            ),
+            "label"
+        );
+    }
+
+    @Test
+    public void testWithEmptyLabelFails() {
+        this.getMessageAndCheck(
+            assertThrows(
+                EmptyTextException.class,
+                () -> PluginName.with(
+                    "",
+                    PluginName.SEPARATOR + "hello"
+                )
+            ),
+            "Empty \"label\""
+        );
+    }
 
     @Test
     public void testWithInitialSeparatorFails() {
-        assertThrows(
-            InvalidCharacterException.class,
-            () -> PluginName.with(
-                PluginName.SEPARATOR + "hello"
-            )
+        this.getMessageAndCheck(
+            assertThrows(
+                InvalidCharacterException.class,
+                () -> PluginName.with(
+                    LABEL,
+                    PluginName.SEPARATOR + "hello"
+                )
+            ),
+            "Invalid \"PluginName123\" character ':' at 0"
         );
     }
 
     @Test
     public void testWithIncludesSeparatorFails() {
-        assertThrows(
-            InvalidCharacterException.class,
-            () -> PluginName.with(
-                "hello" + PluginName.SEPARATOR + "123"
-            )
+        this.getMessageAndCheck(
+            assertThrows(
+                InvalidCharacterException.class,
+                () -> PluginName.with(
+                    LABEL,
+                    "hello" + PluginName.SEPARATOR + "123"
+                )
+            ),
+            "Invalid \"PluginName123\" character ':' at 5"
         );
     }
 
@@ -50,7 +91,10 @@ final public class PluginNameTest implements PluginNameTesting<PluginName> {
 
     @Override
     public PluginName createName(final String name) {
-        return PluginName.with(name);
+        return PluginName.with(
+            LABEL,
+            name
+        );
     }
 
     // Class............................................................................................................

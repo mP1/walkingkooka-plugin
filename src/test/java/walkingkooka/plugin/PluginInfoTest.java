@@ -38,7 +38,12 @@ public final class PluginInfoTest implements ClassTesting2<PluginInfo<PluginName
 
     private final static AbsoluteUrl URL = Url.parseAbsolute("https://example.com");
 
-    private final static PluginName NAME = PluginName.with("plugin-123");
+    private static final String PLUGIN_LABEL = PluginName.class.getSimpleName();
+
+    private final static PluginName NAME = PluginName.with(
+        PLUGIN_LABEL,
+        "plugin-123"
+    );
 
     @Test
     public void testWithNullUrlFails() {
@@ -79,7 +84,10 @@ public final class PluginInfoTest implements ClassTesting2<PluginInfo<PluginName
         this.checkNotEquals(
             PluginInfo.with(
                 URL,
-                PluginName.with("different-123")
+                PluginName.with(
+                    PLUGIN_LABEL,
+                    "different-123"
+                )
             )
         );
     }
@@ -99,7 +107,10 @@ public final class PluginInfoTest implements ClassTesting2<PluginInfo<PluginName
         this.compareToAndCheckLess(
             PluginInfo.with(
                 URL,
-                PluginName.with("xyz-456")
+                PluginName.with(
+                    PLUGIN_LABEL,
+                    "xyz-456"
+                )
             )
         );
     }

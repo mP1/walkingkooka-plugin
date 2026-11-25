@@ -22,6 +22,7 @@ import walkingkooka.InvalidTextLengthException;
 import walkingkooka.naming.Name;
 import walkingkooka.predicate.character.CharPredicate;
 import walkingkooka.predicate.character.CharPredicates;
+import walkingkooka.text.CharSequences;
 import walkingkooka.text.CharacterConstant;
 import walkingkooka.tree.json.JsonNode;
 import walkingkooka.tree.json.marshall.JsonNodeContext;
@@ -60,11 +61,15 @@ final public class PluginName implements PluginNameLike<PluginName> {
     /**
      * Factory that creates a {@link PluginName}
      */
-    public static PluginName with(final String name) {
+    public static PluginName with(final String label,
+                                  final String text) {
         return new PluginName(
             CharPredicates.failIfNullOrEmptyOrInitialAndPartFalse(
-                name,
-                PluginName.class.getSimpleName(),
+                text,
+                CharSequences.failIfNullOrEmpty(
+                    label,
+                    "label"
+                ),
                 INITIAL,
                 PART
             )
@@ -127,7 +132,10 @@ final public class PluginName implements PluginNameLike<PluginName> {
 
     static PluginName unmarshall(final JsonNode node,
                                  final JsonNodeUnmarshallContext context) {
-        return with(node.stringOrFail());
+        return with(
+            PluginName.class.getSimpleName(),
+            node.stringOrFail()
+        );
     }
 
     private JsonNode marshall(final JsonNodeMarshallContext context) {

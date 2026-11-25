@@ -229,7 +229,10 @@ public final class ClassLoaderPluginProviderTest implements PluginProviderTestin
 
     public final static AbsoluteUrl PLUGIN_PROVIDER_URL = Url.parseAbsolute("https://example.com/TestPluginProvider123");
 
-    public final static PluginName PLUGIN_NAME = PluginName.with("plugin-name-123");
+    public final static PluginName PLUGIN_NAME = PluginName.with(
+        PluginName.class.getSimpleName(),
+        "plugin-name-123"
+    );
 
     public final static PluginInfo PLUGIN_INFO = PluginInfo.with(
         Url.parseAbsolute("https://example.com/plugin-123"),
