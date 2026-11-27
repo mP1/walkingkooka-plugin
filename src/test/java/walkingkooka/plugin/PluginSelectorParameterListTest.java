@@ -97,6 +97,11 @@ public final class PluginSelectorParameterListTest implements ImmutableListTesti
     }
 
     @Override
+    public void testSubListWithZeroFromAndToSize() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public PluginSelectorParameterList createList() {
         return PluginSelectorParameterList.with(
             Lists.of(

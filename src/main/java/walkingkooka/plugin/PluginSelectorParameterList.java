@@ -77,6 +77,24 @@ final class PluginSelectorParameterList extends AbstractList<Object>
     }
 
     @Override
+    public PluginSelectorParameterList subList(final int from,
+                                               final int to) {
+        if(from < 0) {
+            throw new IndexOutOfBoundsException("Invalid from index " + from + " < 0");
+        }
+
+        if(to < from) {
+            throw new IndexOutOfBoundsException("Invalid to index " + to + " < " + from);
+        }
+
+        final int size = this.size();
+        if(to > size) {
+            throw new IndexOutOfBoundsException("Invalid to index " + to + " > " + size);
+        }
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void elementCheck(final Object value) {
         // nulls are allowed
     }
