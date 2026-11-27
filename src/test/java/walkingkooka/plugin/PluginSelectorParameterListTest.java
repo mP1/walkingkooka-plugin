@@ -22,9 +22,23 @@ import walkingkooka.collect.list.ImmutableListTesting;
 import walkingkooka.collect.list.Lists;
 import walkingkooka.naming.Names;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public final class PluginSelectorParameterListTest implements ImmutableListTesting<PluginSelectorParameterList, Object> {
+
+    private static final walkingkooka.naming.StringName PLUGIN_NAME = Names.string("HelloPlugin");
+
+    private final static String STRING1 = "AAA";
+
+    private final static String STRING2 = "BBB";
+
+    private final static String STRING3 = "CCC";
+
+    private final static String STRING4 = "DDD";
+
+    private final static String STRING5 = "EEE";
 
     @Test
     public void testGetNegativeIndexFails2() {
@@ -96,6 +110,76 @@ public final class PluginSelectorParameterListTest implements ImmutableListTesti
         throw new UnsupportedOperationException();
     }
 
+    // subList..........................................................................................................
+
+    private final static List<Object> ELEMENTS = Lists.of(
+        STRING1,
+        STRING2,
+        STRING3,
+        STRING4,
+        STRING5
+    );
+
+    @Test
+    public void testSubList() {
+        this.subListAndCheck(
+            new PluginSelectorParameterList(
+                ELEMENTS,
+                PLUGIN_NAME
+            ),
+            0,
+            2,
+            new PluginSelectorParameterList(
+                Lists.of(
+                    STRING1,
+                    STRING2
+                ),
+                PLUGIN_NAME
+            )
+        );
+    }
+
+    @Test
+    public void testSubList2() {
+        this.subListAndCheck(
+            new PluginSelectorParameterList(
+                ELEMENTS,
+                PLUGIN_NAME
+            ),
+            2,
+            4,
+            new PluginSelectorParameterList(
+                Lists.of(
+                    STRING3,
+                    STRING4
+                ),
+                PLUGIN_NAME
+            )
+        );
+    }
+
+    @Test
+    public void testSubListSubList() {
+        this.subListAndCheck(
+            new PluginSelectorParameterList(
+                ELEMENTS,
+                PLUGIN_NAME
+            ).subList(
+                1,
+                4
+            ), // 2, 3, 4
+            1,
+            3,
+            new PluginSelectorParameterList(
+                Lists.of(
+                    STRING3,
+                    STRING4
+                ),
+                PLUGIN_NAME
+            )
+        );
+    }
+
     @Override
     public void testSubListWithZeroFromAndToSize() {
         throw new UnsupportedOperationException();
@@ -110,7 +194,7 @@ public final class PluginSelectorParameterListTest implements ImmutableListTesti
                 null,
                 333
             ),
-            Names.string("HelloPlugin")
+            PLUGIN_NAME
         );
     }
 
@@ -121,7 +205,7 @@ public final class PluginSelectorParameterListTest implements ImmutableListTesti
         this.firstOrEmptyAndCheck(
             PluginSelectorParameterList.with(
                 Lists.empty(),
-                Names.string("HelloPlugin")
+                PLUGIN_NAME
             )
         );
     }
@@ -134,7 +218,7 @@ public final class PluginSelectorParameterListTest implements ImmutableListTesti
                     "111",
                     "2222"
                 ),
-                Names.string("HelloPlugin")
+                PLUGIN_NAME
             ),
             "111"
         );

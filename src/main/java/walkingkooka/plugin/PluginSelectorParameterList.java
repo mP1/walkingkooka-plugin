@@ -41,8 +41,9 @@ final class PluginSelectorParameterList extends AbstractList<Object>
         );
     }
 
-    private PluginSelectorParameterList(final List<Object> values,
-                                        final Name name) {
+    // @VisibilityForTesting
+    PluginSelectorParameterList(final List<Object> values,
+                                final Name name) {
         this.values = values;
         this.name = name;
     }
@@ -79,19 +80,15 @@ final class PluginSelectorParameterList extends AbstractList<Object>
     @Override
     public PluginSelectorParameterList subList(final int from,
                                                final int to) {
-        if(from < 0) {
-            throw new IndexOutOfBoundsException("Invalid from index " + from + " < 0");
-        }
-
-        if(to < from) {
-            throw new IndexOutOfBoundsException("Invalid to index " + to + " < " + from);
-        }
-
-        final int size = this.size();
-        if(to > size) {
-            throw new IndexOutOfBoundsException("Invalid to index " + to + " > " + size);
-        }
-        throw new UnsupportedOperationException();
+        return 0 == from && this.size() == to ?
+            this :
+            new PluginSelectorParameterList(
+                this.values.subList(
+                    from,
+                    to
+                ),
+                this.name
+            );
     }
 
     @Override
